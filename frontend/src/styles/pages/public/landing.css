@@ -31,12 +31,19 @@
   --max-w:        1200px;
 }
 
+html { scroll-behavior: smooth; }
+
 .lp-root {
   font-family: var(--font-body);
   background: var(--c-bg);
   color: var(--c-text);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Offset for fixed header navigation anchors */
+section[id] {
+  scroll-margin-top: 80px;
 }
 
 /* ── Shared layout helpers ──────────────────────────── */

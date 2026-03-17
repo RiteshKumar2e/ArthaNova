@@ -2,8 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
+import useAuthStore from '../store/authStore';
 
-const NAV_LINKS = [
+const LANDING_LINKS = [
+  { label: 'HOME',         to: '/' },
+  { label: 'ABOUT',        to: '#how' },
+  { label: 'FEATURES',     to: '#features' },
+  { label: 'HOW IT WORKS', to: '#how' },
+  { label: 'CONTACT',      to: '#testimonials' },
+];
+
+const DASHBOARD_LINKS = [
   { label: 'Feed',         to: '/feed' },
   { label: 'Trending',     to: '/trending' },
   { label: 'AI Briefings', to: '/briefings' },
@@ -13,7 +22,10 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled]     = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
+
+  const NAV_LINKS = isAuthenticated ? DASHBOARD_LINKS : LANDING_LINKS;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -41,19 +53,36 @@ export default function Navbar() {
         <ul className="lp-nav__links">
           {NAV_LINKS.map(({ label, to }) => (
             <li key={to}>
-              <Link to={to}>{label}</Link>
+              {to.startsWith('#') ? (
+                <a href={to}>{label}</a>
+              ) : (
+                <Link to={to}>{label}</Link>
+              )}
             </li>
           ))}
         </ul>
 
         {/* Actions */}
         <div className="lp-nav__actions">
-          <button className="lp-btn-ghost" onClick={() => navigate('/login')}>
-            Log in
-          </button>
-          <button className="lp-btn-primary" onClick={() => navigate('/register')}>
-            Get started
-          </button>
+          {isAuthenticated ? (
+            <>
+              <button className="lp-btn-ghost" onClick={() => navigate('/dashboard')}>
+                Dashboard
+              </button>
+              <button className="lp-btn-primary" onClick={logout}>
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="lp-btn-ghost" onClick={() => navigate('/login')}>
+                Log in
+              </button>
+              <button className="lp-btn-primary" onClick={() => navigate('/register')}>
+                Get started
+              </button>
+            </>
+          )}
           <button
             className="lp-nav__burger"
             onClick={() => setMobileOpen(v => !v)}
@@ -67,13 +96,28 @@ export default function Navbar() {
       {/* Mobile dropdown */}
       <div className={`lp-nav__mobile${mobileOpen ? ' open' : ''}`}>
         {NAV_LINKS.map(({ label, to }) => (
-          <Link key={to} to={to} onClick={() => setMobileOpen(false)}>
-            {label}
-          </Link>
+          to.startsWith('#') ? (
+            <a key={to} href={to} onClick={() => setMobileOpen(false)}>
+              {label}
+            </a>
+          ) : (
+            <Link key={to} to={to} onClick={() => setMobileOpen(false)}>
+              {label}
+            </Link>
+          )
         ))}
         <div className="lp-nav__mobile-btns">
-          <Link to="/login"    className="ghost">Log in</Link>
-          <Link to="/register" className="primary">Get started</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard" className="ghost">Dashboard</Link>
+              <button onClick={logout} className="primary" style={{ width: '100%', background: 'var(--clr-accent)', color: 'white', borderRadius: '12px', height: '44px', fontWeight: 700, border: 'none' }}>Log out</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login"    className="ghost">Log in</Link>
+              <Link to="/register" className="primary">Get started</Link>
+            </>
+          )}
         </div>
       </div>
     </motion.header>

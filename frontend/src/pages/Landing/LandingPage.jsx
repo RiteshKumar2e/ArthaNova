@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import useAuthStore from '../../store/authStore';
 import Navbar from '../../components/Navbar';
 import Hero   from '../../components/Hero';
 import { motion } from 'framer-motion';
@@ -73,6 +74,7 @@ const inView = (delay = 0) => ({
 /* ─── Component ───────────────────────────────── */
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <div className="lp-root">
@@ -186,12 +188,20 @@ export default function LandingPage() {
             Free plan available — no credit card required.
           </p>
           <div className="lp-cta-box__btns">
-            <button className="lp-cta-btn-white" onClick={() => navigate('/register')}>
-              Get started for free <ArrowRight size={16} />
-            </button>
-            <button className="lp-cta-btn-outline" onClick={() => navigate('/login')}>
-              Already have an account
-            </button>
+            {isAuthenticated ? (
+              <button className="lp-cta-btn-white" onClick={() => navigate('/dashboard')}>
+                Go to Dashboard <ArrowRight size={16} />
+              </button>
+            ) : (
+              <>
+                <button className="lp-cta-btn-white" onClick={() => navigate('/register')}>
+                  Get started for free <ArrowRight size={16} />
+                </button>
+                <button className="lp-cta-btn-outline" onClick={() => navigate('/login')}>
+                  Already have an account
+                </button>
+              </>
+            )}
           </div>
         </motion.div>
       </section>

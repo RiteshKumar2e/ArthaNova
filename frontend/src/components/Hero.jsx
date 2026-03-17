@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/authStore';
 
 const SIDEBAR_ITEMS = ['Dashboard', 'Feed', 'Trending', 'AI Briefs', 'Studio', 'Saved'];
 const ARTICLES = [
@@ -12,6 +13,7 @@ const ARTICLES = [
 
 export default function Hero() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <section className="lp-hero">
@@ -63,9 +65,15 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.26 }}
         >
-          <button className="lp-cta-main" onClick={() => navigate('/register')}>
-            Start for free <ArrowRight size={16} />
-          </button>
+          {isAuthenticated ? (
+            <button className="lp-cta-main" onClick={() => navigate('/dashboard')}>
+              Go to Dashboard <ArrowRight size={16} />
+            </button>
+          ) : (
+            <button className="lp-cta-main" onClick={() => navigate('/register')}>
+              Start for free <ArrowRight size={16} />
+            </button>
+          )}
           <button className="lp-cta-ghost" onClick={() => navigate('/feed')}>
             See live feed →
           </button>
