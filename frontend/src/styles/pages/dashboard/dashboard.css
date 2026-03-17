@@ -1,0 +1,19 @@
+.stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+}
+
+.stat-card {
+  @apply bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all;
+}
+
+.news-card {
+  @apply bg-white p-6 rounded-3xl border border-slate-200 hover:border-blue-200 transition-all;
+}
+
+.profile-header {
+  @apply flex items-center space-x-6 mb-10;
+}
+
+.settings-section {
+  @apply bg-white rounded-3xl border border-slate-200 p-8 mb-6;
+}

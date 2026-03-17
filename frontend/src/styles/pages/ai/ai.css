@@ -1,0 +1,48 @@
+/* AI & Intelligence Styles */
+
+.briefing-layout {
+  @apply grid grid-cols-1 lg:grid-cols-12 gap-8 items-start;
+}
+
+.briefing-card {
+  @apply bg-white rounded-[40px] border border-slate-200 p-10 shadow-sm transition-all hover:shadow-xl hover:shadow-slate-200/50;
+}
+
+/* Video Studio Styles */
+.video-studio-container {
+  @apply min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8;
+}
+
+.video-studio-canvas {
+  @apply aspect-[9/16] w-full max-w-[360px] mx-auto bg-slate-900 rounded-[48px] border-[12px] border-slate-800 shadow-[0_0_100px_rgba(59,130,246,0.15)] relative overflow-hidden;
+}
+
+.video-control-panel {
+  @apply bg-white rounded-[32px] border border-slate-200 p-8 shadow-sm h-fit;
+}
+
+.studio-asset-grid {
+  @apply grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto pr-2;
+}
+
+.asset-item {
+  @apply aspect-square bg-slate-50 rounded-2xl border border-slate-100 flex flex-col items-center justify-center cursor-pointer transition-all hover:border-blue-500 hover:bg-blue-50/50;
+}
+
+/* Deep Analysis Styles */
+.analysis-timeline {
+  @apply relative pl-8 border-l-2 border-slate-200 space-y-12 ml-4;
+}
+
+.timeline-dot {
+  @apply absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-600 border-[3px] border-white shadow-sm;
+}
+
+.logic-map-node {
+  @apply p-6 bg-white rounded-[24px] border border-slate-200 shadow-sm hover:border-blue-400 transition-all cursor-pointer;
+}
+
+/* Vernacular Console */
+.vernacular-console {
+  @apply bg-white rounded-[40px] border border-slate-200 overflow-hidden shadow-sm;
+}

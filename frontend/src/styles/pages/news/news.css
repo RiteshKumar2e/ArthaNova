@@ -1,0 +1,15 @@
+.feed-container {
+  @apply space-y-8;
+}
+
+.analysis-container {
+  @apply bg-white rounded-3xl border border-slate-200 p-10 shadow-sm overflow-hidden;
+}
+
+.trending-heatmap {
+  @apply grid grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+.saved-story-item {
+  @apply bg-white border border-slate-200 rounded-3xl p-6 transition-all hover:border-blue-200;
+}

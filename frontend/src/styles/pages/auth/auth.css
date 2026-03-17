@@ -1,0 +1,15 @@
+.auth-wrapper {
+  @apply min-h-screen flex flex-col items-center justify-center p-4 bg-slate-50 relative overflow-hidden;
+}
+
+.auth-container {
+  @apply w-full max-w-md bg-white p-8 rounded-[40px] border border-slate-200 shadow-2xl shadow-slate-200/50 relative z-10;
+}
+
+.auth-form-group {
+  @apply space-y-2 mb-6;
+}
+
+.otp-digit-field {
+  @apply w-12 h-14 text-center text-xl font-bold bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all;
+}

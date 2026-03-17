@@ -1,0 +1,35 @@
+/* Dashboard Styles */
+.stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+}
+
+.stat-card {
+  @apply bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all;
+}
+
+.news-card {
+  @apply bg-white p-6 rounded-3xl border border-slate-200 hover:border-blue-200 transition-all;
+}
+
+/* Feed & Analysis Styles */
+.feed-container {
+  @apply space-y-6;
+}
+
+.analysis-container {
+  @apply bg-white rounded-3xl border border-slate-200 p-10 shadow-sm;
+}
+
+/* Studio & Briefing Styles */
+.briefing-card {
+  @apply bg-white rounded-3xl border border-slate-200 p-8 shadow-sm;
+}
+
+.video-preview {
+  @apply aspect-[9/16] max-w-[400px] mx-auto bg-slate-900 rounded-[32px] border-[8px] border-slate-800 shadow-2xl relative overflow-hidden;
+}
+
+/* Vernacular Styles */
+.translation-console {
+  @apply bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm;
+}
