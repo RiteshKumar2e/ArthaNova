@@ -6,10 +6,10 @@ import useAuthStore from '../store/authStore';
 
 const LANDING_LINKS = [
   { label: 'HOME',         to: '/' },
-  { label: 'ABOUT',        to: '#how' },
+  { label: 'ABOUT',        to: '#about' },
   { label: 'FEATURES',     to: '#features' },
   { label: 'HOW IT WORKS', to: '#how' },
-  { label: 'CONTACT',      to: '#testimonials' },
+  { label: 'CONTACT',      to: '#contact' },
 ];
 
 const DASHBOARD_LINKS = [

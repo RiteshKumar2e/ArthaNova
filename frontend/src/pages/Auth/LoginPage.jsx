@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, ArrowRight, Zap, Loader2 } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Zap, Loader2, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
 
@@ -20,18 +20,17 @@ export default function LoginPage() {
 
   return (
     <div className="auth-page">
+      <Link to="/" className="auth-back-btn">
+        <ArrowLeft size={18} />
+        Back to Home
+      </Link>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="auth-card-wrap"
       >
         <div className="auth-heading-area">
-          <Link to="/" className="auth-logo-block">
-            <div className="auth-logo-icon">
-              <Zap size={22} fill="currentColor" />
-            </div>
-            <span className="auth-logo-text">ArthaNova</span>
-          </Link>
           <h2>Welcome Back</h2>
           <p>Login to access your personalized intelligence.</p>
         </div>

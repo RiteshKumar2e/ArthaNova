@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import {
   Brain, MessageSquare, BarChart3, Shield,
   Globe2, Target, TrendingUp, Zap, ArrowRight,
+  Mail, Github, Linkedin, Check, Shield, Crown, Star
 } from 'lucide-react';
 import '../../styles/pages/public/landing.css';
 
@@ -23,6 +24,40 @@ const FEATURES = [
   { Icon: Zap,          color: '#ea580c', bg: '#fff7ed', title: 'Video Briefs',          desc: 'Turn long-form stories into punchy 60-second AI-generated video briefings.' },
 ];
 
+const PLANS = [
+  {
+    name: 'Standard',
+    type: 'Entry Tier',
+    price: 'Free',
+    description: 'Essential global news with basic AI synthesis.',
+    features: ['Standard Feed Access', 'Basic Summary Views', '5 Video Studio Tokens/mo', 'Community Support'],
+    icon: Star,
+    color: 'slate',
+    button: 'Get Started',
+  },
+  {
+    name: 'Intelligence',
+    type: 'Most Popular',
+    price: '$29',
+    description: 'Deep market logic and personalized story arcs.',
+    features: ['Deep Analysis Access', 'Unlimited Synthesis', 'Sovereign Map Access', '50 Video Studio Tokens/mo', 'Priority Support'],
+    icon: Zap,
+    color: 'blue',
+    button: 'Upgrade to Intel',
+    featured: true,
+  },
+  {
+    name: 'Sovereign',
+    type: 'Institutional',
+    price: '$199',
+    description: 'Full-scale market predictions and private data nodes.',
+    features: ['Predictive Logic Panel', 'Private Data Localization', 'Unlimited Video Studio', 'Direct AI Consultation', 'White-glove Support'],
+    icon: Crown,
+    color: 'yellow',
+    button: 'Go Sovereign',
+  }
+];
+
 const HOW_STEPS = [
   { Icon: Globe2, num: '01', title: 'Ingest & Verify',    desc: 'We aggregate thousands of articles every hour and run them through our truth-verification pipeline.' },
   { Icon: Brain,  num: '02', title: 'Synthesise with AI', desc: 'Our models merge related stories, extract entities, and build a rich knowledge graph in real time.' },
@@ -36,32 +71,7 @@ const STATS = [
   { value: '180+', label: 'Countries covered' },
 ];
 
-const TESTIMONIALS = [
-  {
-    avatar: 'AV', avatarBg: '#2563eb',
-    stars: 5,
-    quote: '"ArthaNova cuts my morning briefing from 90 minutes to 10. The AI synthesis is genuinely impressive — it thinks like an analyst."',
-    name: 'Arjun Verma', role: 'Portfolio Manager, Mirae Asset',
-  },
-  {
-    avatar: 'PS', avatarBg: '#7c3aed',
-    stars: 5,
-    quote: '"The only platform that gives me both the headline and the second-order effects. The entity map alone is worth the subscription."',
-    name: 'Priya Shankar', role: 'Senior Correspondent, The Hindu BL',
-  },
-  {
-    avatar: 'RK', avatarBg: '#0d9488',
-    stars: 5,
-    quote: '"Our research desk runs on ArthaNova. The verified intelligence layer means analysts trust the input — everything moves faster."',
-    name: 'Rohit Kumar', role: 'Head of Research, Nuvama Wealth',
-  },
-];
 
-const FOOTER_COLS = [
-  { title: 'Product',  links: [['Feed', '/feed'], ['Trending', '/trending'], ['AI Briefings', '/briefings'], ['Deep Analysis', '/deep-analysis'], ['Video Studio', '/studio']] },
-  { title: 'Company',  links: [['About', '#'], ['Blog', '#'], ['Careers', '#'], ['Press', '#']] },
-  { title: 'Legal',    links: [['Privacy', '#'], ['Terms', '#'], ['Cookie Policy', '#']] },
-];
 
 /* ─── Scroll animation helper ─────────────────── */
 const inView = (delay = 0) => ({
@@ -76,6 +86,31 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
 
+  const PLATFORM_LINKS = [
+    { label: 'Feed',         to: '/feed' },
+    { label: 'Trending',     to: '/trending' },
+    { label: 'AI Briefings', to: '/briefings' },
+    { label: 'Deep Analysis',to: '/deep-analysis' },
+    { label: 'Video Studio', to: '/studio' },
+  ];
+
+  const NAVIGATION_LINKS = [
+    { label: 'Home',         to: '/' },
+    { label: 'About',        to: '#about' },
+    { label: 'Features',     to: '#features' },
+    { label: 'How it Works', to: '#how' },
+    { label: 'Contact',      to: '#contact' },
+  ];
+
+  const FOOTER_COLS = [
+    { 
+      title: isAuthenticated ? 'Platform' : 'Navigation',  
+      links: isAuthenticated ? PLATFORM_LINKS : NAVIGATION_LINKS 
+    },
+    { title: 'Company',  links: [{ label: 'About', to: '#' }, { label: 'Blog', to: '#' }, { label: 'Careers', to: '#' }, { label: 'Press', to: '#' }] },
+    { title: 'Legal',    links: [{ label: 'Privacy', to: '#' }, { label: 'Terms', to: '#' }, { label: 'Cookie Policy', to: '#' }] },
+  ];
+
   return (
     <div className="lp-root">
       <Navbar />
@@ -88,6 +123,51 @@ export default function LandingPage() {
           {['Bloomberg', 'Reuters', 'HDFC Securities', 'Nuvama', 'The Hindu BL', 'Mint'].map(n => (
             <span key={n}>{n}</span>
           ))}
+        </div>
+      </section>
+      
+      {/* ── About Section ── */}
+      <section id="about" className="lp-about">
+        <div className="lp-container">
+          <div className="lp-about__grid">
+            <motion.div className="lp-about__content" {...inView()}>
+              <span className="lp-section-chip">The ArthaNova Mission</span>
+              <h2 className="lp-section-h2">The Intelligence Layer for Global Professionals.</h2>
+              <p className="lp-about__text">
+                In a world drowning in news, ArthaNova acts as your analytical filter. 
+                We don't just aggregate stories; we synthesize them into actionable 
+                intelligence using proprietary AI models trained on financial and 
+                geopolitical data.
+              </p>
+              <div className="lp-about__pills">
+                <div className="lp-about__pill">
+                  <span className="dot" />
+                  98.4% Fact Veracity
+                </div>
+                <div className="lp-about__pill">
+                  <span className="dot" />
+                  Multi-Source Logic
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div className="lp-about__image-wrap" {...inView(0.2)}>
+              <div className="lp-about__card">
+                <div className="lp-about__card-header">
+                  <Shield size={18} color="var(--c-accent)" />
+                  <span>Analytical Integrity</span>
+                </div>
+                <p>Every story is cross-referenced against 50+ trusted global sources before it ever reaches your desk.</p>
+              </div>
+              <div className="lp-about__card lp-about__card--offset">
+                <div className="lp-about__card-header">
+                  <Target size={18} color="var(--c-accent)" />
+                  <span>Precision Filtering</span>
+                </div>
+                <p>No noise. Only the signals that impact your portfolio, your sector, and your interests.</p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -148,66 +228,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
-      <section id="testimonials" className="lp-testimonials">
-        <motion.div className="lp-section-header" {...inView()}>
-          <span className="lp-section-chip">Testimonials</span>
-          <h2 className="lp-section-h2">Loved by analysts, journalists & investors</h2>
-        </motion.div>
-        <div className="lp-testimonials__grid">
-          {TESTIMONIALS.map(({ avatar, avatarBg, stars, quote, name, role }, i) => (
-            <motion.div key={name} className="lp-testimonial" {...inView(i * 0.1)}>
-              <div className="lp-testimonial__stars">
-                {Array.from({ length: stars }).map((_, j) => (
-                  <span key={j}>★</span>
-                ))}
-              </div>
-              <p className="lp-testimonial__quote">{quote}</p>
-              <div className="lp-testimonial__author">
-                <div className="lp-testimonial__avatar" style={{ background: avatarBg }}>
-                  {avatar}
-                </div>
-                <div>
-                  <div className="lp-testimonial__name">{name}</div>
-                  <div className="lp-testimonial__role">{role}</div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
-      {/* ── CTA ── */}
-      <section className="lp-cta-section">
-        <motion.div className="lp-cta-box" {...inView()}>
-          <div className="lp-cta-box__glow lp-cta-box__glow--a" />
-          <div className="lp-cta-box__glow lp-cta-box__glow--b" />
-          <h2>Ready to think faster about the news?</h2>
-          <p>
-            Join thousands of professionals who start their day with ArthaNova.
-            Free plan available — no credit card required.
-          </p>
-          <div className="lp-cta-box__btns">
-            {isAuthenticated ? (
-              <button className="lp-cta-btn-white" onClick={() => navigate('/dashboard')}>
-                Go to Dashboard <ArrowRight size={16} />
-              </button>
-            ) : (
-              <>
-                <button className="lp-cta-btn-white" onClick={() => navigate('/register')}>
-                  Get started for free <ArrowRight size={16} />
-                </button>
-                <button className="lp-cta-btn-outline" onClick={() => navigate('/login')}>
-                  Already have an account
-                </button>
-              </>
-            )}
-          </div>
-        </motion.div>
-      </section>
 
       {/* ── Footer ── */}
-      <footer className="lp-footer">
+      <footer className="lp-footer" id="contact">
         <div className="lp-footer__grid">
           {/* Brand */}
           <div>
@@ -219,14 +243,29 @@ export default function LandingPage() {
               Business intelligence reimagined for the age of AI.
               Fast, verified, and deeply contextual.
             </p>
+            <div className="lp-footer__socials">
+              <a href="mailto:contact@arthanova.com" className="lp-footer__social-link" title="Mail">
+                <Mail size={18} />
+              </a>
+              <a href="https://github.com" target="_blank" rel="noreferrer" className="lp-footer__social-link" title="GitHub">
+                <Github size={18} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="lp-footer__social-link" title="LinkedIn">
+                <Linkedin size={18} />
+              </a>
+            </div>
           </div>
 
           {/* Link columns */}
           {FOOTER_COLS.map(({ title, links }) => (
             <div key={title} className="lp-footer__col">
               <p className="lp-footer__col-title">{title}</p>
-              {links.map(([label, to]) => (
-                <Link key={label} to={to}>{label}</Link>
+              {links.map(({ label, to }) => (
+                to.startsWith('#') ? (
+                  <a key={label} href={to}>{label}</a>
+                ) : (
+                  <Link key={label} to={to}>{label}</Link>
+                )
               ))}
             </div>
           ))}

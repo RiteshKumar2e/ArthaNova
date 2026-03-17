@@ -14,6 +14,36 @@
   overflow: hidden;
 }
 
+.auth-back-btn {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #64748b;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.auth-back-btn:hover {
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.04);
+  transform: translateX(-4px);
+}
+
+@media (max-width: 640px) {
+  .auth-back-btn {
+    top: 16px;
+    left: 16px;
+    font-size: 0.8rem;
+  }
+}
+
 /* Decorative gradient blobs */
 .auth-page::before {
   content: '';
