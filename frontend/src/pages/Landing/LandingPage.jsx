@@ -284,22 +284,6 @@ export default function LandingPage() {
           })}
         </div>
 
-        {/* ── Enterprise ── */}
-        <motion.div className="lp-enterprise" {...inView(0.2)}>
-          <div className="lp-enterprise__glow" />
-          <div className="lp-enterprise__content">
-            <div className="lp-enterprise__top">
-              <Shield size={20} color="#60a5fa" />
-              <span>Institutional Intelligence</span>
-            </div>
-            <h3>Enterprise Sovereign Node</h3>
-            <p>Looking for custom data localization? Our team provides dedicated infrastructure deployment.</p>
-          </div>
-          <button className="lp-enterprise__btn" onClick={() => window.location.href = 'mailto:enterprise@arthanova.com'}>
-            Request Demo
-            <ArrowRight size={18} />
-          </button>
-        </motion.div>
       </section>
 
 
