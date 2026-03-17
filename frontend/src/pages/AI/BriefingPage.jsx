@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, MessageSquare, Send, ArrowLeft, ChevronRight, BookOpen, Hash, BarChart4 } from 'lucide-react';
+import { Zap, MessageSquare, Send, ArrowLeft, BookOpen, Hash, BarChart4 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import { clsx } from 'clsx';
 
-const keyPoints = [
+const KEY_POINTS = [
   "Global semiconductor demand is shifting towards customized AI silicon.",
   "New regulations in the EU are creating temporary market friction for US-based models.",
   "Enterprise spending on AI infrastructure has grown 45% YoY.",
@@ -24,7 +22,6 @@ export default function BriefingPage() {
     if (!input.trim()) return;
     setMessages([...messages, { role: 'user', content: input }]);
     setInput('');
-    // Simulate AI response
     setTimeout(() => {
       setMessages(prev => [...prev, { role: 'ai', content: "Based on the recent financial filings and global policy shifts, the impact on your portfolio could be significant in the next two quarters. Would you like me to generate a risk assessment map?" }]);
     }, 1000);
@@ -32,64 +29,68 @@ export default function BriefingPage() {
 
   return (
     <DashboardLayout>
-      <div className="flex items-center space-x-4 mb-10">
-        <Link to="/dashboard" className="p-2 bg-white rounded-2xl border border-slate-200 text-slate-400 hover:text-slate-900 transition-all shadow-sm">
-          <ArrowLeft className="w-5 h-5" />
-        </Link>
-        <div>
-          <h1 className="text-3xl font-bold font-outfit text-slate-900 leading-tight">Intelligence Briefing</h1>
-          <p className="text-slate-500 font-medium">Synthesized from 142 global intelligence sources.</p>
+      <div className="dash-welcome" style={{ marginBottom: '32px' }}>
+        <div className="dash-welcome__text" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <Link to="/dashboard" className="btn-outline" style={{ width: '44px', height: '44px', borderRadius: '12px', padding: 0 }}>
+            <ArrowLeft size={18} />
+          </Link>
+          <div>
+            <h1>Intelligence Briefing</h1>
+            <p>Synthesized from 142 global intelligence sources.</p>
+          </div>
         </div>
       </div>
 
       <div className="briefing-layout">
         {/* Left Column: Synthesis */}
-        <div className="lg:col-span-7 space-y-8">
+        <div className="lg:col-span-12 xl:col-span-7" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="briefing-card"
           >
-            <div className="flex items-center space-x-3 mb-8">
-              <div className="w-10 h-10 bg-yellow-50 rounded-2xl flex items-center justify-center">
-                <Zap className="w-5 h-5 text-yellow-500" fill="currentColor" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <div style={{ width: '40px', height: '40px', background: 'var(--clr-accent-lt)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Zap size={20} className="text-yellow-500" fill="currentColor" />
               </div>
-              <h2 className="text-xl font-bold text-slate-900 font-outfit uppercase tracking-widest text-xs">A1 Executive Strategy</h2>
+              <h2 className="dash-section-title" style={{ marginBottom: 0, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>A1 Executive Strategy</h2>
             </div>
             
-            <p className="text-slate-700 leading-relaxed text-lg mb-10 font-medium">
-              The primary narrative of the week is the **decoupling of AI hardware from traditional semiconductor cycles**. Market intelligence indicates that while generic chip demand is cooling, custom AI silicon is reaching unprecedented wait times.
+            <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--clr-text)', lineHeight: 1.5, marginBottom: '32px' }}>
+              The primary narrative of the week is the <span style={{ color: 'var(--clr-accent)' }}>decoupling of AI hardware from traditional semiconductor cycles</span>. Market intelligence indicates that while generic chip demand is cooling, custom AI silicon is reaching unprecedented wait times.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {keyPoints.map((point, idx) => (
-                <div key={idx} className="p-5 bg-slate-50/50 rounded-[24px] border border-slate-100/50 flex items-start space-x-4">
-                  <div className="w-6 h-6 bg-slate-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 shadow-lg">
-                    <span className="text-[10px] font-bold text-white">{idx + 1}</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+              {KEY_POINTS.map((point, idx) => (
+                <div key={idx} className="activity-item" style={{ borderRadius: 'var(--r-md)', border: '1px solid var(--clr-border)', background: 'var(--clr-bg-soft)', padding: '16px' }}>
+                  <div className="activity-icon" style={{ background: 'var(--clr-text)', color: '#fff', width: '24px', height: '24px', fontSize: '0.7rem' }}>
+                    {idx + 1}
                   </div>
-                  <p className="text-sm font-bold text-slate-600 leading-snug">{point}</p>
+                  <div className="activity-info">
+                    <p style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--clr-muted)' }}>{point}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-2 gap-6">
-            <div className="premium-card p-6 flex items-center space-x-5">
-              <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
-                <BarChart4 className="w-7 h-7" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '24px' }}>
+              <div style={{ width: '56px', height: '56px', background: '#eff6ff', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
+                <BarChart4 size={28} />
               </div>
               <div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Sentiment</p>
-                <p className="text-lg font-bold text-slate-900 font-outfit">Bullish High</p>
+                <p className="intel-counter-lbl" style={{ textAlign: 'left' }}>Sentiment</p>
+                <p className="dash-section-title" style={{ marginBottom: 0 }}>Bullish High</p>
               </div>
             </div>
-            <div className="premium-card p-6 flex items-center space-x-5">
-              <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
-                <Hash className="w-7 h-7" />
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '24px' }}>
+              <div style={{ width: '56px', height: '56px', background: '#f0fdf4', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#22c55e' }}>
+                <Hash size={28} />
               </div>
               <div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Core Entity</p>
-                <p className="text-lg font-bold text-slate-900 font-outfit">NVIDIA NVDA</p>
+                <p className="intel-counter-lbl" style={{ textAlign: 'left' }}>Core Entity</p>
+                <p className="dash-section-title" style={{ marginBottom: 0 }}>NVIDIA NVDA</p>
               </div>
             </div>
           </div>
@@ -98,78 +99,91 @@ export default function BriefingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-slate-900 rounded-[40px] p-10 text-white relative overflow-hidden shadow-2xl"
+            className="intelligence-profile"
+            style={{ position: 'relative', overflow: 'hidden' }}
           >
-            <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 blur-[100px] -mr-40 -mt-40" />
-            <h3 className="text-xl font-bold mb-4 flex items-center font-outfit">
-              <BookOpen className="w-5 h-5 mr-3 text-blue-400" />
-              Predictive Logic Map
-            </h3>
-            <p className="text-slate-400 text-sm mb-8 leading-relaxed font-medium">
-              Based on your current portfolio, these events have a direct correlation to 4 of your core local positions.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
-                <span className="text-sm font-bold uppercase tracking-wider">Position: NVDA</span>
-                <span className="text-xs font-bold text-green-400">+6.4% CORRELATION</span>
-              </div>
-              <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
-                <span className="text-sm font-bold uppercase tracking-wider">Position: EU-INDX</span>
-                <span className="text-xs font-bold text-red-400">-2.1% IMPACT</span>
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '320px', height: '320px', background: 'rgba(37, 99, 235, 0.1)', filter: 'blur(100px)', marginRight: '-160px', marginTop: '-160px', zIndex: 0 }} />
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <BookOpen size={18} style={{ color: '#60a5fa' }} />
+                Predictive Logic Map
+              </h3>
+              <p style={{ fontSize: '0.875rem', color: '#94a3b8', marginBottom: '24px', fontWeight: 500 }}>
+                Based on your current portfolio, these events have a direct correlation to 4 of your core local positions.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Position: NVDA</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#4ade80' }}>+6.4% CORRELATION</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Position: EU-INDX</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#f87171' }}>-2.1% IMPACT</span>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* Right Column: Q&A Chat */}
-        <div className="lg:col-span-5 relative flex flex-col h-[750px]">
-          <div className="bg-white rounded-t-[32px] border-x border-t border-slate-200 p-8 shadow-sm flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center shadow-lg">
-                <MessageSquare className="w-6 h-6 text-blue-400" fill="currentColor" />
+        <div className="lg:col-span-12 xl:col-span-5" style={{ height: '750px', display: 'flex', flexDirection: 'column' }}>
+          <div className="card" style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderBottom: 'none', padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ width: '48px', height: '48px', background: 'var(--clr-text)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <MessageSquare size={24} style={{ color: '#60a5fa' }} fill="currentColor" />
               </div>
               <div>
-                <p className="text-sm font-bold text-slate-900 leading-tight">Interactive Analyst</p>
-                <p className="text-[10px] text-green-500 font-bold uppercase tracking-widest mt-1">Active Intelligence</p>
+                <p style={{ fontWeight: 800, color: 'var(--clr-text)', marginBottom: '2px' }}>Interactive Analyst</p>
+                <p style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#22c55e' }}>Active Intelligence</p>
               </div>
             </div>
           </div>
           
-          <div className="flex-1 bg-white border-x border-slate-200 overflow-y-auto p-8 space-y-6">
+          <div className="card" style={{ flex: 1, borderRadius: 0, borderTop: 'none', borderBottom: 'none', overflowY: 'auto', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {messages.map((m, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: m.role === 'user' ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className={clsx(
-                  "max-w-[90%] p-5 rounded-[24px] text-sm leading-relaxed font-medium",
-                  m.role === 'user' 
-                    ? "ml-auto bg-blue-600 text-white shadow-xl shadow-blue-200 rounded-tr-none" 
-                    : "mr-auto bg-slate-100 text-slate-800 rounded-tl-none"
-                )}
+                style={{
+                  maxWidth: '85%',
+                  padding: '16px 20px',
+                  borderRadius: '16px',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  lineHeight: 1.5,
+                  alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start',
+                  background: m.role === 'user' ? 'var(--clr-accent)' : 'var(--clr-bg-soft)',
+                  color: m.role === 'user' ? '#fff' : 'var(--clr-text)',
+                  borderTopRightRadius: m.role === 'user' ? '2px' : '16px',
+                  borderTopLeftRadius: m.role === 'user' ? '16px' : '2px',
+                  boxShadow: m.role === 'user' ? '0 10px 25px rgba(37, 99, 235, 0.2)' : 'none'
+                }}
               >
                 {m.content}
               </motion.div>
             ))}
           </div>
 
-          <div className="bg-white rounded-b-[32px] border-x border-b border-slate-200 p-8 shadow-sm">
-            <div className="relative">
-              <Input 
+          <div className="card" style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, borderTop: 'none', padding: '24px' }}>
+            <div className="auth-input-wrap">
+              <input 
                 placeholder="Ask deep dive questions..." 
-                className="pr-14 bg-slate-50 border-none h-16 rounded-2xl shadow-inner font-bold text-xs"
+                className="auth-input"
+                style={{ height: '56px', paddingRight: '60px', borderRadius: '12px' }}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               />
               <button 
                 onClick={handleSend}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center hover:bg-slate-800 transition-all active:scale-90"
+                className="btn-primary"
+                style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', width: '40px', height: '40px', padding: 0, borderRadius: '10px' }}
               >
-                <Send className="w-4 h-4" />
+                <Send size={16} />
               </button>
             </div>
-            <p className="mt-4 text-[9px] text-center text-slate-400 font-bold uppercase tracking-[0.2em]">
+            <p style={{ marginTop: '16px', fontSize: '0.65rem', textAlign: 'center', color: 'var(--clr-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
               Verified RAG Intelligence Engine
             </p>
           </div>

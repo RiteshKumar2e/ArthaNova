@@ -1,0 +1,258 @@
+/* ============================================================
+   ArthaNova — Profile & Account Management
+   Pure CSS — Premium Professional Aesthetic
+   ============================================================ */
+
+/* ── Profile Header ─────────────────────────────────────── */
+.profile-hero {
+  background: var(--clr-white);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-2xl);
+  padding: 40px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-hero__bg {
+  position: absolute;
+  top: 0; right: 0;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+  margin-right: -100px;
+  margin-top: -100px;
+  z-index: 0;
+}
+
+.profile-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .profile-hero__content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.profile-avatar-wrap {
+  position: relative;
+}
+
+.profile-avatar {
+  width: 128px;
+  height: 128px;
+  background: var(--clr-text);
+  border-radius: var(--r-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  box-shadow: var(--shadow-xl);
+}
+
+.profile-avatar-edit {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 40px;
+  height: 40px;
+  background: var(--clr-accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.profile-avatar-edit:hover {
+  transform: scale(1.1);
+  background: var(--clr-accent-dark);
+}
+
+.profile-info h1 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.profile-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--clr-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.profile-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Intelligence Stats ─────────────────────────────────── */
+.intelligence-profile {
+  background: var(--clr-text);
+  color: #fff;
+  border-radius: var(--r-2xl);
+  padding: 32px;
+  box-shadow: var(--shadow-xl);
+}
+
+.intelligence-profile h3 {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #60a5fa;
+  margin-bottom: 24px;
+}
+
+.intel-stat-group {
+  margin-bottom: 20px;
+}
+
+.intel-stat-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.intel-progress-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.intel-progress-fill {
+  height: 100%;
+  background: var(--clr-accent);
+  border-radius: 99px;
+}
+
+.intel-counters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 32px;
+  text-align: center;
+}
+
+.intel-counter-val {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.intel-counter-lbl {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* ── Activity & Settings Grid ─────────────────────────── */
+.profile-grid-main {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 32px;
+}
+
+@media (max-width: 1024px) {
+  .profile-grid-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.setting-card {
+  padding: 32px;
+  background: #fff;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.setting-card:hover {
+  border-color: var(--clr-accent);
+  box-shadow: var(--shadow-md);
+}
+
+.setting-card-icon {
+  margin-bottom: 20px;
+  color: var(--clr-muted);
+}
+
+.setting-card h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.setting-card p {
+  font-size: 0.8125rem;
+  color: var(--clr-muted);
+  line-height: 1.5;
+}
+
+/* ── Subscription View ──────────────────────────────────── */
+.subscription-hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.pricing-card {
+  background: #fff;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--r-2xl);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s;
+}
+
+.pricing-card--featured {
+  border-color: var(--clr-accent);
+  background: var(--clr-bg-soft);
+  transform: scale(1.03);
+  box-shadow: var(--shadow-xl);
+}
+
+.price-tag {
+  font-size: 3rem;
+  font-weight: 900;
+  font-family: var(--font-display);
+  margin: 16px 0;
+}
+
+.price-tag span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--clr-muted);
+}

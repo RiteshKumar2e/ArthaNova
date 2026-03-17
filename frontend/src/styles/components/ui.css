@@ -1,28 +1,174 @@
-/* UI Components */
+/* ============================================================
+   ArthaNova — UI Components Design System
+   Handcrafted Pure CSS — Editorial focus
+   ============================================================ */
+
+/* ── Buttons ────────────────────────────────────────────── */
 .btn {
-  @apply inline-flex items-center justify-center font-bold transition-all disabled:opacity-50 disabled:pointer-events-none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+  gap: 8px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.btn-sm { @apply px-4 py-2 text-xs rounded-xl; }
-.btn-md { @apply px-6 py-3 text-sm rounded-2xl; }
-.btn-lg { @apply px-8 py-4 text-base rounded-2xl; }
+.btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(1);
+}
 
-.btn-ghost { @apply bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-900 border-none; }
-.btn-outline { @apply bg-transparent border-2 border-slate-200 text-slate-600 hover:border-slate-900 hover:text-slate-900; }
+/* Button Sizes */
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  border-radius: var(--r-sm);
+}
 
+.btn-md {
+  padding: 12px 24px;
+  font-size: 0.875rem;
+  border-radius: var(--r-md);
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 1rem;
+  border-radius: var(--r-lg);
+}
+
+/* Button Variants */
+.btn-primary {
+  background: var(--clr-text);
+  color: var(--clr-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: var(--clr-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.btn-secondary {
+  background: var(--clr-accent-lt);
+  color: var(--clr-accent);
+}
+
+.btn-secondary:hover {
+  background: #dbeafe;
+  color: var(--clr-accent-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--clr-border);
+  color: var(--clr-muted);
+}
+
+.btn-outline:hover {
+  background: var(--clr-bg-white);
+  border-color: var(--clr-text);
+  color: var(--clr-text);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--clr-muted);
+}
+
+.btn-ghost:hover {
+  background: var(--clr-bg-soft);
+  color: var(--clr-text);
+}
+
+/* ── Form Inputs ─────────────────────────────────────────── */
 .input-group {
-  @apply relative w-full;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.input-icon {
-  @apply absolute left-4 top-1/2 -translate-y-1/2 text-slate-400;
+.input-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clr-muted);
+  margin-left: 2px;
 }
 
-/* Specific Interactive Components */
-.command-palette-overlay {
-  @apply fixed inset-0 z-[100] flex items-start justify-center pt-24 px-4 bg-slate-900/40 backdrop-blur-sm;
+.input-field {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--clr-white);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--r-md);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  color: var(--clr-text);
+  transition: all 0.2s ease;
+  outline: none;
 }
 
-.command-palette-content {
-  @apply w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200;
+.input-field:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 4px var(--clr-accent-lt);
+  background: #fff;
+}
+
+.input-with-icon {
+  padding-left: 44px;
+}
+
+.input-icon-wrap {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Badges ─────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-blue    { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
+.badge-green   { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+.badge-yellow  { background: #fffbeb; color: #a16207; border: 1px solid #fef3c7; }
+.badge-red     { background: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card {
+  background: var(--clr-white);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--clr-accent-lt);
 }

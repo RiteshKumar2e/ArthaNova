@@ -1,19 +1,118 @@
-.stats-grid {
-  @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+/* ============================================================
+   ArthaNova — Dashboard Content & Widgets
+   Pure CSS — Premium Business Dashboard
+   ============================================================ */
+
+/* ── Dashboard Header ───────────────────────────────────── */
+.dash-welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
 }
 
-.stat-card {
-  @apply bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all;
+.dash-welcome__text h1 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  margin-bottom: 8px;
 }
 
-.news-card {
-  @apply bg-white p-6 rounded-3xl border border-slate-200 hover:border-blue-200 transition-all;
+.dash-welcome__text p {
+  font-size: 1rem;
+  color: var(--clr-muted);
+  font-weight: 500;
 }
 
-.profile-header {
-  @apply flex items-center space-x-6 mb-10;
+/* ── Intelligence Grid ──────────────────────────────────── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
 }
 
-.settings-section {
-  @apply bg-white rounded-3xl border border-slate-200 p-8 mb-6;
+/* ── Recent Activity ────────────────────────────────────── */
+.activity-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--clr-bg-soft);
+  transition: background 0.2s;
+}
+
+.activity-item:hover {
+  background: var(--clr-bg-soft);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-accent-lt);
+  color: var(--clr-accent);
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-info h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.activity-info p {
+  font-size: 0.75rem;
+  color: var(--clr-muted);
+}
+
+/* ── Quick Tools ────────────────────────────────────────── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tool-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px;
+  background: #fff;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.tool-btn:hover {
+  border-color: var(--clr-accent);
+  background: var(--clr-accent-lt);
+  transform: translateY(-2px);
+}
+
+.tool-btn span {
+  font-size: 0.758rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+@media (max-width: 1024px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
 }

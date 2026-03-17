@@ -5,7 +5,12 @@ import DashboardLayout from '../../layouts/DashboardLayout';
 import Button from '../../components/ui/Button';
 import useNewsStore from '../../store/newsStore';
 import { Link } from 'react-router-dom';
-import { clsx } from 'clsx';
+
+const STATS = [
+  { label: 'Intelligence Score', value: '842', change: '+12%', icon: Zap, color: '#eab308', bg: '#fefce8' },
+  { label: 'Active Story Arcs', value: '14', change: '+2', icon: TrendingUp, color: '#3b82f6', bg: '#eff6ff' },
+  { label: 'Network Reach', value: '1.2k', change: '+142', icon: Users, color: '#22c55e', bg: '#f0fdf4' },
+];
 
 export default function DashboardPage() {
   const { feed, fetchFeed } = useNewsStore();
@@ -14,154 +19,133 @@ export default function DashboardPage() {
     fetchFeed();
   }, [fetchFeed]);
 
-  const stats = [
-    { label: 'Intelligence Score', value: '842', change: '+12%', icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-50' },
-    { label: 'Active Story Arcs', value: '14', change: '+2', icon: TrendingUp, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { label: 'Network Reach', value: '1.2k', change: '+142', icon: Users, color: 'text-green-500', bg: 'bg-green-50' },
-  ];
-
   return (
     <DashboardLayout>
-      <div className="space-y-10">
-        {/* Welcome Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold font-outfit text-slate-900 leading-tight">Welcome back, Anmol</h1>
-            <p className="text-slate-500 font-medium">Here's your intelligence summary for March 17, 2026.</p>
-          </div>
-          <div className="flex items-center space-x-3">
-             <Button variant="outline" size="sm" className="hidden sm:flex">
-                <Bell className="w-4 h-4 mr-2" />
-                Notifications
+      <div className="dash-welcome">
+        <div className="dash-welcome__text">
+          <h1>Welcome back, Anmol</h1>
+          <p>Here's your intelligence summary for March 17, 2026.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '12px' }}>
+           <Button variant="outline" size="sm" className="hidden-mobile">
+              <Bell size={16} />
+              Notifications
+           </Button>
+           <Link to="/briefings">
+             <Button size="sm">
+                <Zap size={16} fill="currentColor" />
+                Daily Briefing
              </Button>
-             <Link to="/briefings">
-               <Button size="sm">
-                  <Zap className="w-4 h-4 mr-2" />
-                  Daily Briefing
-               </Button>
-             </Link>
-          </div>
+           </Link>
         </div>
+      </div>
 
-        {/* Stats Grid */}
-        <div className="stats-grid">
-          {stats.map((stat, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="stat-card"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className={clsx("p-3 rounded-2xl", stat.bg)}>
-                  <stat.icon className={clsx("w-6 h-6", stat.color)} />
-                </div>
-                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg flex items-center">
-                  <ArrowUpRight className="w-3 h-3 mr-1" />
-                  {stat.change}
-                </span>
+      <div className="stats-grid" style={{ marginBottom: '40px' }}>
+        {STATS.map((stat, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.1 }}
+            className="stat-card"
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+              <div style={{ background: stat.bg, color: stat.color, padding: '10px', borderRadius: '12px', display: 'flex' }}>
+                <stat.icon size={24} />
               </div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-              <p className="text-3xl font-bold text-slate-900 font-outfit">{stat.value}</p>
-            </motion.div>
-          ))}
-        </div>
+              <span className="badge badge-green">
+                <ArrowUpRight size={12} style={{ marginRight: '4px' }} />
+                {stat.change}
+              </span>
+            </div>
+            <p className="intel-counter-lbl">{stat.label}</p>
+            <p className="intel-counter-val" style={{ textAlign: 'left', fontSize: '2rem' }}>{stat.value}</p>
+          </motion.div>
+        ))}
+      </div>
 
-        {/* Main Dashboard Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Priority Feed */}
-          <div className="lg:col-span-8 space-y-6">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-bold text-slate-900 font-outfit">Priority Intelligence</h2>
-              <Link to="/feed" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center group uppercase tracking-widest">
-                Deep Feed <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+      <div className="dash-grid">
+        {/* Priority Feed */}
+        <section>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <h2 className="dash-section-title" style={{ marginBottom: 0 }}>Priority Intelligence</h2>
+            <Link to="/feed" className="auth-forgot-link" style={{ fontSize: '0.65rem' }}>
+              Deep Feed <ChevronRight size={12} />
+            </Link>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '40px' }}>
+            {feed.slice(0, 3).map((item) => (
+              <Link key={item.id} to={`/analysis/${item.id}`} className="intelligence-card">
+                <div className="intelligence-card__body" style={{ padding: '24px' }}>
+                  <div className="intelligence-card__meta">
+                    <span className="badge" style={{ background: '#f1f5f9', color: '#64748b' }}>{item.category}</span>
+                    <span className="badge badge-blue">8.4 Impact</span>
+                  </div>
+                  <h3 className="intelligence-card__title" style={{ fontSize: '1.25rem' }}>{item.title}</h3>
+                  <p className="intelligence-card__summary" style={{ fontSize: '0.875rem', maxW: '100%' }}>{item.summary}</p>
+                </div>
               </Link>
-            </div>
-            
-            <div className="space-y-4">
-              {feed.slice(0, 3).map((item) => (
-                <Link key={item.id} to={`/analysis/${item.id}`} className="block">
-                  <div className="news-card group">
-                    <div className="flex justify-between items-start mb-3">
-                      <span className="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider rounded-lg">
-                        {item.category}
-                      </span>
-                      <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">8.4 Impact</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors font-outfit">{item.title}</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 font-medium">{item.summary}</p>
-                  </div>
+            ))}
+          </div>
+
+          {/* AI Studio Hero Widget */}
+          <div className="briefing-hero" style={{ padding: '40px', background: 'var(--clr-accent)', backgroundImage: 'linear-gradient(135deg, #1e40af, #2563eb)' }}>
+             <div style={{ maxWidth: '400px', position: 'relative', zIndex: 10 }}>
+                <h3 className="briefing-title" style={{ fontSize: '2rem', marginBottom: '16px' }}>AI Video Studio</h3>
+                <p style={{ color: '#dbeafe', fontSize: '0.875rem', marginBottom: '24px', lineHeight: 1.6 }}>
+                   Transform narratives into high-impact media briefings in seconds.
+                </p>
+                <Link to="/studio">
+                   <Button style={{ background: '#fff', color: 'var(--clr-accent)' }}>
+                      <Play size={16} fill="currentColor" />
+                      Create New Video
+                   </Button>
                 </Link>
-              ))}
-            </div>
+             </div>
+             <BarChart3 size={120} style={{ position: 'absolute', right: '40px', bottom: '-20px', opacity: 0.1, color: '#fff' }} />
+          </div>
+        </section>
 
-            {/* AI Studio Quick Access */}
-            <div className="bg-slate-900 rounded-[40px] p-10 text-white relative overflow-hidden shadow-2xl">
-               <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/20 blur-[100px] -mr-40 -mt-40" />
-               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-                  <div className="max-w-md">
-                     <h3 className="text-3xl font-bold font-outfit mb-4">AI Video Studio</h3>
-                     <p className="text-slate-400 text-sm leading-relaxed mb-8 font-medium">
-                        Automatically transform your top business stories into engaging short-form videos for LinkedIn and Twitter.
-                     </p>
-                     <Link to="/studio">
-                        <Button className="bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-900/40">
-                           <Play className="w-4 h-4 mr-2 fill-white" />
-                           Create New Video
-                        </Button>
-                     </Link>
-                  </div>
-                  <div className="w-full md:w-64 aspect-video bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center group cursor-pointer">
-                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Play className="w-6 h-6 text-white fill-white" />
-                     </div>
-                  </div>
-               </div>
-            </div>
+        {/* Sidebar Widgets */}
+        <aside style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div className="card">
+             <h3 className="dash-section-title" style={{ display: 'flex', alignItems: 'center', fontSize: '0.9rem' }}>
+                <Target size={18} style={{ marginRight: '10px', color: 'var(--clr-accent)' }} />
+                Investor Focus
+             </h3>
+             <div style={{ marginTop: '20px' }}>
+                <div className="intel-stat-group" style={{ marginBottom: '24px' }}>
+                   <div className="intel-stat-header">
+                      <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8' }}>Narrative Strength</span>
+                      <span style={{ color: 'var(--clr-accent)' }}>84%</span>
+                   </div>
+                   <div className="intel-progress-bar">
+                      <div className="intel-progress-fill" style={{ width: '84%' }} />
+                   </div>
+                </div>
+                
+                <div style={{ paddingTop: '20px', borderTop: '1px solid var(--clr-bg-soft)' }}>
+                   <p style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#cbd5e1', marginBottom: '12px' }}>Hot Commodities</p>
+                   <div className="entity-list">
+                      {['AI Chips', 'Sovereign Cloud', 'Neo-Banking', 'Green Steel'].map(tag => (
+                         <span key={tag} className="entity-pill" style={{ fontSize: '0.65rem' }}>{tag}</span>
+                      ))}
+                   </div>
+                </div>
+             </div>
           </div>
 
-          {/* Persona Insights Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white rounded-[32px] border border-slate-200 p-8 shadow-sm">
-               <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center font-outfit">
-                  <Target className="w-5 h-5 mr-3 text-blue-600" />
-                  Investor Focus
-               </h3>
-               <div className="space-y-6">
-                  <div>
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Narrative Strength</p>
-                     <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-blue-600 w-[84%]" />
-                     </div>
-                  </div>
-                  <div className="pt-6 border-t border-slate-50">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Hot Commodities</p>
-                     <div className="flex flex-wrap gap-2">
-                        {['AI Chips', 'Sovereign Cloud', 'Neo-Banking', 'Green Steel'].map(tag => (
-                           <span key={tag} className="px-3 py-1 bg-slate-50 text-slate-600 rounded-xl text-[10px] font-bold border border-slate-100 uppercase tracking-widest">
-                             {tag}
-                           </span>
-                        ))}
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            <div className="bg-blue-600 rounded-[32px] p-8 text-white relative overflow-hidden group">
-               <div className="absolute bottom-0 right-0 p-4 opacity-20 group-hover:scale-110 transition-transform">
-                  <BarChart3 className="w-24 h-24" />
-               </div>
-               <h3 className="text-lg font-bold mb-2 font-outfit">Predictive Logic</h3>
-               <p className="text-blue-100 text-xs leading-relaxed mb-6 font-medium">
-                  Based on your current portfolio, our AI predicts a secondary ripple effect in the European Fintech sector by early Q3.
-               </p>
-               <Button variant="ghost" size="sm" className="text-white border-white/20 hover:bg-white/10 w-full font-bold uppercase tracking-widest text-[10px]">
-                  View Detail Map
-               </Button>
-            </div>
+          <div className="intelligence-profile" style={{ padding: '24px', borderRadius: 'var(--r-xl)' }}>
+             <h3 style={{ marginBottom: '12px' }}>Predictive Logic</h3>
+             <p style={{ fontSize: '0.75rem', color: '#93c5fd', lineHeight: 1.6, marginBottom: '20px' }}>
+                Based on your portfolio, our AI predicts a secondary ripple effect in the European Fintech sector by early Q3.
+             </p>
+             <Button variant="outline" size="sm" style={{ width: '100%', borderColor: 'rgba(255,255,255,0.2)', color: '#fff' }}>
+                View Detail Map
+             </Button>
           </div>
-        </div>
+        </aside>
       </div>
     </DashboardLayout>
   );

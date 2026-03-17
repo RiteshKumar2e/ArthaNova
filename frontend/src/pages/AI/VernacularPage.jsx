@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Languages, Zap, Lightbulb, MessageSquare, Copy, Check, Info } from 'lucide-react';
-import { clsx } from "clsx";
+import { Globe, Languages, Zap, Lightbulb, MessageSquare, Copy, Check, Info, ChevronRight } from 'lucide-react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import Button from '../../components/ui/Button';
 
-const languages = [
+const LANGUAGES = [
   { id: 'hi', label: 'Hindi', native: 'हिन्दी' },
   { id: 'en', label: 'English', native: 'English' },
   { id: 'fr', label: 'French', native: 'Français' },
@@ -24,69 +23,69 @@ export default function VernacularPage() {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-        <div>
-          <h1 className="text-3xl font-bold font-outfit text-slate-900 leading-tight">Vernacular Intelligence Console</h1>
-          <p className="text-slate-500 font-medium">Context-aware multi-modal translation and regional market insights.</p>
+      <div className="dash-welcome" style={{ marginBottom: '40px' }}>
+        <div className="dash-welcome__text">
+          <h1>Vernacular Intelligence</h1>
+          <p>Context-aware multi-modal translation and regional market insights.</p>
         </div>
-        <div className="flex items-center space-x-3">
-          <div className="px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-widest border border-blue-100 flex items-center">
-             <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2 animate-pulse" />
-             Live Translation Node
-          </div>
+        <div className="badge badge-blue" style={{ height: 'fit-content', padding: '10px 20px', borderRadius: '12px' }}>
+           <div style={{ width: '8px', height: '8px', background: 'var(--clr-accent)', borderRadius: '50%', marginRight: '10px', animation: 'pulse 2s infinite' }} />
+           Live Translation Node
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="analysis-layout">
         {/* Translation Console */}
-        <div className="lg:col-span-8 space-y-8">
-          <div className="bg-white rounded-[40px] border border-slate-100 overflow-hidden shadow-sm relative">
-            <div className="bg-slate-50/50 px-10 py-6 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center space-x-8">
-                 <div className="flex items-center space-x-3">
-                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Source</span>
-                   <div className="px-3 py-1 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-900 shadow-sm">
+        <div className="lg:col-span-12 xl:col-span-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div style={{ background: 'var(--clr-bg-soft)', padding: '24px 32px', borderBottom: '1px solid var(--clr-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                   <span className="intel-counter-lbl" style={{ margin: 0 }}>Source</span>
+                   <div className="badge" style={{ background: '#fff', border: '1px solid var(--clr-border)', color: 'var(--clr-text)' }}>
                       English (Global)
                    </div>
                  </div>
-                 <Languages className="w-4 h-4 text-slate-300" />
-                 <div className="flex items-center space-x-3">
-                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Target</span>
-                   <div className="relative group">
+                 <Languages size={18} style={{ color: '#cbd5e1' }} />
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                   <span className="intel-counter-lbl" style={{ margin: 0 }}>Target</span>
+                   <div style={{ position: 'relative' }}>
                       <select 
                         value={targetLang}
                         onChange={(e) => setTargetLang(e.target.value)}
-                        className="bg-white border border-slate-200 px-4 py-1 rounded-xl text-xs font-bold text-blue-600 appearance-none outline-none cursor-pointer pr-10 shadow-sm hover:border-blue-400 transition-all font-outfit"
+                        className="auth-input"
+                        style={{ height: '36px', padding: '0 32px 0 16px', borderRadius: '10px', fontSize: '0.75rem', background: '#fff' }}
                       >
-                        {languages.map(l => <option key={l.id} value={l.id}>{l.label} ({l.native})</option>)}
+                        {LANGUAGES.map(l => <option key={l.id} value={l.id}>{l.label} ({l.native})</option>)}
                       </select>
-                      <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 rotate-90 pointer-events-none" />
+                      <ChevronRight size={14} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%) rotate(90deg)', pointerEvents: 'none', color: 'var(--clr-muted)' }} />
                    </div>
                  </div>
               </div>
               <button 
                 onClick={handleCopy} 
-                className="p-3 bg-white border border-slate-200 text-slate-400 hover:text-slate-900 rounded-2xl transition-all shadow-sm group"
+                className="btn-outline"
+                style={{ width: '40px', height: '40px', padding: 0, borderRadius: '12px', background: '#fff' }}
               >
-                {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 group-hover:scale-110" />}
+                {copied ? <Check size={18} style={{ color: 'var(--clr-success)' }} /> : <Copy size={18} />}
               </button>
             </div>
 
-            <div className="p-10 grid md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x divide-slate-100">
-              <div className="space-y-6">
-                <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-widest px-1">Original Intelligence</h4>
-                <p className="text-slate-900 font-medium leading-relaxed text-lg font-outfit">
+            <div style={{ padding: '40px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '48px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <h4 className="intel-counter-lbl" style={{ textAlign: 'left' }}>Original Intelligence</h4>
+                <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--clr-text)', lineHeight: 1.5 }}>
                   "The rapid deployment of AI-native platforms is transforming the fiduciary landscape for retail investors in Southeast Asia."
                 </p>
               </div>
-              <div className="md:pl-12 space-y-6 pt-10 md:pt-0">
-                <h4 className="text-[10px] font-bold uppercase text-blue-400 tracking-widest px-1">AI Regional Synthesis</h4>
-                <p className="text-slate-900 font-medium leading-relaxed text-lg font-outfit">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderLeft: '1px solid var(--clr-bg-soft)', paddingLeft: '40px' }}>
+                <h4 className="intel-counter-lbl" style={{ textAlign: 'left', color: 'var(--clr-accent)' }}>AI Regional Synthesis</h4>
+                <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--clr-text)', lineHeight: 1.5 }}>
                   "एआई-नेटिव प्लेटफार्मों की तेजी से तैनाती दक्षिण पूर्व एशिया में खुदरा निवेशकों के लिए प्रत्ययी परिदृश्य (fiduciary landscape) को बदल रही है।"
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                    {['Formal', 'Financial', 'High Sentiment'].map(tag => (
-                      <span key={tag} className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-lg text-[8px] font-bold uppercase tracking-widest border border-blue-100">
+                      <span key={tag} className="badge badge-blue" style={{ fontSize: '0.65rem' }}>
                          {tag}
                       </span>
                    ))}
@@ -98,24 +97,25 @@ export default function VernacularPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-blue-600 rounded-[40px] p-10 text-white relative overflow-hidden shadow-2xl"
+            className="intelligence-profile"
+            style={{ padding: '48px', position: 'relative', overflow: 'hidden' }}
           >
-            <div className="absolute top-0 right-0 p-10 opacity-10">
-               <Globe className="w-48 h-48" />
+            <div style={{ position: 'absolute', top: 0, right: 0, padding: '40px', opacity: 0.05 }}>
+               <Globe size={200} />
             </div>
-            <div className="relative z-10 flex flex-col md:flex-row items-start gap-10">
-               <div className="w-16 h-16 bg-white/10 rounded-[24px] flex items-center justify-center shrink-0 border border-white/20 shadow-xl">
-                 <Lightbulb className="w-8 h-8 text-blue-200" />
+            <div style={{ position: 'relative', zIndex: 10, display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
+               <div style={{ width: '64px', height: '64px', background: 'rgba(255,255,255,0.1)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '1px solid rgba(255,255,255,0.2)' }}>
+                 <Lightbulb size={32} style={{ color: '#93c5fd' }} />
                </div>
                <div>
-                 <h3 className="text-2xl font-bold font-outfit mb-4">Contextual Nuance AI</h3>
-                 <div className="bg-white/10 backdrop-blur-xl rounded-[32px] p-8 border border-white/20 shadow-inner">
-                   <p className="text-lg leading-relaxed mb-6 font-medium">
-                     The term <span className="font-bold underline decoration-blue-300 decoration-2 underline-offset-4 cursor-help">"fiduciary landscape"</span> has been synthesized with special emphasis on its legal and trust connotations in the Indian market context, where <span className="text-blue-200 italic font-bold">"Vishvaas" (Trust)</span> is the primary catalyst for financial growth.
+                 <h3 style={{ fontSize: '1.5rem', marginBottom: '16px' }}>Contextual Nuance AI</h3>
+                 <div style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)', borderRadius: '24px', padding: '32px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                   <p style={{ fontSize: '1.125rem', lineHeight: 1.6, marginBottom: '24px', fontWeight: 500 }}>
+                     The term <span style={{ textDecoration: 'underline', textDecorationColor: '#60a5fa', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}>"fiduciary landscape"</span> has been synthesized with special emphasis on its legal and trust connotations in the Indian market context, where <span style={{ color: '#93c5fd', fontStyle: 'italic', fontWeight: 800 }}>"Vishvaas" (Trust)</span> is the primary catalyst for financial growth.
                    </p>
-                   <div className="flex items-center space-x-3 text-blue-100 text-[10px] font-bold uppercase tracking-[0.2em] bg-white/5 px-4 py-2 rounded-full w-fit">
-                     <Info className="w-3 h-3" />
-                     <span>Logical Context: Indian BFSI Regulation</span>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.05)', padding: '8px 16px', borderRadius: '99px', width: 'fit-content' }}>
+                     <Info size={14} style={{ color: '#93c5fd' }} />
+                     <span style={{ fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Logical Context: Indian BFSI Regulation</span>
                    </div>
                  </div>
                </div>
@@ -124,52 +124,49 @@ export default function VernacularPage() {
         </div>
 
         {/* Regional Insights Sidebar */}
-        <div className="lg:col-span-4 space-y-8">
-           <div className="bg-white rounded-[40px] border border-slate-100 p-10 shadow-sm">
-             <h3 className="text-lg font-bold text-slate-900 mb-8 flex items-center font-outfit uppercase tracking-widest text-xs">
-               <Zap className="w-5 h-5 mr-3 text-yellow-500" fill="currentColor" />
+        <aside style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+           <div className="card" style={{ padding: '32px' }}>
+             <h3 className="widget-title" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+               <Zap size={18} style={{ color: 'var(--clr-warning)' }} fill="currentColor" />
                Regional Sentiment
              </h3>
-             <div className="space-y-8">
-               <div className="p-6 bg-slate-50 rounded-[32px] border border-slate-100 group hover:border-blue-400 transition-all cursor-pointer">
-                  <div className="flex justify-between items-center mb-4">
-                     <p className="text-sm font-bold text-slate-900 font-outfit">North India Market</p>
-                     <span className="text-[10px] font-bold text-blue-600 bg-white px-2 py-0.5 rounded-lg shadow-sm">Critical</span>
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+               <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                     <p style={{ fontSize: '0.875rem', fontWeight: 800 }}>North India Market</p>
+                     <span className="badge badge-blue" style={{ fontSize: '0.6rem' }}>Critical</span>
                   </div>
-                  <p className="text-[11px] text-slate-500 leading-relaxed font-medium mb-4">High relevance in tech corridors like Gurgaon & Noida. Focus on policy shifts.</p>
-                  <div className="h-1.5 w-full bg-white rounded-full overflow-hidden shadow-inner">
-                     <div className="h-full bg-blue-500 w-[85%] rounded-full shadow-lg shadow-blue-500/50" />
+                  <p style={{ fontSize: '0.8125rem', color: 'var(--clr-muted)', lineHeight: 1.5, marginBottom: '16px' }}>High relevance in tech corridors like Gurgaon & Noida. Focus on policy shifts.</p>
+                  <div className="intel-progress-bar">
+                     <div className="intel-progress-fill" style={{ width: '85%' }} />
                   </div>
                </div>
-               <div className="p-6 bg-slate-50 rounded-[32px] border border-slate-100 group hover:border-blue-400 transition-all cursor-pointer">
-                  <div className="flex justify-between items-center mb-4">
-                     <p className="text-sm font-bold text-slate-900 font-outfit">South India Hubs</p>
-                     <span className="text-[10px] font-bold text-slate-400 bg-white px-2 py-0.5 rounded-lg shadow-sm">Stable</span>
+               <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                     <p style={{ fontSize: '0.875rem', fontWeight: 800 }}>South India Hubs</p>
+                     <span className="badge" style={{ fontSize: '0.6rem', background: 'var(--clr-bg-soft)' }}>Stable</span>
                   </div>
-                  <p className="text-[11px] text-slate-500 leading-relaxed font-medium mb-4">Deep correlation with SaaS and Enterprise software firms in Bangalore.</p>
-                  <div className="h-1.5 w-full bg-white rounded-full overflow-hidden shadow-inner">
-                     <div className="h-full bg-indigo-500 w-[72%] rounded-full shadow-lg shadow-indigo-500/50" />
+                  <p style={{ fontSize: '0.8125rem', color: 'var(--clr-muted)', lineHeight: 1.5, marginBottom: '16px' }}>Deep correlation with SaaS and Enterprise software firms in Bangalore.</p>
+                  <div className="intel-progress-bar">
+                     <div className="intel-progress-fill" style={{ width: '72%', background: '#6366f1' }} />
                   </div>
                </div>
              </div>
            </div>
 
-           <div className="bg-slate-900 rounded-[40px] p-10 text-white relative overflow-hidden group shadow-2xl">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] -mr-32 -mt-32" />
-              <div className="relative z-10 text-center">
-                 <div className="w-20 h-20 bg-white/10 rounded-[32px] flex items-center justify-center mx-auto mb-8 group-hover:rotate-12 transition-transform shadow-xl">
-                    <MessageSquare className="w-10 h-10 text-blue-400" />
-                 </div>
-                 <h4 className="text-xl font-bold mb-4 font-outfit">Dialect Consultation</h4>
-                 <p className="text-slate-400 text-xs mb-8 leading-relaxed font-medium">
-                    Need a synthesis in a specific regional dialect? Consult our AI specialized in over 140 linguistic market nuances.
-                 </p>
-                 <Button className="w-full bg-blue-600 hover:bg-blue-500 border-none h-12 rounded-xl text-[10px] font-bold uppercase tracking-widest">
-                    Consult Specialist
-                 </Button>
+           <div className="intelligence-profile" style={{ textAlign: 'center', padding: '40px' }}>
+              <div style={{ width: '80px', height: '80px', background: 'rgba(255,255,255,0.1)', borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                 <MessageSquare size={40} style={{ color: '#60a5fa' }} />
               </div>
+              <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: '12px' }}>Dialect Consultation</h4>
+              <p style={{ fontSize: '0.75rem', color: '#93c5fd', lineHeight: 1.6, marginBottom: '32px' }}>
+                 Need a synthesis in a specific regional dialect? Consult our AI specialized in over 140 linguistic market nuances.
+              </p>
+              <Button style={{ background: '#fff', color: 'var(--clr-text)', width: '100%', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
+                 Consult Specialist
+              </Button>
            </div>
-        </div>
+        </aside>
       </div>
     </DashboardLayout>
   );

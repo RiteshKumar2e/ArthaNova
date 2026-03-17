@@ -3,9 +3,8 @@ import { motion } from 'framer-motion';
 import { Check, Zap, Shield, Crown, Star, ArrowRight } from 'lucide-react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import Button from '../../components/ui/Button';
-import { clsx } from "clsx";
 
-const plans = [
+const PLANS = [
   {
     name: 'Standard',
     type: 'Entry Tier',
@@ -26,6 +25,7 @@ const plans = [
     icon: Zap,
     color: 'blue',
     button: 'Upgrade to Intel',
+    featured: true,
     active: true
   },
   {
@@ -44,91 +44,90 @@ const plans = [
 export default function SubscriptionPage() {
   return (
     <DashboardLayout>
-      <div className="text-center max-w-3xl mx-auto mb-20">
-        <h1 className="text-4xl md:text-5xl font-bold font-outfit text-slate-900 mb-6">Master Your Market Logic</h1>
-        <p className="text-lg text-slate-500 font-medium leading-relaxed">
+      <div className="subscription-hero">
+        <h1 style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '24px' }}>Master Your Market Logic</h1>
+        <p style={{ fontSize: '1.25rem', color: 'var(--clr-muted)', maxWidth: '800px', margin: '0 auto', lineHeight: 1.6 }}>
           Upgrade your intelligence tier to unlock deep narrative tracking, predictive mapping, and automated media generation.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-        {plans.map((plan, idx) => (
+      <div className="pricing-grid">
+        {PLANS.map((plan, idx) => (
           <motion.div
             key={plan.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className={clsx(
-              "premium-card p-10 flex flex-col relative",
-              plan.active ? "border-blue-600 ring-4 ring-blue-500/10 shadow-2xl" : "border-slate-100"
-            )}
+            className={`pricing-card ${plan.featured ? 'pricing-card--featured' : ''}`}
+            style={{ position: 'relative' }}
           >
-            {plan.active && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl">
+            {plan.featured && (
+              <div 
+                className="badge badge-blue" 
+                style={{ position: 'absolute', top: 0, left: '50%', transform: 'translate(-50%, -50%)', padding: '8px 20px', borderRadius: '12px', boxShadow: 'var(--shadow-lg)' }}
+              >
                 Recommended
               </div>
             )}
             
-            <div className="mb-10 text-center">
-              <div className={clsx(
-                "w-16 h-16 rounded-[24px] flex items-center justify-center mx-auto mb-6 shadow-lg",
-                plan.color === 'blue' ? "bg-blue-600 text-white" : 
-                plan.color === 'yellow' ? "bg-yellow-500 text-white" : "bg-slate-100 text-slate-400"
-              )}>
-                <plan.icon className="w-8 h-8" />
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div style={{ 
+                width: '64px', height: '64px', borderRadius: '20px', margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: plan.color === 'blue' ? 'var(--clr-accent)' : plan.color === 'yellow' ? 'var(--clr-warning)' : 'var(--clr-bg-soft)',
+                color: plan.color === 'slate' ? 'var(--clr-muted)' : '#fff',
+                boxShadow: plan.color === 'slate' ? 'none' : '0 10px 20px rgba(0,0,0,0.1)'
+              }}>
+                <plan.icon size={32} />
               </div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">{plan.type}</p>
-              <h3 className="text-3xl font-bold font-outfit text-slate-900 mb-4">{plan.name}</h3>
-              <div className="flex items-baseline justify-center">
-                 <span className="text-4xl font-bold font-outfit text-slate-900">{plan.price}</span>
-                 {plan.price !== 'Free' && <span className="ml-1 text-slate-400 text-sm font-medium">/mo</span>}
+              <p className="intel-counter-lbl" style={{ marginBottom: '8px' }}>{plan.type}</p>
+              <h3 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '16px' }}>{plan.name}</h3>
+              <div className="price-tag">
+                 {plan.price}
+                 {plan.price !== 'Free' && <span>/mo</span>}
               </div>
-              <p className="mt-4 text-sm text-slate-500 font-medium">{plan.description}</p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--clr-muted)', fontWeight: 500 }}>{plan.description}</p>
             </div>
 
-            <div className="space-y-4 mb-10 flex-grow">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '40px', flex: 1 }}>
               {plan.features.map(feature => (
-                 <div key={feature} className="flex items-start space-x-3">
-                    <div className={clsx(
-                      "mt-1 w-4 h-4 rounded-full flex items-center justify-center shrink-0",
-                      plan.color === 'blue' ? "bg-blue-50 text-blue-600" : 
-                      plan.color === 'yellow' ? "bg-yellow-50 text-yellow-600" : "bg-slate-50 text-slate-400"
-                    )}>
-                       <Check className="w-3 h-3" strokeWidth={3} />
+                 <div key={feature} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                    <div style={{ 
+                      width: '18px', height: '18px', borderRadius: '50%', background: plan.color === 'blue' ? 'var(--clr-accent-lt)' : 'var(--clr-bg-soft)',
+                      color: plan.color === 'blue' ? 'var(--clr-accent)' : 'var(--clr-muted)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '2px'
+                    }}>
+                       <Check size={12} strokeWidth={4} />
                     </div>
-                    <span className="text-sm text-slate-600 font-medium">{feature}</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--clr-text)' }}>{feature}</span>
                  </div>
               ))}
             </div>
 
             <Button 
-              className={clsx(
-                "w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all",
-                plan.active ? "bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/40" : 
-                plan.color === 'yellow' ? "bg-yellow-500 hover:bg-yellow-400" : "bg-slate-100 text-slate-900 hover:bg-slate-200"
-              )}
+              variant={plan.featured ? 'primary' : 'secondary'}
+              style={{ width: '100%', height: '56px', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}
             >
               {plan.button}
-              {!plan.active && plan.name !== 'Standard' && <ArrowRight className="w-4 h-4 ml-2" />}
+              {plan.name !== 'Standard' && !plan.active && <ArrowRight size={16} style={{ marginLeft: '8px' }} />}
             </Button>
           </motion.div>
         ))}
       </div>
 
-      <div className="mt-20 premium-card p-10 bg-slate-900 text-white relative overflow-hidden group">
-         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 blur-[120px] -mr-48 -mt-48" />
-         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-            <div className="max-w-2xl">
-               <div className="flex items-center space-x-3 mb-6">
-                  <Shield className="w-6 h-6 text-blue-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Institutional Intelligence</span>
+      <div className="intelligence-profile" style={{ marginTop: '80px', padding: '60px', borderRadius: '48px', position: 'relative', overflow: 'hidden' }}>
+         <div style={{ position: 'absolute', top: 0, right: 0, width: '400px', height: '400px', background: 'rgba(37, 99, 235, 0.1)', filter: 'blur(120px)', marginRight: '-200px', marginTop: '-200px' }} />
+         <div style={{ position: 'relative', zIndex: 10, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '48px' }}>
+            <div style={{ maxWidth: '640px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+                  <Shield size={24} style={{ color: '#60a5fa' }} />
+                  <span className="intel-counter-lbl" style={{ margin: 0, color: '#93c5fd' }}>Institutional Intelligence</span>
                </div>
-               <h3 className="text-3xl font-bold font-outfit mb-4">Enterprise Sovereign Node</h3>
-               <p className="text-slate-400 text-lg leading-relaxed font-medium">
+               <h3 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '20px' }}>Enterprise Sovereign Node</h3>
+               <p style={{ color: '#94a3b8', fontSize: '1.125rem', lineHeight: 1.6, fontWeight: 500 }}>
                   Looking for custom data localization and high-throughput sovereign cloud access for your firm? Our institutional team provides dedicated infrastructure deployment.
                </p>
             </div>
-            <Button className="bg-white text-slate-900 hover:bg-slate-100 border-none h-14 px-10 rounded-2xl font-bold uppercase tracking-widest whitespace-nowrap shadow-xl">
+            <Button style={{ background: '#fff', color: 'var(--clr-text)', height: '64px', padding: '0 40px', borderRadius: '16px', fontSize: '0.875rem', fontWeight: 800, textTransform: 'uppercase' }}>
                Request Custom Demo
             </Button>
          </div>

@@ -1,64 +1,52 @@
+/* ============================================================
+   ArthaNova — Main CSS Entry
+   Pure CSS — Standardized Editorial Styles
+   ============================================================ */
+
+/* 1. Core Design System & Reset */
 @import './styles/main.css';
-@import './styles/layout/layout.css';
-@import './styles/pages/auth.css';
-@import './styles/pages/features.css';
+
+/* 2. Global UI Component Library */
 @import './styles/components/ui.css';
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+/* 3. Global Layout (Sidebar, Topbar, etc.) */
+@import './styles/layout/layout.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* 4. Page Specific Styles */
+@import './styles/pages/auth/auth.css';
+@import './styles/pages/dashboard/dashboard.css';
+@import './styles/pages/news/news.css';
+@import './styles/pages/ai/ai.css';
+@import './styles/pages/profile/profile.css';
 
-:root {
-  --primary: #0F172A;
-  --primary-light: #1E293B;
-  --accent: #3B82F6;
-  --accent-soft: #EFF6FF;
-  --background: #FFFFFF;
-  --surface: #F8FAFC;
-  --border: #E2E8F0;
-  --text-main: #0F172A;
-  --text-muted: #64748B;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --error: #EF4444;
+/* Note: Landing page css is imported directly in LandingPage.jsx */
+
+/* ── Custom Global Overrides ────────────────────────────── */
+
+/* Smooth fade-in for page transitions */
+.page-fade-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
 }
 
-@layer base {
-  body {
-    @apply bg-white text-slate-900 font-['Inter'] antialiased;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-['Outfit'] font-semibold tracking-tight;
-  }
+/* Glass effect utility */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-@layer components {
-  .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
-  }
-  
-  .btn-primary {
-    @apply px-6 py-3 bg-slate-900 text-white rounded-xl font-medium transition-all hover:bg-slate-800 hover:shadow-lg active:scale-95 disabled:opacity-50;
-  }
-  
-  .btn-secondary {
-    @apply px-6 py-3 bg-white border border-slate-200 text-slate-900 rounded-xl font-medium transition-all hover:bg-slate-50 hover:border-slate-300 active:scale-95;
-  }
-
-  .nav-link {
-    @apply text-slate-600 hover:text-slate-900 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full;
-  }
+/* Hide scrollbar for clean dashboard view but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  @apply bg-slate-50;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

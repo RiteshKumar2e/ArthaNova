@@ -5,34 +5,41 @@ import Sidebar from '../components/Sidebar';
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
       {/* Sidebar Component */}
       <Sidebar />
 
       {/* Main Content */}
-      <main className="dashboard-main flex-1 overflow-y-auto">
+      <main className="dashboard-main" style={{ flex: 1, overflowY: 'auto' }}>
         {/* Top Navbar */}
         <header className="navbar-blur">
-          <div className="flex-1 max-w-xl relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input 
-              placeholder="Search intelligence (⌘K)" 
-              className="w-full bg-slate-50 border-none rounded-2xl py-2.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-            />
+          <div style={{ flex: 1, maxWidth: '560px', position: 'relative' }}>
+            <div className="auth-input-wrap">
+              <span className="auth-input-icon"><Search size={16} /></span>
+              <input 
+                placeholder="Search intelligence (⌘K)" 
+                className="auth-input"
+                style={{ height: '40px', borderRadius: '12px', fontSize: '0.8125rem', background: 'var(--clr-bg-soft)', border: 'none' }}
+              />
+            </div>
           </div>
 
-          <div className="flex items-center space-x-6 ml-auto">
-            <button className="p-2.5 bg-slate-50 border border-slate-100 rounded-2xl text-slate-500 hover:text-slate-900 transition-all relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginLeft: 'auto' }}>
+            <button 
+              className="btn-outline" 
+              style={{ width: '40px', height: '40px', padding: 0, borderRadius: '12px', background: 'var(--clr-bg-soft)', border: 'none', position: 'relative' }}
+            >
+              <Bell size={18} />
+              <span style={{ position: 'absolute', top: '10px', right: '10px', width: '8px', height: '8px', background: 'var(--clr-danger)', borderRadius: '50%', border: '2px solid #fff' }} />
             </button>
-            <div className="flex items-center space-x-4 pl-6 border-l border-slate-100 cursor-pointer group">
-              <div className="text-right">
-                <p className="text-sm font-bold text-slate-900 leading-none mb-1">Anmol</p>
-                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Investor</p>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', paddingLeft: '24px', borderLeft: '1px solid var(--clr-border)', cursor: 'pointer' }}>
+              <div style={{ textAlign: 'right', display: 'none', md: 'block' }}>
+                <p style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--clr-text)', marginBottom: '2px' }}>Anmol</p>
+                <p style={{ fontSize: '0.6rem', fontWeight: 800, color: 'var(--clr-accent)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Investor</p>
               </div>
-              <div className="w-11 h-11 bg-slate-100 rounded-2xl flex items-center justify-center border border-slate-200 group-hover:border-blue-400 transition-colors">
-                <User className="w-5 h-5 text-slate-400" />
+              <div style={{ width: '40px', height: '40px', background: 'var(--clr-bg-soft)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--clr-border)' }}>
+                <User size={18} style={{ color: 'var(--clr-muted)' }} />
               </div>
             </div>
           </div>
@@ -40,7 +47,13 @@ export default function DashboardLayout({ children }) {
 
         {/* Dynamic Page Content */}
         <div className="content-container">
-          {children}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {children}
+          </motion.div>
         </div>
       </main>
     </div>

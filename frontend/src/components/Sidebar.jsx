@@ -10,13 +10,11 @@ import {
   Bookmark, 
   Settings, 
   LogOut,
-  LayoutDashboard,
-  Bell
+  LayoutDashboard
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { clsx } from 'clsx';
 
-const menuItems = [
+const MENU_ITEMS = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
   { icon: BarChart3, label: 'Intelligence Feed', path: '/feed' },
   { icon: Zap, label: 'AI Briefings', path: '/briefings' },
@@ -32,64 +30,58 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <div className="w-72 h-screen fixed left-0 top-0 bg-white border-r border-slate-100 flex flex-col z-50">
+    <aside className="sidebar-container">
       {/* Brand */}
-      <div className="p-8">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
-            <Zap className="w-6 h-6 text-blue-400" fill="currentColor" />
+      <div className="sidebar-logo">
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+          <div className="sidebar-logo-icon">
+            <Zap size={20} fill="#60a5fa" />
           </div>
-          <span className="text-2xl font-bold font-outfit tracking-tighter text-slate-900">
-            ArthaNova
-          </span>
+          <span className="sidebar-logo-text">ArthaNova</span>
         </Link>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
-        {menuItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={clsx(
-              "flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all group",
-              location.pathname === item.path 
-                ? "bg-slate-900 text-white shadow-lg shadow-slate-200" 
-                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-            )}
-          >
-            <item.icon className={clsx(
-              "w-5 h-5",
-              location.pathname === item.path ? "text-blue-400" : "text-slate-400 group-hover:text-slate-600"
-            )} />
-            <span className="font-bold text-sm">{item.label}</span>
-            {location.pathname === item.path && (
-              <motion.div 
-                layoutId="active-pill"
-                className="ml-auto w-1.5 h-1.5 bg-blue-400 rounded-full"
-              />
-            )}
-          </Link>
-        ))}
-      </nav>
+      <div style={{ padding: '0 0 20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <p className="sidebar-section-label">Intelligence Console</p>
+        
+        {/* Navigation */}
+        <nav style={{ padding: '0 10px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          {MENU_ITEMS.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
+              >
+                <item.icon size={18} />
+                <span>{item.label}</span>
+                {isActive && (
+                  <motion.div 
+                    layoutId="active-pill"
+                    style={{ marginLeft: 'auto', width: '4px', height: '4px', background: '#60a5fa', borderRadius: '50%', boxShadow: '0 0 8px #60a5fa' }}
+                  />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
       {/* Footer Settings */}
-      <div className="p-4 border-t border-slate-50 space-y-2">
+      <div style={{ padding: '16px 12px', borderTop: '1px solid var(--clr-border)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
         <Link
           to="/settings"
-          className={clsx(
-            "flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all",
-            location.pathname === '/settings' ? "bg-slate-100 text-slate-900" : "text-slate-500 hover:bg-slate-50"
-          )}
+          className={`nav-item ${location.pathname === '/settings' ? 'nav-item-active' : ''}`}
         >
-          <Settings className="w-5 h-5" />
-          <span className="font-bold text-sm">Settings</span>
+          <Settings size={18} />
+          <span>Settings</span>
         </Link>
-        <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-red-500 hover:bg-red-50 transition-all">
-          <LogOut className="w-5 h-5" />
-          <span className="font-bold text-sm">Log Out</span>
+        <button className="nav-item" style={{ color: 'var(--clr-danger)' }}>
+          <LogOut size={18} />
+          <span>Log Out</span>
         </button>
       </div>
-    </div>
+    </aside>
   );
 }

@@ -1,15 +1,155 @@
-.feed-container {
-  @apply space-y-8;
+/* ============================================================
+   ArthaNova — News & Intelligence Views
+   Pure CSS — Premium Editorial Design
+   ============================================================ */
+
+/* ── Intelligence Feed ──────────────────────────────────── */
+.feed-header {
+  margin-bottom: 32px;
 }
 
-.analysis-container {
-  @apply bg-white rounded-3xl border border-slate-200 p-10 shadow-sm overflow-hidden;
+.feed-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.trending-heatmap {
-  @apply grid grid-cols-2 lg:grid-cols-4 gap-4;
+.intelligence-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--clr-white);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
 }
 
-.saved-story-item {
-  @apply bg-white border border-slate-200 rounded-3xl p-6 transition-all hover:border-blue-200;
+.intelligence-card:hover {
+  border-color: var(--clr-accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.intelligence-card__body {
+  padding: 32px;
+}
+
+.intelligence-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.intelligence-card__impact {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--clr-accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  background: var(--clr-accent-lt);
+  border-radius: var(--r-xs);
+}
+
+.intelligence-card__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--clr-text);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.intelligence-card__summary {
+  font-size: 0.9375rem;
+  color: var(--clr-muted);
+  line-height: 1.6;
+  max-width: 80%;
+}
+
+/* ── Deep Analysis Page ────────────────────────────────── */
+.analysis-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+}
+
+.analysis-main {
+  background: var(--clr-white);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-2xl);
+  padding: 48px;
+}
+
+.analysis-header {
+  margin-bottom: 40px;
+}
+
+.analysis-h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.analysis-content {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.analysis-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar-widget {
+  background: var(--clr-bg-soft);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+}
+
+.widget-title {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--clr-muted);
+  margin-bottom: 16px;
+}
+
+/* ── Entity Graph Mock ─────────────────────────────────── */
+.entity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.entity-pill {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  transition: all 0.2s;
+}
+
+.entity-pill:hover {
+  border-color: var(--clr-accent);
+  color: var(--clr-accent);
+}
+
+@media (max-width: 1024px) {
+  .analysis-layout {
+    grid-template-columns: 1fr;
+  }
 }
