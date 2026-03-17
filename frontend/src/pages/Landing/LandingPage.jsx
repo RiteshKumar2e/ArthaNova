@@ -273,10 +273,11 @@ export default function LandingPage() {
                 </ul>
 
                 <button 
-                  className={`lp-price-btn ${plan.featured ? 'lp-price-btn--primary' : 'lp-price-btn--secondary'}`}
+                  className={`lp-price-btn lp-price-btn--${plan.name.toLowerCase()} ${plan.featured ? 'lp-price-btn--primary' : 'lp-price-btn--secondary'}`}
                   onClick={() => navigate('/register')}
                 >
                   {plan.button}
+                  {plan.name !== 'Standard' && <ArrowRight size={16} />}
                 </button>
               </motion.div>
             );
@@ -296,6 +297,7 @@ export default function LandingPage() {
           </div>
           <button className="lp-enterprise__btn" onClick={() => window.location.href = 'mailto:enterprise@arthanova.com'}>
             Request Demo
+            <ArrowRight size={18} />
           </button>
         </motion.div>
       </section>

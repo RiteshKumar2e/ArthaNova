@@ -1170,27 +1170,63 @@ section[id], footer[id] {
   width: 100%;
   height: 56px;
   border-radius: 16px;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
 }
 .lp-price-btn--secondary {
-  background: #f1f5f9;
+  background: #f8fafc;
   color: var(--c-text);
-  border: none;
+  border: 1.5px solid #e2e8f0;
 }
 .lp-price-btn--primary {
   background: #0f172a;
   color: #fff;
-  border: none;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
 }
+
+/* Specific colors */
+.lp-price-btn--standard {
+  background: #f8fafc;
+  color: var(--c-text);
+  border: 1px solid #e2e8f0;
+}
+.lp-price-btn--standard:hover {
+  background: #fff;
+  border-color: #cbd5e1;
+}
+
+.lp-price-btn--intelligence {
+  background: #0f172a;
+  color: #fff;
+}
+.lp-price-btn--intelligence:hover {
+  background: #2563eb;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+}
+
+.lp-price-btn--sovereign {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+.lp-price-btn--sovereign:hover {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.2);
+}
+
 .lp-price-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+  transform: translateY(-3px);
 }
 
 /* ── Enterprise ── */
@@ -1244,16 +1280,26 @@ section[id], footer[id] {
   white-space: nowrap;
   background: #fff;
   color: #0f172a;
-  padding: 20px 40px;
+  padding: 0 40px;
+  height: 64px;
   border-radius: 16px;
   font-size: 0.8125rem;
   font-weight: 800;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* Clean shadow, no border ghosting */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.lp-enterprise__btn:hover { background: #f1f5f9; transform: scale(1.05); }
+.lp-enterprise__btn:hover { 
+  background: #f1f5f9; 
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
 
 @media (max-width: 960px) {
   .lp-enterprise {
