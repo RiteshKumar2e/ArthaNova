@@ -50,47 +50,50 @@ export default function Navbar() {
           <span className="lp-nav__logo-text">ArthaNova</span>
         </Link>
 
-        {/* Desktop links */}
-        <ul className="lp-nav__links">
-          {NAV_LINKS.map(({ label, to }) => (
-            <li key={to}>
-              {to.startsWith('#') ? (
-                <a href={to}>{label}</a>
-              ) : (
-                <Link to={to}>{label}</Link>
-              )}
-            </li>
-          ))}
-        </ul>
+        {/* Right side container: Links + Actions */}
+        <div className="lp-nav__main">
+          {/* Desktop links */}
+          <ul className="lp-nav__links">
+            {NAV_LINKS.map(({ label, to }) => (
+              <li key={to}>
+                {to.startsWith('#') ? (
+                  <a href={to}>{label}</a>
+                ) : (
+                  <Link to={to}>{label}</Link>
+                )}
+              </li>
+            ))}
+          </ul>
 
-        {/* Actions */}
-        <div className="lp-nav__actions">
-          {isAuthenticated ? (
-            <>
-              <button className="lp-btn-ghost" onClick={() => navigate('/dashboard')}>
-                Dashboard
-              </button>
-              <button className="lp-btn-primary" onClick={logout}>
-                Log out
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="lp-btn-ghost" onClick={() => navigate('/login')}>
-                Log in
-              </button>
-              <button className="lp-btn-primary" onClick={() => navigate('/register')}>
-                Get started
-              </button>
-            </>
-          )}
-          <button
-            className="lp-nav__burger"
-            onClick={() => setMobileOpen(v => !v)}
-            aria-label="Toggle menu"
-          >
-            <span /><span /><span />
-          </button>
+          {/* Actions */}
+          <div className="lp-nav__actions">
+            {isAuthenticated ? (
+              <>
+                <button className="lp-btn-ghost" onClick={() => navigate('/dashboard')}>
+                  Dashboard
+                </button>
+                <button className="lp-btn-primary" onClick={logout}>
+                  Log out
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="lp-btn-ghost" onClick={() => navigate('/login')}>
+                  Log in
+                </button>
+                <button className="lp-btn-primary" onClick={() => navigate('/register')}>
+                  Get started
+                </button>
+              </>
+            )}
+            <button
+              className="lp-nav__burger"
+              onClick={() => setMobileOpen(v => !v)}
+              aria-label="Toggle menu"
+            >
+              <span /><span /><span />
+            </button>
+          </div>
         </div>
       </div>
 
