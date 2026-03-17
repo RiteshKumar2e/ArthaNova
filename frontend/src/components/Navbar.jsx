@@ -11,7 +11,8 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled]     = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,63 +22,60 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.nav
+    <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
-        ${scrolled
-          ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm'
-          : 'bg-transparent'
-        }`}
+      transition={{ duration: 0.45 }}
+      className={`lp-nav${scrolled ? ' lp-nav--scrolled' : ''}`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center
-                            group-hover:bg-blue-600 transition-colors duration-200">
-              <Zap className="w-4 h-4 text-blue-400" fill="currentColor" />
-            </div>
-            <span className="text-lg font-black tracking-tight text-slate-900"
-                  style={{ fontFamily: "'Outfit', sans-serif" }}>
-              ArthaNova
-            </span>
-          </Link>
-
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map(({ label, to }) => (
-              <Link
-                key={to}
-                to={to}
-                className="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                {label}
-              </Link>
-            ))}
+      <div className="lp-nav__inner">
+        {/* Logo */}
+        <Link to="/" className="lp-nav__logo">
+          <div className="lp-nav__logo-icon">
+            <Zap size={16} fill="currentColor" />
           </div>
+          <span className="lp-nav__logo-text">ArthaNova</span>
+        </Link>
 
-          {/* Actions */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/login')}
-              className="hidden sm:block text-sm font-semibold text-slate-600
-                         hover:text-slate-900 transition-colors px-2 py-1.5"
-            >
-              Log in
-            </button>
-            <button
-              onClick={() => navigate('/register')}
-              className="text-sm font-bold px-5 py-2 rounded-xl bg-slate-900 text-white
-                         hover:bg-blue-600 transition-all duration-200 shadow-sm"
-            >
-              Get started →
-            </button>
-          </div>
+        {/* Desktop links */}
+        <ul className="lp-nav__links">
+          {NAV_LINKS.map(({ label, to }) => (
+            <li key={to}>
+              <Link to={to}>{label}</Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Actions */}
+        <div className="lp-nav__actions">
+          <button className="lp-btn-ghost" onClick={() => navigate('/login')}>
+            Log in
+          </button>
+          <button className="lp-btn-primary" onClick={() => navigate('/register')}>
+            Get started
+          </button>
+          <button
+            className="lp-nav__burger"
+            onClick={() => setMobileOpen(v => !v)}
+            aria-label="Toggle menu"
+          >
+            <span /><span /><span />
+          </button>
         </div>
       </div>
-    </motion.nav>
+
+      {/* Mobile dropdown */}
+      <div className={`lp-nav__mobile${mobileOpen ? ' open' : ''}`}>
+        {NAV_LINKS.map(({ label, to }) => (
+          <Link key={to} to={to} onClick={() => setMobileOpen(false)}>
+            {label}
+          </Link>
+        ))}
+        <div className="lp-nav__mobile-btns">
+          <Link to="/login"    className="ghost">Log in</Link>
+          <Link to="/register" className="primary">Get started</Link>
+        </div>
+      </div>
+    </motion.header>
   );
 }
