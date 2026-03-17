@@ -9,6 +9,7 @@ const LANDING_LINKS = [
   { label: 'ABOUT',        to: '#about' },
   { label: 'FEATURES',     to: '#features' },
   { label: 'HOW IT WORKS', to: '#how' },
+  { label: 'PRICING',      to: '#pricing' },
   { label: 'CONTACT',      to: '#contact' },
 ];
 

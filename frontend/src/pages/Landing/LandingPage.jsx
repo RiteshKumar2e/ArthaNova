@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   Brain, MessageSquare, BarChart3, Shield,
   Globe2, Target, TrendingUp, Zap, ArrowRight,
-  Mail, Github, Linkedin, Check, Shield, Crown, Star
+  Mail, Github, Linkedin, Check, Crown, Star
 } from 'lucide-react';
 import '../../styles/pages/public/landing.css';
 
@@ -99,6 +99,7 @@ export default function LandingPage() {
     { label: 'About',        to: '#about' },
     { label: 'Features',     to: '#features' },
     { label: 'How it Works', to: '#how' },
+    { label: 'Pricing',      to: '#pricing' },
     { label: 'Contact',      to: '#contact' },
   ];
 
@@ -228,6 +229,76 @@ export default function LandingPage() {
         </div>
       </section>
 
+
+
+      {/* ── Pricing ── */}
+      <section id="pricing" className="lp-pricing">
+        <motion.div className="lp-section-header" {...inView()}>
+          <span className="lp-section-chip">Pricing Plans</span>
+          <h2 className="lp-section-h2">Master Your Market Logic</h2>
+          <p className="lp-section-sub">Upgrade your intelligence tier for deep analytical power.</p>
+        </motion.div>
+
+        <div className="lp-pricing__grid">
+          {PLANS.map((plan, i) => {
+            const Icon = plan.icon;
+            return (
+              <motion.div 
+                key={plan.name} 
+                className={`lp-price-card ${plan.featured ? 'lp-price-card--featured' : ''}`}
+                {...inView(i * 0.1)}
+              >
+                {plan.featured && <div className="lp-price-badge">Recommended</div>}
+                
+                <div className="lp-price-card__header">
+                  <div className={`lp-price-icon lp-price-icon--${plan.color}`}>
+                    <Icon size={24} />
+                  </div>
+                  <span className="lp-price-type">{plan.type}</span>
+                  <h3 className="lp-price-name">{plan.name}</h3>
+                  <div className="lp-price-val">
+                    {plan.price}
+                    {plan.price !== 'Free' && <span className="lp-price-mo">/mo</span>}
+                  </div>
+                  <p className="lp-price-desc">{plan.description}</p>
+                </div>
+
+                <ul className="lp-price-features">
+                  {plan.features.map(f => (
+                    <li key={f}>
+                      <div className="lp-price-check"><Check size={12} strokeWidth={4} /></div>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button 
+                  className={`lp-price-btn ${plan.featured ? 'lp-price-btn--primary' : 'lp-price-btn--secondary'}`}
+                  onClick={() => navigate('/register')}
+                >
+                  {plan.button}
+                </button>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* ── Enterprise ── */}
+        <motion.div className="lp-enterprise" {...inView(0.2)}>
+          <div className="lp-enterprise__glow" />
+          <div className="lp-enterprise__content">
+            <div className="lp-enterprise__top">
+              <Shield size={20} color="#60a5fa" />
+              <span>Institutional Intelligence</span>
+            </div>
+            <h3>Enterprise Sovereign Node</h3>
+            <p>Looking for custom data localization? Our team provides dedicated infrastructure deployment.</p>
+          </div>
+          <button className="lp-enterprise__btn" onClick={() => window.location.href = 'mailto:enterprise@arthanova.com'}>
+            Request Demo
+          </button>
+        </motion.div>
+      </section>
 
 
       {/* ── Footer ── */}

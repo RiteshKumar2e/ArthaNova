@@ -12,7 +12,6 @@ import StoryTimelineView from './pages/News/StoryTimelineView';
 import EntityMapView from './pages/News/EntityMapView';
 import ProfilePage from './pages/Profile/ProfilePage';
 import SettingsPage from './pages/Profile/SettingsPage';
-import SubscriptionPage from './pages/Profile/SubscriptionPage';
 import OTPPage from './pages/Auth/OTPPage';
 import ResetPasswordPage from './pages/Auth/ResetPasswordPage';
 import TrendingPage from './pages/News/TrendingPage';
@@ -56,7 +55,6 @@ function App() {
         <Route path="/map" element={<EntityMapView />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/subscription" element={<SubscriptionPage />} />
         <Route path="/otp" element={<OTPPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/trending" element={<TrendingPage />} />

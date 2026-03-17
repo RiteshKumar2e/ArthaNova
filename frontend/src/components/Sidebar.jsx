@@ -23,7 +23,6 @@ const MENU_ITEMS = [
   { icon: Languages, label: 'Vernacular Engine', path: '/vernacular' },
   { icon: Network, label: 'Story Arc Tracker', path: '/story-arc' },
   { icon: Bookmark, label: 'Saved Stories', path: '/saved' },
-  { icon: Zap, label: 'Subscription', path: '/subscription' },
 ];
 
 export default function Sidebar() {
