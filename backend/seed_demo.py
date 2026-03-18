@@ -21,7 +21,6 @@ async def seed_demo_users():
     
     user_hash = get_password_hash(user_pw)
     admin_hash = get_password_hash(admin_pw)
-    analyst_hash = get_password_hash(analyst_pw)
     
     async with AsyncSessionLocal() as session:
         # User details list
@@ -32,7 +31,6 @@ async def seed_demo_users():
                 "full_name": "Demo User",
                 "hashed_password": user_hash,
                 "role": UserRole.USER,
-                "is_admin": False,
                 "is_active": True,
                 "is_verified": True,
                 "risk_profile": RiskProfile.MODERATE
@@ -47,17 +45,6 @@ async def seed_demo_users():
                 "is_active": True,
                 "is_verified": True,
                 "risk_profile": RiskProfile.AGGRESSIVE
-            },
-            {
-                "email": "analyst@arthanova.in",
-                "username": "demoanalyst",
-                "full_name": "Demo Analyst",
-                "hashed_password": analyst_hash,
-                "role": UserRole.ANALYST,
-                "is_admin": False,
-                "is_active": True,
-                "is_verified": True,
-                "risk_profile": RiskProfile.CONSERVATIVE
             }
         ]
 

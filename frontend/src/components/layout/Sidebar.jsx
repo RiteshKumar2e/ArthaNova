@@ -3,37 +3,26 @@ import { useAuthStore } from '../../store/authStore'
 import styles from '../../styles/components/layout/Sidebar.module.scss'
 
 const NAV_ITEMS = [
-  { section: 'Overview', items: [
-    { to: '/dashboard', icon: '⊞', label: 'Dashboard' },
-    { to: '/market', icon: '📊', label: 'Market Overview' },
+  { section: 'Main', items: [
+    { to: '/dashboard', icon: '⊞', label: 'Dashboard', roles: ['user', 'admin'] },
+    { to: '/market', icon: '📊', label: 'Market Overview', roles: ['user', 'admin'] },
+    { to: '/stocks', icon: '🔍', label: 'Stock Explorer', roles: ['user', 'admin'] },
   ]},
-  { section: 'Discover', items: [
-    { to: '/stocks', icon: '🔍', label: 'Stock Explorer' },
-    { to: '/radar', icon: '🎯', label: 'Opportunity Radar' },
-    { to: '/technical', icon: '📈', label: 'Technical Analysis' },
+  { section: 'Personal', items: [
+    { to: '/portfolio', icon: '💼', label: 'Portfolio', roles: ['user'] },
+    { to: '/watchlist', icon: '⭐', label: 'Watchlist', roles: ['user'] },
+    { to: '/ai-chat', icon: '🤖', label: 'AI Chat', roles: ['user'] },
   ]},
-  { section: 'Portfolio', items: [
-    { to: '/portfolio', icon: '💼', label: 'Portfolio' },
-    { to: '/watchlist', icon: '⭐', label: 'Watchlist' },
-    { to: '/risk', icon: '🛡️', label: 'Risk Analyzer' },
-    { to: '/backtest', icon: '🔁', label: 'Backtesting' },
+  { section: 'Tools', items: [
+    { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },
+    { to: '/backtest', icon: '🔁', label: 'Backtesting', roles: ['admin'] },
+    { to: '/filings', icon: '📋', label: 'Filings Analyzer', roles: ['admin'] },
   ]},
-  { section: 'Intelligence', items: [
-    { to: '/ai-chat', icon: '🤖', label: 'AI Chat' },
-    { to: '/news', icon: '📰', label: 'News Intelligence' },
-    { to: '/filings', icon: '📋', label: 'Filings Analyzer' },
-    { to: '/videos', icon: '🎬', label: 'Video Insights' },
-  ]},
-  { section: 'Market Data', items: [
-    { to: '/insider', icon: '👤', label: 'Insider Activity' },
-    { to: '/deals', icon: '🤝', label: 'Bulk & Block Deals' },
-    { to: '/ipo', icon: '🚀', label: 'IPO Tracker' },
-  ]},
-  { section: 'Account', items: [
-    { to: '/notifications', icon: '🔔', label: 'Notifications' },
-    { to: '/profile', icon: '👤', label: 'Profile' },
-    { to: '/settings', icon: '⚙️', label: 'Settings' },
-    { to: '/admin', icon: '🛠️', label: 'Admin Panel' },
+  { section: 'System', items: [
+    { to: '/admin', icon: '🛠️', label: 'Admin Panel', roles: ['admin'] },
+    { to: '/notifications', icon: '🔔', label: 'Notifications', roles: ['user', 'admin'] },
+    { to: '/profile', icon: '👤', label: 'Profile', roles: ['user', 'admin'] },
+    { to: '/settings', icon: '⚙️', label: 'Settings', roles: ['user', 'admin'] },
   ]},
 ]
 
@@ -74,26 +63,34 @@ export default function Sidebar({ collapsed, onToggle }) {
 
       {/* Navigation */}
       <nav className={styles.nav}>
-        {NAV_ITEMS.map((section) => (
-          <div key={section.section} className={styles.navSection}>
-            {!collapsed && (
-              <div className={styles.sectionLabel}>{section.section}</div>
-            )}
-            {section.items.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `${styles.navItem} ${isActive ? styles.active : ''}`
-                }
-                title={collapsed ? item.label : undefined}
-              >
-                <span className={styles.navIcon}>{item.icon}</span>
-                {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
-              </NavLink>
-            ))}
-          </div>
-        ))}
+        {NAV_ITEMS.map((section) => {
+          const filteredItems = section.items.filter(item => 
+            !item.roles || item.roles.includes(user?.role || 'user')
+          )
+
+          if (filteredItems.length === 0) return null
+
+          return (
+            <div key={section.section} className={styles.navSection}>
+              {!collapsed && (
+                <div className={styles.sectionLabel}>{section.section}</div>
+              )}
+              {filteredItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `${styles.navItem} ${isActive ? styles.active : ''}`
+                  }
+                  title={collapsed ? item.label : undefined}
+                >
+                  <span className={styles.navIcon}>{item.icon}</span>
+                  {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
+                </NavLink>
+              ))}
+            </div>
+          )
+        })}
       </nav>
 
       {/* Bottom Actions */}
