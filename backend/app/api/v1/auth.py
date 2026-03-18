@@ -130,13 +130,10 @@ async def change_password(
     return MessageResponse(message="Password changed successfully")
 
 
-@router.get("/me")
-async def get_me():
-    """Bypassed Auth Check for Debugging."""
-    return {
-        "status": "debug_bypassed",
-        "message": "If you see this, 403 is coming from the dependency injection"
-    }
+@router.get("/me", response_model=UserResponse)
+async def get_me(current_user: User = Depends(get_current_user)):
+    """Get current user profile."""
+    return current_user
 
 
 @router.post("/logout", response_model=MessageResponse)

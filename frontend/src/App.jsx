@@ -4,6 +4,7 @@ import { useAuthStore } from './store/authStore'
 // Layouts
 import PublicLayout from './layouts/PublicLayout'
 import AppLayout from './layouts/AppLayout'
+import AdminLayout from './layouts/AdminLayout'
 
 // Public Pages
 import LandingPage from './pages/public/LandingPage'
@@ -33,14 +34,34 @@ import {
   VideoInsightsPage,
   FilingsAnalyzerPage,
   NotificationsPage,
-  SettingsPage,
-  AdminPanelPage
+  SettingsPage
 } from './pages/app/PlaceholderPages'
+
+// Admin Pages
+import AdminDashboard from './pages/app/admin/AdminDashboard'
+import UserManagement from './pages/app/admin/UserManagement'
+import ContentManagement from './pages/app/admin/ContentManagement'
+import StockDataManagement from './pages/app/admin/StockDataManagement'
+import AlertsSignalsControl from './pages/app/admin/AlertsSignalsControl'
+import AIModelMonitoring from './pages/app/admin/AIModelMonitoring'
+import VideoEngineControl from './pages/app/admin/VideoEngineControl'
+import ReportsAnalytics from './pages/app/admin/ReportsAnalytics'
+import GlobalNotifications from './pages/app/admin/GlobalNotifications'
+import RoleAccessControl from './pages/app/admin/RoleAccessControl'
+import AuditLogs from './pages/app/admin/AuditLogs'
+import SystemSettings from './pages/app/admin/SystemSettings'
 
 // Route Guards
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthStore()
   return isAuthenticated ? children : <Navigate to="/login" replace />
+}
+
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore()
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (user?.role !== 'admin' && !user?.is_admin) return <Navigate to="/dashboard" replace />
+  return children
 }
 
 const PublicRoute = ({ children }) => {
@@ -62,7 +83,7 @@ export default function App() {
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-      {/* Protected App Routes */}
+      {/* Protected App Routes (User) */}
       <Route
         element={
           <ProtectedRoute>
@@ -90,7 +111,29 @@ export default function App() {
         <Route path="/backtest" element={<BacktestingPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/admin" element={<AdminPanelPage />} />
+      </Route>
+
+      {/* Admin Module Routes */}
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }
+      >
+        <Route index element={<AdminDashboard />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="content" element={<ContentManagement />} />
+        <Route path="data" element={<StockDataManagement />} />
+        <Route path="alerts" element={<AlertsSignalsControl />} />
+        <Route path="ai-models" element={<AIModelMonitoring />} />
+        <Route path="video-engine" element={<VideoEngineControl />} />
+        <Route path="analytics" element={<ReportsAnalytics />} />
+        <Route path="notifications" element={<GlobalNotifications />} />
+        <Route path="roles" element={<RoleAccessControl />} />
+        <Route path="logs" element={<AuditLogs />} />
+        <Route path="settings" element={<SystemSettings />} />
       </Route>
 
       {/* Fallback */}

@@ -1,71 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../../../styles/pages/app/DashboardPage.module.scss';
+import axios from 'axios';
+import { useAuthStore } from '../../../store/authStore';
+import styles from '../../../styles/pages/app/admin/AdminDashboard.module.scss';
 
-const ADMIN_STATS = [
-  { label: 'Total Users', value: '1,248', change: '+24', positive: true, icon: '👥' },
-  { label: 'Active Sessions', value: '82', change: 'Current', positive: true, icon: '🔥' },
-  { label: 'Signals Sent', value: '3,820', change: '+124', positive: true, icon: '🎯' },
-  { label: 'System Uptime', value: '99.98%', change: 'Optimal', positive: true, icon: '⚡' },
-];
+export default function AdminDashboard() {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { accessToken } = useAuthStore();
 
-const RECENT_USERS = [
-  { id: 101, user: 'Arun Kumar', email: 'arun@example.com', role: 'user', date: '2m ago' },
-  { id: 102, user: 'Sita Sharma', email: 'sita@example.com', role: 'analyst', date: '15m ago' },
-  { id: 103, user: 'Rahul Verma', email: 'rahul@example.com', role: 'user', date: '42m ago' },
-];
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get('/api/v1/admin/dashboard/stats', {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        setStats(response.data);
+      } catch (error) {
+        console.error('Error fetching admin stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, [accessToken]);
 
-export default function AdminDashboard({ user }) {
+  const ADMIN_STATS = stats ? [
+    { label: 'Total Users', value: stats.users.total, change: `+${stats.users.new_today}`, positive: true, icon: '👥' },
+    { label: 'API Loads (24h)', value: stats.system.api_requests_24h.toLocaleString(), change: 'Stable', positive: true, icon: '🔥' },
+    { label: 'AI Signals Dispatch', value: stats.alerts.ai_signals_generated, change: 'Running', positive: true, icon: '🎯' },
+    { label: 'System Uptime', value: stats.system.uptime, change: 'Optimal', positive: true, icon: '⚡' },
+  ] : [];
+
   return (
-    <div className="animate-fadeIn">
-      <div className="page-header">
+    <div className={styles.adminDashboard}>
+      <div className="page-header" style={{ marginBottom: 32 }}>
         <div>
           <h1 className="page-title">Admin Command Center 🛠️</h1>
-          <p className="page-subtitle">Welcome, Chief. System health and user metrics at a glance.</p>
+          <p className="page-subtitle">Governance, platform health, and predictive system oversight.</p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <Link to="/settings" className="btn btn-secondary btn-sm">⚙️ System Settings</Link>
-          <Link to="/admin" className="btn btn-primary btn-sm">👥 User Management</Link>
+          <Link to="/admin/settings" className="btn btn-secondary btn-sm">⚙️ System Settings</Link>
+          <Link to="/admin/users" className="btn btn-primary btn-sm">👥 User Management</Link>
         </div>
       </div>
 
-      <div className="grid-4" style={{ marginBottom: 24 }}>
-        {ADMIN_STATS.map((stat) => (
-          <div key={stat.label} className="metric-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <div className="metric-label">{stat.label}</div>
-              <span>{stat.icon}</span>
+      <div className={styles.statsGrid}>
+        {loading ? (
+          [1, 2, 3, 4].map(i => (
+            <div key={i} className={`${styles.statCard} loading`}>
+              <div className={styles.label}>Loading Stats...</div>
+              <div className={styles.value}>----</div>
             </div>
-            <div className="metric-value">{stat.value}</div>
-            <div className={`metric-change ${stat.positive ? 'positive' : ''}`}>
+          ))
+        ) : ADMIN_STATS.map((stat) => (
+          <div key={stat.label} className={styles.statCard}>
+            <div className={styles.iconWrapper}>{stat.icon}</div>
+            <div className={styles.label}>{stat.label}</div>
+            <div className={styles.value}>{stat.value}</div>
+            <div className={`${styles.change} ${stat.positive ? styles.positive : styles.negative}`}>
               {stat.change}
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid-2">
-        <div className="card">
-          <div className="card-header">
-            <h3>👥 Recent User Registrations</h3>
+      <div className={styles.contentRow}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3>🖥️ System Registry Activity</h3>
+            <span className="badge badge-secondary" style={{ fontSize: 10 }}>LIVE FEED</span>
           </div>
-          <div className="table-responsive">
-            <table className="table">
+          <div className={styles.cardBody} style={{ padding: 0 }}>
+            <table className={styles.activityTable}>
               <thead>
                 <tr>
-                  <th>User</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Registration</th>
+                  <th>Identity</th>
+                  <th>Operation</th>
+                  <th>Module</th>
+                  <th style={{ textAlign: 'right' }}>Timestamp</th>
                 </tr>
               </thead>
               <tbody>
-                {RECENT_USERS.map(row => (
-                  <tr key={row.id}>
+                {[
+                  { user: 'Admin Root', action: 'Update Auth Policy', module: 'Auth-Kevlar', date: '2m ago' },
+                  { user: 'AI Engine v2.4', action: 'Generate Signal', module: 'Intelligence', date: '15m ago' },
+                  { user: 'Cloud Scheduler', action: 'Snapshot DB', module: 'Database', date: '42m ago' },
+                  { user: 'Video Pipeline', action: 'Render Complete', module: 'Video-Gen', date: '1h ago' },
+                  { user: 'Sentinel AI', action: 'Flagged Login IP', module: 'Security', date: '2h ago' },
+                ].map((row, i) => (
+                  <tr key={i}>
                     <td><strong>{row.user}</strong></td>
-                    <td>{row.email}</td>
-                    <td><span className={`badge ${row.role === 'analyst' ? 'badge-primary' : 'badge-secondary'}`}>{row.role}</span></td>
-                    <td>{row.date}</td>
+                    <td><span style={{ fontSize: '0.8rem', color: '#5E6C84' }}>{row.action}</span></td>
+                    <td><span className="badge badge-secondary" style={{ fontSize: '0.7rem' }}>{row.module}</span></td>
+                    <td style={{ textAlign: 'right', fontSize: '0.75rem', color: '#97A0AF' }}>{row.date}</td>
                   </tr>
                 ))}
               </tbody>
@@ -73,25 +101,31 @@ export default function AdminDashboard({ user }) {
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header">
-            <h3>🚨 System Activity Log</h3>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3>🚨 Health Monitor</h3>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {[
-              { type: 'Info', msg: 'System backup completed successfully.', time: '10:00 AM' },
-              { type: 'Warn', msg: 'High load detected on API node-4.', time: '09:45 AM' },
-              { type: 'Success', msg: '34 Opportunity Signals dispatched.', time: '09:15 AM' },
-              { type: 'Info', msg: 'Database migration complete.', time: 'Yesterday' },
-            ].map((log, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #DFE1E6', paddingBottom: 8 }}>
-                <div style={{ fontSize: '0.8rem' }}>
-                  <span className={`badge ${log.type === 'Warn' ? 'badge-warning' : 'badge-success'}`}>{log.type}</span>
-                  <span style={{ marginLeft: 8 }}>{log.msg}</span>
+          <div className={styles.cardBody}>
+            <div className={styles.healthList}>
+              {[
+                { type: 'success', msg: 'Core API nodes reporting healthy.', time: '10:00 AM' },
+                { type: 'warn', msg: `Node-4 CPU spikes: ${stats?.system.cpu_usage || '14%'}`, time: '09:45 AM' },
+                { type: 'success', msg: `${stats?.alerts.ai_signals_generated || 142} signals dispatched today.`, time: '09:15 AM' },
+                { type: 'info', msg: 'Daily data integrity check passed.', time: '08:00 AM' },
+                { type: 'error', msg: 'Memory leakage detected in video-gen-clstr.', time: 'Last night' },
+              ].map((log, i) => (
+                <div key={i} className={styles.healthItem}>
+                  <div className={`${styles.typeIndicator} ${styles[log.type]}`}></div>
+                  <div className={styles.msgContainer}>
+                    <div className={styles.msg}>{log.msg}</div>
+                    <div className={styles.time}>{log.time}</div>
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.7rem', color: '#5E6C84' }}>{log.time}</div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <button className="btn btn-sm btn-secondary" style={{ width: '100%', marginTop: 20 }}>
+              Deep Diagnostic &rarr;
+            </button>
           </div>
         </div>
       </div>

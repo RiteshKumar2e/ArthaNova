@@ -1,0 +1,153 @@
+@import "../../variables";
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background: $color-white;
+  border-right: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
+  z-index: $z-sticky;
+  transition: width $transition-base;
+  overflow-x: hidden;
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+  }
+}
+
+.brand {
+  height: $topbar-height;
+  display: flex;
+  items-center: center;
+  padding: 0 $space-4;
+  gap: $space-3;
+  border-bottom: 1px solid $color-border;
+  color: $color-primary;
+  font-weight: $font-weight-bold;
+  white-space: nowrap;
+  text-decoration: none;
+
+  .brandIcon {
+    font-size: $font-size-xl;
+    min-width: 32px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .brandName {
+    font-size: $font-size-lg;
+    letter-spacing: -0.5px;
+  }
+}
+
+.nav {
+  flex: 1;
+  padding: $space-4 $space-2;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background: $color-border;
+  }
+}
+
+.sectionLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-text-tertiary;
+  text-transform: uppercase;
+  padding: $space-4 $space-3 $space-1;
+  letter-spacing: 0.5px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: $space-3;
+  border-radius: $radius-md;
+  color: $color-text-secondary;
+  text-decoration: none;
+  gap: $space-3;
+  transition: all $transition-fast;
+  white-space: nowrap;
+
+  .navIcon {
+    font-size: 1.25rem;
+    min-width: 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navLabel {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+  }
+
+  &:hover {
+    background: $color-bg;
+    color: $color-primary;
+  }
+
+  &.active {
+    background: $color-primary-light;
+    color: $color-primary;
+    
+    .navLabel {
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.adminBadge {
+  background: $color-primary;
+  color: $color-white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: $radius-sm;
+  font-weight: $font-weight-bold;
+  margin-left: auto;
+}
+
+.bottom {
+  padding: $space-4;
+  border-top: 1px solid $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.collapseBtn {
+  background: none;
+  border: none;
+  color: $color-text-secondary;
+  cursor: pointer;
+  padding: $space-2;
+  border-radius: $radius-md;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $color-bg;
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .sidebar {
+    transform: translateX(-100%);
+    
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}

@@ -36,10 +36,19 @@ export default function LoginPage() {
     try {
       const res = await authAPI.login(form)
       const { access_token, refresh_token } = res.data
-      const meRes = await authAPI.me()
+      const meRes = await authAPI.me(access_token)
+      console.log('Login successful. User data:', meRes.data)
       login(meRes.data, access_token, refresh_token)
-      toast.success('Welcome back! 🎉')
-      navigate('/dashboard')
+      toast.success(`Welcome back, ${meRes.data.full_name}! 🎉`)
+      
+      // Redirect based on role (or is_admin flag)
+      if (meRes.data.role === 'admin' || meRes.data.is_admin === true) {
+        console.log('Redirecting to Admin Dashboard...')
+        navigate('/admin')
+      } else {
+        console.log('Redirecting to User Dashboard...')
+        navigate('/dashboard')
+      }
     } catch (err) {
       const msg = err.response?.data?.detail || 'Login failed. Please try again.'
       toast.error(msg)
@@ -52,8 +61,6 @@ export default function LoginPage() {
   const handleDemoLogin = (type) => {
     if (type === 'admin') {
       setForm({ email: 'admin@arthanova.in', password: 'Admin@1234', remember_me: false })
-    } else if (type === 'analyst') {
-      setForm({ email: 'analyst@arthanova.in', password: 'Analyst@1234', remember_me: false })
     } else {
       setForm({ email: 'user@arthanova.in', password: 'Demo@1234', remember_me: false })
     }
@@ -152,9 +159,6 @@ export default function LoginPage() {
             <div className={styles.demoButtons}>
               <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('user')}>
                 User
-              </button>
-              <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('analyst')}>
-                Analyst
               </button>
               <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('admin')}>
                 Admin

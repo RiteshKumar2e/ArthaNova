@@ -55,7 +55,10 @@ export const authAPI = {
   login: (data) => api.post('/auth_debug/login', data),
   register: (data) => api.post('/auth_debug/register', data),
   logout: () => api.post('/auth_debug/logout'),
-  me: () => api.get('/auth_debug/me'),
+  me: (token) => {
+    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+    return api.get('/auth_debug/me', config)
+  },
   forgotPassword: (email) => api.post('/auth_debug/forgot-password', { email }),
   resetPassword: (data) => api.post('/auth_debug/reset-password', data),
   changePassword: (data) => api.post('/auth_debug/change-password', data),
