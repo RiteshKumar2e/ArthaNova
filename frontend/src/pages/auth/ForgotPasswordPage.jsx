@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 import styles from '../../styles/pages/auth/AuthPages.module.scss'
 
 export function ForgotPasswordPage() {
@@ -61,6 +62,8 @@ export function ResetPasswordPage() {
   const [form, setForm] = useState({ token: '', new_password: '', confirm: '' })
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -91,14 +94,24 @@ export function ResetPasswordPage() {
                   value={form.token} onChange={(e) => setForm((p) => ({ ...p, token: e.target.value }))} />
               </div>
               <div className="form-group">
-                <label className="form-label" htmlFor="new-pw">New Password</label>
-                <input id="new-pw" type="password" className="form-control" placeholder="Min 8 characters"
-                  value={form.new_password} onChange={(e) => setForm((p) => ({ ...p, new_password: e.target.value }))} />
+                <label className={styles.customPasswordLabel} htmlFor="new-pw">NEW PASSWORD</label>
+                <div className={styles.passwordInputContainer}>
+                  <input id="new-pw" type={showPassword ? "text" : "password"} className={styles.customPasswordInput} placeholder="Min 8 characters"
+                    value={form.new_password} onChange={(e) => setForm((p) => ({ ...p, new_password: e.target.value }))} />
+                  <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword(!showPassword)} tabIndex="-1">
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </div>
               </div>
               <div className="form-group">
-                <label className="form-label" htmlFor="confirm-pw">Confirm Password</label>
-                <input id="confirm-pw" type="password" className="form-control"
-                  value={form.confirm} onChange={(e) => setForm((p) => ({ ...p, confirm: e.target.value }))} />
+                <label className={styles.customPasswordLabel} htmlFor="confirm-pw">CONFIRM PASSWORD</label>
+                <div className={styles.passwordInputContainer}>
+                  <input id="confirm-pw" type={showConfirmPassword ? "text" : "password"} className={styles.customPasswordInput}
+                    value={form.confirm} onChange={(e) => setForm((p) => ({ ...p, confirm: e.target.value }))} />
+                  <button type="button" className={styles.passwordToggle} onClick={() => setShowConfirmPassword(!showConfirmPassword)} tabIndex="-1">
+                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </div>
               </div>
               <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
                 {loading ? 'Resetting...' : 'Reset Password'}

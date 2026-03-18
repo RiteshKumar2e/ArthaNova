@@ -248,26 +248,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── CTA ──────────────────────────────────────────────────────────── */}
-      <section className={styles.cta} id="contact">
-        <div className={styles.sectionContainer}>
-          <div className={styles.ctaBox}>
-            <h2>Ready to Invest Smarter?</h2>
-            <p>
-              Join thousands of Indian investors using AI to make better, faster,
-              and more confident investment decisions.
-            </p>
-            <div className={styles.ctaButtons}>
-              <Link to="/register" className="btn btn-primary btn-lg" id="cta-register-btn">
-                Get Started Free — No Credit Card
-              </Link>
-              <a href="mailto:hello@arthanova.in" className="btn btn-secondary btn-lg">
-                Talk to Our Team
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

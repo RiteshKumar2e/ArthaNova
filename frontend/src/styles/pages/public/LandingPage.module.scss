@@ -4,7 +4,7 @@
 
 /* ─── Hero ─────────────────────────────────────────────────────────────── */
 .hero {
-  background: $gradient-hero;
+  background: linear-gradient(135deg, #F9FAFB 0%, #E8F0FE 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,8 +19,8 @@
     position: absolute;
     inset: 0;
     background-image: 
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
     background-size: 50px 50px;
     pointer-events: none;
   }
@@ -31,7 +31,7 @@
     position: absolute;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(0, 82, 204, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 82, 204, 0.1) 0%, transparent 70%);
     top: 10%;
     right: -100px;
     pointer-events: none;
@@ -62,13 +62,13 @@
   display: inline-flex;
   align-items: center;
   gap: $space-2;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 82, 204, 0.1);
+  border: 1px solid rgba(0, 82, 204, 0.2);
   backdrop-filter: blur(8px);
   padding: $space-2 $space-4;
   border-radius: $radius-full;
   font-size: $font-size-sm;
-  color: rgba(255, 255, 255, 0.9);
+  color: $color-primary;
   margin-bottom: $space-5;
   width: fit-content;
 }
@@ -76,13 +76,13 @@
 .heroTitle {
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: $font-weight-extrabold;
-  color: $color-white;
+  color: $color-text-primary;
   line-height: 1.1;
   margin-bottom: $space-5;
 }
 
 .heroGradient {
-  background: linear-gradient(135deg, #60A5FA 0%, #34D399 100%);
+  background: linear-gradient(135deg, $color-primary 0%, #0066FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -90,7 +90,7 @@
 
 .heroDesc {
   font-size: $font-size-md;
-  color: rgba(255, 255, 255, 0.75);
+  color: $color-text-secondary;
   line-height: 1.7;
   margin-bottom: $space-8;
   max-width: 520px;
@@ -104,14 +104,14 @@
 }
 
 .ctaSecondary {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  color: $color-white !important;
+  background: $color-white !important;
+  border-color: $color-border !important;
+  color: $color-text-primary !important;
   backdrop-filter: blur(8px);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: $color-white !important;
+    background: $color-bg-alt !important;
+    color: $color-primary !important;
   }
 }
 
@@ -122,7 +122,7 @@
 
   span {
     font-size: $font-size-sm;
-    color: rgba(255, 255, 255, 0.6);
+    color: $color-text-secondary;
     display: flex;
     align-items: center;
     gap: $space-1;
@@ -140,21 +140,21 @@
 }
 
 .dashboardPreview {
-  background: rgba(255, 255, 255, 0.05);
+  background: $color-white;
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid $color-border;
   border-radius: $radius-2xl;
   overflow: hidden;
-  box-shadow: $shadow-xl, 0 0 60px rgba(0, 82, 204, 0.2);
+  box-shadow: $shadow-xl, 0 0 40px rgba(0, 82, 204, 0.08);
 }
 
 .previewHeader {
-  background: rgba(255, 255, 255, 0.08);
+  background: $color-bg-alt;
   padding: $space-3 $space-4;
   display: flex;
   align-items: center;
   gap: $space-3;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid $color-border;
 }
 
 .previewDots {
@@ -165,7 +165,7 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.1);
     &:nth-child(1) { background: #FF5F57; }
     &:nth-child(2) { background: #FEBC2E; }
     &:nth-child(3) { background: #28C840; }
@@ -174,7 +174,7 @@
 
 .previewTitle {
   font-size: $font-size-xs;
-  color: rgba(255, 255, 255, 0.5);
+  color: $color-text-secondary;
   font-weight: $font-weight-medium;
 }
 
@@ -188,15 +188,15 @@
 }
 
 .previewMetric {
-  background: rgba(255, 255, 255, 0.06);
+  background: $color-bg-alt;
   border-radius: $radius-md;
   padding: $space-3;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid $color-border;
 }
 
 .pmLabel {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.5);
+  color: $color-text-tertiary;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: $space-1;
@@ -205,7 +205,7 @@
 .pmValue {
   font-size: $font-size-md;
   font-weight: $font-weight-bold;
-  color: $color-white;
+  color: $color-text-primary;
   margin-bottom: 2px;
 }
 
@@ -215,8 +215,8 @@
 }
 
 .previewSignal {
-  background: rgba(0, 135, 90, 0.15);
-  border: 1px solid rgba(0, 135, 90, 0.3);
+  background: rgba(0, 135, 90, 0.05);
+  border: 1px solid rgba(0, 135, 90, 0.15);
   border-radius: $radius-md;
   padding: $space-3;
   margin-bottom: $space-3;
@@ -226,8 +226,8 @@
 }
 
 .signalBadge {
-  background: rgba(0, 135, 90, 0.3);
-  color: #34D399;
+  background: rgba(0, 135, 90, 0.1);
+  color: $color-success;
   padding: 3px 8px;
   border-radius: $radius-sm;
   font-size: $font-size-xs;
@@ -238,14 +238,14 @@
 
 .signalContent {
   font-size: $font-size-xs;
-  color: rgba(255, 255, 255, 0.85);
+  color: $color-text-secondary;
   line-height: 1.5;
 
-  strong { color: $color-white; }
+  strong { color: $color-text-primary; }
 }
 
 .signalConf {
-  color: #34D399;
+  color: $color-success;
   font-weight: $font-weight-medium;
 }
 
@@ -255,14 +255,14 @@
   gap: 3px;
   height: 60px;
   margin-bottom: $space-3;
-  background: rgba(255, 255, 255, 0.03);
+  background: $color-bg-alt;
   padding: $space-2;
   border-radius: $radius-md;
 }
 
 .bar {
   flex: 1;
-  background: linear-gradient(to top, rgba(0, 82, 204, 0.6), rgba(96, 165, 250, 0.6));
+  background: linear-gradient(to top, rgba(0, 82, 204, 0.3), rgba(0, 82, 204, 0.7));
   border-radius: 2px 2px 0 0;
 }
 
@@ -273,7 +273,7 @@
   align-items: center;
   gap: $space-2;
   font-size: $font-size-xs;
-  color: rgba(255, 255, 255, 0.65);
+  color: $color-text-secondary;
 }
 
 .floatCard1, .floatCard2 {
@@ -312,8 +312,8 @@
 .statsBar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid $color-border;
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   position: relative;
   z-index: 1;
@@ -326,7 +326,7 @@
 .statItem {
   padding: $space-8 $space-6;
   text-align: center;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid $color-border;
 
   &:last-child { border-right: none; }
 }
@@ -335,13 +335,13 @@
   font-size: $font-size-2xl;
   font-weight: $font-weight-extrabold;
   font-family: $font-heading;
-  color: $color-white;
+  color: $color-primary;
   margin-bottom: $space-1;
 }
 
 .statLabel {
   font-size: $font-size-sm;
-  color: rgba(255, 255, 255, 0.6);
+  color: $color-text-secondary;
 }
 
 /* ─── Sections Common ───────────────────────────────────────────────────── */
@@ -657,7 +657,8 @@
 .cta { background: $color-bg; padding: $space-8 0; }
 
 .ctaBox {
-  background: $gradient-hero;
+  background: linear-gradient(135deg, #F9FAFB 0%, #E8F0FE 100%);
+  border: 1px solid $color-border;
   border-radius: $radius-2xl;
   padding: $space-16 $space-8;
   text-align: center;
@@ -669,21 +670,21 @@
     position: absolute;
     inset: 0;
     background-image: 
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
     background-size: 50px 50px;
   }
 
   h2 {
     font-size: clamp(1.75rem, 3vw, 2.5rem);
-    color: $color-white;
+    color: $color-text-primary;
     margin-bottom: $space-4;
     position: relative;
   }
 
   p {
     font-size: $font-size-md;
-    color: rgba(255, 255, 255, 0.75);
+    color: $color-text-secondary;
     margin-bottom: $space-8;
     max-width: 520px;
     margin-left: auto;

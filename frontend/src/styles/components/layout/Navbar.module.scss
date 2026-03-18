@@ -14,12 +14,6 @@
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     box-shadow: $shadow-sm;
-
-    .navLink { color: $color-text-primary; }
-    .brandName { color: $color-text-primary; }
-    .brandIcon { color: $color-primary; }
-    
-    .hamburger span { background: $color-text-primary; }
   }
 }
 
@@ -50,7 +44,7 @@
   font-family: $font-heading;
   font-size: $font-size-lg;
   font-weight: $font-weight-bold;
-  color: $color-white;
+  color: $color-text-primary;
   transition: color $transition-fast;
 }
 
@@ -68,7 +62,7 @@
 
 .navLink {
   padding: $space-2 $space-4;
-  color: rgba(255, 255, 255, 0.85);
+  color: $color-text-secondary;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   text-decoration: none;
@@ -76,8 +70,8 @@
   transition: all $transition-fast;
 
   &:hover {
-    color: $color-white;
-    background: rgba(255, 255, 255, 0.1);
+    color: $color-primary;
+    background: rgba(0, 82, 204, 0.05);
   }
 }
 
@@ -106,7 +100,7 @@
     display: block;
     width: 24px;
     height: 2px;
-    background: $color-white;
+    background: $color-text-primary;
     border-radius: $radius-full;
     transition: all $transition-fast;
   }

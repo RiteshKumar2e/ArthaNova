@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import styles from '../../styles/components/layout/Footer.module.scss'
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa'
 
 export default function Footer() {
   return (
@@ -16,9 +17,9 @@ export default function Footer() {
               Transform raw financial data into actionable insights.
             </p>
             <div className={styles.socials}>
-              <a href="#" className={styles.social}>𝕏</a>
-              <a href="#" className={styles.social}>in</a>
-              <a href="#" className={styles.social}>YT</a>
+              <a href="#" className={styles.social} aria-label="LinkedIn"><FaLinkedin /></a>
+              <a href="#" className={styles.social} aria-label="GitHub"><FaGithub /></a>
+              <a href="#" className={styles.social} aria-label="Email"><FaEnvelope /></a>
             </div>
           </div>
 

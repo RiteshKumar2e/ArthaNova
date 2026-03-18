@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 import styles from '../../styles/pages/auth/AuthPages.module.scss'
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '', remember_me: false })
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const { login } = useAuthStore()
@@ -69,6 +71,9 @@ export default function LoginPage() {
       </div>
 
       <div className={styles.authRight}>
+        <Link to="/" className={styles.backToHome}>
+          &larr; Back to Home
+        </Link>
         <div className={styles.authCard}>
           <h1 className={styles.authTitle}>Welcome back</h1>
           <p className={styles.authSubtitle}>Sign in to your ArthaNova account</p>
@@ -90,20 +95,30 @@ export default function LoginPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label" htmlFor="login-password">
-                Password
+              <label className={styles.customPasswordLabel} htmlFor="login-password">
+                PASSWORD
                 <Link to="/forgot-password" className={styles.forgotLink}>Forgot password?</Link>
               </label>
-              <input
-                id="login-password"
-                name="password"
-                type="password"
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                placeholder="Enter your password"
-                value={form.password}
-                onChange={handleChange}
-                autoComplete="current-password"
-              />
+              <div className={styles.passwordInputContainer}>
+                <input
+                  id="login-password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  className={`${styles.customPasswordInput} ${errors.password ? 'is-invalid' : ''}`}
+                  placeholder="Enter your password"
+                  value={form.password}
+                  onChange={handleChange}
+                  autoComplete="current-password"
+                />
+                <button 
+                  type="button" 
+                  className={styles.passwordToggle} 
+                  onClick={() => setShowPassword(!showPassword)}
+                  tabIndex="-1"
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
               {errors.password && <div className="form-error">{errors.password}</div>}
             </div>
 

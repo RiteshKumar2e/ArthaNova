@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 import styles from '../../styles/pages/auth/AuthPages.module.scss'
 
 const STEPS = ['Account', 'Personal', 'Preferences']
@@ -13,6 +14,8 @@ export default function RegisterPage() {
     email: '', username: '', full_name: '', password: '', confirm_password: '',
     phone: '', risk_profile: 'moderate',
   })
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const { login } = useAuthStore()
@@ -91,6 +94,9 @@ export default function RegisterPage() {
       </div>
 
       <div className={styles.authRight}>
+        <Link to="/" className={styles.backToHome}>
+          &larr; Back to Home
+        </Link>
         <div className={styles.authCard}>
           <h1 className={styles.authTitle}>Create Your Account</h1>
           <p className={styles.authSubtitle}>Step {step + 1} of {STEPS.length} — {STEPS[step]}</p>
@@ -113,15 +119,25 @@ export default function RegisterPage() {
                   {errors.username && <div className="form-error">{errors.username}</div>}
                 </div>
                 <div className="form-group">
-                  <label className="form-label" htmlFor="reg-password">Password</label>
-                  <input id="reg-password" name="password" type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                    placeholder="Min 8 chars, 1 uppercase, 1 number" value={form.password} onChange={handleChange} />
+                  <label className={styles.customPasswordLabel} htmlFor="reg-password">PASSWORD</label>
+                  <div className={styles.passwordInputContainer}>
+                    <input id="reg-password" name="password" type={showPassword ? "text" : "password"} className={`${styles.customPasswordInput} ${errors.password ? 'is-invalid' : ''}`}
+                      placeholder="Min 8 chars, 1 uppercase, 1 number" value={form.password} onChange={handleChange} />
+                    <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword(!showPassword)} tabIndex="-1">
+                      {showPassword ? <FiEyeOff /> : <FiEye />}
+                    </button>
+                  </div>
                   {errors.password && <div className="form-error">{errors.password}</div>}
                 </div>
                 <div className="form-group">
-                  <label className="form-label" htmlFor="reg-confirm">Confirm Password</label>
-                  <input id="reg-confirm" name="confirm_password" type="password" className={`form-control ${errors.confirm_password ? 'is-invalid' : ''}`}
-                    placeholder="Repeat password" value={form.confirm_password} onChange={handleChange} />
+                  <label className={styles.customPasswordLabel} htmlFor="reg-confirm">CONFIRM PASSWORD</label>
+                  <div className={styles.passwordInputContainer}>
+                    <input id="reg-confirm" name="confirm_password" type={showConfirmPassword ? "text" : "password"} className={`${styles.customPasswordInput} ${errors.confirm_password ? 'is-invalid' : ''}`}
+                      placeholder="Repeat password" value={form.confirm_password} onChange={handleChange} />
+                    <button type="button" className={styles.passwordToggle} onClick={() => setShowConfirmPassword(!showConfirmPassword)} tabIndex="-1">
+                      {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                    </button>
+                  </div>
                   {errors.confirm_password && <div className="form-error">{errors.confirm_password}</div>}
                 </div>
               </>
