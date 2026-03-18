@@ -1,0 +1,7 @@
+@import '../../variables';
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+}
+.profileForm { display: flex; flex-direction: column; gap: $space-4; }

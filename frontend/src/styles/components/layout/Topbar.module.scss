@@ -1,0 +1,211 @@
+@import '../../variables';
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky - 1;
+  height: $topbar-height;
+  background: $color-white;
+  border-bottom: 1px solid $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-6;
+  gap: $space-4;
+  box-shadow: $shadow-xs;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex: 1;
+}
+
+.menuBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: $color-text-secondary;
+  padding: $space-2;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover { background: $color-bg; color: $color-text-primary; }
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  background: $color-bg;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-lg;
+  padding: $space-2 $space-4;
+  flex: 1;
+  max-width: 480px;
+  cursor: text;
+  transition: all $transition-fast;
+
+  &:focus-within {
+    border-color: $color-primary;
+    background: $color-white;
+    box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+  }
+}
+
+.searchIcon { font-size: 0.9rem; color: $color-text-tertiary; }
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  &::placeholder { color: $color-text-tertiary; }
+}
+
+.searchShortcut {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  background: $color-border;
+  padding: 2px 6px;
+  border-radius: $radius-sm;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex-shrink: 0;
+}
+
+.marketBadge {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  @media (max-width: #{$breakpoint-md}) { display: none; }
+}
+
+.marketDot {
+  width: 8px;
+  height: 8px;
+  background: $color-success;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 135, 90, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(0, 135, 90, 0); }
+}
+
+.marketLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-success;
+
+  @media (max-width: #{$breakpoint-lg}) { display: none; }
+}
+
+.indexChip {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  background: $color-bg;
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+
+  @media (max-width: #{$breakpoint-md}) { display: none; }
+}
+
+.indexName {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-text-tertiary;
+}
+
+.indexValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.indexChange {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.iconBtn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  text-decoration: none;
+  color: $color-text-secondary;
+  transition: all $transition-fast;
+
+  &:hover { background: $color-primary-light; border-color: $color-primary; color: $color-primary; }
+}
+
+.notifBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background: $color-danger;
+  color: $color-white;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $color-white;
+}
+
+.profileBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  text-decoration: none;
+  padding: $space-1 $space-3 $space-1 $space-1;
+  border-radius: $radius-full;
+  border: 1px solid $color-border;
+  background: $color-white;
+  transition: all $transition-fast;
+
+  &:hover { border-color: $color-primary; background: $color-primary-light; }
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $gradient-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-white;
+}
+
+.profileName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+
+  @media (max-width: #{$breakpoint-md}) { display: none; }
+}

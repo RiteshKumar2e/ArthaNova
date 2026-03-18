@@ -1,0 +1,147 @@
+@import '../../variables';
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-sticky;
+  background: transparent;
+  transition: background $transition-base, box-shadow $transition-base;
+  padding: 0 $space-6;
+
+  &.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: $shadow-sm;
+
+    .navLink { color: $color-text-primary; }
+    .brandName { color: $color-text-primary; }
+    .brandIcon { color: $color-primary; }
+    
+    .hamburger span { background: $color-text-primary; }
+  }
+}
+
+.container {
+  max-width: $content-max-width;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  gap: $space-8;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brandIcon {
+  font-size: 1.5rem;
+  color: #60A5FA;
+  line-height: 1;
+}
+
+.brandName {
+  font-family: $font-heading;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-white;
+  transition: color $transition-fast;
+}
+
+.navLinks {
+  display: flex;
+  list-style: none;
+  gap: $space-1;
+  flex: 1;
+  justify-content: center;
+
+  @media (max-width: #{$breakpoint-lg}) {
+    display: none;
+  }
+}
+
+.navLink {
+  padding: $space-2 $space-4;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $color-white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-shrink: 0;
+
+  @media (max-width: #{$breakpoint-lg}) {
+    display: none;
+  }
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $space-2;
+  margin-left: auto;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: $color-white;
+    border-radius: $radius-full;
+    transition: all $transition-fast;
+  }
+
+  @media (max-width: #{$breakpoint-lg}) {
+    display: flex;
+  }
+}
+
+.mobileMenu {
+  background: $color-white;
+  border-top: 1px solid $color-border;
+  padding: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.mobileLink {
+  display: block;
+  padding: $space-3 $space-4;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  border-radius: $radius-md;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-bg; }
+}
+
+.mobileActions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-top: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $color-border;
+}

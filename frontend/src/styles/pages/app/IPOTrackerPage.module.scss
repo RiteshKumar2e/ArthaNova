@@ -1,0 +1,7 @@
+@import '../../variables';
+
+.ipoContainer {
+  display: flex;
+  flex-direction: column;
+}
+.ipoGrid { display: grid; gap: $space-4; }

@@ -1,0 +1,510 @@
+/* ArthaNova — Global Styles */
+@import './variables';
+
+/* ─── CSS Reset & Base ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: 1.6;
+  color: $color-text-primary;
+  background-color: $color-bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
+  font-weight: $font-weight-bold;
+  line-height: 1.2;
+  color: $color-text-primary;
+}
+
+h1 { font-size: $font-size-3xl; }
+h2 { font-size: $font-size-2xl; }
+h3 { font-size: $font-size-xl; }
+h4 { font-size: $font-size-lg; }
+h5 { font-size: $font-size-md; }
+h6 { font-size: $font-size-base; }
+
+p { line-height: 1.7; color: $color-text-secondary; }
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-fast;
+  &:hover { color: $color-primary-dark; }
+}
+
+/* ─── Utility Classes ───────────────────────────────────────────────────── */
+.text-primary { color: $color-primary !important; }
+.text-success { color: $color-success !important; }
+.text-danger { color: $color-danger !important; }
+.text-warning { color: $color-warning !important; }
+.text-secondary { color: $color-text-secondary !important; }
+.text-muted { color: $color-text-tertiary !important; }
+
+.bg-primary { background-color: $color-primary !important; }
+.bg-success { background-color: $color-success !important; }
+.bg-surface { background-color: $color-surface !important; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-success { background: $color-success-light; color: $color-success; }
+.badge-danger  { background: $color-danger-light;  color: $color-danger; }
+.badge-warning { background: $color-warning-light; color: $color-warning; }
+.badge-info    { background: $color-info-light;    color: $color-info; }
+.badge-primary { background: $color-primary-light; color: $color-primary; }
+
+/* ─── Cards ─────────────────────────────────────────────────────────────── */
+.card {
+  background: $color-surface;
+  border-radius: $radius-lg;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-sm;
+  padding: $space-6;
+  transition: box-shadow $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-4;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid $color-border;
+}
+
+/* ─── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: $space-3 $space-6;
+  border-radius: $radius-md;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  line-height: 1;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all $transition-fast;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background: $gradient-primary;
+  color: $color-white;
+  border-color: $color-primary;
+  box-shadow: 0 2px 8px rgba(0, 82, 204, 0.3);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 4px 16px rgba(0, 82, 204, 0.4);
+    transform: translateY(-1px);
+    color: $color-white;
+  }
+}
+
+.btn-secondary {
+  background: $color-white;
+  color: $color-primary;
+  border-color: $color-primary;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-light;
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: $color-text-secondary;
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    background: $color-bg;
+    color: $color-text-primary;
+  }
+}
+
+.btn-danger {
+  background: $color-danger;
+  color: $color-white;
+  border-color: $color-danger;
+
+  &:hover:not(:disabled) {
+    background: darken(#DE350B, 8%);
+  }
+}
+
+.btn-success {
+  background: $color-success;
+  color: $color-white;
+  border-color: $color-success;
+}
+
+.btn-sm {
+  padding: $space-2 $space-4;
+  font-size: $font-size-xs;
+}
+
+.btn-lg {
+  padding: $space-4 $space-8;
+  font-size: $font-size-md;
+  border-radius: $radius-lg;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: $radius-md;
+}
+
+.btn-full { width: 100%; }
+
+/* ─── Form Elements ─────────────────────────────────────────────────────── */
+.form-group {
+  margin-bottom: $space-5;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: $space-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.form-control {
+  width: 100%;
+  padding: $space-3 $space-4;
+  border: 1.5px solid $color-border;
+  border-radius: $radius-md;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  background: $color-white;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  outline: none;
+  line-height: 1.5;
+
+  &::placeholder { color: $color-text-tertiary; }
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.12);
+  }
+
+  &:invalid.touched,
+  &.is-invalid {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba(222, 53, 11, 0.1);
+  }
+}
+
+.form-error {
+  margin-top: $space-1;
+  font-size: $font-size-xs;
+  color: $color-danger;
+}
+
+/* ─── Table Styles ──────────────────────────────────────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: $radius-lg;
+  border: 1px solid $color-border;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+
+  thead {
+    background: $color-bg;
+    tr th {
+      padding: $space-3 $space-4;
+      text-align: left;
+      font-weight: $font-weight-semibold;
+      color: $color-text-secondary;
+      font-size: $font-size-xs;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid $color-border;
+      white-space: nowrap;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $color-border;
+      transition: background $transition-fast;
+
+      &:last-child { border-bottom: none; }
+      &:hover { background: $color-bg-alt; }
+
+      td {
+        padding: $space-3 $space-4;
+        color: $color-text-primary;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+/* ─── Metric Cards ──────────────────────────────────────────────────────── */
+.metric-card {
+  background: $color-surface;
+  border-radius: $radius-lg;
+  border: 1px solid $color-border;
+  padding: $space-5;
+  box-shadow: $shadow-sm;
+
+  .metric-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-tertiary;
+    margin-bottom: $space-2;
+  }
+
+  .metric-value {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    font-family: $font-heading;
+    color: $color-text-primary;
+    line-height: 1;
+    margin-bottom: $space-1;
+  }
+
+  .metric-change {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+
+    &.positive { color: $color-success; }
+    &.negative { color: $color-danger; }
+  }
+}
+
+/* ─── Loading & Skeletons ───────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, $color-border 25%, lighten($color-border, 5%) 50%, $color-border 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: $radius-md;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid $color-border;
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Change Indicators ─────────────────────────────────────────────────── */
+.change-positive { color: $color-success; }
+.change-negative { color: $color-danger; }
+.change-neutral  { color: $color-text-tertiary; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: $color-border-strong;
+  border-radius: $radius-full;
+  &:hover { background: $color-text-tertiary; }
+}
+
+/* ─── Page Layout ───────────────────────────────────────────────────────── */
+.page-wrapper {
+  padding: $space-6;
+  max-width: $content-max-width;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: $space-6;
+  flex-wrap: wrap;
+  gap: $space-4;
+
+  .page-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: $space-1;
+  }
+
+  .page-subtitle {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+/* ─── Grid Layouts ──────────────────────────────────────────────────────── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-6;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-5;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-5;
+}
+
+@media (max-width: #{$breakpoint-lg}) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: #{$breakpoint-md}) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .page-wrapper { padding: $space-4; }
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
+.animate-fadeInLeft { animation: fadeInLeft 0.4s ease forwards; }
+.animate-scaleIn { animation: scaleIn 0.3s ease forwards; }
+
+/* ─── Chip / Tag ────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  border: 1px solid $color-border;
+  background: $color-white;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: all $transition-fast;
+  gap: $space-1;
+
+  &:hover, &.active {
+    background: $color-primary-light;
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}
+
+/* ─── Section Divider ───────────────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: $color-border;
+  margin: $space-6 0;
+}
+
+/* ─── Empty State ───────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-16 $space-8;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: $space-4;
+    opacity: 0.4;
+  }
+
+  .empty-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $space-2;
+  }
+
+  .empty-desc {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    max-width: 320px;
+    line-height: 1.6;
+  }
+}

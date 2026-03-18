@@ -1,0 +1,7 @@
+@import '../../variables';
+
+.newsContainer {
+  display: flex;
+  flex-direction: column;
+}
+.newsGrid { display: grid; gap: $space-4; }

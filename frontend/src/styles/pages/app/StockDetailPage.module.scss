@@ -1,0 +1,7 @@
+@import '../../variables';
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+}
+.metricsGrid { display: grid; gap: $space-4; }

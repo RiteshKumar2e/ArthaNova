@@ -1,0 +1,329 @@
+@import '../../variables';
+
+/* ─── Split Auth Layout ─────────────────────────────────────────────────── */
+.authPage {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  min-height: 100vh;
+
+  @media (max-width: #{$breakpoint-lg}) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.authLeft {
+  background: $gradient-hero;
+  padding: $space-10;
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  @media (max-width: #{$breakpoint-lg}) {
+    display: none;
+  }
+}
+
+.authBrand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  position: relative;
+}
+
+.brandIcon {
+  font-size: 1.5rem;
+  color: #60A5FA;
+}
+
+.brandName {
+  font-family: $font-heading;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-white;
+}
+
+.authQuote {
+  position: relative;
+
+  blockquote {
+    font-size: $font-size-md;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.8;
+    font-style: italic;
+    margin-bottom: $space-3;
+  }
+
+  cite {
+    font-size: $font-size-sm;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.authFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin-top: auto;
+  position: relative;
+}
+
+.authFeature {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  span { font-size: 1.1rem; }
+}
+
+/* Step Indicator */
+.authStepIndicator {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  position: relative;
+}
+
+.authStep {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  transition: color $transition-fast;
+
+  &.activeStep { color: rgba(255, 255, 255, 0.9); }
+}
+
+.stepCircle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+
+  .activeStep & {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: $color-white;
+  }
+
+  .doneStep & {
+    background: $color-success;
+    border-color: $color-success;
+    color: $color-white;
+  }
+}
+
+/* ─── Auth Right Panel ──────────────────────────────────────────────────── */
+.authRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-8;
+  background: $color-bg;
+}
+
+.authCard {
+  width: 100%;
+  max-width: 480px;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  padding: $space-10;
+  box-shadow: $shadow-lg;
+  border: 1px solid $color-border;
+}
+
+.authTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $space-1;
+}
+
+.authSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $space-8;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  .form-group { margin-bottom: $space-5; }
+}
+
+.forgotLink {
+  float: right;
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+.rememberRow { margin-bottom: $space-5; }
+
+.checkLabel {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  cursor: pointer;
+
+  input { accent-color: $color-primary; }
+}
+
+.authActions {
+  display: flex;
+  gap: $space-3;
+  margin-top: $space-2;
+
+  .btn-primary { flex: 1; }
+}
+
+.demoBox {
+  margin-top: $space-5;
+  padding: $space-3 $space-4;
+  background: $color-primary-light;
+  border-radius: $radius-md;
+  font-size: $font-size-xs;
+  color: $color-primary;
+  border: 1px solid rgba(0, 82, 204, 0.2);
+}
+
+.authSwitch {
+  margin-top: $space-5;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+
+  a {
+    color: $color-primary;
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.termsNote {
+  margin-top: $space-4;
+  text-align: center;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+
+  a { color: $color-primary; text-decoration: none; }
+}
+
+/* Risk Profile Options */
+.riskOptions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-3;
+  margin-top: $space-2;
+}
+
+.riskOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-4;
+  border: 2px solid $color-border;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-fast;
+  text-align: center;
+
+  input { display: none; }
+
+  &.riskSelected {
+    border-color: $color-primary;
+    background: $color-primary-light;
+  }
+
+  &:hover:not(.riskSelected) { border-color: $color-border-strong; }
+}
+
+.riskIcon { font-size: 1.5rem; }
+
+.riskLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.riskDesc {
+  font-size: 10px;
+  color: $color-text-tertiary;
+  line-height: 1.4;
+}
+
+/* ─── Simple Auth (Forgot/Reset) ────────────────────────────────────────── */
+.simpleAuth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-bg;
+  padding: $space-6;
+}
+
+.simpleCard {
+  width: 100%;
+  max-width: 440px;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  padding: $space-10;
+  box-shadow: $shadow-lg;
+  border: 1px solid $color-border;
+}
+
+.simpleBrand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-heading;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  text-decoration: none;
+  margin-bottom: $space-8;
+
+  span { color: $color-primary; font-size: 1.25rem; }
+}
+
+.successBox {
+  text-align: center;
+  padding: $space-8 0;
+
+  h2 { font-size: $font-size-xl; margin-bottom: $space-3; }
+  p { font-size: $font-size-sm; color: $color-text-secondary; }
+}
+
+.successIcon { font-size: 3rem; margin-bottom: $space-4; }
