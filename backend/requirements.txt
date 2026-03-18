@@ -45,7 +45,7 @@ scikit-learn==1.4.2
 # Financial Data
 yfinance==0.2.38
 nsepython==2.9
-pandas-ta==0.3.14b0
+# pandas-ta
 
 # Background Tasks
 celery[redis]==5.4.0

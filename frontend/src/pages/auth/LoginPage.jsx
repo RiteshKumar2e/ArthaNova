@@ -49,6 +49,18 @@ export default function LoginPage() {
     }
   }
 
+  const handleDemoLogin = (type) => {
+    if (type === 'admin') {
+      setForm({ email: 'admin@arthanova.in', password: 'Admin@1234', remember_me: false })
+    } else if (type === 'analyst') {
+      setForm({ email: 'analyst@arthanova.in', password: 'Analyst@1234', remember_me: false })
+    } else {
+      setForm({ email: 'user@arthanova.in', password: 'Demo@1234', remember_me: false })
+    }
+    setErrors({})
+    toast(`Form filled for ${type}! Click Sign In.`, { icon: '📝' })
+  }
+
   return (
     <div className={styles.authPage}>
       <div className={styles.authLeft}>
@@ -134,9 +146,20 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Quick Demo Login */}
           <div className={styles.demoBox}>
-            <strong>Demo Access:</strong> demo@arthanova.in / Demo@1234
+            <p>Quick Access:</p>
+            <div className={styles.demoButtons}>
+              <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('user')}>
+                User
+              </button>
+              <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('analyst')}>
+                Analyst
+              </button>
+              <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('admin')}>
+                Admin
+              </button>
+            </div>
           </div>
 
           <p className={styles.authSwitch}>

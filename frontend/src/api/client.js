@@ -52,13 +52,13 @@ export default api
 // ─── API Modules ──────────────────────────────────────────────────────────────
 
 export const authAPI = {
-  register: (data) => api.post('/auth/register', data),
-  login: (data) => api.post('/auth/login', data),
-  logout: () => api.post('/auth/logout'),
-  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
-  resetPassword: (data) => api.post('/auth/reset-password', data),
-  changePassword: (data) => api.post('/auth/change-password', data),
-  me: () => api.get('/auth/me'),
+  login: (data) => api.post('/auth_debug/login', data),
+  register: (data) => api.post('/auth_debug/register', data),
+  logout: () => api.post('/auth_debug/logout'),
+  me: () => api.get('/auth_debug/me'),
+  forgotPassword: (email) => api.post('/auth_debug/forgot-password', { email }),
+  resetPassword: (data) => api.post('/auth_debug/reset-password', data),
+  changePassword: (data) => api.post('/auth_debug/change-password', data),
 }
 
 export const stocksAPI = {

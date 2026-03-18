@@ -19,7 +19,7 @@ from app.services.user_service import (
 )
 from app.models.user import User
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(prefix="/auth_debug", tags=["Authentication"])
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
@@ -44,24 +44,29 @@ async def register(data: UserRegisterRequest, db: AsyncSession = Depends(get_db)
 @router.post("/login", response_model=TokenResponse)
 async def login(data: UserLoginRequest, db: AsyncSession = Depends(get_db)):
     """Authenticate and get JWT tokens."""
-    user = await authenticate_user(db, data.email, data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
+    try:
+        user = await authenticate_user(db, data.email, data.password)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password",
+            )
+        if not user.is_active:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is deactivated")
+
+        await update_last_login(db, user)
+        token_data = {"sub": str(user.id), "email": user.email}
+
+        return TokenResponse(
+            access_token=create_access_token(token_data),
+            refresh_token=create_refresh_token(token_data),
+            token_type="bearer",
+            expires_in=3600,
         )
-    if not user.is_active:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is deactivated")
-
-    await update_last_login(db, user)
-    token_data = {"sub": str(user.id), "email": user.email}
-
-    return TokenResponse(
-        access_token=create_access_token(token_data),
-        refresh_token=create_refresh_token(token_data),
-        token_type="bearer",
-        expires_in=3600,
-    )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise e
 
 
 @router.post("/refresh", response_model=TokenResponse)
@@ -125,10 +130,13 @@ async def change_password(
     return MessageResponse(message="Password changed successfully")
 
 
-@router.get("/me", response_model=UserResponse)
-async def get_me(current_user: User = Depends(get_current_user)):
-    """Get current authenticated user profile."""
-    return current_user
+@router.get("/me")
+async def get_me():
+    """Bypassed Auth Check for Debugging."""
+    return {
+        "status": "debug_bypassed",
+        "message": "If you see this, 403 is coming from the dependency injection"
+    }
 
 
 @router.post("/logout", response_model=MessageResponse)

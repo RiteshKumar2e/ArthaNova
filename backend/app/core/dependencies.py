@@ -41,11 +41,19 @@ async def get_current_user(
     if not user_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
 
+    import logging
+    user_logger = logging.getLogger("arthanova.auth")
+    
     user = await get_user_by_id(db, int(user_id))
     if not user:
+        user_logger.error(f"🚨 AUTH FAILURE: User ID {user_id} not in database")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    
+    # Check is_active flag
     if not user.is_active:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is inactive")
+        user_logger.error(f"🚨 AUTH FAILURE: User {user.email} is INACTIVE (418 TRIGGERED)")
+        raise HTTPException(status_code=418, detail="Account is inactive")
+
     return user
 
 
