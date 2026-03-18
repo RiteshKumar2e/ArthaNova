@@ -10,38 +10,53 @@
 
 /* ── Design Tokens ──────────────────────────────────────── */
 :root {
-  /* Colors */
+  /* Colors - Core */
   --clr-bg:          #ffffff;
   --clr-bg-soft:     #f8fafc;
-  --clr-bg-dark:     #0b0b0f;
+  --clr-bg-alt:      #f1f5f9;
+  --clr-bg-dark:     #0f172a;
+  --clr-bg-pure:     #020617;
+  
   --clr-text:        #0f172a;
+  --clr-text-soft:   #334155;
   --clr-muted:       #64748b;
   --clr-border:      #e2e8f0;
+  --clr-border-soft: #f1f5f9;
+  
+  /* Modern Accent Palette */
   --clr-accent:      #2563eb;
   --clr-accent-lt:   #eff6ff;
-  --clr-accent-dark: #1d4ed8;
-  --clr-success:     #16a34a;
-  --clr-warning:     #d97706;
-  --clr-danger:      #dc2626;
+  --clr-accent-vivid: #3b82f6;
+  --clr-accent-pure: #6366f1; /* Indigo blend */
+  
+  --clr-success:     #10b981;
+  --clr-warning:     #f59e0b;
+  --clr-danger:      #ef4444;
   --clr-white:       #ffffff;
 
+  /* Surfaces & Glass */
+  --surface-1: rgba(255, 255, 255, 0.8);
+  --surface-2: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.4);
+
   /* Sidebar */
-  --sidebar-w: 272px;
+  --sidebar-w: 280px;
 
-  /* Radii */
-  --r-xs:  6px;
-  --r-sm:  10px;
-  --r-md:  14px;
-  --r-lg:  20px;
-  --r-xl:  28px;
-  --r-2xl: 40px;
+  /* Radii - More Modern */
+  --r-xs:  8px;
+  --r-sm:  12px;
+  --r-md:  16px;
+  --r-lg:  24px;
+  --r-xl:  32px;
+  --r-2xl: 48px;
 
-  /* Shadows */
-  --shadow-xs:  0 1px 3px rgba(0,0,0,.06);
-  --shadow-sm:  0 2px 8px rgba(0,0,0,.07);
-  --shadow-md:  0 4px 20px rgba(0,0,0,.09);
-  --shadow-lg:  0 8px 40px rgba(0,0,0,.12);
-  --shadow-xl:  0 20px 60px rgba(0,0,0,.16);
+  /* Shadows - Premium Elevation */
+  --shadow-xs:  0 1px 2px rgba(0,0,0,.04);
+  --shadow-sm:  0 2px 12px rgba(0,0,0,.06);
+  --shadow-md:  0 8px 30px rgba(0,0,0,.08);
+  --shadow-lg:  0 12px 50px rgba(0,0,0,.1);
+  --shadow-xl:  0 32px 80px rgba(0,0,0,.14);
+  --shadow-accent: 0 10px 30px rgba(37, 99, 235, 0.2);
 
   /* Typography */
   --font-display: 'Outfit', sans-serif;

@@ -22,49 +22,45 @@ export default function FeedPage() {
 
   return (
     <DashboardLayout>
-      <div className="dash-welcome" style={{ marginBottom: '32px' }}>
+      <div className="dash-welcome">
         <div className="dash-welcome__text">
           <h1>Intelligence Feed</h1>
           <p>Real-time synthesis curated for your market profile.</p>
         </div>
-        <div className="input-group" style={{ maxWidth: '320px', display: 'block' }}>
-          <div className="auth-input-wrap">
-            <span className="auth-input-icon"><Search size={18} /></span>
+        <div style={{ maxWidth: '360px', width: '100%' }}>
+          <div className="intel-textarea-wrap" style={{ height: '48px', padding: '0 20px', display: 'flex', alignItems: 'center' }}>
+            <Search size={18} style={{ color: 'var(--clr-muted)', marginRight: '12px' }} />
             <input 
               placeholder="Search narratives..." 
-              className="auth-input" 
-              style={{ background: '#fff' }}
+              style={{ border: 'none', background: 'transparent', width: '100%', outline: 'none', fontWeight: 600, fontSize: '0.875rem' }}
             />
           </div>
         </div>
       </div>
 
       {/* Persona Selector */}
-      <div className="stats-grid" style={{ marginBottom: '48px' }}>
+      <div className="persona-switcher">
         {PERSONAS.map((persona) => (
           <button
             key={persona.id}
             onClick={() => setSelectedPersona(persona.label)}
-            className="card"
-            style={{ 
-              background: selectedPersona === persona.label ? 'var(--clr-text)' : '#fff',
-              borderColor: selectedPersona === persona.label ? 'var(--clr-text)' : 'var(--clr-border)',
-              color: selectedPersona === persona.label ? '#fff' : 'var(--clr-text)',
-              display: 'flex', flexDirection: 'column', justifyContent: 'space-between', textAlign: 'left',
-              height: '140px', padding: '24px', cursor: 'pointer'
-            }}
+            className={`persona-btn ${selectedPersona === persona.label ? 'persona-btn--active' : ''}`}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ fontSize: '1.5rem', background: selectedPersona === persona.label ? 'rgba(255,255,255,0.1)' : 'var(--clr-bg-soft)', width: '40px', height: '40px', borderRadius: '12px', display: 'flex', alignItems: 'center', justify_content: 'center' }}>
+              <div style={{ 
+                fontSize: '1.5rem', 
+                background: selectedPersona === persona.label ? 'rgba(255,255,255,0.1)' : 'var(--clr-bg-soft)', 
+                width: '42px', height: '42px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' 
+              }}>
                 {persona.icon}
               </div>
               {selectedPersona === persona.label && (
-                 <div className="badge-pulse" style={{ width: '6px', height: '6px', background: '#60a5fa', borderRadius: '50%', boxShadow: '0 0 8px #60a5fa' }} />
+                 <div className="badge-pulse" style={{ width: '8px', height: '8px', background: 'var(--clr-accent-vivid)', borderRadius: '50%', boxShadow: '0 0 12px var(--clr-accent-vivid)' }} />
               )}
             </div>
             <div>
-              <h3 style={{ fontSize: '0.875rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'inherit' }}>{persona.label}</h3>
-              <p style={{ fontSize: '0.7rem', color: selectedPersona === persona.label ? '#94a3b8' : 'var(--clr-muted)', fontWeight: 700, textTransform: 'uppercase' }}>{persona.desc}</p>
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 4px 0' }}>{persona.label}</h3>
+              <p style={{ fontSize: '0.65rem', opacity: 0.7, fontWeight: 700, textTransform: 'uppercase', margin: 0 }}>{persona.desc}</p>
             </div>
           </button>
         ))}
@@ -74,33 +70,33 @@ export default function FeedPage() {
       <div className="feed-grid">
         {loading ? (
            <div style={{ padding: '80px 0', textAlign: 'center' }}>
-              <div className="loader" style={{ width: '40px', height: '40px', border: '3px solid var(--clr-accent)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 24px' }} />
-              <p style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--clr-muted)' }}>Processing Intelligence...</p>
+              <Loader2 className="animate-spin" size={32} style={{ margin: '0 auto 20px', color: 'var(--clr-accent)' }} />
+              <p className="intel-tag" style={{ border: 'none' }}>Processing Intelligence...</p>
            </div>
         ) : (
           <AnimatePresence mode="popLayout">
             {feed.map((item, idx) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
+                transition={{ delay: idx * 0.05, duration: 0.5 }}
                 className="intelligence-card"
               >
                 <div className="intelligence-card__body">
-                  <div className="intelligence-card__meta" style={{ marginBottom: '24px' }}>
-                    <span className="badge" style={{ background: 'var(--clr-bg-soft)', color: 'var(--clr-muted)', border: '1px solid var(--clr-border)' }}>
+                  <div className="intelligence-card__meta">
+                    <span className="badge badge-indigo" style={{ padding: '6px 12px' }}>
                       {item.category}
                     </span>
-                    <div className="profile-meta-item" style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
-                       <Globe size={12} />
+                    <div className="intel-tag" style={{ border: 'none', background: 'transparent' }}>
+                       <Globe size={14} />
                        <span>{item.source}</span>
                     </div>
                     <div style={{ marginLeft: 'auto' }}>
-                       <span className="badge badge-yellow">
-                          <Zap size={12} fill="currentColor" style={{ marginRight: '4px' }} />
+                       <div className="badge badge-yellow" style={{ padding: '6px 12px' }}>
+                          <Zap size={14} fill="currentColor" />
                           {item.impact_score} Impact
-                       </span>
+                       </div>
                     </div>
                   </div>
 
@@ -113,24 +109,24 @@ export default function FeedPage() {
                     {item.summary}
                   </p>
 
-                  <div style={{ marginTop: '32px', paddingTop: '32px', borderTop: '1px solid var(--clr-bg-soft)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
-                    <div style={{ display: 'flex', gap: '32px' }}>
-                      <Link to="/briefings" className="btn-ghost" style={{ padding: 0, fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-                        <MessageSquare size={16} style={{ marginRight: '8px' }} color="var(--clr-accent)" />
+                  <div className="intelligence-card__footer">
+                    <div className="intelligence-card__actions">
+                      <Link to="/briefings" className="btn-ghost btn-sm" style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.7rem' }}>
+                        <MessageSquare size={16} color="var(--clr-accent)" />
                         Intelligence Q&A
                       </Link>
-                      <Link to="/vernacular" className="btn-ghost" style={{ padding: 0, fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-                        <Globe size={16} style={{ marginRight: '8px' }} />
+                      <Link to="/vernacular" className="btn-ghost btn-sm" style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.7rem' }}>
+                        <Globe size={16} />
                         Regional View
                       </Link>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <button className="btn-outline" style={{ width: '44px', height: '44px', padding: 0, borderRadius: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <button className="btn-outline" style={{ width: '44px', height: '44px', padding: 0, borderRadius: '14px' }}>
                         <Bookmark size={20} />
                       </button>
                       <Link to="/story-arc">
-                        <Button style={{ borderRadius: '12px', paddingLeft: '24px', paddingRight: '24px' }}>
-                          Deep Analysis <ChevronRight size={16} style={{ marginLeft: '4px' }} />
+                        <Button className="vivid-button" size="sm" style={{ borderRadius: '14px' }}>
+                          Deep Analysis <ChevronRight size={18} />
                         </Button>
                       </Link>
                     </div>
