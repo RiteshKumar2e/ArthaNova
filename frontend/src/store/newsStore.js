@@ -7,6 +7,8 @@ const useNewsStore = create((set) => ({
   feed: [],
   trending: [],
   saved: [],
+  arcs: [],
+  currentArc: null,
   currentArticle: null,
   loading: false,
   error: null,
@@ -24,10 +26,30 @@ const useNewsStore = create((set) => ({
   fetchArticle: async (id) => {
     set({ loading: true });
     try {
-      const response = await axios.get(`${API_URL}/news/articles/${id}`);
+      const response = await axios.get(`${API_URL}/news/${id}`);
       set({ currentArticle: response.data, loading: false });
     } catch (err) {
       set({ error: 'Failed to fetch article details', loading: false });
+    }
+  },
+
+  fetchArcs: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(`${API_URL}/news/arcs`);
+      set({ arcs: response.data, loading: false });
+    } catch (err) {
+      set({ error: 'Failed to fetch story arcs', loading: false });
+    }
+  },
+
+  fetchArcDetails: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(`${API_URL}/news/arcs/${id}`);
+      set({ currentArc: response.data, loading: false });
+    } catch (err) {
+      set({ error: 'Failed to fetch arc details', loading: false });
     }
   },
 

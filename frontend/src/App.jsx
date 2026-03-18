@@ -6,7 +6,7 @@ import RegisterPage from './pages/Auth/RegisterPage';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import FeedPage from './pages/News/FeedPage';
 import BriefingPage from './pages/AI/BriefingPage';
-import VideoGeneratorPage from './pages/Studio/VideoGeneratorPage';
+import VideoStudioPage from './pages/AI/VideoStudioPage';
 import VideoLibraryPage from './pages/Studio/VideoLibraryPage';
 import StoryTimelineView from './pages/News/StoryTimelineView';
 import EntityMapView from './pages/News/EntityMapView';
@@ -49,7 +49,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/briefings" element={<BriefingPage />} />
-        <Route path="/studio" element={<VideoGeneratorPage />} />
+        <Route path="/studio" element={<VideoStudioPage />} />
         <Route path="/library" element={<VideoLibraryPage />} />
         <Route path="/analysis/:id" element={<StoryTimelineView />} />
         <Route path="/map" element={<EntityMapView />} />

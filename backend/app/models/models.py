@@ -25,8 +25,10 @@ class Article(Base):
     source = Column(String)
     sentiment_score = Column(Float)
     impact_score = Column(String)
+    # persona_tags: investor, founder, student, etc. (CSV or JSON)
+    persona_tags = Column(String, default="investor")
     published_at = Column(DateTime, default=datetime.datetime.utcnow)
-    metadata_json = Column(JSON)
+    metadata_json = Column(JSON, default={})
 
 class Briefing(Base):
     __tablename__ = "briefings"
@@ -35,4 +37,28 @@ class Briefing(Base):
     title = Column(String)
     content = Column(Text)
     key_points = Column(JSON)
+    recommendations = Column(JSON)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+class StoryArc(Base):
+    __tablename__ = "story_arcs"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    description = Column(Text)
+    key_players = Column(JSON) # List of Entities
+    status = Column(String, default="Developing")
+    prediction = Column(Text)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    
+    events = relationship("StoryEvent", back_populates="arc")
+
+class StoryEvent(Base):
+    __tablename__ = "story_events"
+    id = Column(Integer, primary_key=True, index=True)
+    arc_id = Column(Integer, ForeignKey("story_arcs.id"))
+    title = Column(String)
+    description = Column(Text)
+    sentiment = Column(Float)
+    event_date = Column(DateTime)
+    
+    arc = relationship("StoryArc", back_populates="events")

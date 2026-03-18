@@ -115,20 +115,20 @@ export default function FeedPage() {
 
                   <div style={{ marginTop: '32px', paddingTop: '32px', borderTop: '1px solid var(--clr-bg-soft)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
                     <div style={{ display: 'flex', gap: '32px' }}>
-                      <button className="btn-ghost" style={{ padding: 0, fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
-                        <MessageSquare size={16} style={{ marginRight: '8px' }} />
+                      <Link to="/briefings" className="btn-ghost" style={{ padding: 0, fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
+                        <MessageSquare size={16} style={{ marginRight: '8px' }} color="var(--clr-accent)" />
                         Intelligence Q&A
-                      </button>
-                      <button className="btn-ghost" style={{ padding: 0, fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
+                      </Link>
+                      <Link to="/vernacular" className="btn-ghost" style={{ padding: 0, fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
                         <Globe size={16} style={{ marginRight: '8px' }} />
                         Regional View
-                      </button>
+                      </Link>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <button className="btn-outline" style={{ width: '44px', height: '44px', padding: 0, borderRadius: '12px' }}>
                         <Bookmark size={20} />
                       </button>
-                      <Link to={`/analysis/${item.id}`}>
+                      <Link to="/story-arc">
                         <Button style={{ borderRadius: '12px', paddingLeft: '24px', paddingRight: '24px' }}>
                           Deep Analysis <ChevronRight size={16} style={{ marginLeft: '4px' }} />
                         </Button>

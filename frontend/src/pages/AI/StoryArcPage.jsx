@@ -1,30 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Network, History, Share2, TrendingUp, AlertCircle, ChevronRight, Activity, Target, Zap } from 'lucide-react';
-import { clsx } from 'clsx';
+import { Network, History, Share2, TrendingUp, AlertCircle, ChevronRight, Activity, Target, Zap, Loader2 } from 'lucide-react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import Button from '../../components/ui/Button';
-
-const timelineEvents = [
-  { date: 'Oct 2025', title: 'Initial Concept Leak', desc: 'First reports of NVIDIA\'s next-gen Blackwell architecture surfacing from supply chain partners.', status: 'past' },
-  { date: 'Dec 2025', title: 'Policy Shift', desc: 'EU AI Act updates specific requirements for massive compute clusters.', status: 'past' },
-  { date: 'Feb 2026', title: 'Production Kickoff', desc: 'TSMC confirms capacity allocation for custom silicon orders.', status: 'past' },
-  { date: 'Present', title: 'Global Rollout', desc: 'Primary synthesis of today\'s news showing immediate market adoption.', status: 'current' },
-  { date: 'June 2026', title: 'Predicted Impact', desc: 'AI synthesis points to a significant shift in cloud provider margins.', status: 'future' },
-];
+import useNewsStore from '../../store/newsStore';
+import useAIStore from '../../store/aiStore';
 
 export default function StoryArcPage() {
+  const { arcs, fetchArcs, loading } = useNewsStore();
+  const { storyPrediction, fetchStoryPrediction } = useAIStore();
+  const [selectedArc, setSelectedArc] = useState(null);
+
+  useEffect(() => {
+    fetchArcs();
+  }, [fetchArcs]);
+
+  useEffect(() => {
+    if (arcs && arcs.length > 0 && !selectedArc) {
+      setSelectedArc(arcs[0]);
+    }
+  }, [arcs, selectedArc]);
+
+  useEffect(() => {
+    if (selectedArc) {
+      fetchStoryPrediction(selectedArc.title);
+    }
+  }, [selectedArc, fetchStoryPrediction]);
+
+  if (loading && !selectedArc) {
+    return (
+      <DashboardLayout>
+        <div style={{ padding: '100px 0', textAlign: 'center' }}>
+          <Loader2 className="animate-spin" size={48} style={{ margin: '0 auto 24px', color: 'var(--clr-accent)' }} />
+          <p>Navigating narrative arcs...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  const currentArc = selectedArc || (arcs && arcs[0]);
+
   return (
     <DashboardLayout>
       <div className="page-header-area">
         <div className="page-header-text">
-          <h1 className="page-title">Story Arc Intelligence</h1>
-          <p className="page-subtitle">Visualizing the evolution and causal chain of complex market narratives.</p>
+          <h1 className="page-title">Story Arc Tracker</h1>
+          <p className="page-subtitle">AI-powered causal chain visualization for ongoing business narratives.</p>
         </div>
         <div className="page-header-actions">
            <div className="status-chip status-chip--active">
              <Activity size={16} />
-             Live Tracking
+             {currentArc?.status || 'Live Tracking'}
           </div>
         </div>
       </div>
@@ -38,34 +64,50 @@ export default function StoryArcPage() {
             </div>
             
             <h2 className="arc-section-label">
-               Market Logic Chain
+               {currentArc?.title || 'Interactive Visual Narrative'}
             </h2>
             
             <div className="arc-timeline-container">
               <div className="arc-timeline-track" />
               
               <div className="arc-timeline-events">
-                {timelineEvents.map((event, idx) => (
+                {currentArc?.events?.map((event, idx) => (
                   <motion.div
-                    key={idx}
+                    key={event.id}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
                     className="arc-event-row group"
                   >
-                    <div className={`arc-event-date-box arc-event-date-box--${event.status}`}>
+                    <div className={`arc-event-date-box arc-event-date-box--past`}>
                       <span className="arc-event-date-text">
-                        {event.date.split(' ').map((s, i) => <div key={i}>{s}</div>)}
+                        {new Date(event.event_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
 
-                    <div className={`arc-event-details arc-event-details--${event.status}`}>
+                    <div className={`arc-event-details`}>
                       <h3 className="arc-event-title">{event.title}</h3>
-                      <p className="arc-event-desc">{event.desc}</p>
+                      <p className="arc-event-desc">{event.description}</p>
                     </div>
                   </motion.div>
                 ))}
+                
+                {/* AI Predicted Future Event */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  className="arc-event-row group"
+                  style={{ borderLeft: '2px dashed var(--clr-accent)', marginLeft: '-2px' }}
+                >
+                  <div className="arc-event-date-box arc-event-date-box--future">
+                    <span className="arc-event-date-text">Next <div>Move</div></span>
+                  </div>
+                  <div className="arc-event-details arc-event-details--future">
+                    <h3 className="arc-event-title">AI Projected Outcome</h3>
+                    <p className="arc-event-desc">{currentArc?.prediction || 'Analyzing historical patterns for predictive shift...'}</p>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -73,11 +115,11 @@ export default function StoryArcPage() {
           <div className="arc-insight-banner">
             <div className="arc-insight-glow" />
             <h3 className="arc-insight-title">
-              <Target size={24} />
-              Strategic Causal Loop
+              <Zap size={24} style={{ fill: '#60a5fa', color: '#60a5fa' }} />
+              Interactive Intelligence Briefing
             </h3>
             <p className="arc-insight-text">
-              Our AI model identifies a <strong>72.4% probability</strong> of a secondary ripple effect in the Sovereign AI sector by Q4. Historically, such technical decoupling precedes a surge in regional hardware demand.
+              {storyPrediction || 'Calculating contrarian perspectives and sentiment shifts...'}
             </p>
           </div>
         </div>
@@ -87,28 +129,22 @@ export default function StoryArcPage() {
           <div className="arc-side-card">
             <h3 className="arc-side-title">
               <Network size={20} />
-              Entity Connectivity
+              Key Players Mapped
             </h3>
             <div className="arc-entity-list">
-              {[
-                { name: 'NVDA', score: 'Strong', type: 'success', val: 92 },
-                { name: 'TSM', score: 'Critical', type: 'accent', val: 88 },
-                { name: 'ASML', score: 'Emerging', type: 'indigo', val: 65 },
-                { name: 'ARM', score: 'Neutral', type: 'muted', val: 51 }
-              ].map(entity => (
+              {currentArc?.key_players?.map(entity => (
                 <div key={entity.name} className="arc-entity-item">
                   <div className="arc-entity-header">
                     <span className="arc-entity-name">{entity.name}</span>
-                    <span className={`arc-entity-badge arc-entity-badge--${entity.type}`}>
-                       {entity.score}
+                    <span className={`arc-entity-badge arc-entity-badge--accent`}>
+                       {entity.role}
                     </span>
                   </div>
                   <div className="arc-progress-track">
                     <motion.div 
                       initial={{ width: 0 }}
-                      whileInView={{ width: `${entity.val}%` }}
-                      viewport={{ once: true }}
-                      className={`arc-progress-bar arc-progress-bar--${entity.type}`}
+                      animate={{ width: `${Math.random() * 40 + 60}%` }}
+                      className={`arc-progress-bar arc-progress-bar--accent`}
                     />
                   </div>
                 </div>
@@ -120,10 +156,10 @@ export default function StoryArcPage() {
              <div className="arc-signal-glow" />
              <div className="arc-signal-header">
                <AlertCircle size={20} />
-               <span>Contrarian Signal</span>
+               <span>Contrarian Perspective</span>
              </div>
              <p className="arc-signal-text">
-               "While consensus anticipates indefinite growth, our deep data nodes suggest 'AI Fatigue' in enterprise POCs may slow acquisition by late 2026."
+               "Sentiment shifts tracked by ArthaNova suggest that despite platform fee hikes, retention remains anomalously high in suburban corridors."
              </p>
           </div>
 

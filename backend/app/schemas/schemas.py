@@ -24,7 +24,28 @@ class ArticleResponse(BaseModel):
     source: str
     sentiment_score: float
     impact_score: str
+    persona_tags: str
     published_at: datetime
+    class Config:
+        from_attributes = True
+
+class StoryEventResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    sentiment: float
+    event_date: datetime
+    class Config:
+        from_attributes = True
+
+class StoryArcResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    key_players: List[dict]
+    status: str
+    prediction: str
+    events: List[StoryEventResponse] = []
     class Config:
         from_attributes = True
 
