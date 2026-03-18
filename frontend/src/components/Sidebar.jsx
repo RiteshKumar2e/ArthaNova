@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
+import BrandLogo from './ui/BrandLogo';
+
 const MENU_ITEMS = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
   { icon: BarChart3, label: 'Intelligence Feed', path: '/feed' },
@@ -31,17 +33,24 @@ export default function Sidebar() {
   return (
     <aside className="sidebar-container">
       {/* Brand */}
-      <div className="sidebar-logo">
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div className="sidebar-logo-icon">
-            <Zap size={20} fill="#60a5fa" />
-          </div>
-          <span className="sidebar-logo-text">ArthaNova</span>
-        </Link>
+      <div style={{ padding: '28px 20px 24px' }}>
+        <BrandLogo variant="dark" size={18} />
       </div>
 
       <div style={{ padding: '0 0 20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <p className="sidebar-section-label">Intelligence Console</p>
+        <p className="sidebar-section-label" style={{ 
+          fontSize: '0.6rem', 
+          fontWeight: 800, 
+          letterSpacing: '0.12em', 
+          color: '#cbd5e1', 
+          padding: '12px 20px 8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{ width: '4px', height: '4px', background: '#60a5fa', borderRadius: '50%' }}></span>
+          INTELLIGENCE CONSOLE
+        </p>
         
         {/* Navigation */}
         <nav style={{ padding: '0 10px', display: 'flex', flexDirection: 'column', gap: '2px' }}>

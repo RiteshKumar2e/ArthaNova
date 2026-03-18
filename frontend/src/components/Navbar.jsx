@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 
+import BrandLogo from './ui/BrandLogo';
+
 const LANDING_LINKS = [
   { label: 'HOME',         to: '/' },
   { label: 'ABOUT',        to: '#about' },
@@ -15,8 +17,8 @@ const LANDING_LINKS = [
 
 const DASHBOARD_LINKS = [
   { label: 'Feed',         to: '/feed' },
-  { label: 'Trending',     to: '/trending' },
-  { label: 'AI Briefings', to: '/briefings' },
+  { icon: Zap, label: 'AI Briefings', to: '/briefings' },
+  { label: 'Market Pulse', to: '/trending' },
   { label: 'Video Studio', to: '/studio' },
 ];
 
@@ -43,12 +45,7 @@ export default function Navbar() {
     >
       <div className="lp-nav__inner">
         {/* Logo */}
-        <Link to="/" className="lp-nav__logo">
-          <div className="lp-nav__logo-icon">
-            <Zap size={16} fill="currentColor" />
-          </div>
-          <span className="lp-nav__logo-text">ArthaNova</span>
-        </Link>
+        <BrandLogo variant="dark" size={16} />
 
         {/* Desktop links - Centered */}
         <ul className="lp-nav__links">
