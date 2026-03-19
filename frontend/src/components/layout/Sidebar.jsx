@@ -9,9 +9,9 @@ const NAV_ITEMS = [
     { to: '/stocks', icon: '🔍', label: 'Stock Explorer', roles: ['user', 'admin'] },
   ]},
   { section: 'Personal', items: [
-    { to: '/portfolio', icon: '💼', label: 'Portfolio', roles: ['user'] },
-    { to: '/watchlist', icon: '⭐', label: 'Watchlist', roles: ['user'] },
-    { to: '/ai-chat', icon: '🤖', label: 'AI Chat', roles: ['user'] },
+    { to: '/portfolio', icon: '💼', label: 'Portfolio', roles: ['user', 'admin'] },
+    { to: '/watchlist', icon: '⭐', label: 'Watchlist', roles: ['user', 'admin'] },
+    { to: '/ai-chat', icon: '🤖', label: 'AI Chat', roles: ['user', 'admin'] },
   ]},
   { section: 'Tools', items: [
     { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },

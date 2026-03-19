@@ -5,10 +5,10 @@ import styles from '../../styles/components/layout/Navbar.module.scss'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
-  { to: '#about', label: 'About' },
-  { to: '#features', label: 'Features' },
-  { to: '#how-it-works', label: 'How It Works' },
-  { to: '#contact', label: 'Contact' },
+  { to: '/#about', label: 'About' },
+  { to: '/#features', label: 'Features' },
+  { to: '/#how-it-works', label: 'How It Works' },
+  { to: '/#contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
@@ -41,7 +41,7 @@ export default function Navbar() {
         <ul className={styles.navLinks}>
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
-              <a href={link.to} className={styles.navLink}>{link.label}</a>
+              <Link to={link.to} className={styles.navLink}>{link.label}</Link>
             </li>
           ))}
         </ul>
@@ -75,9 +75,9 @@ export default function Navbar() {
       {menuOpen && (
         <div className={styles.mobileMenu}>
           {NAV_LINKS.map((link) => (
-            <a key={link.label} href={link.to} className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
+            <Link key={link.label} to={link.to} className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
               {link.label}
-            </a>
+            </Link>
           ))}
           <div className={styles.mobileActions}>
             {isAuthenticated ? (

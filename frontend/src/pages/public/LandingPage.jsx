@@ -138,6 +138,44 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── AI Highlight (About) ─────────────────────────────────────────── */}
+      <section className={styles.aiSection} id="about">
+        <div className={styles.sectionContainer}>
+          <div className={styles.aiGrid}>
+            <div className={styles.aiContent}>
+              <div className={styles.sectionBadge}>AI Intelligence Layer</div>
+              <h2>Your Always-On AI Analyst</h2>
+              <p>
+                Ask market questions in plain English. Get answers grounded in real filings, news, 
+                and technical data — with sources cited so you can verify every insight.
+              </p>
+              <ul className={styles.aiFeatureList}>
+                <li>✅ Multi-step reasoning with portfolio context</li>
+                <li>✅ RAG from NSE filings, news, and technical data</li>
+                <li>✅ Explainable signals with confidence scores</li>
+                <li>✅ Comparison: XYZ vs peers in sector</li>
+                <li>✅ Risk-reward framing for every insight</li>
+              </ul>
+              <Link to="/register" className="btn btn-primary btn-lg" id="ai-cta-btn">
+                Try AI Chat Free
+              </Link>
+            </div>
+            <div className={styles.aiChatPreview}>
+              <div className={styles.chatBubbleUser}>
+                Is BAJFINANCE a good buy right now? How does it compare to HDFC Bank?
+              </div>
+              <div className={styles.chatBubbleAI}>
+                <span className={styles.aiLabel}>🤖 ArthaNova AI</span>
+                Based on your portfolio context and current market data, BAJFINANCE shows a compelling setup — RSI at 52 (neutral, room to run), recent insider purchases of ₹45 Cr, and Q3 earnings beat by 8%. Compared to HDFC Bank (P/E: 19x), BAJFINANCE trades at 28x — a premium warranted by its 28% ROE. Key risk: asset quality divergence from peers. 
+                <br /><br />
+                <strong>Signal: Buy on dips near ₹6,800 support. Target ₹8,200 (20% upside, 6M horizon).</strong>
+                <br /><span className={styles.aiSources}>📋 Sources: Q3 Results, BSE Filing 14-Jan-2025, Analyst Report</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Features ─────────────────────────────────────────────────────── */}
       <section className={styles.features} id="features">
         <div className={styles.sectionContainer}>
@@ -183,46 +221,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── AI Highlight ─────────────────────────────────────────────────── */}
-      <section className={styles.aiSection}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.aiGrid}>
-            <div className={styles.aiContent}>
-              <div className={styles.sectionBadge}>AI Intelligence Layer</div>
-              <h2>Your Always-On AI Analyst</h2>
-              <p>
-                Ask market questions in plain English. Get answers grounded in real filings, news, 
-                and technical data — with sources cited so you can verify every insight.
-              </p>
-              <ul className={styles.aiFeatureList}>
-                <li>✅ Multi-step reasoning with portfolio context</li>
-                <li>✅ RAG from NSE filings, news, and technical data</li>
-                <li>✅ Explainable signals with confidence scores</li>
-                <li>✅ Comparison: XYZ vs peers in sector</li>
-                <li>✅ Risk-reward framing for every insight</li>
-              </ul>
-              <Link to="/register" className="btn btn-primary btn-lg" id="ai-cta-btn">
-                Try AI Chat Free
-              </Link>
-            </div>
-            <div className={styles.aiChatPreview}>
-              <div className={styles.chatBubbleUser}>
-                Is BAJFINANCE a good buy right now? How does it compare to HDFC Bank?
-              </div>
-              <div className={styles.chatBubbleAI}>
-                <span className={styles.aiLabel}>🤖 ArthaNova AI</span>
-                Based on your portfolio context and current market data, BAJFINANCE shows a compelling setup — RSI at 52 (neutral, room to run), recent insider purchases of ₹45 Cr, and Q3 earnings beat by 8%. Compared to HDFC Bank (P/E: 19x), BAJFINANCE trades at 28x — a premium warranted by its 28% ROE. Key risk: asset quality divergence from peers. 
-                <br /><br />
-                <strong>Signal: Buy on dips near ₹6,800 support. Target ₹8,200 (20% upside, 6M horizon).</strong>
-                <br /><span className={styles.aiSources}>📋 Sources: Q3 Results, BSE Filing 14-Jan-2025, Analyst Report</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ─── Testimonials ─────────────────────────────────────────────────── */}
-      <section className={styles.testimonials}>
+      <section className={styles.testimonials} id="testimonials">
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionBadge}>Testimonials</div>
@@ -248,6 +248,47 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── Contact ──────────────────────────────────────────────────────── */}
+      <section className={styles.contact} id="contact">
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <div className={styles.sectionBadge}>Support</div>
+            <h2>Let's Talk Markets</h2>
+            <p>Our support team and AI analysts are here to help you navigate the Indian equity landscape.</p>
+          </div>
+          <div className={styles.grid2} style={{ gap: 40, display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+             <div className={styles.contactDetails}>
+                <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
+                   <div style={{ fontSize: '1.5rem' }}>📍</div>
+                   <div>
+                      <strong>Headquarters</strong>
+                      <p style={{ margin: 0, opacity: 0.8 }}>BKC, Bandra East, Mumbai, MH - 400051</p>
+                   </div>
+                </div>
+                <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
+                   <div style={{ fontSize: '1.5rem' }}>✉️</div>
+                   <div>
+                      <strong>Email Dispatch</strong>
+                      <p style={{ margin: 0, opacity: 0.8 }}>support@arthanova.in</p>
+                   </div>
+                </div>
+                <div style={{ display: 'flex', gap: 16 }}>
+                   <div style={{ fontSize: '1.5rem' }}>📞</div>
+                   <div>
+                      <strong>Desk Line</strong>
+                      <p style={{ margin: 0, opacity: 0.8 }}>+91 22 4582 9300</p>
+                   </div>
+                </div>
+             </div>
+             <form style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <input type="text" className="form-control" placeholder="Full Name" />
+                <input type="email" className="form-control" placeholder="Work Email" />
+                <textarea className="form-control" placeholder="Message" style={{ height: 120, resize: 'none' }}></textarea>
+                <button type="button" className="btn btn-primary btn-full">Send Message →</button>
+             </form>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
