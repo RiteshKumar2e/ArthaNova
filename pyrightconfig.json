@@ -1,0 +1,22 @@
+{
+  "include": [
+    "backend"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "backend/venv"
+  ],
+  "venvPath": "backend",
+  "venv": "venv",
+  "typeCheckingMode": "basic",
+  "reportMissingImports": true,
+  "executionEnvironments": [
+    {
+      "root": "backend",
+      "extraPaths": [
+        "venv/Lib/site-packages"
+      ]
+    }
+  ]
+}
