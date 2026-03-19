@@ -82,13 +82,13 @@ export default function RegisterPage() {
       <div className={styles.authCard}>
         {/* Left Side: Form Content */}
         <div className={styles.authContent}>
-          <Link to="/" className={styles.authBrand}>
+          <div className={styles.authBrand}>
             <div className={styles.brandIcon}><FiTrendingUp /></div>
             <div className={styles.brandNameText}>
               <span className={styles.brandMain}>ArthaNova</span>
               <span className={styles.brandSub}>AI for the Indian Investor</span>
             </div>
-          </Link>
+          </div>
 
           <h1 className={styles.authTitle}>Create Your Account</h1>
 

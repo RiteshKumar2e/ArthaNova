@@ -78,13 +78,13 @@ export default function LoginPage() {
       <div className={styles.authCard}>
         {/* Left Side: Form */}
         <div className={styles.authContent}>
-          <Link to="/" className={styles.authBrand}>
+          <div className={styles.authBrand}>
             <div className={styles.brandIcon}><FiTrendingUp /></div>
             <div className={styles.brandNameText}>
               <span className={styles.brandMain}>ArthaNova</span>
               <span className={styles.brandSub}>AI for the Indian Investor</span>
             </div>
-          </Link>
+          </div>
 
           <h1 className={styles.authTitle}>Login to Your Account</h1>
           

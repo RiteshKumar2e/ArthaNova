@@ -102,9 +102,12 @@
 .authBrand {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: $space-3;
   margin-bottom: $space-12;
   text-decoration: none;
+  pointer-events: none;
+  cursor: default;
 }
 
 .brandIcon {
@@ -147,12 +150,14 @@
   color: $color-text-primary;
   margin-bottom: 8px;
   letter-spacing: -0.03em;
+  text-align: center;
 }
 
 .authSubtitle {
   font-size: $font-size-sm;
   color: $color-text-secondary;
   margin-bottom: 40px;
+  text-align: center;
 }
 
 /* Stepper Indicator */
@@ -165,6 +170,8 @@
   background: #f8fafc;
   border-radius: $radius-full;
   width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .regStep {
