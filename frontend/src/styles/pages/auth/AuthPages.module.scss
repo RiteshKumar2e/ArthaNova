@@ -1,12 +1,13 @@
-/* ─── Split Auth Layout ─────────────────────────────────────────────────── */
-.authPage {
-  display: grid;
-  grid-template-columns: 420px 1fr;
+.authPageCentered {
+  width: 100%;
   min-height: 100vh;
-
-  @media (max-width: #{$breakpoint-lg}) {
-    grid-template-columns: 1fr;
-  }
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #f8fafc;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
 }
 
 .authLeft {
@@ -496,4 +497,69 @@
 .successIcon {
   font-size: 3rem;
   margin-bottom: $space-4;
+}
+
+/* ─── Centered Auth Layout ────────────────────────────────────────────── */
+.authPageCentered {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-bg;
+  padding: $space-6;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0, 82, 204, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 82, 204, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+}
+
+.homeButtonFixed {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  text-decoration: none;
+  padding: 10px 18px;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  box-shadow: $shadow-sm;
+  transition: all $transition-fast;
+  z-index: 50;
+
+  .homeIcon {
+    color: $color-primary;
+    font-size: 1.1rem;
+    transform: translateY(-1px);
+  }
+
+  .homeText {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: $color-text-primary;
+    letter-spacing: 0.5px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+    border-color: $color-primary;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    top: $space-4;
+    left: $space-4;
+    padding: 8px 14px;
+  }
 }

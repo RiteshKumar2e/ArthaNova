@@ -69,31 +69,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={styles.authPage}>
-      <div className={styles.authLeft}>
-        <div className={styles.authBrand}>
-          <span className={styles.brandIcon}>▲</span>
-          <span className={styles.brandName}>ArthaNova</span>
-        </div>
-        <div className={styles.authQuote}>
-          <blockquote>
-            "The stock market is a device for transferring money from the impatient to the patient."
-          </blockquote>
-          <cite>— Warren Buffett</cite>
-        </div>
-        <div className={styles.authFeatures}>
-          <div className={styles.authFeature}><span>🎯</span> AI-powered opportunity signals</div>
-          <div className={styles.authFeature}><span>📊</span> Real-time NSE/BSE data</div>
-          <div className={styles.authFeature}><span>💼</span> Portfolio intelligence & risk scoring</div>
-          <div className={styles.authFeature}><span>🤖</span> Conversational market AI</div>
-        </div>
-      </div>
+    <div className={styles.authPageCentered}>
+      <Link to="/" className={styles.homeButtonFixed}>
+        <span className={styles.homeText}>&larr; Back to Home</span>
+      </Link>
 
-      <div className={styles.authRight}>
-        <Link to="/" className={styles.backToHome}>
-          &larr; Back to Home
-        </Link>
-        <div className={styles.authCard}>
+      <div className={styles.authCard}>
           <h1 className={styles.authTitle}>Welcome back</h1>
           <p className={styles.authSubtitle}>Sign in to your ArthaNova account</p>
 
@@ -171,7 +152,6 @@ export default function LoginPage() {
             <Link to="/register">Create one free →</Link>
           </p>
         </div>
-      </div>
     </div>
   )
 }

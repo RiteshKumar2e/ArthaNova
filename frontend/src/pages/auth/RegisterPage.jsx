@@ -71,33 +71,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className={styles.authPage}>
-      <div className={styles.authLeft}>
-        <div className={styles.authBrand}>
-          <span className={styles.brandIcon}>▲</span>
-          <span className={styles.brandName}>ArthaNova</span>
-        </div>
-        <div className={styles.authQuote}>
-          <blockquote>
-            "An investment in knowledge pays the best interest."
-          </blockquote>
-          <cite>— Benjamin Franklin</cite>
-        </div>
-        <div className={styles.authStepIndicator}>
-          {STEPS.map((s, i) => (
-            <div key={s} className={`${styles.authStep} ${i <= step ? styles.activeStep : ''} ${i < step ? styles.doneStep : ''}`}>
-              <div className={styles.stepCircle}>{i < step ? '✓' : i + 1}</div>
-              <span>{s}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className={styles.authPageCentered}>
+      <Link to="/" className={styles.homeButtonFixed}>
+        <span className={styles.homeText}>&larr; Back to Home</span>
+      </Link>
 
-      <div className={styles.authRight}>
-        <Link to="/" className={styles.backToHome}>
-          &larr; Back to Home
-        </Link>
-        <div className={styles.authCard}>
+      <div className={styles.authCard}>
           <h1 className={styles.authTitle}>Create Your Account</h1>
           <p className={styles.authSubtitle}>Step {step + 1} of {STEPS.length} — {STEPS[step]}</p>
 
@@ -209,7 +188,6 @@ export default function RegisterPage() {
             <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
           </p>
         </div>
-      </div>
     </div>
   )
 }
