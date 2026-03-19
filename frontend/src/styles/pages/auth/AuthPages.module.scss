@@ -1,3 +1,5 @@
+@import "../../_variables.scss";
+
 .authPageCentered {
   width: 100%;
   min-height: 100vh;
@@ -6,507 +8,6 @@
   justify-content: center !important;
   background: #f8fafc;
   padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.authLeft {
-  background: $gradient-hero;
-  padding: $space-10;
-  display: flex;
-  flex-direction: column;
-  gap: $space-10;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-
-  @media (max-width: #{$breakpoint-lg}) {
-    display: none;
-  }
-}
-
-.authBrand {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  position: relative;
-}
-
-.brandIcon {
-  font-size: 1.5rem;
-  color: #60A5FA;
-}
-
-.brandName {
-  font-family: $font-heading;
-  font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
-  color: $color-white;
-}
-
-.authQuote {
-  position: relative;
-
-  blockquote {
-    font-size: $font-size-md;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.8;
-    font-style: italic;
-    margin-bottom: $space-3;
-  }
-
-  cite {
-    font-size: $font-size-sm;
-    color: rgba(255, 255, 255, 0.5);
-  }
-}
-
-.authFeatures {
-  display: flex;
-  flex-direction: column;
-  gap: $space-3;
-  margin-top: auto;
-  position: relative;
-}
-
-.authFeature {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-
-  span {
-    font-size: 1.1rem;
-  }
-}
-
-/* Step Indicator */
-.authStepIndicator {
-  display: flex;
-  flex-direction: column;
-  gap: $space-4;
-  position: relative;
-}
-
-.authStep {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  transition: color $transition-fast;
-
-  &.activeStep {
-    color: rgba(255, 255, 255, 0.9);
-  }
-}
-
-.stepCircle {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
-  flex-shrink: 0;
-  transition: all $transition-fast;
-
-  .activeStep & {
-    background: $color-primary;
-    border-color: $color-primary;
-    color: $color-white;
-  }
-
-  .doneStep & {
-    background: $color-success;
-    border-color: $color-success;
-    color: $color-white;
-  }
-}
-
-/* ─── Auth Right Panel ──────────────────────────────────────────────────── */
-.authRight {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $space-8;
-  background: $color-bg;
-  position: relative;
-}
-
-/* Custom Password Pattern */
-.customPasswordLabel {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: #475569;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-
-  a {
-    text-transform: none;
-    letter-spacing: normal;
-  }
-}
-
-.passwordInputContainer {
-  position: relative;
-  display: block; // Changed from flex
-
-  .customPasswordInput {
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 14px 16px;
-    padding-right: 48px;
-    font-size: 15px;
-    color: #1e293b;
-    font-weight: 600;
-    width: 100%;
-    outline: none;
-    transition: all 0.2s ease;
-
-    &::placeholder {
-      color: #94a3b8;
-      font-weight: 600;
-    }
-
-    &:focus {
-      border-color: #cbd5e1;
-      background-color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(226, 232, 240, 0.5);
-    }
-
-    &.is-invalid {
-      border-color: #ef4444;
-      background-color: #fef2f2;
-    }
-  }
-
-  .passwordToggle {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #64748b;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.15rem;
-    padding: 4px;
-    transition: color 0.15s ease;
-
-    &:hover {
-      color: #334155;
-    }
-  }
-}
-
-.backToHome {
-  position: absolute;
-  top: $space-6;
-  right: $space-8;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: $color-text-secondary;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  transition: color $transition-fast;
-
-  &:hover {
-    color: $color-primary;
-  }
-}
-
-.authCard {
-  width: 100%;
-  max-width: 480px;
-  background: $color-white;
-  border-radius: $radius-2xl;
-  padding: $space-10;
-  box-shadow: $shadow-lg;
-  border: 1px solid $color-border;
-}
-
-.demoBox {
-  margin-top: $space-8;
-  padding-top: $space-6;
-  border-top: 1px dashed $color-border;
-  text-align: center;
-
-  p {
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
-    color: $color-text-tertiary;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: $space-3;
-  }
-}
-
-.demoButtons {
-  display: flex;
-  justify-content: center;
-  gap: $space-2;
-}
-
-.demoBtn {
-  padding: $space-2 $space-4;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  color: $color-text-secondary;
-  background: $color-bg;
-  border: 1px solid $color-border;
-  border-radius: $radius-lg;
-  cursor: pointer;
-  transition: all $transition-fast;
-
-  &:hover {
-    border-color: $color-primary;
-    color: $color-primary;
-    background: $color-primary-light;
-  }
-}
-
-.authTitle {
-  font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
-  color: $color-text-primary;
-  margin-bottom: $space-1;
-}
-
-.authSubtitle {
-  font-size: $font-size-sm;
-  color: $color-text-secondary;
-  margin-bottom: $space-8;
-}
-
-.authForm {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-
-  .form-group {
-    margin-bottom: $space-5;
-  }
-}
-
-.forgotLink {
-  float: right;
-  font-size: $font-size-xs;
-  color: $color-primary;
-  font-weight: $font-weight-medium;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.rememberRow {
-  margin-bottom: $space-5;
-}
-
-.checkLabel {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  font-size: $font-size-sm;
-  color: $color-text-secondary;
-  cursor: pointer;
-
-  input {
-    accent-color: $color-primary;
-  }
-}
-
-.authActions {
-  display: flex;
-  gap: $space-3;
-  margin-top: $space-2;
-
-  .btn-primary {
-    flex: 1;
-  }
-}
-
-.demoBox {
-  margin-top: $space-5;
-  padding: $space-3 $space-4;
-  background: $color-primary-light;
-  border-radius: $radius-md;
-  font-size: $font-size-xs;
-  color: $color-primary;
-  border: 1px solid rgba(0, 82, 204, 0.2);
-}
-
-.authSwitch {
-  margin-top: $space-5;
-  text-align: center;
-  font-size: $font-size-sm;
-  color: $color-text-secondary;
-
-  a {
-    color: $color-primary;
-    font-weight: $font-weight-semibold;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-.termsNote {
-  margin-top: $space-4;
-  text-align: center;
-  font-size: $font-size-xs;
-  color: $color-text-tertiary;
-
-  a {
-    color: $color-primary;
-    text-decoration: none;
-  }
-}
-
-/* Risk Profile Options */
-.riskOptions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: $space-3;
-  margin-top: $space-2;
-}
-
-.riskOption {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-2;
-  padding: $space-4;
-  border: 2px solid $color-border;
-  border-radius: $radius-lg;
-  cursor: pointer;
-  transition: all $transition-fast;
-  text-align: center;
-
-  input {
-    display: none;
-  }
-
-  &.riskSelected {
-    border-color: $color-primary;
-    background: $color-primary-light;
-  }
-
-  &:hover:not(.riskSelected) {
-    border-color: $color-border-strong;
-  }
-}
-
-.riskIcon {
-  font-size: 1.5rem;
-}
-
-.riskLabel {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  color: $color-text-primary;
-}
-
-.riskDesc {
-  font-size: 10px;
-  color: $color-text-tertiary;
-  line-height: 1.4;
-}
-
-/* ─── Simple Auth (Forgot/Reset) ────────────────────────────────────────── */
-.simpleAuth {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: $color-bg;
-  padding: $space-6;
-}
-
-.simpleCard {
-  width: 100%;
-  max-width: 440px;
-  background: $color-white;
-  border-radius: $radius-2xl;
-  padding: $space-10;
-  box-shadow: $shadow-lg;
-  border: 1px solid $color-border;
-}
-
-.simpleBrand {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  font-family: $font-heading;
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  color: $color-text-primary;
-  text-decoration: none;
-  margin-bottom: $space-8;
-
-  span {
-    color: $color-primary;
-    font-size: 1.25rem;
-  }
-}
-
-.successBox {
-  text-align: center;
-  padding: $space-8 0;
-
-  h2 {
-    font-size: $font-size-xl;
-    margin-bottom: $space-3;
-  }
-
-  p {
-    font-size: $font-size-sm;
-    color: $color-text-secondary;
-  }
-}
-
-.successIcon {
-  font-size: 3rem;
-  margin-bottom: $space-4;
-}
-
-/* ─── Centered Auth Layout ────────────────────────────────────────────── */
-.authPageCentered {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: $color-bg;
-  padding: $space-6;
   position: relative;
   overflow: hidden;
   
@@ -562,4 +63,576 @@
     left: $space-4;
     padding: 8px 14px;
   }
+}
+
+.authCard {
+  width: 100%;
+  max-width: 1000px;
+  min-height: 640px;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+
+  @media (max-width: $breakpoint-lg) {
+    max-width: 480px;
+    flex-direction: column;
+    min-height: auto;
+  }
+}
+
+.authContent {
+  flex: 1;
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 40px 24px;
+  }
+}
+
+.authBrand {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-12;
+  text-decoration: none;
+}
+
+.brandIcon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $color-primary 0%, #0066FF 100%);
+  border-radius: $radius-lg;
+  color: $color-white;
+  font-size: 1.6rem;
+  box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+}
+
+.brandNameText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+
+  .brandMain {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $color-text-primary;
+    letter-spacing: -0.5px;
+  }
+
+  .brandSub {
+    font-size: 10px;
+    font-weight: 700;
+    color: $color-text-tertiary;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+}
+
+.authTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+
+.authSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: 40px;
+}
+
+/* Stepper Indicator */
+.regStepIndicator {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  margin-bottom: $space-10;
+  padding: 8px 16px;
+  background: #f8fafc;
+  border-radius: $radius-full;
+  width: fit-content;
+}
+
+.regStep {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+
+  &.active {
+    color: $color-primary;
+  }
+
+  &.completed {
+    color: $color-success;
+  }
+
+  .stepNum {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all $transition-fast;
+
+    .active & {
+      background: $color-primary;
+      color: $color-white;
+      box-shadow: 0 0 0 4px rgba(0, 82, 204, 0.1);
+    }
+    
+    .completed & {
+      background: $color-success;
+      color: $color-white;
+    }
+  }
+}
+
+.stepDivider {
+  width: 20px;
+  height: 2px;
+  background: #e2e8f0;
+  border-radius: 2px;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  .form-group {
+    margin-bottom: $space-5;
+    width: 100%;
+  }
+}
+
+.customPasswordLabel {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin-bottom: 10px;
+  position: relative;
+
+  a {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 13px;
+    color: $color-primary;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.authFormControl {
+  background-color: #fcfcfc;
+  border: 1.5px solid #eef2f6;
+  border-radius: $radius-lg;
+  padding: 14px 16px;
+  font-size: 15px;
+  color: $color-text-primary;
+  width: 100%;
+  outline: none;
+  transition: all $transition-fast;
+
+  &::placeholder {
+    color: #a0aec0;
+  }
+
+  &:focus {
+    border-color: $color-primary;
+    background-color: $color-white;
+    box-shadow: 0 0 0 4px rgba(0, 82, 204, 0.08);
+  }
+
+  &.isInvalid {
+    border-color: $color-danger;
+    background-color: $color-danger-light;
+  }
+}
+
+.passwordInputContainer {
+  position: relative;
+  width: 100%;
+
+  .passwordToggle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    padding: 4px;
+    transition: color 0.15s ease;
+    z-index: 5;
+
+    &:hover {
+      color: #334155;
+    }
+  }
+}
+
+.authSwitch {
+  margin-top: $space-6;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+
+  a {
+    color: $color-primary;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.demoBox {
+  margin-top: $space-8;
+  padding-top: $space-6;
+  border-top: 1px dashed $color-border;
+  text-align: center;
+
+  p {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: $color-text-tertiary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: $space-3;
+  }
+}
+
+.demoButtons {
+  display: flex;
+  justify-content: center;
+  gap: $space-2;
+}
+
+.demoBtn {
+  padding: $space-2 $space-4;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: $color-text-secondary;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+    background: $color-primary-light;
+  }
+}
+
+.authIllustrationSide {
+  flex: 1.1;
+  background: linear-gradient(135deg, rgba(0, 82, 204, 0.02) 0%, rgba(0, 133, 90, 0.02) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 82, 204, 0.07) 0%, transparent 70%);
+    top: -150px;
+    right: -150px;
+    filter: blur(50px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 133, 90, 0.04) 0%, transparent 70%);
+    bottom: -150px;
+    left: -150px;
+    filter: blur(60px);
+  }
+
+  img {
+    width: 80%;
+    max-width: 420px;
+    height: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.06));
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    display: none;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* reCAPTCHA Simulation Styles */
+.captchaContainer {
+  margin: $space-5 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.captchaBox {
+  width: 304px;
+  height: 78px;
+  background: #f9f9f9;
+  border: 1px solid #d3d3d3;
+  border-radius: 3px;
+  padding: 0 12px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0,0,0,0.02);
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+
+  &:hover {
+    border-color: #b3b3b3;
+    box-shadow: 0 0 6px rgba(0,0,0,0.08);
+  }
+
+  &.captchaVerified {
+    background: #fff;
+    cursor: default;
+    border-color: #d3d3d3;
+    box-shadow: none;
+  }
+}
+
+.captchaLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.captchaCheckbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #c1c1c1;
+  background: #fff;
+  border-radius: 2px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  .captchaVerified & {
+    border-color: transparent;
+    background: transparent;
+  }
+}
+
+.captchaSpinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #4a90e2;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: rotate-captcha 0.8s linear infinite;
+}
+
+.captchaText {
+  font-size: 14px;
+  color: #3c3c3c;
+  font-weight: 400;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.captchaRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.recaptchaLogo {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.recaptchaLabel {
+  font-size: 8px;
+  color: #555;
+  font-weight: 400;
+  text-transform: none;
+  margin-top: 2px;
+}
+
+.captchaLinks {
+  font-size: 8px;
+  color: #555;
+  margin-top: 2px;
+
+  a {
+    color: #555;
+    text-decoration: none;
+    font-size: 8px;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+/* Checkmark Animation */
+.checkmark {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+}
+
+.checkmarkCheck {
+  stroke: #009688;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+@keyframes rotate-captcha {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.authActions {
+  display: flex !important;
+  align-items: center !important;
+  gap: $space-3 !important;
+  margin-top: $space-8 !important;
+  width: 100% !important;
+
+  button {
+    height: 52px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .btn-primary {
+    flex: 1;
+  }
+
+  .btnSecondaryFallback {
+    flex: 0 0 100px;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: $radius-lg;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 0 20px;
+
+    &:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+  }
+}
+
+/* ─── Auth Right Panel ──────────────────────────────────────────────────── */
+.riskOptions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-3;
+  margin-top: $space-2;
+}
+
+.riskOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-4;
+  border: 2px solid $color-border;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-fast;
+  text-align: center;
+
+  input {
+    display: none;
+  }
+
+  &.riskSelected {
+    border-color: $color-primary;
+    background: $color-primary-light;
+  }
+
+  &:hover:not(.riskSelected) {
+    border-color: $color-border-strong;
+  }
+}
+
+.riskIcon {
+  font-size: 1.5rem;
+}
+
+.riskLabel {
+  font-size: $font-size-xs;
+  font-weight: 700;
+  color: $color-text-primary;
+}
+
+.riskDesc {
+  font-size: 10px;
+  color: $color-text-tertiary;
+  line-height: 1.4;
 }

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
-import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { FiEye, FiEyeOff, FiTrendingUp } from 'react-icons/fi'
 import styles from '../../styles/pages/auth/AuthPages.module.scss'
 
 export default function LoginPage() {
@@ -71,22 +71,32 @@ export default function LoginPage() {
   return (
     <div className={styles.authPageCentered}>
       <Link to="/" className={styles.homeButtonFixed}>
-        <span className={styles.homeText}>&larr; Back to Home</span>
+        <span className={styles.homeIcon}>&larr;</span>
+        <span className={styles.homeText}>Back to Home</span>
       </Link>
 
       <div className={styles.authCard}>
-          <h1 className={styles.authTitle}>Welcome back</h1>
-          <p className={styles.authSubtitle}>Sign in to your ArthaNova account</p>
+        {/* Left Side: Form */}
+        <div className={styles.authContent}>
+          <Link to="/" className={styles.authBrand}>
+            <div className={styles.brandIcon}><FiTrendingUp /></div>
+            <div className={styles.brandNameText}>
+              <span className={styles.brandMain}>ArthaNova</span>
+              <span className={styles.brandSub}>AI for the Indian Investor</span>
+            </div>
+          </Link>
 
+          <h1 className={styles.authTitle}>Login to Your Account</h1>
+          
           <form onSubmit={handleSubmit} className={styles.authForm}>
             <div className="form-group">
-              <label className="form-label" htmlFor="login-email">Email Address</label>
+              <label className={styles.customPasswordLabel}>Email</label>
               <input
                 id="login-email"
                 name="email"
                 type="email"
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                placeholder="you@example.com"
+                className={`${styles.authFormControl} ${errors.email ? styles.isInvalid : ''}`}
+                placeholder="Enter your email"
                 value={form.email}
                 onChange={handleChange}
                 autoComplete="email"
@@ -95,16 +105,16 @@ export default function LoginPage() {
             </div>
 
             <div className="form-group">
-              <label className={styles.customPasswordLabel} htmlFor="login-password">
-                PASSWORD
-                <Link to="/forgot-password" className={styles.forgotLink}>Forgot password?</Link>
+              <label className={styles.customPasswordLabel}>
+                Password
+                <Link to="/forgot-password">Forgot Password?</Link>
               </label>
               <div className={styles.passwordInputContainer}>
                 <input
                   id="login-password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  className={`${styles.customPasswordInput} ${errors.password ? 'is-invalid' : ''}`}
+                  className={`${styles.authFormControl} ${errors.password ? styles.isInvalid : ''}`}
                   placeholder="Enter your password"
                   value={form.password}
                   onChange={handleChange}
@@ -122,36 +132,34 @@ export default function LoginPage() {
               {errors.password && <div className="form-error">{errors.password}</div>}
             </div>
 
-            <div className={styles.rememberRow}>
-              <label className={styles.checkLabel}>
-                <input type="checkbox" name="remember_me" checked={form.remember_me} onChange={handleChange} />
-                <span>Remember me for 7 days</span>
-              </label>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-full" id="login-submit-btn" disabled={loading}>
-              {loading ? <span className="spinner" style={{ width: 18, height: 18 }} /> : 'Sign In'}
+            <button type="submit" className="btn btn-primary btn-full" id="login-submit-btn" disabled={loading} style={{ height: '52px', marginTop: '10px' }}>
+              {loading ? <span className="spinner" /> : 'Login'}
             </button>
           </form>
 
+          <p className={styles.authSwitch}>
+            Don't have an account? <Link to="/register">Sign Up</Link>
+          </p>
+
           {/* Quick Demo Login */}
           <div className={styles.demoBox}>
-            <p>Quick Access:</p>
+            <p>Demo accounts</p>
             <div className={styles.demoButtons}>
               <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('user')}>
-                User
+                User Demo
               </button>
               <button type="button" className={styles.demoBtn} onClick={() => handleDemoLogin('admin')}>
-                Admin
+                Admin Demo
               </button>
             </div>
           </div>
-
-          <p className={styles.authSwitch}>
-            Don't have an account?{' '}
-            <Link to="/register">Create one free →</Link>
-          </p>
         </div>
+
+        {/* Right Side: Illustration */}
+        <div className={styles.authIllustrationSide}>
+          <img src="/images/auth/login_illustration.png" alt="Login Illustration" />
+        </div>
+      </div>
     </div>
   )
 }
