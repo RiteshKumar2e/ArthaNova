@@ -8,10 +8,10 @@ backend/venv/
 venv/
 __pycache__/
 *.pyc
-.env
+**/.env
 node_modules/
 # Environments
-.env
+**/.env
 .env.local
 .env.development.local
 .env.test.local
