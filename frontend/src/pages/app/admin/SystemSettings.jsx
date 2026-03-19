@@ -4,7 +4,7 @@ export default function SystemSettings() {
   const SETTINGS_SECTIONS = [
     { title: 'Core API Configuration', items: [
       { label: 'NSE Market Data API Key', type: 'password', value: '****************' },
-      { label: 'OpenAI/LLM Endpoint', type: 'text', value: 'https://api.openai.com/v1' },
+      { label: 'Groq/LLM Endpoint', type: 'text', value: 'https://api.groq.com/openai/v1' },
       { label: 'Market Data Sync Rate (ms)', type: 'number', value: 1000 },
     ]},
     { title: 'Feature Toggles', items: [

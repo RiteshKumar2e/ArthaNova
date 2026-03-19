@@ -10,6 +10,7 @@ from sqlalchemy import select
 from app.core.dependencies import get_db, get_current_user
 from app.models.user import User, ChatSession, ChatMessage
 from app.schemas.schemas import ChatMessageRequest, ChatMessageResponse, MessageResponse
+from app.services.ai_service import ai_service
 
 router = APIRouter(prefix="/ai", tags=["AI Intelligence"])
 
@@ -68,10 +69,30 @@ async def send_chat_message(
     # Store user message
     user_msg = ChatMessage(session_id=session.id, role="user", content=data.message)
     db.add(user_msg)
-    await db.flush()
+    await db.commit() # Commit user message first
 
-    # Generate AI response
-    ai_text, sources = generate_ai_response(data.message)
+    # Fetch chat history for context (last 6 messages)
+    history_result = await db.execute(
+        select(ChatMessage).where(ChatMessage.session_id == session.id)
+        .order_by(ChatMessage.created_at.desc())
+        .limit(6)
+    )
+    history = history_result.scalars().all()
+    # Format for LLM (reversed to keep chronological order)
+    messages = [
+        {"role": "system", "content": "You are ArthaNova AI, an expert Indian stock market analyst. Provide concise, professional, and data-driven insights. Focus on NSE/BSE stocks and technical indicators like RSI and EMA when relevant."}
+    ]
+    messages.extend([{"role": m.role, "content": m.content} for m in reversed(history)])
+
+    # Generate REAL AI response using Groq
+    ai_text = await ai_service.get_chat_completion(messages)
+
+    # Mock sources (still useful for UI demo)
+    stock = random.choice(STOCKS)
+    sources = [
+        {"type": "filing", "title": f"{stock} Q3 FY25 Earnings Report", "date": "2025-01-15"},
+        {"type": "technical", "title": f"{stock} AI Sentiment & Chart Analysis", "date": datetime.now().strftime("%Y-%m-%d")},
+    ]
 
     # Store AI response
     ai_msg = ChatMessage(
@@ -81,7 +102,8 @@ async def send_chat_message(
         sources=sources,
     )
     db.add(ai_msg)
-    await db.flush()
+    await db.commit()
+    await db.refresh(ai_msg)
 
     return {
         "session_id": session.id,
@@ -161,8 +183,9 @@ async def delete_session(
 
 @router.get("/opportunity-radar")
 async def get_opportunity_radar(current_user: User = Depends(get_current_user)):
-    """Get AI-generated investment opportunity signals."""
+    """Get AI-generated investment opportunity signals using Groq fallback engine."""
     import random
+    import asyncio
 
     signals = []
     stocks = ["RELIANCE", "TCS", "BAJFINANCE", "SUNPHARMA", "ADANIENT", "TATASTEEL", "LT", "DIVISLAB"]
@@ -178,10 +201,17 @@ async def get_opportunity_radar(current_user: User = Depends(get_current_user)):
             "confidence_score": round(random.uniform(65, 95), 1),
             "expected_return_pct": round(random.uniform(8, 35), 1),
             "timeframe": random.choice(["Short-term (1-4 weeks)", "Medium-term (1-3 months)", "Long-term (6-12 months)"]),
-            "summary": f"Strong {random.choice(signal_types).lower()} detected for {stock}. Risk-reward looks favourable at current levels.",
+            "summary": f"Analyzing {stock} via Groq Engine...", # placeholder
             "data_sources": random.sample(["NSE Filings", "SEBI Disclosures", "Quarterly Results", "Insider Trades", "Foreign Holdings"], 3),
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
+
+    # Live enhancement using the AI fallback service
+    async def update_summary(sig):
+        sig["summary"] = await ai_service.generate_market_insights(f"{sig['symbol']} showing {sig['signal_type']} with {sig['sentiment']} sentiment.")
+    
+    # Process tasks concurrently
+    await asyncio.gather(*(update_summary(s) for s in signals))
 
     return {"signals": signals, "last_updated": datetime.now(timezone.utc).isoformat(), "total": len(signals)}
 

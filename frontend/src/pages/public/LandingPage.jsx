@@ -60,7 +60,7 @@ export default function LandingPage() {
             <div className={styles.heroTrust}>
               <span>🔒 Bank-grade security</span>
               <span>📊 Real NSE/BSE data</span>
-              <span>🤖 Powered by GPT-4o</span>
+              <span>🤖 Powered by Groq / Llama 3</span>
             </div>
           </div>
 
