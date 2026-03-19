@@ -14,7 +14,7 @@ from app.services.ai_service import ai_service
 
 router = APIRouter(prefix="/ai", tags=["AI Intelligence"])
 
-# Canned AI responses for demo (replace with OpenAI + RAG in production)
+# Canned AI responses for demo (replace with Groq + RAG in production)
 AI_RESPONSES = [
     "Based on my analysis of your portfolio and current market conditions, {stock} shows strong momentum with RSI at 58 — indicating room for upside. The recent quarterly results beat estimates by 12%, and institutional buying has picked up.",
     "Looking at the broader market context: FII flows have been positive this week (+₹2,400 Cr net), which typically supports mid and large caps. Your portfolio has moderate correlation to Nifty (beta: 0.87), which provides some protection in downturns.",

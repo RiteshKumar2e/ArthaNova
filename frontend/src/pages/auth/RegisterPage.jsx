@@ -5,7 +5,7 @@ import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
 import { FiEye, FiEyeOff, FiTrendingUp } from 'react-icons/fi'
 import styles from '../../styles/pages/auth/AuthPages.module.scss'
-import Captcha from '../../components/auth/Captcha'
+
 
 const STEPS = ['Account', 'Personal', 'Preferences']
 
@@ -19,7 +19,7 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
-  const [captchaVerified, setCaptchaVerified] = useState(false)
+
   const { login } = useAuthStore()
   const navigate = useNavigate()
 
@@ -193,10 +193,7 @@ export default function RegisterPage() {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <Captcha onVerify={setCaptchaVerified} />
-                  {errors.captcha && <div className="form-error">{errors.captcha}</div>}
-                </div>
+
               </>
             )}
 
@@ -209,8 +206,7 @@ export default function RegisterPage() {
               <button 
                 type="submit" 
                 className="btn btn-primary btn-full" 
-                style={{ opacity: (step === 2 && !captchaVerified) ? 0.6 : 1 }} 
-                disabled={loading || (step === 2 && !captchaVerified)}
+                disabled={loading}
               >
                 {loading ? <span className="spinner" /> : step === 2 ? 'Create Account' : 'Next Step'}
               </button>
