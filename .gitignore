@@ -53,3 +53,7 @@ frontend/yarn-error.log*
 # Logs
 *.log
 logs/
+*.txt
+backend/*.txt
+frontend/*.txt
+*.out
