@@ -6,20 +6,16 @@ from sqlalchemy.orm import declarative_base
 from app.core.config import settings
 
 # Determine engine arguments based on DB type
-engine_args = {
+engine_args: dict = {
     "echo": settings.DEBUG,
 }
 
 if settings.DATABASE_URL.startswith("postgresql"):
-    engine_args.update({
-        "pool_pre_ping": True,
-        "pool_size": 10,
-        "max_overflow": 20,
-    })
+    engine_args["pool_pre_ping"] = True
+    engine_args["pool_size"] = 10
+    engine_args["max_overflow"] = 20
 elif settings.DATABASE_URL.startswith("sqlite"):
-    engine_args.update({
-        "connect_args": {"check_same_thread": False},
-    })
+    engine_args["connect_args"] = {"check_same_thread": False}
 
 engine = create_async_engine(settings.DATABASE_URL, **engine_args)
 

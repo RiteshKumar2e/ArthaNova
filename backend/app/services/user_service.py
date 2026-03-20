@@ -50,16 +50,16 @@ async def authenticate_user(db: AsyncSession, email: str, password: str) -> Opti
     user = await get_user_by_email(db, email)
     if not user:
         return None
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, str(user.hashed_password)):
         return None
     return user
 
 
 async def update_last_login(db: AsyncSession, user: User):
-    user.last_login = datetime.now(timezone.utc)
+    user.last_login = datetime.now(timezone.utc)  # type: ignore
     await db.flush()
 
 
 async def update_user_password(db: AsyncSession, user: User, new_password: str):
-    user.hashed_password = get_password_hash(new_password)
+    user.hashed_password = get_password_hash(new_password)  # type: ignore
     await db.flush()

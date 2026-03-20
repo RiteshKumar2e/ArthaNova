@@ -14,22 +14,22 @@ router = APIRouter(prefix="/portfolio", tags=["Portfolio Management"])
 
 
 def compute_holding_metrics(holding: Holding) -> dict:
-    current_price = holding.current_price or (holding.avg_buy_price * (0.9 + random.random() * 0.4))
-    invested = holding.quantity * holding.avg_buy_price
-    current = holding.quantity * current_price
+    current_price = holding.current_price or (holding.avg_buy_price * (0.9 + random.random() * 0.4))  # type: ignore
+    invested = holding.quantity * holding.avg_buy_price  # type: ignore
+    current = holding.quantity * current_price  # type: ignore
     return {
         "id": holding.id,
         "symbol": holding.symbol,
         "company_name": holding.company_name,
         "quantity": holding.quantity,
         "avg_buy_price": holding.avg_buy_price,
-        "current_price": round(current_price, 2),
+        "current_price": round(float(current_price or 0), 2),  # type: ignore
         "sector": holding.sector,
         "exchange": holding.exchange,
-        "invested_value": round(invested, 2),
-        "current_value": round(current, 2),
-        "pnl": round(current - invested, 2),
-        "pnl_pct": round(((current - invested) / invested) * 100, 2),
+        "invested_value": round(float(invested or 0), 2),  # type: ignore
+        "current_value": round(float(current or 0), 2),  # type: ignore
+        "pnl": round((float(current or 0) - float(invested or 0)), 2),  # type: ignore
+        "pnl_pct": round(((float(current or 0) - float(invested or 0)) / float(invested or 1)) * 100, 2),  # type: ignore
     }
 
 
@@ -118,9 +118,13 @@ async def remove_holding(
     result = await db.execute(select(Portfolio).where(Portfolio.user_id == current_user.id))
     portfolio = result.scalar_one_or_none()
 
-    holding_result = await db.execute(
-        select(Holding).where(Holding.id == holding_id, Holding.portfolio_id == portfolio.id)
-    )
+    if portfolio:
+        holding_result = await db.execute(
+            select(Holding).where(Holding.id == holding_id, Holding.portfolio_id == portfolio.id)
+        )
+    else:
+        holding_result = await db.execute(select(Holding).where(Holding.id == holding_id))
+    
     holding = holding_result.scalar_one_or_none()
     if not holding:
         raise HTTPException(status_code=404, detail="Holding not found")

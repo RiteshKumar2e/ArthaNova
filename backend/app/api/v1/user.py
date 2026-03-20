@@ -59,6 +59,6 @@ async def deactivate_user(
     user = result.scalar_one_or_none()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    user.is_active = False
+    user.is_active = False  # type: ignore
     await db.flush()
     return MessageResponse(message=f"User {user.email} deactivated")

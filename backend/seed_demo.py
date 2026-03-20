@@ -58,8 +58,8 @@ async def seed_demo_users():
                 print(f"✅ Created account: {acc['email']}")
             else:
                 # Update existing user to ensure they have correct role/admin status
-                user.is_active = True
-                user.is_verified = True
+                user.is_active = True  # type: ignore
+                user.is_verified = True  # type: ignore
                 user.role = acc["role"]
                 user.is_admin = acc.get("is_admin", False)
                 user.hashed_password = acc["hashed_password"]

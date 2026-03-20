@@ -95,11 +95,11 @@ async def toggle_user_status(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    user.is_active = not user.is_active
+    user.is_active = not bool(user.is_active)  # type: ignore
     await db.flush()
     
-    status_str = "activated" if user.is_active else "deactivated"
-    return {"message": f"User {user.email} has been {status_str}", "is_active": user.is_active}
+    status_str = "activated" if bool(user.is_active) else "deactivated"
+    return {"message": f"User {user.email} has been {status_str}", "is_active": bool(user.is_active)}
 
 @router.get("/logs/audit")
 async def get_audit_logs(

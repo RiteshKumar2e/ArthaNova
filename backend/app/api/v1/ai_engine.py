@@ -82,7 +82,7 @@ async def send_chat_message(
     messages = [
         {"role": "system", "content": "You are ArthaNova AI, an expert Indian stock market analyst. Provide concise, professional, and data-driven insights. Focus on NSE/BSE stocks and technical indicators like RSI and EMA when relevant."}
     ]
-    messages.extend([{"role": m.role, "content": m.content} for m in reversed(history)])
+    messages.extend([{"role": str(m.role), "content": str(m.content)} for m in reversed(history)])
 
     # Generate REAL AI response using Groq
     ai_text = await ai_service.get_chat_completion(messages)

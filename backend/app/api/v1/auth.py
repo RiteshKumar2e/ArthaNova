@@ -51,7 +51,7 @@ async def login(data: UserLoginRequest, db: AsyncSession = Depends(get_db)):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid email or password",
             )
-        if not user.is_active:
+        if not bool(user.is_active):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is deactivated")
 
         await update_last_login(db, user)
@@ -77,7 +77,7 @@ async def refresh_token(data: RefreshTokenRequest, db: AsyncSession = Depends(ge
         raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
 
     user = await get_user_by_email(db, payload.get("email", ""))
-    if not user or not user.is_active:
+    if not user or not bool(user.is_active):
         raise HTTPException(status_code=401, detail="User not found or inactive")
 
     token_data = {"sub": str(user.id), "email": user.email}
@@ -124,7 +124,7 @@ async def change_password(
 ):
     """Change password for authenticated user."""
     from app.core.security import verify_password
-    if not verify_password(data.current_password, current_user.hashed_password):
+    if not verify_password(data.current_password, str(current_user.hashed_password)):
         raise HTTPException(status_code=400, detail="Current password is incorrect")
     await update_user_password(db, current_user, data.new_password)
     return MessageResponse(message="Password changed successfully")

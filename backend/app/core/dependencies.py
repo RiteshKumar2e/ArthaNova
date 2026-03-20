@@ -50,7 +50,7 @@ async def get_current_user(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     
     # Check is_active flag
-    if not user.is_active:
+    if not bool(user.is_active):
         user_logger.error(f"🚨 AUTH FAILURE: User {user.email} is INACTIVE (418 TRIGGERED)")
         raise HTTPException(status_code=418, detail="Account is inactive")
 
@@ -59,7 +59,7 @@ async def get_current_user(
 
 async def get_current_active_admin(current_user: User = Depends(get_current_user)) -> User:
     # Ensure role is admin OR is_admin flag is set
-    if not current_user.is_admin and current_user.role != "admin":
+    if not bool(current_user.is_admin) and str(current_user.role) != "admin":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
     return current_user
 

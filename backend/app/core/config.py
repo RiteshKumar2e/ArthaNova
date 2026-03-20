@@ -59,14 +59,15 @@ class Settings(BaseModel):
     SENTRY_DSN: str = ""
 
     # Allow extra environment variables without error
-    model_config = ConfigDict(
+    model_config = ConfigDict(  # type: ignore
         extra="ignore",
-        case_sensitive=True
+        case_sensitive=True,
+        str_strip_whitespace=True
     )
 
     @field_validator('ALLOWED_ORIGINS', mode='before')
     @classmethod
-    def parse_allowed_origins(cls, v: Union[str, List[str]]) -> List[str]:
+    def parse_allowed_origins(cls, v: Union[str, list]) -> list:
         if isinstance(v, str):
             try:
                 # Try JSON list first
@@ -77,12 +78,19 @@ class Settings(BaseModel):
                 return [s.strip() for s in v.split(",") if s.strip()]
         return v if isinstance(v, list) else []
 
-    @field_validator('DEBUG', mode='before')
+    @field_validator('DEBUG', 'SMTP_PORT', 'JWT_ACCESS_TOKEN_EXPIRE_MINUTES', 'JWT_REFRESH_TOKEN_EXPIRE_DAYS', 'MAX_FILE_SIZE', mode='before')
     @classmethod
-    def parse_debug(cls, v: Union[str, bool]) -> bool:
+    def parse_env_value(cls, v: Union[str, int, bool]) -> Union[int, bool]:  # type: ignore
         if isinstance(v, str):
-            return v.lower() in ("true", "1", "yes")
-        return v
+            # For int fields
+            if v.isdigit() or (v.startswith('-') and v[1:].isdigit()):
+                return int(v)
+            # For bool fields
+            if v.lower() in ("true", "1", "yes"):
+                return True
+            if v.lower() in ("false", "0", "no"):
+                return False
+        return v  # type: ignore
 
 
 @lru_cache()
@@ -90,8 +98,12 @@ def get_settings() -> Settings:
     # Initialize Settings from environment variables
     # Pydantic will pick environment keys matching the field names
     # Note: .env values are loaded into os.environ by load_dotenv()
-    env_data = {k: v for k, v in os.environ.items() if k in Settings.model_fields}
-    return Settings(**env_data)
+    env_data = {k: v for k, v in os.environ.items() if k in Settings.model_fields or k.isupper()}
+    try:
+        return Settings(**env_data)  # type: ignore
+    except Exception:
+        # Fallback to defaults if env parsing fails
+        return Settings()
 
 
 settings = get_settings()
