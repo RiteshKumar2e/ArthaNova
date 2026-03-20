@@ -3,27 +3,34 @@ import { useAuthStore } from '../../store/authStore'
 import styles from '../../styles/components/layout/Sidebar.module.scss'
 
 const NAV_ITEMS = [
-  { section: 'Main', items: [
-    { to: '/dashboard', icon: '⊞', label: 'Dashboard', roles: ['user', 'admin'] },
-    { to: '/market', icon: '📊', label: 'Market Overview', roles: ['user', 'admin'] },
-    { to: '/stocks', icon: '🔍', label: 'Stock Explorer', roles: ['user', 'admin'] },
-  ]},
-  { section: 'Personal', items: [
-    { to: '/portfolio', icon: '💼', label: 'Portfolio', roles: ['user', 'admin'] },
-    { to: '/watchlist', icon: '⭐', label: 'Watchlist', roles: ['user', 'admin'] },
-    { to: '/ai-chat', icon: '🤖', label: 'AI Chat', roles: ['user', 'admin'] },
-  ]},
-  { section: 'Tools', items: [
-    { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },
-    { to: '/backtest', icon: '🔁', label: 'Backtesting', roles: ['admin'] },
-    { to: '/filings', icon: '📋', label: 'Filings Analyzer', roles: ['admin'] },
-  ]},
-  { section: 'System', items: [
-    { to: '/admin', icon: '🛠️', label: 'Admin Panel', roles: ['admin'] },
-    { to: '/notifications', icon: '🔔', label: 'Notifications', roles: ['user', 'admin'] },
-    { to: '/profile', icon: '👤', label: 'Profile', roles: ['user', 'admin'] },
-    { to: '/settings', icon: '⚙️', label: 'Settings', roles: ['user', 'admin'] },
-  ]},
+  {
+    section: 'Main', items: [
+      { to: '/dashboard', icon: '⊞', label: 'Dashboard', roles: ['user', 'admin'] },
+      { to: '/market', icon: '📊', label: 'Market Overview', roles: ['user', 'admin'] },
+      { to: '/stocks', icon: '🔍', label: 'Stock Explorer', roles: ['user', 'admin'] },
+    ]
+  },
+  {
+    section: 'Personal', items: [
+      { to: '/portfolio', icon: '💼', label: 'Portfolio', roles: ['user', 'admin'] },
+      { to: '/watchlist', icon: '⭐', label: 'Watchlist', roles: ['user', 'admin'] },
+      { to: '/ai-chat', icon: '🤖', label: 'AI Chat', roles: ['user', 'admin'] },
+    ]
+  },
+  {
+    section: 'Tools', items: [
+      { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },
+      { to: '/backtest', icon: '🔁', label: 'Backtesting', roles: ['admin'] },
+      { to: '/filings', icon: '📋', label: 'Filings Analyzer', roles: ['admin'] },
+    ]
+  },
+  {
+    section: 'System', items: [
+      { to: '/notifications', icon: '🔔', label: 'Notifications', roles: ['user', 'admin'] },
+      { to: '/profile', icon: '👤', label: 'Profile', roles: ['user', 'admin'] },
+      { to: '/settings', icon: '⚙️', label: 'Settings', roles: ['user', 'admin'] },
+    ]
+  },
 ]
 
 export default function Sidebar({ collapsed, onToggle }) {
@@ -64,7 +71,7 @@ export default function Sidebar({ collapsed, onToggle }) {
       {/* Navigation */}
       <nav className={styles.nav}>
         {NAV_ITEMS.map((section) => {
-          const filteredItems = section.items.filter(item => 
+          const filteredItems = section.items.filter(item =>
             !item.roles || item.roles.includes(user?.role || 'user')
           )
 
