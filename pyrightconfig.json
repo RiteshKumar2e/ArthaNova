@@ -15,6 +15,7 @@
     {
       "root": "backend",
       "extraPaths": [
+        "app",
         "venv/Lib/site-packages"
       ]
     }
