@@ -23,6 +23,8 @@ import PortfolioPage from './pages/app/PortfolioPage'
 import AIChatPage from './pages/app/AIChatPage'
 import NewsIntelligencePage from './pages/app/NewsIntelligencePage'
 import IPOTrackerPage from './pages/app/IPOTrackerPage'
+import BacktestingPage from './pages/app/BacktestingPage'
+import FilingsAnalyzerPage from './pages/app/FilingsAnalyzerPage'
 import OpportunityRadarPage from './pages/app/OpportunityRadarPage'
 import ProfilePage from './pages/app/ProfilePage'
 import {
@@ -31,9 +33,7 @@ import {
   TechnicalAnalysisPage,
   WatchlistPage,
   RiskAnalyzerPage,
-  BacktestingPage,
   VideoInsightsPage,
-  FilingsAnalyzerPage,
   NotificationsPage,
   SettingsPage
 } from './pages/app/PlaceholderPages'

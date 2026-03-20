@@ -20,12 +20,16 @@ const NAV_ITEMS = [
   {
     section: 'Tools', items: [
       { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },
-      { to: '/backtest', icon: '🔁', label: 'Backtesting', roles: ['admin'] },
+    ]
+  },
+  {
+    section: 'SYSTEM', items: [
+      { to: '/backtest', icon: '🔄', label: 'Backtesting', roles: ['admin'] },
       { to: '/filings', icon: '📋', label: 'Filings Analyzer', roles: ['admin'] },
     ]
   },
   {
-    section: 'System', items: [
+    section: 'Settings', items: [
       { to: '/notifications', icon: '🔔', label: 'Notifications', roles: ['user', 'admin'] },
       { to: '/profile', icon: '👤', label: 'Profile', roles: ['user', 'admin'] },
       { to: '/settings', icon: '⚙️', label: 'Settings', roles: ['user', 'admin'] },

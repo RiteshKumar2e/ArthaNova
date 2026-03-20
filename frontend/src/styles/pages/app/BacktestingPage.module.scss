@@ -1,0 +1,250 @@
+.contentLayout {
+  display: flex;
+  gap: $space-6;
+  margin-top: $space-6;
+  flex-direction: column;
+
+  @media (min-width: $breakpoint-lg) {
+    flex-direction: row;
+  }
+}
+
+.controls {
+  width: 100%;
+  flex-shrink: 0;
+
+  @media (min-width: $breakpoint-lg) {
+    width: 320px;
+  }
+}
+
+.resultsMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.cardTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-text-tertiary;
+  letter-spacing: 0.1em;
+  margin-bottom: $space-4;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  label {
+    display: block;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+    margin-bottom: $space-1;
+  }
+
+  input, select {
+    width: 100%;
+    padding: $space-2 $space-3;
+    border-radius: $radius-md;
+    border: 1px solid $color-border;
+    background: $color-bg-alt;
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    transition: all $transition-fast;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
+    }
+  }
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3;
+}
+
+.runBtn {
+  margin-top: $space-4;
+  height: 48px;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+}
+
+.recentHistory {
+  margin-top: $space-4;
+}
+
+.histList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.histItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-2;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+  
+  &:hover {
+    background: rgba(0,0,0,0.02);
+  }
+}
+
+.histItemMain {
+  display: flex;
+  flex-direction: column;
+}
+
+.histSymbol {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+}
+
+.histStrategy {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.posReturn { color: $color-success; font-weight: $font-weight-bold; font-size: $font-size-sm; }
+.negReturn { color: $color-danger; font-weight: $font-weight-bold; font-size: $font-size-sm; }
+
+.idleState, .loadingState {
+  background: $color-white;
+  border-radius: $radius-xl;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  padding: $space-24 $space-6;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .idleIcon { font-size: 4rem; margin-bottom: $space-5; opacity: 0.5; }
+  h2 { font-size: $font-size-xl; margin-bottom: $space-3; color: $color-text-primary; }
+  p { font-size: $font-size-sm; color: $color-text-secondary; max-width: 450px; line-height: 1.6; }
+}
+
+.loadingState {
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.05);
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(0, 82, 204, 0.1);
+    border-top-color: #0052CC;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: $space-6;
+  }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-4;
+}
+
+.statCard {
+  background: $color-white;
+  padding: $space-5;
+  border-radius: $radius-lg;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-sm;
+}
+
+.statLabel { font-size: $font-size-xs; font-weight: $font-weight-semibold; color: $color-text-tertiary; text-transform: uppercase; margin-bottom: $space-2; }
+.statValue { font-size: $font-size-xl; font-weight: $font-weight-bold; margin-bottom: $space-1; font-family: $font-mono; }
+.statSub { font-size: $font-size-xs; color: $color-text-tertiary; }
+
+.progressBar {
+  height: 4px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 2px;
+  margin-top: $space-3;
+  overflow: hidden;
+}
+
+.progressFill { height: 100%; border-radius: 2px; }
+
+.positiveText, .posText { color: $color-success; }
+.negativeText, .negText { color: $color-danger; }
+.monoFont { font-family: $font-mono; }
+
+.chartCard {
+  padding: $space-6;
+}
+
+.chartWrapper {
+  height: 300px;
+  width: 100%;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.tradeTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th { 
+    font-size: $font-size-xs; 
+    font-weight: $font-weight-bold; 
+    text-transform: uppercase; 
+    color: $color-text-tertiary;
+    padding: $space-3 $space-4;
+    border-bottom: 2px solid $color-bg;
+  }
+
+  td {
+    padding: $space-3 $space-4;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+  }
+
+  tr:last-child td { border-bottom: none; }
+}
+
+.badge {
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+.buyBadge { background: rgba($color-success, 0.1); color: $color-success; }
+.sellBadge { background: rgba($color-danger, 0.1); color: $color-danger; }
+
+.historyOverview {
+  display: flex;
+  gap: $space-5;
+}
+
+.histStat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.histLabel { font-size: $font-size-xs; color: $color-text-tertiary; }
+.histValue { font-size: $font-size-md; font-weight: $font-weight-bold; color: $color-text-primary; }
