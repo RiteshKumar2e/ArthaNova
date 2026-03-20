@@ -55,12 +55,12 @@ import SystemSettings from './pages/app/admin/SystemSettings'
 // Route Guards
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthStore()
-  return isAuthenticated ? children : <Navigate to="/login" replace />
+  return isAuthenticated ? children : <Navigate to="/" replace />
 }
 
 const AdminRoute = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore()
-  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (!isAuthenticated) return <Navigate to="/" replace />
   if (user?.role !== 'admin' && !user?.is_admin) return <Navigate to="/dashboard" replace />
   return children
 }

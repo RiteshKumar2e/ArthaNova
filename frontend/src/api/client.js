@@ -35,11 +35,11 @@ api.interceptors.response.use(
           return api(originalRequest)
         } catch {
           logout()
-          window.location.href = '/login'
+          window.location.href = '/'
         }
       } else {
         logout()
-        window.location.href = '/login'
+        window.location.href = '/'
       }
     }
 

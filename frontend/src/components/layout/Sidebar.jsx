@@ -32,7 +32,7 @@ export default function Sidebar({ collapsed, onToggle }) {
 
   const handleLogout = () => {
     logout()
-    navigate('/')
+    navigate('/', { replace: true })
   }
 
   return (
