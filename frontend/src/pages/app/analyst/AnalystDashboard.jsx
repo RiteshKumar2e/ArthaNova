@@ -4,17 +4,13 @@ import { Link } from 'react-router-dom';
 import styles from '../../../styles/pages/app/DashboardPage.module.scss';
 
 const ANALYST_STATS = [
-  { label: 'Active Signals', value: '42', change: '+12%', positive: true, icon: '🎯' },
-  { label: 'Success Rate', value: '74.2%', change: '+2.1%', positive: true, icon: '🏆' },
-  { label: 'Backtests Run', value: '156', change: 'This week', positive: null, icon: '🔁' },
-  { label: 'System Health', value: 'Optimal', change: '99.9% Up', positive: true, icon: '⚡' },
+  { label: 'Active Signals', value: '0', change: '--%', positive: null, icon: '🎯' },
+  { label: 'Success Rate', value: '0.0%', change: '--%', positive: null, icon: '🏆' },
+  { label: 'Backtests Run', value: '0', change: 'This week', positive: null, icon: '🔁' },
+  { label: 'System Health', value: 'Optimal', change: 'Online', positive: true, icon: '⚡' },
 ];
 
-const RECENT_BACKTESTS = [
-  { id: 1, strategy: 'RSI Mean Reversion', symbol: 'RELIANCE', result: '+14.2%', date: '2h ago' },
-  { id: 2, strategy: 'MACD Crossover', symbol: 'TCS', result: '+8.4%', date: '5h ago' },
-  { id: 3, strategy: 'EMA Breakout', symbol: 'HDFCBANK', result: '-2.1%', date: 'Yesterday' },
-];
+const RECENT_BACKTESTS = [];
 
 export default function AnalystDashboard({ user }) {
   return (
@@ -50,14 +46,11 @@ export default function AnalystDashboard({ user }) {
           <div className="card-header">
             <h3>📈 Strategy Performance</h3>
           </div>
-          <div style={{ height: 250 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={[{d:1, v:20}, {d:2, v:45}, {d:3, v:38}, {d:4, v:65}]}>
-                <Area type="monotone" dataKey="v" stroke="#0052CC" fill="#E8F0FE" />
-                <XAxis dataKey="d" hide />
-                <YAxis hide />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div style={{ height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 40 }}>
+            <div>
+              <div style={{ fontSize: '2rem', marginBottom: 12 }}>🕯️</div>
+              <p style={{ color: '#5E6C84' }}>No performance data available. Deploy a strategy to see real-time performance tracking.</p>
+            </div>
           </div>
         </div>
 
@@ -76,16 +69,24 @@ export default function AnalystDashboard({ user }) {
                 </tr>
               </thead>
               <tbody>
-                {RECENT_BACKTESTS.map(bt => (
-                  <tr key={bt.id}>
-                    <td>{bt.strategy}</td>
-                    <td><strong>{bt.symbol}</strong></td>
-                    <td className={bt.result.startsWith('+') ? 'text-success' : 'text-danger'}>
-                      {bt.result}
+                {RECENT_BACKTESTS.length > 0 ? (
+                  RECENT_BACKTESTS.map(bt => (
+                    <tr key={bt.id}>
+                      <td>{bt.strategy}</td>
+                      <td><strong>{bt.symbol}</strong></td>
+                      <td className={bt.result.startsWith('+') ? 'text-success' : 'text-danger'}>
+                        {bt.result}
+                      </td>
+                      <td>{bt.date}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
+                      No backtest history found. Run a new simulation to begin.
                     </td>
-                    <td>{bt.date}</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

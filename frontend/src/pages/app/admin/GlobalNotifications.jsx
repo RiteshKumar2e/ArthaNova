@@ -1,11 +1,7 @@
 import React from 'react';
 
 export default function GlobalNotifications() {
-  const NOTIFICATIONS = [
-    { title: 'System Maintenance Scheduled', type: 'Global', author: 'System Admin', status: 'Draft', sentDate: 'N/A' },
-    { title: 'New IPO Signal for HDFC Life', type: 'Targeted', author: 'AI Engine', status: 'Sent', sentDate: 'Mar 18, 10:15 AM' },
-    { title: 'Welcome New Premium Users', type: 'Segmented', author: 'Marketing Main', status: 'Sent', sentDate: 'Mar 17, 09:00 AM' },
-  ];
+  const NOTIFICATIONS = [];
 
   return (
     <div className="animate-fadeIn">
@@ -77,23 +73,31 @@ export default function GlobalNotifications() {
                   </tr>
                </thead>
                <tbody>
-                  {NOTIFICATIONS.map((n, i) => (
-                    <tr key={i}>
-                       <td><strong>{n.title}</strong></td>
-                       <td><span className="badge badge-secondary">{n.type}</span></td>
-                       <td>{n.author}</td>
-                       <td>
-                          <span className={`badge ${n.status === 'Sent' ? 'badge-success' : 'badge-warning'}`}>{n.status}</span>
-                       </td>
-                       <td>{n.sentDate}</td>
-                       <td>
-                          <div style={{ display: 'flex', gap: 8 }}>
-                             <button className="btn btn-sm btn-secondary">Stats</button>
-                             <button className="btn btn-sm btn-secondary">Clone</button>
-                          </div>
-                       </td>
+                  {NOTIFICATIONS.length > 0 ? (
+                    NOTIFICATIONS.map((n, i) => (
+                      <tr key={i}>
+                         <td><strong>{n.title}</strong></td>
+                         <td><span className="badge badge-secondary">{n.type}</span></td>
+                         <td>{n.author}</td>
+                         <td>
+                            <span className={`badge ${n.status === 'Sent' ? 'badge-success' : 'badge-warning'}`}>{n.status}</span>
+                         </td>
+                         <td>{n.sentDate}</td>
+                         <td>
+                            <div style={{ display: 'flex', gap: 8 }}>
+                               <button className="btn btn-sm btn-secondary">Stats</button>
+                               <button className="btn btn-sm btn-secondary">Clone</button>
+                            </div>
+                         </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
+                        No global notifications sent recently.
+                      </td>
                     </tr>
-                  ))}
+                  )}
                </tbody>
             </table>
          </div>

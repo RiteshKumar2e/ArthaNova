@@ -38,22 +38,9 @@ export default function VideoEngineControl() {
           <div className="card-header">
             <h3>Render Jobs Status (Live)</h3>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {[
-              { id: 'JOB-901', name: 'NIFTY DAILY', progress: 85, status: 'Rendering' },
-              { id: 'JOB-902', name: 'HDFCBANK ANALYSIS', progress: 42, status: 'Rendering' },
-              { id: 'JOB-903', name: 'IPO HIGHLIGHTS', progress: 0, status: 'Waiting' },
-            ].map(job => (
-              <div key={job.id} style={{ paddingBottom: 12, borderBottom: '1px solid #DFE1E6' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <strong>{job.name} <span style={{ fontSize: '0.7rem', color: '#5E6C84' }}>({job.id})</span></strong>
-                  <span className={`badge ${job.status === 'Rendering' ? 'badge-primary' : 'badge-secondary'}`}>{job.status}</span>
-                </div>
-                <div className="progress" style={{ height: 6, width: '100%', borderRadius: 3, background: '#F4F5F7' }}>
-                   <div style={{ height: 6, width: `${job.progress}%`, background: '#0052CC', borderRadius: 3 }}></div>
-                </div>
-              </div>
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minHeight: 120, alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🎥</div>
+            <p style={{ color: '#5E6C84', fontSize: '0.85rem' }}>No active rendering jobs at the moment.</p>
           </div>
         </div>
 
@@ -63,12 +50,12 @@ export default function VideoEngineControl() {
           </div>
           <div style={{ padding: 16, height: 120, display: 'flex', gap: 24, alignItems: 'center' }}>
             <div style={{ flex: 1, textAlign: 'center' }}>
-               <div style={{ fontSize: '2rem', fontWeight: 700, color: '#00875A' }}>14</div>
+               <div style={{ fontSize: '2rem', fontWeight: 700, color: '#00875A' }}>0</div>
                <div style={{ fontSize: '0.75rem', color: '#5E6C84' }}>Online Nodes</div>
             </div>
             <div style={{ height: '100%', width: 1, background: '#DFE1E6' }}></div>
             <div style={{ flex: 1, textAlign: 'center' }}>
-               <div style={{ fontSize: '2rem', fontWeight: 700, color: '#0052CC' }}>82%</div>
+               <div style={{ fontSize: '2rem', fontWeight: 700, color: '#0052CC' }}>0%</div>
                <div style={{ fontSize: '0.75rem', color: '#5E6C84' }}>Cluster Load</div>
             </div>
           </div>
@@ -96,25 +83,11 @@ export default function VideoEngineControl() {
                   </tr>
                </thead>
                <tbody>
-                  {[
-                    { title: 'Reliance Q3 Results Summary', id: 'V-901', duration: '1:12', format: 'MP4 (1080p)', status: 'Ready' },
-                    { title: 'Nifty Bull Run Analysis March', id: 'V-902', duration: '0:58', format: 'MP4 (1080p)', status: 'Ready' },
-                    { title: 'Zomato Share Price Forecast', id: 'V-903', duration: '1:45', format: 'MOV (High-res)', status: 'Ready' },
-                  ].map(v => (
-                    <tr key={v.id}>
-                      <td><strong>{v.title}</strong></td>
-                      <td>{v.id}</td>
-                      <td>{v.duration}</td>
-                      <td>{v.format}</td>
-                      <td><span className="badge badge-success">{v.status}</span></td>
-                      <td>
-                        <div style={{ display: 'flex', gap: 8 }}>
-                           <button className="btn btn-sm btn-secondary">Preview</button>
-                           <button className="btn btn-sm btn-primary">Publish</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
+                      No videos have been generated yet.
+                    </td>
+                  </tr>
                </tbody>
             </table>
          </div>

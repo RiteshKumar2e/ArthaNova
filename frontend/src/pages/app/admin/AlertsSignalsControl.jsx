@@ -1,11 +1,7 @@
 import React from 'react';
 
 export default function AlertsSignalsControl() {
-  const SIGNALS = [
-    { id: 'sig-001', symbol: 'RELIANCE', type: 'Bullish Hammer', confidence: '88%', status: 'Override Pending', time: '10:15 AM' },
-    { id: 'sig-002', symbol: 'HDFCBANK', type: 'Breakout Confirm', confidence: '92%', status: 'Active', time: '10:30 AM' },
-    { id: 'sig-003', symbol: 'TCS', type: 'MACD Divergence', confidence: '75%', status: 'Flagged', time: 'Yesterday' },
-  ];
+  const SIGNALS = [];
 
   return (
     <div className="animate-fadeIn">
@@ -42,10 +38,8 @@ export default function AlertsSignalsControl() {
           <div className="card-header">
             <h3>Signal Performance</h3>
           </div>
-          <div style={{ padding: 16, height: 150, display: 'flex', alignItems: 'flex-end', gap: 12, justifyContent: 'space-between' }}>
-            {[45, 67, 89, 56, 78, 92, 65, 88].map((h, i) => (
-               <div key={i} style={{ flex: 1, background: '#0052CC', borderRadius: 4, height: `${h}%` }}></div>
-            ))}
+          <div style={{ padding: 16, height: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+            <p style={{ color: '#5E6C84', fontSize: '0.85rem' }}>Insufficient data to generate accuracy trends.</p>
           </div>
           <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#5E6C84' }}>Accuracy Trends (Last 8 Days)</p>
         </div>
@@ -68,25 +62,33 @@ export default function AlertsSignalsControl() {
                   </tr>
                </thead>
                <tbody>
-                  {SIGNALS.map(sig => (
-                     <tr key={sig.id}>
-                        <td>{sig.id}</td>
-                        <td><strong>{sig.symbol}</strong></td>
-                        <td>{sig.type}</td>
-                        <td><span className="badge badge-success">{sig.confidence}</span></td>
-                        <td>
-                           <span className={`badge ${sig.status === 'Active' ? 'badge-success' : sig.status === 'Override Pending' ? 'badge-warning' : 'badge-danger'}`}>
-                              {sig.status}
-                           </span>
-                        </td>
-                        <td>
-                           <div style={{ display: 'flex', gap: 8 }}>
-                              <button className="btn btn-sm btn-primary">Approve</button>
-                              <button className="btn btn-sm btn-danger">Override</button>
-                           </div>
-                        </td>
-                     </tr>
-                  ))}
+                  {SIGNALS.length > 0 ? (
+                    SIGNALS.map(sig => (
+                       <tr key={sig.id}>
+                          <td>{sig.id}</td>
+                          <td><strong>{sig.symbol}</strong></td>
+                          <td>{sig.type}</td>
+                          <td><span className="badge badge-success">{sig.confidence}</span></td>
+                          <td>
+                             <span className={`badge ${sig.status === 'Active' ? 'badge-success' : sig.status === 'Override Pending' ? 'badge-warning' : sig.status === 'Flagged' ? 'badge-danger' : 'badge-danger'}`}>
+                                {sig.status}
+                             </span>
+                          </td>
+                          <td>
+                             <div style={{ display: 'flex', gap: 8 }}>
+                                <button className="btn btn-sm btn-primary">Approve</button>
+                                <button className="btn btn-sm btn-danger">Override</button>
+                             </div>
+                          </td>
+                       </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
+                        No pending signals for approval.
+                      </td>
+                    </tr>
+                  )}
                </tbody>
             </table>
          </div>

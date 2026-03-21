@@ -4,32 +4,15 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 import { stocksAPI } from '../../../api/client'
 import styles from '../../../styles/pages/app/DashboardPage.module.scss'
 
-// Generate mock portfolio chart
-const generateChartData = () => {
-  let val = 1000000
-  return Array.from({ length: 30 }, (_, i) => {
-    val *= (1 + (Math.random() - 0.48) * 0.015)
-    return {
-      day: i + 1,
-      value: Math.round(val),
-    }
-  })
-}
-
-const CHART_DATA = generateChartData()
-
+// Quick statistics
 const QUICK_STATS = [
-  { label: 'Portfolio Value', value: '₹12,45,820', change: '+18.4%', positive: true, icon: '💼' },
-  { label: "Today's P&L", value: '+₹8,240', change: '+0.67%', positive: true, icon: '📈' },
-  { label: 'Total Returns', value: '+₹1,92,360', change: 'Since inception', positive: true, icon: '💰' },
-  { label: 'Risk Score', value: '6.2 / 10', change: 'Moderate', positive: null, icon: '🛡️' },
+  { label: 'Portfolio Value', value: '₹0.00', change: '--%', positive: null, icon: '💼' },
+  { label: "Today's P&L", value: '₹0.00', change: '--%', positive: null, icon: '📈' },
+  { label: 'Total Returns', value: '₹0.00', change: '--%', positive: null, icon: '💰' },
+  { label: 'Risk Score', value: '0 / 10', change: 'Calculating', positive: null, icon: '🛡️' },
 ]
 
-const AI_SIGNALS = [
-  { symbol: 'SUNPHARMA', type: 'Breakout Setup', sentiment: 'Bullish', confidence: 84, timeframe: '2-4 weeks' },
-  { symbol: 'HDFCBANK', type: 'Insider Accumulation', sentiment: 'Very Bullish', confidence: 78, timeframe: '1-3 months' },
-  { symbol: 'LT', type: 'Earnings Catalyst', sentiment: 'Bullish', confidence: 71, timeframe: '1 month' },
-]
+const AI_SIGNALS = []
 
 export default function UserDashboard({ user }) {
   const [marketData, setMarketData] = useState(null)
@@ -81,14 +64,11 @@ export default function UserDashboard({ user }) {
           <div className="card-header">
             <h3>Portfolio Performance (30D)</h3>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={CHART_DATA}>
-              <XAxis dataKey="day" axisLine={false} tickLine={false} hide />
-              <YAxis tickFormatter={formatCurrency} axisLine={false} tickLine={false} width={80} />
-              <Tooltip formatter={(v) => [`₹${v.toLocaleString()}`, 'Value']} />
-              <Area type="monotone" dataKey="value" stroke="#0052CC" fill="#E8F0FE" />
-            </AreaChart>
-          </ResponsiveContainer>
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>📈</div>
+            <p style={{ color: '#5E6C84' }}>No performance data available yet. Start by adding holdings to your portfolio.</p>
+            <Link to="/portfolio" className="btn btn-secondary btn-sm" style={{ marginTop: 12 }}>Build Portfolio &rarr;</Link>
+          </div>
         </div>
 
         <div className="card">
@@ -96,17 +76,24 @@ export default function UserDashboard({ user }) {
             <h3>🎯 AI Opportunity Signals</h3>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {AI_SIGNALS.map((signal) => (
-              <div key={signal.symbol} className={styles.signalRow}>
-                <div className={styles.signalLeft}>
-                  <div className={styles.signalSymbol}>{signal.symbol}</div>
-                  <div className={styles.signalType}>{signal.type}</div>
+            {AI_SIGNALS.length > 0 ? (
+              AI_SIGNALS.map((signal) => (
+                <div key={signal.symbol} className={styles.signalRow}>
+                  <div className={styles.signalLeft}>
+                    <div className={styles.signalSymbol}>{signal.symbol}</div>
+                    <div className={styles.signalType}>{signal.type}</div>
+                  </div>
+                  <div className={styles.signalRight}>
+                    <span className="badge badge-success">{signal.sentiment}</span>
+                  </div>
                 </div>
-                <div className={styles.signalRight}>
-                  <span className="badge badge-success">{signal.sentiment}</span>
-                </div>
+              ))
+            ) : (
+              <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                <p style={{ fontSize: '0.85rem', color: '#5E6C84' }}>Scanning markets for high-conviction signals...</p>
+                <Link to="/radar" style={{ fontSize: '0.75rem', color: '#0052CC', textDecoration: 'none', display: 'block', marginTop: 8 }}>View Radar &rarr;</Link>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
