@@ -1,6 +1,9 @@
-"""ArthaNova — AI Chat API (RAG-powered conversational interface)."""
+"""
+Enterprise AI Engine API with Multi-Agent Orchestration
+Implements: Autonomy, Multi-Agent Design, Compliance, Observability
+"""
 
-import random
+import asyncio
 from typing import Optional
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
@@ -11,33 +14,12 @@ from app.core.dependencies import get_db, get_current_user
 from app.models.user import User, ChatSession, ChatMessage
 from app.schemas.schemas import ChatMessageRequest, ChatMessageResponse, MessageResponse
 from app.services.ai_service import ai_service
+from app.ai.safety_guardrails import input_validator, rate_limiter
 
 router = APIRouter(prefix="/ai", tags=["AI Intelligence"])
 
-# Canned AI responses for demo (replace with Groq + RAG in production)
-AI_RESPONSES = [
-    "Based on my analysis of your portfolio and current market conditions, {stock} shows strong momentum with RSI at 58 — indicating room for upside. The recent quarterly results beat estimates by 12%, and institutional buying has picked up.",
-    "Looking at the broader market context: FII flows have been positive this week (+₹2,400 Cr net), which typically supports mid and large caps. Your portfolio has moderate correlation to Nifty (beta: 0.87), which provides some protection in downturns.",
-    "The technical setup for {stock} is interesting — price is consolidating above the 200-DMA with declining volumes, often a precursor to a breakout. Key resistance is at ₹{price} — a close above that with volume would confirm the bullish thesis.",
-    "From a risk perspective, your portfolio concentration in IT (38%) is above the recommended threshold of 30%. Consider trimming positions and rotating into defensive sectors like FMCG or Pharma ahead of the quarterly results season.",
-    "Based on the latest filing analysis, {stock}'s management commentary was upbeat — key phrases like 'demand acceleration' and 'margin recovery' appeared 3x more than the previous quarter. My sentiment score: 78/100 (Bullish).",
-    "The Opportunity Radar has flagged a high-confidence signal on {stock}: Insider purchases of ₹45 Cr in the last 2 weeks, combined with a positive earnings revision by 3 brokers. Confidence score: 84%.",
-]
-
-STOCKS = ["RELIANCE", "TCS", "INFY", "HDFCBANK", "BAJFINANCE", "WIPRO", "MARUTI", "SUNPHARMA"]
-
-
-def generate_ai_response(user_message: str) -> tuple[str, list]:
-    """Generate a contextual AI response (mock implementation)."""
-    stock = random.choice(STOCKS)
-    price = random.randint(500, 5000)
-    response = random.choice(AI_RESPONSES).format(stock=stock, price=price)
-    sources = [
-        {"type": "filing", "title": f"{stock} Q3 FY25 Earnings Report", "date": "2025-01-15"},
-        {"type": "news", "title": f"Analyst upgrades {stock} price target", "date": "2025-01-10"},
-        {"type": "technical", "title": f"{stock} Chart Pattern Analysis", "date": "2025-01-18"},
-    ]
-    return response, sources[:random.randint(1, 3)]
+import logging
+logger = logging.getLogger(__name__)
 
 
 @router.post("/chat")
@@ -46,73 +28,123 @@ async def send_chat_message(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Send a message to the AI and get a response."""
-    # Get or create session
-    session = None
-    if data.session_id:
-        result = await db.execute(
-            select(ChatSession).where(
-                ChatSession.id == data.session_id,
-                ChatSession.user_id == current_user.id,
+    """
+    Send a message to the AI and get a multi-agent orchestrated response.
+    Features: Multi-agent autonomy, compliance, rate limiting, input validation
+    """
+    try:
+        # Input validation (safety guardrails)
+        valid, error, sanitized_input = input_validator.validate_query(data.message)
+        if not valid:
+            logger.warning(f"Input validation failed for user {current_user.id}: {error}")
+            raise HTTPException(status_code=400, detail=error)
+        
+        # Rate limiting
+        can_proceed, rate_error = await rate_limiter.check_rate_limit(current_user.id)  # type: ignore
+        if not can_proceed:
+            logger.warning(f"Rate limit exceeded for user {current_user.id}")
+            raise HTTPException(status_code=429, detail=rate_error)
+        
+        # Get or create session
+        session = None
+        if data.session_id:
+            result = await db.execute(
+                select(ChatSession).where(
+                    ChatSession.id == data.session_id,
+                    ChatSession.user_id == current_user.id,
+                )
             )
+            session = result.scalar_one_or_none()
+        
+        if not session:
+            session = ChatSession(
+                user_id=current_user.id,
+                title=sanitized_input[:60] + ("..." if len(sanitized_input) > 60 else ""),
+            )
+            db.add(session)
+            await db.flush()
+        
+        # Store user message
+        user_msg = ChatMessage(session_id=session.id, role="user", content=sanitized_input)
+        db.add(user_msg)
+        await db.commit()
+        
+        # Fetch chat history for context (last 6 messages)
+        history_result = await db.execute(
+            select(ChatMessage).where(ChatMessage.session_id == session.id)
+            .order_by(ChatMessage.created_at.desc())
+            .limit(6)
         )
-        session = result.scalar_one_or_none()
-
-    if not session:
-        session = ChatSession(
-            user_id=current_user.id,
-            title=data.message[:60] + ("..." if len(data.message) > 60 else ""),
+        history = history_result.scalars().all()
+        
+        # Format for LLM
+        messages = [
+            {"role": "system", "content": "You are ArthaNova AI, an expert Indian stock market analyst. Provide concise, professional, and data-driven insights. Always include risk disclaimers for financial recommendations."}
+        ]
+        messages.extend([{"role": str(m.role), "content": str(m.content)} for m in reversed(history)])
+        
+        # MULTI-AGENT ORCHESTRATION
+        # Use orchestrator for intelligent routing and multi-agent response
+        orchestration_result = await ai_service.orchestrate_query(
+            user_id=current_user.id,  # type: ignore
+            user_input=sanitized_input,
+            session_id=session.id if session else None,  # type: ignore
+            portfolio_data={"holdings": []},  # Can be enhanced with actual portfolio data
         )
-        db.add(session)
-        await db.flush()
-
-    # Store user message
-    user_msg = ChatMessage(session_id=session.id, role="user", content=data.message)
-    db.add(user_msg)
-    await db.commit() # Commit user message first
-
-    # Fetch chat history for context (last 6 messages)
-    history_result = await db.execute(
-        select(ChatMessage).where(ChatMessage.session_id == session.id)
-        .order_by(ChatMessage.created_at.desc())
-        .limit(6)
-    )
-    history = history_result.scalars().all()
-    # Format for LLM (reversed to keep chronological order)
-    messages = [
-        {"role": "system", "content": "You are ArthaNova AI, an expert Indian stock market analyst. Provide concise, professional, and data-driven insights. Focus on NSE/BSE stocks and technical indicators like RSI and EMA when relevant."}
-    ]
-    messages.extend([{"role": str(m.role), "content": str(m.content)} for m in reversed(history)])
-
-    # Generate REAL AI response using Groq
-    ai_text = await ai_service.get_chat_completion(messages)
-
-    # Mock sources (still useful for UI demo)
-    stock = random.choice(STOCKS)
-    sources = [
-        {"type": "filing", "title": f"{stock} Q3 FY25 Earnings Report", "date": "2025-01-15"},
-        {"type": "technical", "title": f"{stock} AI Sentiment & Chart Analysis", "date": datetime.now().strftime("%Y-%m-%d")},
-    ]
-
-    # Store AI response
-    ai_msg = ChatMessage(
-        session_id=session.id,
-        role="assistant",
-        content=ai_text,
-        sources=sources,
-    )
-    db.add(ai_msg)
-    await db.commit()
-    await db.refresh(ai_msg)
-
-    return {
-        "session_id": session.id,
-        "message_id": ai_msg.id,
-        "role": "assistant",
-        "content": ai_text,
-        "sources": sources,
-        "created_at": ai_msg.created_at or datetime.now(timezone.utc),
-    }
+        
+        if orchestration_result.get("success"):
+            ai_text = orchestration_result.get("final_response", "Unable to generate response")
+            agent_responses = orchestration_result.get("agent_responses", {})
+        else:
+            # Fallback to direct LLM if orchestration fails
+            ai_text = await ai_service.get_chat_completion(messages, user_id=current_user.id)  # type: ignore
+            agent_responses = {}
+        
+        # Generate sources from agent responses
+        sources = []
+        for agent_name, response in agent_responses.items():
+            sources.append({
+                "type": "agent",
+                "agent": agent_name,
+                "title": f"{agent_name} Analysis",
+                "confidence": response.get("confidence_score", "N/A"),
+                "date": datetime.now(timezone.utc).isoformat(),
+            })
+        
+        if not sources:
+            sources = [
+                {"type": "filing", "title": "NSE Filings", "date": datetime.now(timezone.utc).isoformat()},
+                {"type": "technical", "title": "Technical Analysis", "date": datetime.now(timezone.utc).isoformat()},
+            ]
+        
+        # Store AI response
+        ai_msg = ChatMessage(
+            session_id=session.id,
+            role="assistant",
+            content=ai_text,
+            sources=sources,
+        )
+        db.add(ai_msg)
+        await db.commit()
+        await db.refresh(ai_msg)
+        
+        logger.info(f"Chat message processed for user {current_user.id} in session {session.id}")
+        
+        return {
+            "session_id": session.id,
+            "message_id": ai_msg.id,
+            "role": "assistant",
+            "content": ai_text,
+            "sources": sources,
+            "agents_used": list(agent_responses.keys()) if agent_responses else [],
+            "created_at": ai_msg.created_at or datetime.now(timezone.utc),
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception(f"Error processing chat message for user {current_user.id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error processing message: {str(e)[:100]}")
 
 
 @router.get("/chat/sessions")
@@ -120,16 +152,20 @@ async def get_chat_sessions(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get all chat sessions for the current user."""
-    result = await db.execute(
-        select(ChatSession).where(ChatSession.user_id == current_user.id)
-        .order_by(ChatSession.created_at.desc())
-    )
-    sessions = result.scalars().all()
-    return [
-        {"id": s.id, "title": s.title, "created_at": s.created_at, "updated_at": s.updated_at}
-        for s in sessions
-    ]
+    """Get all chat sessions for the current user"""
+    try:
+        result = await db.execute(
+            select(ChatSession).where(ChatSession.user_id == current_user.id)
+            .order_by(ChatSession.created_at.desc())
+        )
+        sessions = result.scalars().all()
+        return [
+            {"id": s.id, "title": s.title, "created_at": s.created_at, "updated_at": s.updated_at}
+            for s in sessions
+        ]
+    except Exception as e:
+        logger.exception(f"Error fetching sessions for user {current_user.id}: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching sessions")
 
 
 @router.get("/chat/sessions/{session_id}")
@@ -138,28 +174,32 @@ async def get_session_messages(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get all messages in a chat session."""
-    result = await db.execute(
-        select(ChatSession).where(
-            ChatSession.id == session_id, ChatSession.user_id == current_user.id
+    """Get all messages in a chat session with full context"""
+    try:
+        result = await db.execute(
+            select(ChatSession).where(
+                ChatSession.id == session_id, ChatSession.user_id == current_user.id
+            )
         )
-    )
-    session = result.scalar_one_or_none()
-    if not session:
-        raise HTTPException(status_code=404, detail="Session not found")
-
-    messages_result = await db.execute(
-        select(ChatMessage).where(ChatMessage.session_id == session_id)
-        .order_by(ChatMessage.created_at.asc())
-    )
-    messages = messages_result.scalars().all()
-    return {
-        "session": {"id": session.id, "title": session.title},
-        "messages": [
-            {"id": m.id, "role": m.role, "content": m.content, "sources": m.sources, "created_at": m.created_at}
-            for m in messages
-        ],
-    }
+        session = result.scalar_one_or_none()
+        if not session:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        messages_result = await db.execute(
+            select(ChatMessage).where(ChatMessage.session_id == session_id)
+            .order_by(ChatMessage.created_at.asc())
+        )
+        messages = messages_result.scalars().all()
+        return {
+            "session": {"id": session.id, "title": session.title},
+            "messages": [
+                {"id": m.id, "role": m.role, "content": m.content, "sources": m.sources, "created_at": m.created_at}
+                for m in messages
+            ],
+        }
+    except Exception as e:
+        logger.exception(f"Error fetching session {session_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching session")
 
 
 @router.delete("/chat/sessions/{session_id}", response_model=MessageResponse)
@@ -168,65 +208,148 @@ async def delete_session(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Delete a chat session."""
-    result = await db.execute(
-        select(ChatSession).where(
-            ChatSession.id == session_id, ChatSession.user_id == current_user.id
+    """Delete a chat session (cascades to all messages)"""
+    try:
+        result = await db.execute(
+            select(ChatSession).where(
+                ChatSession.id == session_id, ChatSession.user_id == current_user.id
+            )
         )
-    )
-    session = result.scalar_one_or_none()
-    if not session:
-        raise HTTPException(status_code=404, detail="Session not found")
-    await db.delete(session)
-    return MessageResponse(message="Session deleted")
+        session = result.scalar_one_or_none()
+        if not session:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        await db.delete(session)
+        await db.commit()
+        
+        logger.info(f"Session {session_id} deleted for user {current_user.id}")
+        return MessageResponse(message="Session deleted successfully")
+    
+    except Exception as e:
+        logger.exception(f"Error deleting session {session_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error deleting session")
 
 
 @router.get("/opportunity-radar")
 async def get_opportunity_radar(current_user: User = Depends(get_current_user)):
-    """Get AI-generated investment opportunity signals using Groq fallback engine."""
-    import random
-    import asyncio
-
-    signals = []
-    stocks = ["RELIANCE", "TCS", "BAJFINANCE", "SUNPHARMA", "ADANIENT", "TATASTEEL", "LT", "DIVISLAB"]
-    signal_types = ["Breakout Setup", "Insider Accumulation", "Earnings Catalyst", "Technical Reversal", "Fundamental Re-rating"]
-    sentiments = ["Bullish", "Very Bullish", "Cautiously Bullish"]
-
-    for i, stock in enumerate(stocks[:6]):
-        signals.append({
-            "id": i + 1,
-            "symbol": stock,
-            "signal_type": random.choice(signal_types),
-            "sentiment": random.choice(sentiments),
-            "confidence_score": round(random.uniform(65, 95), 1),
-            "expected_return_pct": round(random.uniform(8, 35), 1),
-            "timeframe": random.choice(["Short-term (1-4 weeks)", "Medium-term (1-3 months)", "Long-term (6-12 months)"]),
-            "summary": f"Analyzing {stock} via Groq Engine...", # placeholder
-            "data_sources": random.sample(["NSE Filings", "SEBI Disclosures", "Quarterly Results", "Insider Trades", "Foreign Holdings"], 3),
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        })
-
-    # Live enhancement using the AI fallback service
-    async def update_summary(sig):
-        sig["summary"] = await ai_service.generate_market_insights(f"{sig['symbol']} showing {sig['signal_type']} with {sig['sentiment']} sentiment.")
+    """
+    Get AI-generated investment opportunity signals using multi-agent analysis.
+    Features: Parallel agent execution, autonomy, compliance
+    """
+    try:
+        signals = []
+        stocks = ["RELIANCE", "TCS", "BAJFINANCE", "SUNPHARMA", "ADANIENT", "TATASTEEL"]
+        
+        async def analyze_opportunity(stock: str, index: int):
+            """Analyze single opportunity with AI service"""
+            try:
+                # Orchestrate analysis for this stock
+                analysis = await ai_service.orchestrate_query(
+                    user_id=current_user.id,  # type: ignore
+                    user_input=f"Provide investment opportunity analysis for {stock}",
+                    portfolio_data={"holdings": []},
+                )
+                
+                # Extract results
+                is_bullish = "bullish" in analysis.get("final_response", "").lower()
+                confidence = 75 if is_bullish else 65
+                
+                return {
+                    "id": index + 1,
+                    "symbol": stock,
+                    "signal_type": "AI-Generated Opportunity",
+                    "sentiment": "Bullish" if is_bullish else "Neutral",
+                    "confidence_score": confidence,
+                    "expected_return_pct": 12.5 if is_bullish else 5.0,
+                    "timeframe": "Medium-term (1-3 months)",
+                    "summary": analysis.get("final_response", "Analysis unavailable")[:200],
+                    "agents_used": list(analysis.get("agent_responses", {}).keys()),
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                }
+            except Exception as e:
+                logger.warning(f"Error analyzing {stock}: {e}")
+                return {
+                    "id": index + 1,
+                    "symbol": stock,
+                    "signal_type": "Analysis Pending",
+                    "sentiment": "Neutral",
+                    "confidence_score": 0,
+                    "expected_return_pct": 0,
+                    "timeframe": "Unknown",
+                    "summary": f"Error: {str(e)[:100]}",
+                    "agents_used": [],
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                }
+        
+        # Process multiple stocks in parallel (autonomy through concurrency)
+        tasks = [analyze_opportunity(stock, i) for i, stock in enumerate(stocks[:6])]
+        signals = await asyncio.gather(*tasks)
+        
+        logger.info(f"Opportunity radar generated for user {current_user.id} with {len(signals)} signals")
+        
+        return {
+            "signals": signals,
+            "last_updated": datetime.now(timezone.utc).isoformat(),
+            "total": len(signals),
+            "analysis_method": "Multi-Agent Orchestration",
+        }
     
-    # Process tasks concurrently
-    await asyncio.gather(*(update_summary(s) for s in signals))
-
-    return {"signals": signals, "last_updated": datetime.now(timezone.utc).isoformat(), "total": len(signals)}
+    except Exception as e:
+        logger.exception(f"Error generating opportunity radar: {e}")
+        raise HTTPException(status_code=500, detail="Error generating signals")
 
 
 @router.get("/chart-patterns/{symbol}")
-async def get_chart_patterns(symbol: str, current_user: User = Depends(get_current_user)):
-    """Get AI-detected chart patterns for a stock."""
-    patterns = [
-        {"name": "RSI Divergence", "type": "Bullish", "confidence": 78.5, "description": "Price making lower lows while RSI makes higher lows — classic bullish divergence signaling potential reversal."},
-        {"name": "EMA Crossover", "type": "Bearish", "confidence": 65.2, "description": "20-EMA crossed below 50-EMA, indicating short-term bearish momentum."},
-        {"name": "Cup and Handle", "type": "Bullish", "confidence": 82.1, "description": "Classic cup and handle pattern forming on daily chart. Breakout above handle resistance could trigger 15-20% upside."},
-    ]
-    return {
-        "symbol": symbol.upper(),
-        "patterns": random.sample(patterns, random.randint(1, len(patterns))),
-        "overall_signal": random.choice(["Buy", "Hold", "Sell"]),
-        "backtest_win_rate": round(random.uniform(55, 75), 1),
-    }
+async def get_chart_patterns(
+    symbol: str,
+    current_user: User = Depends(get_current_user),
+):
+    """Get AI-detected chart patterns for a stock using specialist agent"""
+    try:
+        # Validate symbol
+        valid, error = input_validator.validate_symbol(symbol)
+        if not valid:
+            raise HTTPException(status_code=400, detail=error)
+        
+        # Use technical analyzer agent
+        analysis = await ai_service.orchestrate_query(
+            user_id=current_user.id,  # type: ignore
+            user_input=f"Analyze technical chart patterns for {symbol.upper()}",
+            portfolio_data={"holdings": []},
+        )
+        
+        logger.info(f"Chart patterns analyzed for {symbol} by user {current_user.id}")
+        
+        return {
+            "symbol": symbol.upper(),
+            "summary": analysis.get("final_response", "Pattern analysis unavailable"),
+            "agents_used": list(analysis.get("agent_responses", {}).keys()),
+            "overall_signal": "Buy" if "bullish" in analysis.get("final_response", "").lower() else "Neutral",
+            "analysis_method": "Multi-Agent Technical Analysis",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception(f"Error analyzing chart patterns for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail="Error analyzing patterns")
+
+
+@router.get("/system-status")
+async def get_system_status(
+    current_user: User = Depends(get_current_user),
+):
+    """Get AI system status and metrics (observability)"""
+    try:
+        status = ai_service.get_system_status()
+        metrics = ai_service.get_metrics()
+        
+        return {
+            "system_status": status,
+            "metrics": metrics,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as e:
+        logger.exception(f"Error getting system status: {e}")
+        raise HTTPException(status_code=500, detail="Error getting status")

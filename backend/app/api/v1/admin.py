@@ -1,14 +1,18 @@
-"""ArthaNova — Admin management API router."""
+"""ArthaNova — Admin management API router with AI system monitoring."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, desc
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
+import logging
 
 from app.core.dependencies import get_db, get_current_active_admin
 from app.models.user import User, UserRole
 from app.schemas.schemas import MessageResponse
+from app.services.ai_service import ai_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["Admin Operations"])
 
@@ -121,20 +125,122 @@ async def get_audit_logs(
     ]
 
 @router.get("/ai/status")
-async def get_ai_model_status(
+async def get_ai_system_status(
     admin_user: User = Depends(get_current_active_admin)
 ):
-    """Monitor AI modules status."""
-    return {
-        "models": [
-            {"name": "Sentiment Engine", "status": "online", "version": "v2.4", "latency": "120ms"},
-            {"name": "Technical Pattern Recognizer", "status": "online", "version": "v1.8", "latency": "450ms"},
-            {"name": "News Aggregator", "status": "online", "version": "v3.1", "latency": "800ms"},
-            {"name": "Portfolio Risk AI", "status": "maintenance", "version": "v1.2", "latency": "N/A"}
-        ],
-        "last_training": datetime.now().isoformat(),
-        "queue_size": 14
-    }
+    """
+    Monitor comprehensive AI system status including:
+    - Agent fleet status and metrics
+    - Circuit breaker state
+    - Orchestrator performance
+    - Compliance status
+    """
+    try:
+        status_data = ai_service.get_system_status()
+        metrics_data = ai_service.get_metrics()
+        
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "system": {
+                "circuit_breaker": status_data.get("circuit_breaker", {}),
+                "orchestrator": status_data.get("orchestrator_metrics", {}),
+                "audit_entries": status_data.get("audit_trail_entries", 0),
+            },
+            "agents": status_data.get("agent_status", {}),
+            "performance": {
+                "latency_metrics": metrics_data.get("latency_metrics", {}),
+                "cost_metrics": metrics_data.get("cost_metrics", {}),
+            },
+            "status": "operational",
+        }
+    except Exception as e:
+        logger.exception(f"Error retrieving AI system status: {e}")
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "status": "error",
+            "error": str(e),
+        }
+
+
+@router.get("/ai/agents")
+async def get_agent_details(
+    admin_user: User = Depends(get_current_active_admin)
+):
+    """Get detailed status and metrics for each specialized agent"""
+    try:
+        agents_status = ai_service.orchestrator.get_agent_status()
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "agents": agents_status,
+            "total_agents": len(agents_status),
+        }
+    except Exception as e:
+        logger.exception(f"Error retrieving agent details: {e}")
+        raise HTTPException(status_code=500, detail="Error retrieving agent details")
+
+
+@router.get("/ai/audit-trail")
+async def get_ai_audit_trail(
+    user_id: Optional[int] = None,
+    limit: int = 50,
+    admin_user: User = Depends(get_current_active_admin),
+):
+    """Get AI system audit trail for compliance"""
+    try:
+        audit_data = ai_service.audit_trail.get_user_trail(user_id, limit=limit) if user_id else [
+            entry.to_dict() for entry in ai_service.audit_trail.entries[-limit:]
+        ]
+        
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "user_id": user_id,
+            "entries": audit_data,
+            "total": len(audit_data),
+        }
+    except Exception as e:
+        logger.exception(f"Error retrieving audit trail: {e}")
+        raise HTTPException(status_code=500, detail="Error retrieving audit trail")
+
+
+@router.get("/ai/compliance/violations")
+async def get_compliance_violations(
+    days: int = 7,
+    admin_user: User = Depends(get_current_active_admin),
+):
+    """Get compliance violations and rejections"""
+    try:
+        cutoff_time = datetime.utcnow() - timedelta(days=days)
+        violations = [
+            entry.to_dict() for entry in ai_service.audit_trail.entries
+            if entry.decision == "rejected" and entry.timestamp >= cutoff_time
+        ]
+        
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "period_days": days,
+            "violations": violations,
+            "total_violations": len(violations),
+        }
+    except Exception as e:
+        logger.exception(f"Error retrieving compliance violations: {e}")
+        raise HTTPException(status_code=500, detail="Error retrieving violations")
+
+
+@router.get("/ai/metrics/performance")
+async def get_performance_metrics(
+    admin_user: User = Depends(get_current_active_admin),
+):
+    """Get detailed performance metrics"""
+    try:
+        metrics = ai_service.get_metrics()
+        
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "metrics": metrics,
+        }
+    except Exception as e:
+        logger.exception(f"Error retrieving metrics: {e}")
+        raise HTTPException(status_code=500, detail="Error retrieving metrics")
 
 @router.get("/video/pipelines")
 async def get_video_engine_status(
