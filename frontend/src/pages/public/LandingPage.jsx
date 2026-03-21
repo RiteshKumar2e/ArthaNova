@@ -208,6 +208,86 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── How It Works ────────────────────────────────────────────────── */}
+      <section className={styles.howItWorks} id="how-it-works">
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>How ArthaNova Works</h2>
+            <p className={styles.sectionDesc}>
+              A seamless intelligence pipeline from raw data to actionable investment decisions.
+            </p>
+          </div>
+          <div className={styles.stepsGrid}>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>01</div>
+              <h3 className={styles.stepTitle}>Connect & Centralize</h3>
+              <p className={styles.stepDesc}>
+                Securely link your broker accounts or upload your portfolio. We aggregate all your holdings in one unified view.
+              </p>
+            </div>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>02</div>
+              <h3 className={styles.stepTitle}>AI Analysis</h3>
+              <p className={styles.stepDesc}>
+                Our proprietary models scan fundamentals, technicals, and alternative data like news and filings specifically for the Indian market.
+              </p>
+            </div>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>03</div>
+              <h3 className={styles.stepTitle}>Actionable Insights</h3>
+              <p className={styles.stepDesc}>
+                Receive clear, plain-English recommendations, risk alerts, and deep-dive reports through our conversational AI interface.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Contact Section ─────────────────────────────────────────────── */}
+      <section className={styles.contact} id="contact">
+        <div className={styles.container}>
+          <div className={styles.contactGrid}>
+            <div className={styles.contactInfo}>
+              <h2 className={styles.sectionTitle}>Get in Touch</h2>
+              <p className={styles.sectionDesc}>
+                Have questions about our AI models or institutional data sources? Our team of financial analysts is ready to help.
+              </p>
+              <div className={styles.contactDetails}>
+                <div className={styles.contactItem}>
+                  <div className={styles.contactIcon}>📍</div>
+                  <div>
+                    <strong>Office</strong>
+                    <p>BKC, Mumbai, Maharashtra, India</p>
+                  </div>
+                </div>
+                <div className={styles.contactItem}>
+                  <div className={styles.contactIcon}>✉️</div>
+                  <div>
+                    <strong>Email</strong>
+                    <p>support@arthanova.in</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form className={styles.contactForm} onSubmit={(e) => e.preventDefault()}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input type="text" className="form-control" placeholder="John Doe" />
+              </div>
+              <div className="form-group">
+                <label>Email Address</label>
+                <input type="email" className="form-control" placeholder="john@example.com" />
+              </div>
+              <div className="form-group">
+                <label>Message</label>
+                <textarea className="form-control" rows="4" placeholder="How can we help you?"></textarea>
+              </div>
+              <button type="submit" className="btn btn-primary btn-full">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }

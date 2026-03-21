@@ -454,6 +454,114 @@
 }
 
 
+
+/* ─── How It Works ────────────────────────────────────────────────── */
+.howItWorks {
+  padding: $space-24 0;
+  background: white;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-12;
+  margin-top: $space-12;
+
+  @media (max-width: #{$breakpoint-lg}) {
+    grid-template-columns: 1fr;
+    gap: $space-8;
+  }
+}
+
+.stepCard {
+  text-align: center;
+}
+
+.stepNumber {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-extrabold;
+  color: rgba($color-primary, 0.1);
+  font-family: $font-heading;
+  line-height: 1;
+  margin-bottom: $space-4;
+}
+
+.stepTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $space-4;
+}
+
+.stepDesc {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.7;
+}
+
+/* ─── Contact Section ─────────────────────────────────────────────── */
+.contact {
+  padding: $space-24 0;
+  background: $color-bg-alt;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: $space-20;
+  align-items: flex-start;
+
+  @media (max-width: #{$breakpoint-lg}) {
+    grid-template-columns: 1fr;
+    gap: $space-12;
+  }
+}
+
+.contactInfo {
+  .sectionTitle { text-align: left; margin-left: 0; }
+  .sectionDesc { text-align: left; margin-left: 0; margin-bottom: $space-10; }
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.contactItem {
+  display: flex;
+  gap: $space-4;
+  
+  strong { display: block; font-size: $font-size-md; color: $color-text-primary; }
+  p { font-size: $font-size-sm; color: $color-text-secondary; }
+}
+
+.contactIcon {
+  width: 48px;
+  height: 48px;
+  background: $color-white;
+  border-radius: $radius-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-sm;
+  font-size: 20px;
+}
+
+.contactForm {
+  background: $color-white;
+  padding: $space-10;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-xl;
+  border: 1px solid $color-border;
+  
+  .form-group {
+    margin-bottom: $space-6;
+    
+    label { font-size: $font-size-sm; font-weight: $font-weight-bold; margin-bottom: $space-2; display: block; }
+  }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
