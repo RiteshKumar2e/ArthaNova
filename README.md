@@ -61,9 +61,6 @@ source venv/bin/activate  # Windows: venv\\Scripts\\activate
 # Install Institutional-grade Dependencies
 pip install -r requirements.txt
 
-# Seed the Ecosystem (Pre-configured User & Admin)
-python seed_demo.py
-
 # Launch the Sentinel Engine
 python main.py  # Serving on http://127.0.0.1:8000
 ```
@@ -82,17 +79,6 @@ npm run dev  # Serving on http://localhost:5173
 
 ---
 
-## 🔐 Demonstration Access
-
-Explore the platform using these pre-configured profiles:
-
-| Role Icon | Identity | Password | Operational Access |
-| :---: | :--- | :--- | :--- |
-| **🛠️** | `admin@arthanova.in` | `Admin@1234` | System Configuration, User Management, AI Oversight |
-| **📈** | `user@arthanova.in` | `User@1234` | Portfolio Analytics, AI Chat, Radar Signals |
-
----
-
 ## 📂 Project Hierarchy
 
 ```text
@@ -105,7 +91,6 @@ ArthaNova/
 │   │   ├── services/           # External Business Logic & Integrations
 │   │   └── schemas/            # Pydantic Response/Request Objects
 │   ├── tests/                  # Integrity verification suite
-│   └── seed_demo.py            # Data orchestration script
 ├── ⚛️ frontend/                # React Fiber Interface
 │   ├── src/                    # Source architecture
 │   │   ├── components/         # Atomic UI (Common, Admin, Layout)

@@ -37,23 +37,22 @@ async def get_admin_stats(
         "users": {
             "total": total_users,
             "active": active_users,
-            "new_today": 5, # Mock
             "growth_pct": 12.5
         },
         "system": {
-            "uptime": "99.99%",
-            "cpu_usage": "14%",
-            "memory_usage": "45%",
-            "api_requests_24h": 12450
+            "uptime": "N/A",
+            "cpu_usage": "N/A",
+            "memory_usage": "N/A",
+            "api_requests_24h": 0
         },
         "alerts": {
-            "ai_signals_generated": 142,
+            "ai_signals_generated": 0,
             "critical_errors": 0,
-            "pending_notifications": 12
+            "pending_notifications": 0
         },
         "content": {
-            "news_updates": 48,
-            "ai_insights": 156
+            "news_updates": 0,
+            "ai_insights": 0
         }
     }
 
@@ -111,18 +110,9 @@ async def get_audit_logs(
     admin_user: User = Depends(get_current_active_admin),
     db: AsyncSession = Depends(get_db)
 ):
-    """Get system audit logs (Mocked for now)."""
-    return [
-        {
-            "id": i,
-            "timestamp": (datetime.now() - timedelta(minutes=i*15)).isoformat(),
-            "user": "admin_main",
-            "action": "USER_UPDATE",
-            "details": f"Updated role for user ID {100+i}",
-            "ip": "192.168.1.1"
-        }
-        for i in range(1, 21)
-    ]
+    """Get system audit logs."""
+    # TODO: Implement real audit logging system
+    return []
 
 @router.get("/ai/status")
 async def get_ai_system_status(

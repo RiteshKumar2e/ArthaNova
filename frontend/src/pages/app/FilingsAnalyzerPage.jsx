@@ -2,8 +2,6 @@ import { useState } from 'react'
 import styles from '../../styles/pages/app/FilingsAnalyzerPage.module.scss'
 import toast from 'react-hot-toast'
 
-const MOCK_FILINGS = []
-
 export default function FilingsAnalyzerPage() {
   const [filings, setFilings] = useState([])
   const [dragActive, setDragActive] = useState(false)

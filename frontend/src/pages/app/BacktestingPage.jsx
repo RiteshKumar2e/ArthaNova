@@ -69,7 +69,7 @@ export default function BacktestingPage() {
     }
   }
 
-  // Generate mock equity curve data from results
+  // Generate equity curve data from results
   const equityCurveData = results?.trade_log?.reduce((acc, trade, idx) => {
     const lastBalance = idx === 0 ? params.initial_capital : acc[idx-1].balance
     const newBalance = lastBalance + trade.pnl

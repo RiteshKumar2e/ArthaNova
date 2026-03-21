@@ -10,8 +10,6 @@ const ANALYST_STATS = [
   { label: 'System Health', value: 'Optimal', change: 'Online', positive: true, icon: '⚡' },
 ];
 
-const RECENT_BACKTESTS = [];
-
 export default function AnalystDashboard({ user }) {
   return (
     <div className="animate-fadeIn">
@@ -69,24 +67,13 @@ export default function AnalystDashboard({ user }) {
                 </tr>
               </thead>
               <tbody>
-                {RECENT_BACKTESTS.length > 0 ? (
-                  RECENT_BACKTESTS.map(bt => (
-                    <tr key={bt.id}>
-                      <td>{bt.strategy}</td>
-                      <td><strong>{bt.symbol}</strong></td>
-                      <td className={bt.result.startsWith('+') ? 'text-success' : 'text-danger'}>
-                        {bt.result}
-                      </td>
-                      <td>{bt.date}</td>
-                    </tr>
-                  ))
-                ) : (
+                {
                   <tr>
                     <td colSpan="4" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
                       No backtest history found. Run a new simulation to begin.
                     </td>
                   </tr>
-                )}
+                }
               </tbody>
             </table>
           </div>
