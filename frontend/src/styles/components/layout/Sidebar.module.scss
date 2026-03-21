@@ -206,3 +206,42 @@
 
   &:hover { background: rgba(222, 53, 11, 0.15); color: #FF6B6B; }
 }
+
+.adminBadge {
+  display: inline-block;
+  background: #3b82f6;
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+.adminStatus {
+  flex: 1;
+  padding: $space-2 $space-3;
+  margin-bottom: $space-2;
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 3px solid #3b82f6;
+  border-radius: $radius-sm;
+}
+
+.adminIndicator {
+  font-size: 11px;
+  color: #3b82f6;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.activeDot {
+  position: absolute;
+  right: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $color-primary;
+}
