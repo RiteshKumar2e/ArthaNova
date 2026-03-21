@@ -24,8 +24,8 @@ const USER_NAV = [
   },
   {
     section: 'SYSTEM', items: [
-      { to: '/backtest', icon: '🔄', label: 'Backtesting', roles: ['admin'] },
-      { to: '/filings', icon: '📋', label: 'Filings Analyzer', roles: ['admin'] },
+      { to: '/backtest', icon: '🔄', label: 'Backtesting', roles: ['user', 'admin'] },
+      { to: '/filings', icon: '📋', label: 'Filings Analyzer', roles: ['user', 'admin'] },
     ]
   },
   {
@@ -54,6 +54,10 @@ const ADMIN_NAV = [
   { section: 'REPORTS', items: [
     { to: '/admin/analytics', icon: '📈', label: 'Platform Analytics' },
     { to: '/admin/logs', icon: '📋', label: 'Audit Logs' },
+  ]},
+  { section: 'TOOLS', items: [
+    { to: '/backtest', icon: '🔄', label: 'Backtesting' },
+    { to: '/filings', icon: '📋', label: 'Filings Analyzer' },
   ]},
   { section: 'SYSTEM', items: [
     { to: '/admin/settings', icon: '⚙️', label: 'System Settings' },

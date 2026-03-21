@@ -114,7 +114,7 @@ async def get_audit_logs(
     # TODO: Implement real audit logging system
     return []
 
-@router.get("/ai/status")
+@router.get("/ai/system-status")
 async def get_ai_system_status(
     admin_user: User = Depends(get_current_active_admin)
 ):
