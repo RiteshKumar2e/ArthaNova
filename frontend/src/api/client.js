@@ -86,6 +86,12 @@ export const aiAPI = {
   deleteSession: (id) => api.delete(`/ai/chat/sessions/${id}`),
   opportunityRadar: () => api.get('/ai/opportunity-radar'),
   chartPatterns: (symbol) => api.get(`/ai/chart-patterns/${symbol}`),
+  // Admin monitoring endpoints
+  getSystemStatus: () => api.get('/admin/ai/system-status'),
+  getAgentMetrics: () => api.get('/admin/ai/agents'),
+  getAuditTrail: () => api.get('/admin/ai/audit-trail'),
+  getComplianceViolations: () => api.get('/admin/ai/compliance/violations'),
+  getPerformanceMetrics: () => api.get('/admin/ai/metrics/performance'),
 }
 
 export const newsAPI = {

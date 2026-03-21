@@ -12,6 +12,7 @@ from app.db.database import Base
 class UserRole(str, enum.Enum):
     USER = "user"
     ADMIN = "admin"
+    ANALYST = "analyst"
 
 
 class RiskProfile(str, enum.Enum):

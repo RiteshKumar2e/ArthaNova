@@ -285,5 +285,19 @@ class EnhancedAIService:
         }
 
 
-# Global singleton instance
-ai_service = EnhancedAIService()
+# Global singleton instance (lazy-loaded to avoid initialization errors)
+_ai_service_instance = None
+
+def get_ai_service():
+    """Lazy-load the AI service singleton"""
+    global _ai_service_instance
+    if _ai_service_instance is None:
+        _ai_service_instance = EnhancedAIService()
+    return _ai_service_instance
+
+# For backward compatibility, create an object with __getattr__ that calls get_ai_service
+class LazyAIService:
+    def __getattr__(self, name):
+        return getattr(get_ai_service(), name)
+
+ai_service = LazyAIService()

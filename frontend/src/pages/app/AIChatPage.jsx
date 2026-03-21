@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { aiAPI } from '../../api/client'
 import { useAuthStore } from '../../store/authStore'
 import toast from 'react-hot-toast'
+import AgentOrchestrationVisualizer from '../../components/AgentOrchestrationVisualizer'
+import SystemHealthIndicator from '../../components/SystemHealthIndicator'
 import styles from '../../styles/pages/app/AIChatPage.module.scss'
 
 export default function AIChatPage() {
@@ -12,6 +14,9 @@ export default function AIChatPage() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [sessionLoading, setSessionLoading] = useState(false)
+  const [showOrchestration, setShowOrchestration] = useState(false)
+  const [currentOrchestration, setCurrentOrchestration] = useState(null)
+  const [expandedMessageId, setExpandedMessageId] = useState(null)
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -64,10 +69,34 @@ export default function AIChatPage() {
       })
       const data = res.data
       setActiveSession({ id: data.session_id, title: input.slice(0, 60) })
+      
+      // Store orchestration data for visualization
+      const orchestrationData = {
+        agents_used: data.agents_used || [],
+        query_type: data.query_type || 'GENERAL',
+        routing_confidence: data.routing_confidence || 0.85,
+        execution_time: data.execution_time || 0,
+        agent_responses: data.agent_responses || {}
+      }
+      
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.content, sources: data.sources, created_at: data.created_at },
+        { 
+          role: 'assistant', 
+          content: data.content, 
+          sources: data.sources, 
+          created_at: data.created_at,
+          orchestration: orchestrationData,
+          messageId: Date.now()
+        },
       ])
+      
+      // Auto-show first orchestration visualization
+      if (!showOrchestration && orchestrationData.agents_used.length > 0) {
+        setCurrentOrchestration(orchestrationData)
+        setShowOrchestration(true)
+      }
+      
       if (!activeSession) loadSessions()
     } catch {
       toast.error('AI response failed. Please try again.')
@@ -113,13 +142,20 @@ export default function AIChatPage() {
         <div className={styles.chatHeader}>
           <div>
             <h2 className={styles.chatTitle}>ArthaNova AI</h2>
-            <p className={styles.chatSubtitle}>Powered by GPT-4o + RAG • Portfolio-aware • Source-grounded</p>
+            <p className={styles.chatSubtitle}>Multi-Agent System • Portfolio-aware • Autonomous Decision Making</p>
           </div>
           <div className={styles.chatBadge}>
-            <span className={styles.liveDot} />
-            <span>Online</span>
+            <SystemHealthIndicator compact={true} />
           </div>
         </div>
+
+        {/* Orchestration Visualizer */}
+        {showOrchestration && currentOrchestration && (
+          <div className={styles.orchestrationPanel}>
+            <button className={styles.closeOrchestration} onClick={() => setShowOrchestration(false)}>✕</button>
+            <AgentOrchestrationVisualizer orchestrationData={currentOrchestration} isLoading={false} />
+          </div>
+        )}
 
         <div className={styles.messagesArea}>
           {messages.length === 0 && !sessionLoading && (
@@ -144,6 +180,31 @@ export default function AIChatPage() {
               )}
               <div className={styles.msgContent}>
                 <div className={styles.msgText}>{msg.content}</div>
+                
+                {/* Agent Breakdown */}
+                {msg.orchestration && msg.orchestration.agents_used.length > 0 && (
+                  <div className={styles.agentBreakdown}>
+                    <button 
+                      className={styles.agentsToggle}
+                      onClick={() => setExpandedMessageId(expandedMessageId === msg.messageId ? null : msg.messageId)}
+                    >
+                      🔗 Used {msg.orchestration.agents_used.length} agents • {msg.orchestration.execution_time.toFixed(0)}ms
+                    </button>
+                    {expandedMessageId === msg.messageId && (
+                      <div className={styles.agentsDetail}>
+                        {msg.orchestration.agents_used.map((agent, j) => (
+                          <div key={j} className={styles.agentDetail}>
+                            <span className={styles.agentName}>{agent}</span>
+                            {msg.orchestration.agent_responses[agent] && (
+                              <span className={styles.agentStatus}>✓ Completed</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+                
                 {msg.sources && msg.sources.length > 0 && (
                   <div className={styles.sources}>
                     <div className={styles.sourcesLabel}>📋 Sources:</div>
