@@ -131,13 +131,13 @@ export default function LandingPage() {
           <div className={styles.showcaseGrid}>
             <div className={styles.showcaseImage}>
               <div className={styles.chatSample}>
-                <div className={styles.chatUser}>Is BAJFINANCE a good buy right now?</div>
+                <div className={styles.chatUser}>Analyze my portfolio risk...</div>
                 <div className={styles.chatAI}>
                   <div className={styles.aiHeader}>
                     <span className={styles.aiTag}>AI Analyst</span>
                   </div>
-                  <p>BAJFINANCE is currently trading near its 200-DMA support. AI suggests a <strong>Strong Buy</strong> setup with an 84% confidence score based on RSI divergence and rising institutional flows.</p>
-                  <div className={styles.aiFooter}>Sources: NSE Filings, Technical Indicators</div>
+                  <p>ArthaNova AI detects <strong>sector concentration</strong> in your current holdings. Recommendation: Diversify into Mid-cap IT or Consumer Goods for lower volatility.</p>
+                  <div className={styles.aiFooter}>Sources: NSE Filings, Multi-Agent Analysis</div>
                 </div>
               </div>
             </div>
@@ -155,31 +155,6 @@ export default function LandingPage() {
               </ul>
               <Link to="/register" className="btn btn-primary btn-lg">Explore AI Chat</Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Testimonials ───────────────────────────────────────────────── */}
-      <section className={styles.testimonials}>
-        <div className={styles.container}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Trusted by Professionals</h2>
-            <p className={styles.sectionDesc}>Hear from the investors who are already leveraging ArthaNova to gain a market edge.</p>
-          </div>
-          <div className={styles.testimonialsGrid}>
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className={styles.testimonialCard}>
-                <div className={styles.tHeader}>
-                  <div className={styles.tAvatar}>{t.avatar}</div>
-                  <div>
-                    <div className={styles.tName}>{t.name}</div>
-                    <div className={styles.tRole}>{t.role}</div>
-                  </div>
-                </div>
-                <p className={styles.tText}>"{t.text}"</p>
-                <div className={styles.tRating}>⭐⭐⭐⭐⭐</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

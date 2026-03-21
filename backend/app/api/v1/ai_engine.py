@@ -123,6 +123,7 @@ async def send_chat_message(
             role="assistant",
             content=ai_text,
             sources=sources,
+            orchestration=orchestration_result if orchestration_result.get("success") else None,
         )
         db.add(ai_msg)
         await db.commit()
@@ -137,6 +138,7 @@ async def send_chat_message(
             "content": ai_text,
             "sources": sources,
             "agents_used": list(agent_responses.keys()) if agent_responses else [],
+            "orchestration": orchestration_result if orchestration_result.get("success") else None,
             "created_at": ai_msg.created_at or datetime.now(timezone.utc),
         }
     
@@ -193,7 +195,14 @@ async def get_session_messages(
         return {
             "session": {"id": session.id, "title": session.title},
             "messages": [
-                {"id": m.id, "role": m.role, "content": m.content, "sources": m.sources, "created_at": m.created_at}
+                {
+                    "id": m.id, 
+                    "role": m.role, 
+                    "content": m.content, 
+                    "sources": m.sources, 
+                    "orchestration": m.orchestration,
+                    "created_at": m.created_at
+                }
                 for m in messages
             ],
         }

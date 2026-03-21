@@ -182,20 +182,20 @@ export default function AIChatPage() {
                 <div className={styles.msgText}>{msg.content}</div>
                 
                 {/* Agent Breakdown */}
-                {msg.orchestration && msg.orchestration.agents_used.length > 0 && (
+                {msg.orchestration?.agents_used?.length > 0 && (
                   <div className={styles.agentBreakdown}>
                     <button 
                       className={styles.agentsToggle}
                       onClick={() => setExpandedMessageId(expandedMessageId === msg.messageId ? null : msg.messageId)}
                     >
-                      🔗 Used {msg.orchestration.agents_used.length} agents • {msg.orchestration.execution_time.toFixed(0)}ms
+                      🔗 Used {msg.orchestration.agents_used.length} agents • {msg.orchestration.execution_time ? msg.orchestration.execution_time.toFixed(0) : '0'}ms
                     </button>
                     {expandedMessageId === msg.messageId && (
                       <div className={styles.agentsDetail}>
                         {msg.orchestration.agents_used.map((agent, j) => (
                           <div key={j} className={styles.agentDetail}>
                             <span className={styles.agentName}>{agent}</span>
-                            {msg.orchestration.agent_responses[agent] && (
+                            {msg.orchestration.agent_responses?.[agent] && (
                               <span className={styles.agentStatus}>✓ Completed</span>
                             )}
                           </div>

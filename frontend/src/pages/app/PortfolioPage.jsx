@@ -159,21 +159,17 @@ export default function PortfolioPage() {
             <div className="card">
               <div className="card-header"><h3 style={{ fontSize: '1rem' }}>🤖 AI Portfolio Insights</h3></div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {[
-                  { icon: '⚠️', priority: 'High', text: 'IT sector allocation (38%) exceeds 30% threshold — consider diversifying', color: '#FF991F' },
-                  { icon: '💡', priority: 'Medium', text: 'Add gold/debt allocation for better risk-adjusted returns', color: '#0052CC' },
-                  { icon: '📊', priority: 'Low', text: 'Diversification score: 76/100 — good, but can be improved', color: '#00875A' },
-                ].map((rec, i) => (
-                  <div key={i} style={{ padding: '10px 12px', background: '#F4F5F7', borderRadius: 8, borderLeft: `3px solid ${rec.color}` }}>
-                    <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                      <span>{rec.icon}</span>
-                      <div>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 600, color: rec.color, marginBottom: 2 }}>{rec.priority} Priority</div>
-                        <div style={{ fontSize: '0.8rem', color: '#172B4D' }}>{rec.text}</div>
-                      </div>
-                    </div>
+                {portfolio.holdings?.length > 0 ? (
+                  <div style={{ padding: '20px', textAlign: 'center', background: '#F4F5F7', borderRadius: 8 }}>
+                    <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🧠</div>
+                    <p style={{ fontSize: '0.85rem', color: '#172B4D', fontWeight: 500 }}>AI is analyzing your {portfolio.holdings.length} holdings...</p>
+                    <p style={{ fontSize: '0.75rem', color: '#5E6C84', marginTop: 4 }}>Deep insights on sector concentration and risk will appear here shortly.</p>
                   </div>
-                ))}
+                ) : (
+                  <div style={{ padding: '20px', textAlign: 'center', background: '#F4F5F7', borderRadius: 8 }}>
+                    <p style={{ fontSize: '0.8rem', color: '#5E6C84' }}>No data for AI analysis. Add some holdings to receive personalized insights.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

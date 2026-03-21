@@ -72,7 +72,13 @@ export default function AdminDashboard() {
       ]);
 
       setSystemStatus(status && typeof status === 'object' ? status : {});
-      setAgentMetrics(Array.isArray(agents?.agents) ? agents.agents : []);
+      // Support both array and object for agents (the new backend returns an object)
+      const agentsArray = Array.isArray(agents?.agents) 
+        ? agents.agents 
+        : agents?.agents 
+          ? Object.values(agents.agents) 
+          : [];
+      setAgentMetrics(agentsArray);
       setAuditTrail(Array.isArray(audit?.entries) ? audit.entries : []);
       setComplianceViolations(Array.isArray(compliance?.violations) ? compliance.violations : []);
       setPerformanceMetrics(Array.isArray(perf?.metrics?.latency_history) ? perf.metrics.latency_history : []);
@@ -188,18 +194,16 @@ export default function AdminDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {[
-                      { user: 'Admin Root', action: 'Update Auth Policy', module: 'Auth-Kevlar', date: '2m ago' },
-                      { user: 'AI Engine v2.4', action: 'Generate Signal', module: 'Intelligence', date: '15m ago' },
-                      { user: 'Cloud Scheduler', action: 'Snapshot DB', module: 'Database', date: '42m ago' },
-                      { user: 'Video Pipeline', action: 'Render Complete', module: 'Video-Gen', date: '1h ago' },
-                      { user: 'Sentinel AI', action: 'Flagged Login IP', module: 'Security', date: '2h ago' },
-                    ].map((row, i) => (
+                    {auditTrail.length === 0 ? (
+                      <tr><td colSpan="4" style={{ textAlign: 'center', padding: 20, color: '#97A0AF' }}>No recent system activity recorded.</td></tr>
+                    ) : auditTrail.slice(0, 8).map((entry, i) => (
                       <tr key={i}>
-                        <td><strong>{row.user}</strong></td>
-                        <td><span style={{ fontSize: '0.8rem', color: '#5E6C84' }}>{row.action}</span></td>
-                        <td><span className="badge badge-secondary" style={{ fontSize: '0.7rem' }}>{row.module}</span></td>
-                        <td style={{ textAlign: 'right', fontSize: '0.75rem', color: '#97A0AF' }}>{row.date}</td>
+                        <td><strong>{entry.agent || 'System'}</strong></td>
+                        <td><span style={{ fontSize: '0.8rem', color: '#5E6C84' }}>{entry.action}</span></td>
+                        <td><span className="badge badge-secondary" style={{ fontSize: '0.7rem' }}>{entry.details?.query_type || 'Core'}</span></td>
+                        <td style={{ textAlign: 'right', fontSize: '0.75rem', color: '#97A0AF' }}>
+                          {new Date(entry.timestamp).toLocaleTimeString()}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -213,18 +217,18 @@ export default function AdminDashboard() {
               </div>
               <div className={styles.cardBody}>
                 <div className={styles.healthList}>
-                  {[
-                    { type: 'success', msg: 'Core API nodes reporting healthy.', time: '10:00 AM' },
-                    { type: 'warn', msg: `Node-4 CPU spikes: ${stats?.system.cpu_usage || '14%'}`, time: '09:45 AM' },
-                    { type: 'success', msg: `${stats?.alerts.ai_signals_generated || 142} signals dispatched today.`, time: '09:15 AM' },
-                    { type: 'info', msg: 'Daily data integrity check passed.', time: '08:00 AM' },
-                    { type: 'error', msg: 'Memory leakage detected in video-gen-clstr.', time: 'Last night' },
-                  ].map((log, i) => (
+                  {complianceViolations.length === 0 ? (
+                    <div style={{ padding: 20, textAlign: 'center' }}>
+                      <div style={{ fontSize: '2rem', marginBottom: 12 }}>✔️</div>
+                      <p style={{ color: '#00875A', fontWeight: 600 }}>All systems compliant</p>
+                      <p style={{ fontSize: '0.8rem', color: '#5E6C84' }}>No safety violations or circuit breaks detected in current session.</p>
+                    </div>
+                  ) : complianceViolations.map((log, i) => (
                     <div key={i} className={styles.healthItem}>
-                      <div className={`${styles.typeIndicator} ${styles[log.type]}`}></div>
+                      <div className={`${styles.typeIndicator} ${styles.error}`}></div>
                       <div className={styles.msgContainer}>
-                        <div className={styles.msg}>{log.msg}</div>
-                        <div className={styles.time}>{log.time}</div>
+                        <div className={styles.msg}>{log.violation_type}</div>
+                        <div className={styles.time}>{new Date(log.timestamp).toLocaleTimeString()}</div>
                       </div>
                     </div>
                   ))}
@@ -264,9 +268,12 @@ export default function AdminDashboard() {
             <div style={{ background: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>Agent Performance ({agentMetrics.length})</h3>
               {agentMetrics.slice(0, 3).map((agent) => (
-                <div key={agent.agent_name} style={{ marginBottom: '0.75rem', fontSize: '0.85rem' }}>
-                  <div style={{ fontWeight: 600 }}>{agent.agent_name}</div>
-                  <div style={{ color: '#6b7280' }}>Success: {(agent.success_rate * 100).toFixed(1)}% | Response: {agent.avg_response_time || 0}ms</div>
+                <div key={agent.name} style={{ marginBottom: '0.75rem', fontSize: '0.85rem' }}>
+                  <div style={{ fontWeight: 600 }}>{agent.name.toUpperCase()}</div>
+                  <div style={{ color: '#6b7280' }}>
+                    Success: {agent.metrics?.success_rate || 'N/A'} | 
+                    Response: {agent.metrics?.avg_response_time_ms || 0}ms
+                  </div>
                 </div>
               ))}
             </div>

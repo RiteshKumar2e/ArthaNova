@@ -2,15 +2,10 @@ import { useState } from 'react'
 import styles from '../../styles/pages/app/FilingsAnalyzerPage.module.scss'
 import toast from 'react-hot-toast'
 
-const MOCK_FILINGS = [
-  { id: 1, name: 'RELIANCE_AR_2024.pdf', type: 'Annual Report', date: '2024-05-15', status: 'analyzed', confidence: 98.4 },
-  { id: 2, name: 'TCS_Q3_Results.pdf', type: 'Quarterly Filing', date: '2025-01-12', status: 'analyzed', confidence: 95.1 },
-  { id: 3, name: 'HDFCBANK_20-F.pdf', type: 'SEC Filing', date: '2024-11-20', status: 'pending', confidence: 0 },
-  { id: 4, name: 'INFY_ESG_Report.pdf', type: 'Sustainability', date: '2024-08-05', status: 'analyzed', confidence: 92.8 },
-]
+const MOCK_FILINGS = []
 
 export default function FilingsAnalyzerPage() {
-  const [filings, setFilings] = useState(MOCK_FILINGS)
+  const [filings, setFilings] = useState([])
   const [dragActive, setDragActive] = useState(false)
 
   const handleDrag = (e) => {
@@ -64,11 +59,11 @@ export default function FilingsAnalyzerPage() {
           <div className={styles.statsRow}>
             <div className={`card ${styles.statMini}`}>
               <span className={styles.statLabel}>Analyzed</span>
-              <span className={styles.statVal}>128</span>
+              <span className={styles.statVal}>0</span>
             </div>
             <div className={`card ${styles.statMini}`}>
               <span className={styles.statLabel}>Confidence</span>
-              <span className={styles.statVal}>96%</span>
+              <span className={styles.statVal}>N/A</span>
             </div>
           </div>
 

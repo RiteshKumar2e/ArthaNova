@@ -34,8 +34,8 @@ export default function OpportunityRadarPage() {
       <div className="grid-3" style={{ marginBottom: 24 }}>
         {[
           { title: 'Total Signals', val: data?.signals?.length || 0, icon: '📡' },
-          { title: 'Active Sectors', val: '4', icon: '🏢' },
-          { title: 'Avg Confidence', val: `${Math.round((data?.signals?.reduce((a, b) => a + b.confidence, 0) || 0) / (data?.signals?.length || 1))}%`, icon: '🎯' },
+          { title: 'Active Sectors', val: new Set(data?.signals?.map(s => s.sector).filter(Boolean)).size || 0, icon: '🏢' },
+          { title: 'Avg Confidence', val: `${Math.round((data?.signals?.reduce((a, b) => a + b.confidence_score, 0) || 0) / (data?.signals?.length || 1))}%`, icon: '🎯' },
         ].map((m) => (
           <div key={m.title} className="metric-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

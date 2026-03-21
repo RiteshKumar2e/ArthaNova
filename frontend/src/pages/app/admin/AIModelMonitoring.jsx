@@ -35,16 +35,23 @@ export default function AIModelMonitoring() {
 
       <div className="grid-3" style={{ marginBottom: 24 }}>
         <div className="metric-card">
-          <div className="metric-label">Inference Queue</div>
-          <div className="metric-value">{status?.queue_size || 0}</div>
+          <div className="metric-label">Total AI Queries</div>
+          <div className="metric-value">{status?.system?.orchestrator?.total_queries || 0}</div>
+          <div className="metric-change positive">▲ {status?.system?.orchestrator?.multi_agent_executions || 0} multi-agent</div>
         </div>
         <div className="metric-card">
-          <div className="metric-label">Total Predictions (24h)</div>
-          <div className="metric-value">124,502</div>
+          <div className="metric-label">Compliance Blocks</div>
+          <div className="metric-value">{status?.system?.orchestrator?.compliance_blocks || 0}</div>
+          <div className="metric-change negative">Safety Guardrails</div>
         </div>
         <div className="metric-card">
-          <div className="metric-label">Avg. Latency</div>
-          <div className="metric-value">340ms</div>
+          <div className="metric-label">Avg. Orchestration Latency</div>
+          <div className="metric-value">
+            {status?.performance?.latency_metrics?.orchestration?.avg 
+              ? `${Math.round(status.performance.latency_metrics.orchestration.avg)}ms` 
+              : 'N/A'}
+          </div>
+          <div className="metric-change positive">Groq Optimized</div>
         </div>
       </div>
 
@@ -67,27 +74,40 @@ export default function AIModelMonitoring() {
             <tbody>
               {loading ? (
                 <tr><td colSpan="6" style={{ textAlign: 'center', padding: 40 }}>Loading AI status...</td></tr>
-              ) : status?.models.map(model => (
-                <tr key={model.name}>
-                  <td><strong>{model.name}</strong></td>
-                  <td>
-                    <span className={`badge ${model.status === 'online' ? 'badge-success' : 'badge-warning'}`}>
-                      {model.status.toUpperCase()}
-                    </span>
-                  </td>
-                  <td><code>{model.version}</code></td>
-                  <td>{model.latency}</td>
-                  <td>
-                    <div className={`status-indicator ${model.status === 'online' ? 'success' : 'warning'}`}></div>
-                  </td>
-                  <td>
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      <button className="btn btn-sm btn-secondary">Logs</button>
-                      <button className="btn btn-sm btn-primary">Restart</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              ) : (
+                Object.values(status?.agents || {}).map(agent => (
+                  <tr key={agent.name}>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <strong>{agent.name.toUpperCase()}</strong>
+                        <span style={{ fontSize: '0.75rem', color: '#5E6C84' }}>{agent.capability}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`badge ${agent.status === 'idle' || agent.status === 'completed' || agent.status === 'processing' ? 'badge-success' : 'badge-danger'}`}>
+                        {agent.status.toUpperCase()}
+                      </span>
+                    </td>
+                    <td><code>v1.0.4</code></td>
+                    <td>{agent.metrics?.avg_response_time_ms || 0}ms</td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div className={`status-indicator ${agent.status !== 'failed' ? 'success' : 'danger'}`}></div>
+                        <span style={{ fontSize: '0.8rem' }}>{agent.metrics?.autonomy_score || '0%'} Autonomy</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button className="btn btn-sm btn-secondary">Logs</button>
+                        <button className="btn btn-sm btn-primary">Restart</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+              {!loading && Object.keys(status?.agents || {}).length === 0 && (
+                <tr><td colSpan="6" style={{ textAlign: 'center', padding: 40 }}>No active AI modules detected.</td></tr>
+              )}
             </tbody>
           </table>
         </div>
