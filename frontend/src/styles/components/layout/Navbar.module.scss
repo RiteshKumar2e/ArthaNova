@@ -1,5 +1,4 @@
 
-
 .navbar {
   position: fixed;
   top: 0;
@@ -7,13 +6,16 @@
   right: 0;
   z-index: $z-sticky;
   background: transparent;
-  transition: background $transition-base, box-shadow $transition-base;
-  padding: 0 $space-6;
+  transition: all $transition-base;
+  padding: 0;
 
   &.scrolled {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba($color-white, 0.8);
     backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba($color-primary, 0.05);
     box-shadow: $shadow-sm;
+    
+    .container { height: 64px; }
   }
 }
 
@@ -22,36 +24,51 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  height: 72px;
+  height: 88px;
   gap: $space-8;
+  padding: 0 $space-8;
+  transition: height $transition-base;
+
+  @media (max-width: #{$breakpoint-md}) {
+    padding: 0 $space-6;
+    height: 72px;
+  }
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: $space-2;
+  gap: $space-3;
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .brandIcon {
-  font-size: 1.5rem;
-  color: #60A5FA;
-  line-height: 1;
+  width: 32px;
+  height: 32px;
+  background: $gradient-primary;
+  color: $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  font-size: $font-size-md;
 }
 
 .brandName {
   font-family: $font-heading;
   font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: $color-text-primary;
+  letter-spacing: -0.02em;
   transition: color $transition-fast;
 }
 
 .navLinks {
   display: flex;
   list-style: none;
-  gap: $space-1;
+  gap: $space-2;
   flex: 1;
   justify-content: center;
 
@@ -63,22 +80,22 @@
 .navLink {
   padding: $space-2 $space-4;
   color: $color-text-secondary;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-size: 13px;
+  font-weight: $font-weight-semibold;
   text-decoration: none;
   border-radius: $radius-md;
   transition: all $transition-fast;
 
   &:hover {
     color: $color-primary;
-    background: rgba(0, 82, 204, 0.05);
+    background: $color-primary-light;
   }
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: $space-3;
+  gap: $space-4;
   flex-shrink: 0;
 
   @media (max-width: #{$breakpoint-lg}) {
@@ -98,11 +115,19 @@
 
   span {
     display: block;
-    width: 24px;
+    width: 20px;
     height: 2px;
     background: $color-text-primary;
     border-radius: $radius-full;
     transition: all $transition-fast;
+  }
+
+  &.open {
+    span {
+      &:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      &:nth-child(2) { opacity: 0; }
+      &:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
   }
 
   @media (max-width: #{$breakpoint-lg}) {
@@ -111,31 +136,42 @@
 }
 
 .mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   background: $color-white;
   border-top: 1px solid $color-border;
-  padding: $space-4;
+  padding: $space-6;
   display: flex;
   flex-direction: column;
-  gap: $space-1;
+  gap: $space-2;
+  box-shadow: $shadow-lg;
+  animation: slideDown 0.3s ease-out;
 }
 
 .mobileLink {
   display: block;
   padding: $space-3 $space-4;
   color: $color-text-primary;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-bold;
   text-decoration: none;
-  border-radius: $radius-md;
+  border-radius: $radius-lg;
   transition: background $transition-fast;
 
-  &:hover { background: $color-bg; }
+  &:hover { background: $color-bg; color: $color-primary; }
 }
 
 .mobileActions {
   display: flex;
   flex-direction: column;
-  gap: $space-2;
-  margin-top: $space-4;
-  padding-top: $space-4;
+  gap: $space-3;
+  margin-top: $space-6;
+  padding-top: $space-6;
   border-top: 1px solid $color-border;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -2,293 +2,212 @@ import { Link } from 'react-router-dom'
 import styles from '../../styles/pages/public/LandingPage.module.scss'
 
 const FEATURES = [
-  { icon: '🎯', title: 'Opportunity Radar', desc: 'AI scans filings, earnings, insider trades 24/7 and alerts you to high-confidence entry signals before the crowd notices.' },
-  { icon: '📈', title: 'Chart Intelligence', desc: 'Detects breakouts, RSI divergence, MACD crossovers with plain-English explanations and backtested win rates.' },
-  { icon: '🤖', title: 'AI Market ChatGPT', desc: 'Conversational AI with portfolio awareness and RAG — get explainable, source-grounded answers to any market question.' },
-  { icon: '🎬', title: 'Video Insights Engine', desc: 'Auto-generated 60-second market summary videos covering sector rotations, FII flows, and weekly moves.' },
-  { icon: '💼', title: 'Portfolio Intelligence', desc: 'Track holdings, risk scoring, diversification analysis, and AI-powered rebalancing suggestions.' },
-  { icon: '📊', title: 'Backtesting Engine', desc: 'Simulate any trading strategy on historical NSE data and get Sharpe ratio, drawdown, and win rate metrics.' },
-]
-
-const STATS = [
-  { value: '5,000+', label: 'NSE Stocks Tracked' },
-  { value: '30+', label: 'AI-Powered Features' },
-  { value: '98%', label: 'Signal Accuracy (Backtested)' },
-  { value: '< 2s', label: 'Insight Generation Time' },
-]
-
-const STEPS = [
-  { num: '01', title: 'Create Your Account', desc: 'Sign up free and import your portfolio or build one from scratch.' },
-  { num: '02', title: 'Connect Your Data', desc: 'The platform ingests NSE/BSE filings, news, insider trades, and market data in real time.' },
-  { num: '03', title: 'Get AI Insights', desc: 'The AI engine processes your portfolio and generates personalized signals, risk scores, and recommendations.' },
-  { num: '04', title: 'Make Informed Decisions', desc: 'Use AI Chat, Opportunity Radar, and technical alerts to trade with conviction and discipline.' },
+  { 
+    title: 'AI Signal Radar', 
+    desc: 'Real-time multi-factor analysis detecting breakouts and high-probability setups across NSE/BSE stocks.',
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  { 
+    title: 'Cognitive Portfolio', 
+    desc: 'Advanced risk scoring and rebalancing insights powered by proprietary AI models trained on Indian market cycles.',
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3 10H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  { 
+    title: 'Conversational Intelligence', 
+    desc: 'Get deep, source-grounded answers to complex market questions using our integrated RAG-based AI analyst.',
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7112 18.3098 17.8992 16.9674 18.7306C15.6251 19.562 14.0789 20.0054 12.5 20C11.1801 20.0034 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C3.99456 9.92111 4.43797 8.37488 5.26944 7.03258C6.10091 5.69028 7.28884 4.6056 8.7 3.9C9.87812 3.30493 11.1801 2.99656 12.5 3H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  }
 ]
 
 const TESTIMONIALS = [
-  { name: 'Rohit Sharma', role: 'Retail Investor, Mumbai', text: 'ArthaNova\'s Opportunity Radar flagged SUNPHARMA 4 days before the Q3 results beat. The confidence score was 87% — I went in, and it was up 14%. This AI actually works.', rating: 5 },
-  { name: 'Priya Menon', role: 'IT Professional, Bangalore', text: 'I was confused about rebalancing my portfolio. The AI Chat explained my concentration risk in plain English and suggested three specific moves. Felt like having a SEBI analyst on speed dial.', rating: 5 },
-  { name: 'Ankit Bajpai', role: 'Finance Graduate, Delhi', text: 'The IPO analysis with GMP tracking and subscription data all in one place is brilliant. The AI even tells you whether to subscribe or avoid. Saved me from the Ola Electric disaster.', rating: 5 },
+  {
+    name: "Vikram Mehta",
+    role: "Portfolio Manager, HNI",
+    text: "ArthaNova's RAG-based AI analysts reduced my research time by 70%. The ability to query complex NSE filings in plain English is a game changer.",
+    avatar: "VM"
+  },
+  {
+    name: "Ananya Iyer",
+    role: "Quantitative Trader",
+    text: "The Signal Radar consistently identifies momentum shifts 2-3 days before the mainstream media. The backtest accuracy is impressively reliable.",
+    avatar: "AI"
+  },
+  {
+    name: "Rohan Kapoor",
+    role: "Retail Investor",
+    text: "As a part-time investor, the conversational intelligence helps me understand MD&A sections of annual reports without getting bogged down in jargon.",
+    avatar: "RK"
+  }
+]
+
+const TRUST_LOGOS = [
+  { name: 'NSE', color: '#003D99' },
+  { name: 'BSE', color: '#DE350B' },
+  { name: 'SEBI Registered Data', color: '#5E6C84' },
+  { name: 'Groq', color: '#FF6B35' },
+  { name: 'Llama 3', color: '#0065FF' }
 ]
 
 export default function LandingPage() {
   return (
     <div className={styles.page}>
-      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
-      <section className={styles.hero} id="home">
-        <div className={styles.heroGrid}>
-          <div className={styles.heroContent}>
-            <div className={styles.heroBadge}>
-              🇮🇳 Built for India's 90M+ Retail Investors
-            </div>
-            <h1 className={styles.heroTitle}>
-              AI-Powered<br />
-              <span className={styles.heroGradient}>Investment Intelligence</span><br />
-              for Every Indian
-            </h1>
-            <p className={styles.heroDesc}>
-              Transform raw NSE/BSE data into actionable insights with real-time AI signals, 
-              portfolio intelligence, conversational market analysis, and automated chart pattern detection.
-            </p>
-            <div className={styles.heroCTA}>
-              <Link to="/register" className={`btn btn-primary btn-lg ${styles.ctaPrimary}`} id="hero-get-started-btn">
-                Start Investing Smarter — Free
-              </Link>
-              <Link to="/login" className={`btn btn-secondary btn-lg ${styles.ctaSecondary}`}>
-                Sign In →
-              </Link>
-            </div>
-            <div className={styles.heroTrust}>
-              <span>🔒 Bank-grade security</span>
-              <span>📊 Real NSE/BSE data</span>
-              <span>🤖 Powered by Groq / Llama 3</span>
-            </div>
-          </div>
-
-          <div className={styles.heroVisual}>
-            <div className={styles.dashboardPreview}>
-              <div className={styles.previewHeader}>
-                <div className={styles.previewDots}>
-                  <span /><span /><span />
-                </div>
-                <span className={styles.previewTitle}>ArthaNova Dashboard</span>
+      {/* ─── Hero Section ─────────────────────────────────────────────────── */}
+      <section className={styles.hero}>
+        <div className={styles.container}>
+          <div className={styles.heroCentered}>
+            <div className={styles.heroContent}>
+              <div className={styles.badgeLine}>
+                <span className={styles.badge}>New</span>
+                <span className={styles.badgeText}>AI Opportunity Radar 2.0 is live</span>
               </div>
-              <div className={styles.previewBody}>
-                {/* Mini Portfolio Cards */}
-                <div className={styles.previewMetrics}>
-                  <div className={styles.previewMetric}>
-                    <div className={styles.pmLabel}>Portfolio Value</div>
-                    <div className={styles.pmValue}>₹12,45,820</div>
-                    <div className={styles.pmChange} style={{color: '#00875A'}}>▲ +18.4% YTD</div>
-                  </div>
-                  <div className={styles.previewMetric}>
-                    <div className={styles.pmLabel}>Today's P&L</div>
-                    <div className={styles.pmValue}>+₹8,240</div>
-                    <div className={styles.pmChange} style={{color: '#00875A'}}>▲ +0.67%</div>
-                  </div>
-                </div>
-                {/* Mini Signal Card */}
-                <div className={styles.previewSignal}>
-                  <div className={styles.signalBadge}>🎯 AI Signal</div>
-                  <div className={styles.signalContent}>
-                    <strong>BAJFINANCE</strong> — Bullish divergence detected
-                    <br /><span className={styles.signalConf}>Confidence: 84% · Target: +21%</span>
-                  </div>
-                </div>
-                {/* Chart bars */}
-                <div className={styles.previewChart}>
-                  {[65, 72, 58, 80, 75, 90, 85, 95, 88, 100, 92, 98].map((h, i) => (
-                    <div key={i} className={styles.bar} style={{ height: `${h}%` }} />
+              <h1 className={styles.heroTitle}>
+                Intelligence for the <br />
+                <span className={styles.gradText}>Modern Investor</span>
+              </h1>
+              <p className={styles.heroLead}>
+                ArthaNova combines institutional-grade data with advanced AI to give you an edge in the Indian equity markets. 
+                Identify trends, manage risk, and invest with conviction.
+              </p>
+              <div className={styles.ctaGroup}>
+                <Link to="/register" className="btn btn-primary btn-lg">
+                  Get Started Free
+                </Link>
+                <Link to="/market" className="btn btn-secondary btn-lg">
+                  Live Market View
+                </Link>
+              </div>
+              <div className={styles.trustStrip}>
+                <div className={styles.logoGrid}>
+                  {TRUST_LOGOS.map(logo => (
+                    <span key={logo.name} className={styles.logoItem} style={{ color: logo.color }}>
+                      {logo.name}
+                    </span>
                   ))}
                 </div>
-                {/* News items */}
-                <div className={styles.previewNews}>
-                  <div className={styles.newsItem}>
-                    <span className={styles.newsSent} style={{color:'#00875A'}}>●</span>
-                    RBI holds rates; banking stocks rally
-                  </div>
-                  <div className={styles.newsItem}>
-                    <span className={styles.newsSent} style={{color:'#FF6B35'}}>●</span>
-                    FII outflows weigh on midcap basket
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Floating cards */}
-            <div className={styles.floatCard1}>
-              <div>🚀 IPO Allotted!</div>
-              <div>Bajaj Housing Finance</div>
-              <div style={{color:'#00875A', fontWeight: 600}}>+114% listing gain</div>
-            </div>
-            <div className={styles.floatCard2}>
-              <div>📊 Risk Score</div>
-              <div style={{fontSize: '1.5rem', fontWeight: 700}}>6.2 / 10</div>
-              <div style={{color: '#FF991F'}}>Moderate Risk</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Bar */}
-        <div className={styles.statsBar}>
-          {STATS.map((stat) => (
-            <div key={stat.label} className={styles.statItem}>
-              <div className={styles.statValue}>{stat.value}</div>
-              <div className={styles.statLabel}>{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── AI Highlight (About) ─────────────────────────────────────────── */}
-      <section className={styles.aiSection} id="about">
-        <div className={styles.sectionContainer}>
-          <div className={styles.aiGrid}>
-            <div className={styles.aiContent}>
-              <div className={styles.sectionBadge}>AI Intelligence Layer</div>
-              <h2>Your Always-On AI Analyst</h2>
-              <p>
-                Ask market questions in plain English. Get answers grounded in real filings, news, 
-                and technical data — with sources cited so you can verify every insight.
-              </p>
-              <ul className={styles.aiFeatureList}>
-                <li>✅ Multi-step reasoning with portfolio context</li>
-                <li>✅ RAG from NSE filings, news, and technical data</li>
-                <li>✅ Explainable signals with confidence scores</li>
-                <li>✅ Comparison: XYZ vs peers in sector</li>
-                <li>✅ Risk-reward framing for every insight</li>
-              </ul>
-              <Link to="/register" className="btn btn-primary btn-lg" id="ai-cta-btn">
-                Try AI Chat Free
-              </Link>
-            </div>
-            <div className={styles.aiChatPreview}>
-              <div className={styles.chatBubbleUser}>
-                Is BAJFINANCE a good buy right now? How does it compare to HDFC Bank?
-              </div>
-              <div className={styles.chatBubbleAI}>
-                <span className={styles.aiLabel}>🤖 ArthaNova AI</span>
-                Based on your portfolio context and current market data, BAJFINANCE shows a compelling setup — RSI at 52 (neutral, room to run), recent insider purchases of ₹45 Cr, and Q3 earnings beat by 8%. Compared to HDFC Bank (P/E: 19x), BAJFINANCE trades at 28x — a premium warranted by its 28% ROE. Key risk: asset quality divergence from peers. 
-                <br /><br />
-                <strong>Signal: Buy on dips near ₹6,800 support. Target ₹8,200 (20% upside, 6M horizon).</strong>
-                <br /><span className={styles.aiSources}>📋 Sources: Q3 Results, BSE Filing 14-Jan-2025, Analyst Report</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── Features ─────────────────────────────────────────────────────── */}
-      <section className={styles.features} id="features">
-        <div className={styles.sectionContainer}>
+      {/* ─── Capabilities Section ─────────────────────────────────────────── */}
+      <section className={styles.capabilities} id="features">
+        <div className={styles.container}>
           <div className={styles.sectionHeader}>
-            <div className={styles.sectionBadge}>Features</div>
-            <h2>Everything You Need to Invest Like a Pro</h2>
-            <p>
-              ArthaNova packs institutional-grade AI tools into a platform designed for every retail investor, 
-              whether you're a beginner or a seasoned trader.
+            <h2 className={styles.sectionTitle}>Precision Tools for Better Decisions</h2>
+            <p className={styles.sectionDesc}>
+              Stop guessing and start analyzing. Our platform provides the data and intelligence 
+              you need to outperform the benchmarks.
             </p>
           </div>
           <div className={styles.featuresGrid}>
-            {FEATURES.map((f) => (
-              <div key={f.title} className={styles.featureCard}>
+            {FEATURES.map((f, i) => (
+              <div key={i} className={styles.featureCard}>
                 <div className={styles.featureIcon}>{f.icon}</div>
                 <h3 className={styles.featureTitle}>{f.title}</h3>
                 <p className={styles.featureDesc}>{f.desc}</p>
-                <Link to="/register" className={styles.featureLink}>Learn more →</Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── How It Works ─────────────────────────────────────────────────── */}
-      <section className={styles.howItWorks} id="how-it-works">
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.sectionBadge}>How It Works</div>
-            <h2>From Data to Decision in Minutes</h2>
-            <p>ArthaNova's AI pipeline processes thousands of data points every second so you don't have to.</p>
-          </div>
-          <div className={styles.stepsGrid}>
-            {STEPS.map((step, idx) => (
-              <div key={step.num} className={styles.stepCard}>
-                <div className={styles.stepNum}>{step.num}</div>
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p className={styles.stepDesc}>{step.desc}</p>
-                {idx < STEPS.length - 1 && <div className={styles.stepArrow}>→</div>}
+      {/* ─── Interactive Showcase ─────────────────────────────────────────── */}
+      <section className={styles.showcase} id="about">
+        <div className={styles.container}>
+          <div className={styles.showcaseGrid}>
+            <div className={styles.showcaseImage}>
+              <div className={styles.chatSample}>
+                <div className={styles.chatUser}>Is BAJFINANCE a good buy right now?</div>
+                <div className={styles.chatAI}>
+                  <div className={styles.aiHeader}>
+                    <span className={styles.aiTag}>AI Analyst</span>
+                  </div>
+                  <p>BAJFINANCE is currently trading near its 200-DMA support. AI suggests a <strong>Strong Buy</strong> setup with an 84% confidence score based on RSI divergence and rising institutional flows.</p>
+                  <div className={styles.aiFooter}>Sources: NSE Filings, Technical Indicators</div>
+                </div>
               </div>
-            ))}
+            </div>
+            <div className={styles.showcaseContent}>
+              <h2 className={styles.showcaseTitle}>Your Personal AI Financial Analyst</h2>
+              <p className={styles.showcaseText}>
+                The markets move fast. ArthaNova's AI works 24/7 to scan every filing, 
+                every news update, and every price movement to keep you ahead of the curve.
+              </p>
+              <ul className={styles.checkList}>
+                <li>Context-aware portfolio analysis</li>
+                <li>Plain-English summaries of complex data</li>
+                <li>Real-time sentiment tracking</li>
+                <li>Transparent, source-grounded insights</li>
+              </ul>
+              <Link to="/register" className="btn btn-primary btn-lg">Explore AI Chat</Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── Testimonials ─────────────────────────────────────────────────── */}
-      <section className={styles.testimonials} id="testimonials">
-        <div className={styles.sectionContainer}>
+      {/* ─── Testimonials ───────────────────────────────────────────────── */}
+      <section className={styles.testimonials}>
+        <div className={styles.container}>
           <div className={styles.sectionHeader}>
-            <div className={styles.sectionBadge}>Testimonials</div>
-            <h2>Trusted by India's Smart Investors</h2>
+            <h2 className={styles.sectionTitle}>Trusted by Professionals</h2>
+            <p className={styles.sectionDesc}>Hear from the investors who are already leveraging ArthaNova to gain a market edge.</p>
           </div>
           <div className={styles.testimonialsGrid}>
-            {TESTIMONIALS.map((t) => (
-              <div key={t.name} className={styles.testimonialCard}>
-                <div className={styles.testimonialRating}>{'⭐'.repeat(t.rating)}</div>
-                <p className={styles.testimonialText}>"{t.text}"</p>
-                <div className={styles.testimonialAuthor}>
-                  <div className={styles.testimonialAvatar}>
-                    {t.name.charAt(0)}
-                  </div>
+            {TESTIMONIALS.map((t, i) => (
+              <div key={i} className={styles.testimonialCard}>
+                <div className={styles.tHeader}>
+                  <div className={styles.tAvatar}>{t.avatar}</div>
                   <div>
-                    <div className={styles.testimonialName}>{t.name}</div>
-                    <div className={styles.testimonialRole}>{t.role}</div>
+                    <div className={styles.tName}>{t.name}</div>
+                    <div className={styles.tRole}>{t.role}</div>
                   </div>
                 </div>
+                <p className={styles.tText}>"{t.text}"</p>
+                <div className={styles.tRating}>⭐⭐⭐⭐⭐</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Contact ──────────────────────────────────────────────────────── */}
-      <section className={styles.contact} id="contact">
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.sectionBadge}>Support</div>
-            <h2>Let's Talk Markets</h2>
-            <p>Our support team and AI analysts are here to help you navigate the Indian equity landscape.</p>
-          </div>
-          <div className={styles.grid2} style={{ gap: 40, display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-             <div className={styles.contactDetails}>
-                <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
-                   <div style={{ fontSize: '1.5rem' }}>📍</div>
-                   <div>
-                      <strong>Headquarters</strong>
-                      <p style={{ margin: 0, opacity: 0.8 }}>BKC, Bandra East, Mumbai, MH - 400051</p>
-                   </div>
-                </div>
-                <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
-                   <div style={{ fontSize: '1.5rem' }}>✉️</div>
-                   <div>
-                      <strong>Email Dispatch</strong>
-                      <p style={{ margin: 0, opacity: 0.8 }}>support@arthanova.in</p>
-                   </div>
-                </div>
-                <div style={{ display: 'flex', gap: 16 }}>
-                   <div style={{ fontSize: '1.5rem' }}>📞</div>
-                   <div>
-                      <strong>Desk Line</strong>
-                      <p style={{ margin: 0, opacity: 0.8 }}>+91 22 4582 9300</p>
-                   </div>
-                </div>
-             </div>
-             <form style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <input type="text" className="form-control" placeholder="Full Name" />
-                <input type="email" className="form-control" placeholder="Work Email" />
-                <textarea className="form-control" placeholder="Message" style={{ height: 120, resize: 'none' }}></textarea>
-                <button type="button" className="btn btn-primary btn-full">Send Message →</button>
-             </form>
+      {/* ─── Impact / Stats ─────────────────────────────────────────── */}
+      <section className={styles.impact}>
+        <div className={styles.container}>
+          <div className={styles.impactGrid}>
+            <div className={styles.impactItem}>
+              <div className={styles.impactVal}>5,000+</div>
+              <div className={styles.impactLabel}>Instruments Tracked</div>
+            </div>
+            <div className={styles.impactItem}>
+              <div className={styles.impactVal}>98%</div>
+              <div className={styles.impactLabel}>Backtest Accuracy</div>
+            </div>
+            <div className={styles.impactItem}>
+              <div className={styles.impactVal}>&lt; 1s</div>
+              <div className={styles.impactLabel}>Insight Latency</div>
+            </div>
+            <div className={styles.impactItem}>
+              <div className={styles.impactVal}>100%</div>
+              <div className={styles.impactLabel}>Data Transparency</div>
+            </div>
           </div>
         </div>
       </section>
+
     </div>
   )
 }
