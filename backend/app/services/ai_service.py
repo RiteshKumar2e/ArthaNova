@@ -25,6 +25,11 @@ from app.ai.safety_guardrails import (
     output_guardrails,
     RateLimitConfig,
 )
+from app.ai.decision_engine import (
+    DecisionEngine,
+    SignalComponent,
+    TradeSignal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +76,9 @@ class EnhancedAIService:
         
         # Multi-agent orchestrator (autonomy & multi-agent design)
         self.orchestrator = AgentOrchestrator(self)
+        
+        # Central intelligence engine (decision synthesis)
+        self.decision_engine = DecisionEngine()
         
         # Enterprise monitoring
         self.circuit_breaker = CircuitBreaker("groq_api", failure_threshold=5, recovery_timeout=60)
@@ -265,6 +273,179 @@ class EnhancedAIService:
             ],
             user_id=user_id,
         )
+    
+    
+    async def synthesize_high_conviction_signals(
+        self,
+        stock_symbol: str,
+        signal_components: List[Dict[str, Any]],
+        entry_price: float,
+        target_price: float,
+        stop_loss: float,
+        user_holdings: Optional[Dict[str, Any]] = None,
+        portfolio_context: Optional[Dict[str, str]] = None,
+    ) -> Optional[TradeSignal]:
+        """
+        Synthesize multi-agent outputs into a high-conviction trading signal
+        
+        Args:
+            stock_symbol: Stock ticker symbol
+            signal_components: List of signals from each agent with keys: {agent, signal, confidence, reasoning, strength}
+            entry_price: Entry price
+            target_price: Target price
+            stop_loss: Stop loss price
+            user_holdings: User's current holdings
+            portfolio_context: Portfolio context info
+        
+        Returns: TradeSignal if high-conviction signal exists, else None
+        """
+        try:
+            # Convert signal components
+            components = [
+                SignalComponent(
+                    agent=c.get("agent", "unknown"),
+                    signal=c.get("signal", "NEUTRAL"),
+                    confidence=c.get("confidence", 50),
+                    reasoning=c.get("reasoning", ""),
+                    strength=c.get("strength", 50),
+                )
+                for c in signal_components
+            ]
+            
+            # Synthesize signal
+            trade_signal = self.decision_engine.synthesize_signal(
+                symbol=stock_symbol,
+                signal_components=components,
+                entry_price=entry_price,
+                target_price=target_price,
+                stop_loss=stop_loss,
+                portfolio_holdings=user_holdings,
+                portfolio_context=portfolio_context,
+            )
+            
+            if trade_signal:
+                # Log high-conviction signal
+                self.logger.info(f"HIGH-CONVICTION SIGNAL GENERATED: {trade_signal.to_dict()}")
+                
+                # Record metric
+                await self.metrics_collector.record_latency(
+                    "high_conviction_signal_generated",
+                    value=1.0
+                )
+            
+            return trade_signal
+        
+        except Exception as e:
+            self.logger.exception(f"Signal synthesis failed for {stock_symbol}: {e}")
+            return None
+    
+    async def get_high_conviction_trades(
+        self,
+        stock_symbols: List[str],
+        marketdata: Dict[str, Any],
+        user_holdings: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, List[TradeSignal]]:
+        """
+        Generate high-conviction trading signals for multiple stocks
+        
+        Returns: {
+            "buy_signals": [...],
+            "sell_signals": [...],
+            "risk_alerts": [...],
+            "watch_signals": [...]
+        }
+        """
+        try:
+            buy_signals = []
+            sell_signals = []
+            risk_alerts = []
+            watch_signals = []
+            
+            for symbol in stock_symbols:
+                stock_data = marketdata.get(symbol, {})
+                
+                # Get multi-agent signals (this would come from orchestrator)
+                # For now, using placeholder - in real scenario would get from agents
+                signal_components = [
+                    {
+                        "agent": "technical",
+                        "signal": stock_data.get("technical_signal", "NEUTRAL"),
+                        "confidence": stock_data.get("technical_confidence", 50),
+                        "reasoning": stock_data.get("technical_reasoning", ""),
+                        "strength": stock_data.get("technical_strength", 50),
+                    },
+                    {
+                        "agent": "fundamental",
+                        "signal": stock_data.get("fundamental_signal", "NEUTRAL"),
+                        "confidence": stock_data.get("fundamental_confidence", 50),
+                        "reasoning": stock_data.get("fundamental_reasoning", ""),
+                        "strength": stock_data.get("fundamental_strength", 50),
+                    },
+                    {
+                        "agent": "sentiment",
+                        "signal": stock_data.get("sentiment_signal", "NEUTRAL"),
+                        "confidence": stock_data.get("sentiment_confidence", 50),
+                        "reasoning": stock_data.get("sentiment_reasoning", ""),
+                        "strength": stock_data.get("sentiment_strength", 50),
+                    },
+                    {
+                        "agent": "risk",
+                        "signal": stock_data.get("risk_signal", "NEUTRAL"),
+                        "confidence": stock_data.get("risk_confidence", 50),
+                        "reasoning": stock_data.get("risk_reasoning", ""),
+                        "strength": stock_data.get("risk_strength", 50),
+                    },
+                ]
+                
+                # Synthesize signal
+                trade_signal = await self.synthesize_high_conviction_signals(
+                    stock_symbol=symbol,
+                    signal_components=signal_components,
+                    entry_price=stock_data.get("current_price", 0),
+                    target_price=stock_data.get("target_price", 0),
+                    stop_loss=stock_data.get("stop_loss", 0),
+                    user_holdings=user_holdings,
+                    portfolio_context={
+                        "action": "BUY" if stock_data.get("signal_type") == "BUY" else "SELL",
+                        "diversification_impact": stock_data.get("diversification_impact", "")
+                    }
+                )
+                
+                # Categorize signal
+                if trade_signal:
+                    if trade_signal.signal.value == "BUY":
+                        buy_signals.append(trade_signal)
+                    elif trade_signal.signal.value == "SELL":
+                        sell_signals.append(trade_signal)
+                    elif trade_signal.signal.value == "RISK_ALERT":
+                        risk_alerts.append(trade_signal)
+                    else:
+                        watch_signals.append(trade_signal)
+            
+            # Rank signals
+            result = {
+                "buy_signals": self.decision_engine.rank_signals(buy_signals),
+                "sell_signals": self.decision_engine.rank_signals(sell_signals),
+                "risk_alerts": self.decision_engine.rank_signals(risk_alerts),
+                "watch_signals": self.decision_engine.rank_signals(watch_signals),
+            }
+            
+            self.logger.info(
+                f"Generated trade signals: {len(buy_signals)} BUY, "
+                f"{len(sell_signals)} SELL, {len(risk_alerts)} RISK_ALERT, "
+                f"{len(watch_signals)} WATCH"
+            )
+            
+            return result
+        
+        except Exception as e:
+            self.logger.exception(f"Failed to generate high-conviction trades: {e}")
+            return {
+                "buy_signals": [],
+                "sell_signals": [],
+                "risk_alerts": [],
+                "watch_signals": [],
+            }
     
     def get_system_status(self) -> Dict[str, Any]:
         """Get comprehensive system status (observability)"""

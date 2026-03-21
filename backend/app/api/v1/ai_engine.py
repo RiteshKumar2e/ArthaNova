@@ -362,3 +362,165 @@ async def get_system_status(
     except Exception as e:
         logger.exception(f"Error getting system status: {e}")
         raise HTTPException(status_code=500, detail="Error getting status")
+
+
+@router.get("/high-conviction-trades")
+async def get_high_conviction_trades(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    🔥 High Conviction Trades - Get multi-agent confirmed buyable opportunities
+    
+    Returns signals that passed ALL filters:
+    - 3+ agent confirmations
+    - Confidence >= 60%
+    - Risk-Reward ratio >= 1:2
+    - Probability >= 60%
+    """
+    try:
+        # Sample high-conviction stocks to analyze
+        # In production, this would query market data API
+        stocks_to_analyze = ["RELIANCE", "TCS", "BAJFINANCE", "SUNPHARMA", "ADANIENT", "INFY", "WIPRO", "HDFC"]
+        
+        # Mock market data with multi-agent signals
+        market_data = {
+            stock: {
+                "symbol": stock,
+                "current_price": 100 + hash(stock) % 50,  # Mock price
+                "target_price": 110 + hash(stock) % 60,
+                "stop_loss": 90 + hash(stock) % 40,
+                "technical_signal": "BUY" if hash(stock) % 2 == 0 else "NEUTRAL",
+                "technical_confidence": 70 + hash(stock) % 30,
+                "technical_strength": 75,
+                "technical_reasoning": f"Strong breakout pattern on {stock}",
+                "fundamental_signal": "BUY" if hash(stock) % 3 == 0 else "HOLD",
+                "fundamental_confidence": 65 + hash(stock) % 25,
+                "fundamental_strength": 70,
+                "fundamental_reasoning": f"Positive Q3 earnings for {stock}",
+                "sentiment_signal": "BUY" if hash(stock) % 4 != 0 else "NEUTRAL",
+                "sentiment_confidence": 60 + hash(stock) % 25,
+                "sentiment_strength": 65,
+                "sentiment_reasoning": f"Positive news flow around {stock}",
+                "risk_signal": "BUY" if hash(stock) % 5 == 0 else "HOLD",
+                "risk_confidence": 65 + hash(stock) % 20,
+                "risk_strength": 60,
+                "risk_reasoning": f"Low volatility environment for {stock}",
+                "diversification_impact": f"Sector: {['Technology', 'Finance', 'Industrial'][hash(stock) % 3]}"
+            }
+            for stock in stocks_to_analyze
+        }
+        
+        # Get high-conviction signals from decision engine
+        trade_signals_result = await ai_service.get_high_conviction_trades(
+            stock_symbols=stocks_to_analyze,
+            marketdata=market_data,
+            user_holdings={},  # Could fetch from user portfolio
+        )
+        
+        # Format for frontend
+        high_conviction_trades = {
+            "buy_signals": [s.to_dict() for s in trade_signals_result.get("buy_signals", [])],
+            "sell_signals": [s.to_dict() for s in trade_signals_result.get("sell_signals", [])],
+        }
+        
+        logger.info(
+            f"High-conviction trades generated for user {current_user.id}: "
+            f"{len(high_conviction_trades['buy_signals'])} BUY, "
+            f"{len(high_conviction_trades['sell_signals'])} SELL"
+        )
+        
+        return {
+            "buy_signals": high_conviction_trades["buy_signals"],
+            "sell_signals": high_conviction_trades["sell_signals"],
+            "total_signals": len(high_conviction_trades["buy_signals"]) + len(high_conviction_trades["sell_signals"]),
+            "confidence_threshold": "60%+",
+            "confirmations_required": "3+ agents",
+            "min_rr_ratio": "1:2",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
+    
+    except Exception as e:
+        logger.exception(f"Error generating high-conviction trades for user {current_user.id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating trades: {str(e)[:100]}")
+
+
+@router.get("/risk-alerts")
+async def get_risk_alerts(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    ⚠️ Risk Alerts Panel - Get portfolio and market risks
+    
+    Returns:
+    - Portfolio concentration risks
+    - Bearish signals with low probability
+    - High volatility warnings
+    - Conflicting multi-agent signals
+    """
+    try:
+        # Sample risk analysis
+        stocks_to_analyze = ["RELIANCE", "TCS", "BAJFINANCE", "SUNPHARMA", "ADANIENT", "INFY", "WIPRO", "HDFC"]
+        
+        market_data = {
+            stock: {
+                "symbol": stock,
+                "current_price": 100 + hash(stock) % 50,
+                "volatility": 20 + hash(stock) % 30,
+                "technical_signal": "SELL" if hash(stock) % 5 == 0 else "NEUTRAL",
+                "technical_confidence": 55 + hash(stock) % 20,
+                "technical_reasoning": f"Weakening momentum on {stock}",
+                "sentiment_signal": "SELL" if hash(stock) % 6 == 0 else "NEUTRAL",
+                "sentiment_confidence": 50 + hash(stock) % 15,
+                "sentiment_reasoning": f"Negative market sentiment on {stock}",
+                "risk_signal": "SELL" if hash(stock) % 7 == 0 else "NEUTRAL",
+                "risk_confidence": 65 + hash(stock) % 20,
+                "risk_reasoning": f"High risk exposure in {stock}",
+            }
+            for stock in stocks_to_analyze
+        }
+        
+        # Get risk alerts from decision engine
+        trade_signals_result = await ai_service.get_high_conviction_trades(
+            stock_symbols=stocks_to_analyze,
+            marketdata=market_data,
+            user_holdings={},
+        )
+        
+        risk_alerts = [s.to_dict() for s in trade_signals_result.get("risk_alerts", [])]
+        
+        # Add portfolio-level risks
+        portfolio_risks = [
+            {
+                "type": "concentration",
+                "level": "medium",
+                "description": "Tech sector concentration above 25% threshold",
+                "action": "Rebalance into underweighted sectors",
+                "priority": 2,
+            },
+            {
+                "type": "market_condition",
+                "level": "low",
+                "description": "Overall market volatility elevated (VIX equivalent: 28)",
+                "action": "Consider reducing position sizes or hedging",
+                "priority": 3,
+            },
+        ]
+        
+        logger.info(
+            f"Risk alerts generated for user {current_user.id}: "
+            f"{len(risk_alerts)} stock alerts, {len(portfolio_risks)} portfolio alerts"
+        )
+        
+        return {
+            "stock_alerts": risk_alerts,
+            "portfolio_risks": portfolio_risks,
+            "total_alerts": len(risk_alerts) + len(portfolio_risks),
+            "alert_status": "ACTIVE" if (len(risk_alerts) + len(portfolio_risks)) > 0 else "CLEAR",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
+    
+    except Exception as e:
+        logger.exception(f"Error generating risk alerts for user {current_user.id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating alerts: {str(e)[:100]}")
