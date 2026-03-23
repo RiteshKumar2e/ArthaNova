@@ -1,5 +1,4 @@
 // Admin AI Dashboard Styles
-@import '../../_variables.scss';
 
 .admin-ai-dashboard {
   padding: 2rem;
@@ -16,6 +15,7 @@
       margin-bottom: 0.5rem;
       background: linear-gradient(135deg, #3b82f6, #10b981);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
