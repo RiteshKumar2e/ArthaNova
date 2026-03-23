@@ -32,34 +32,7 @@ const FEATURES = [
   }
 ]
 
-const TESTIMONIALS = [
-  {
-    name: "Vikram Mehta",
-    role: "Portfolio Manager, HNI",
-    text: "ArthaNova's RAG-based AI analysts reduced my research time by 70%. The ability to query complex NSE filings in plain English is a game changer.",
-    avatar: "VM"
-  },
-  {
-    name: "Ananya Iyer",
-    role: "Quantitative Trader",
-    text: "The Signal Radar consistently identifies momentum shifts 2-3 days before the mainstream media. The backtest accuracy is impressively reliable.",
-    avatar: "AI"
-  },
-  {
-    name: "Rohan Kapoor",
-    role: "Retail Investor",
-    text: "As a part-time investor, the conversational intelligence helps me understand MD&A sections of annual reports without getting bogged down in jargon.",
-    avatar: "RK"
-  }
-]
 
-const TRUST_LOGOS = [
-  { name: 'NSE', color: '#003D99' },
-  { name: 'BSE', color: '#DE350B' },
-  { name: 'SEBI Registered Data', color: '#5E6C84' },
-  { name: 'Groq', color: '#FF6B35' },
-  { name: 'Llama 3', color: '#0065FF' }
-]
 
 export default function LandingPage() {
   return (
@@ -88,15 +61,6 @@ export default function LandingPage() {
                 <Link to="/market" className="btn btn-secondary btn-lg">
                   Live Market View
                 </Link>
-              </div>
-              <div className={styles.trustStrip}>
-                <div className={styles.logoGrid}>
-                  {TRUST_LOGOS.map(logo => (
-                    <span key={logo.name} className={styles.logoItem} style={{ color: logo.color }}>
-                      {logo.name}
-                    </span>
-                  ))}
-                </div>
               </div>
             </div>
           </div>
@@ -182,6 +146,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
 
       {/* ─── How It Works ────────────────────────────────────────────────── */}
       <section className={styles.howItWorks} id="how-it-works">

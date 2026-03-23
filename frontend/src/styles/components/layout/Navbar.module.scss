@@ -6,16 +6,17 @@
   right: 0;
   z-index: $z-sticky;
   background: transparent;
-  transition: all $transition-base;
-  padding: 0;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  padding: $space-4 0;
 
   &.scrolled {
-    background: rgba($color-white, 0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba($color-primary, 0.05);
-    box-shadow: $shadow-sm;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    padding: $space-2 0;
     
-    .container { height: 64px; }
+    .container { height: 68px; }
   }
 }
 
@@ -24,10 +25,10 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  height: 88px;
-  gap: $space-8;
+  height: 96px;
+  gap: $space-10;
   padding: 0 $space-8;
-  transition: height $transition-base;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 
   @media (max-width: #{$breakpoint-md}) {
     padding: 0 $space-6;
@@ -38,37 +39,43 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: $space-3;
+  gap: $space-4;
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .brandIcon {
-  width: 32px;
-  height: 32px;
-  background: $gradient-primary;
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #0052CC 0%, #0066FF 100%);
   color: $color-white;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: $radius-md;
-  box-shadow: $shadow-sm;
-  font-size: $font-size-md;
+  border-radius: $radius-xl;
+  box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+  font-size: 20px;
+  transform: rotate(-5deg);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: rotate(0deg) scale(1.05);
+  }
 }
 
 .brandName {
   font-family: $font-heading;
-  font-size: $font-size-lg;
+  font-size: 1.5rem;
   font-weight: $font-weight-extrabold;
-  color: $color-text-primary;
-  letter-spacing: -0.02em;
+  color: #1F2937; // High contrast slate
+  letter-spacing: -0.03em;
   transition: color $transition-fast;
 }
 
 .navLinks {
   display: flex;
   list-style: none;
-  gap: $space-2;
+  gap: $space-3;
   flex: 1;
   justify-content: center;
 
@@ -78,17 +85,17 @@
 }
 
 .navLink {
-  padding: $space-2 $space-4;
-  color: $color-text-secondary;
-  font-size: 13px;
-  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-5;
+  color: #1F2937; // Darker for better visibility
+  font-size: 14px;
+  font-weight: $font-weight-bold; // Increased weight
   text-decoration: none;
-  border-radius: $radius-md;
-  transition: all $transition-fast;
+  border-radius: $radius-full;
+  transition: all $transition-base;
 
   &:hover {
-    color: $color-primary;
-    background: $color-primary-light;
+    color: #F472B6; 
+    background: rgba(244, 114, 182, 0.12); // Slightly more visible background
   }
 }
 
@@ -98,6 +105,41 @@
   gap: $space-4;
   flex-shrink: 0;
 
+  :global(.btn-ghost) {
+    color: #1F2937;
+    font-weight: $font-weight-bold;
+    &:hover { background: rgba(0, 0, 0, 0.05); }
+  }
+
+  :global(.btn-secondary) {
+    background: #22C55E !important; 
+    border-color: #22C55E !important;
+    color: #FFFFFF !important;
+    font-weight: $font-weight-bold;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    opacity: 1 !important; // Ensure no transparency
+    
+    &:hover { 
+      background: darken(#22C55E, 5%) !important; 
+      border-color: darken(#22C55E, 5%) !important;
+      box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
+      transform: translateY(-1px);
+    }
+  }
+
+  :global(.btn-primary) {
+    background: #F472B6;
+    border-color: #F472B6;
+    color: white;
+    font-weight: $font-weight-bold;
+    box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2); // Subtle pink shadow
+    &:hover { 
+      background: darken(#F472B6, 5%); 
+      border-color: darken(#F472B6, 5%);
+      box-shadow: 0 6px 15px rgba(244, 114, 182, 0.3);
+    }
+  }
+
   @media (max-width: #{$breakpoint-lg}) {
     display: none;
   }
@@ -106,7 +148,7 @@
 .hamburger {
   display: none;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   background: none;
   border: none;
   cursor: pointer;
@@ -115,18 +157,18 @@
 
   span {
     display: block;
-    width: 20px;
-    height: 2px;
-    background: $color-text-primary;
+    width: 24px;
+    height: 2.5px;
+    background: #1F2937;
     border-radius: $radius-full;
-    transition: all $transition-fast;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 
   &.open {
     span {
-      &:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-      &:nth-child(2) { opacity: 0; }
-      &:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      &:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+      &:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+      &:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
     }
   }
 
@@ -138,40 +180,44 @@
 .mobileMenu {
   position: absolute;
   top: 100%;
-  left: 0;
-  right: 0;
-  background: $color-white;
-  border-top: 1px solid $color-border;
-  padding: $space-6;
+  left: $space-4;
+  right: $space-4;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: $radius-2xl;
+  padding: $space-8;
   display: flex;
   flex-direction: column;
-  gap: $space-2;
-  box-shadow: $shadow-lg;
-  animation: slideDown 0.3s ease-out;
+  gap: $space-4;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+  margin-top: $space-4;
+  animation: slideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .mobileLink {
   display: block;
-  padding: $space-3 $space-4;
-  color: $color-text-primary;
+  padding: $space-4 $space-6;
+  color: #1F2937;
   font-weight: $font-weight-bold;
   text-decoration: none;
-  border-radius: $radius-lg;
-  transition: background $transition-fast;
+  border-radius: $radius-xl;
+  transition: all $transition-fast;
+  font-size: $font-size-lg;
 
-  &:hover { background: $color-bg; color: $color-primary; }
+  &:hover { background: rgba(244, 114, 182, 0.08); color: #F472B6; transform: translateX(10px); }
 }
 
 .mobileActions {
   display: flex;
   flex-direction: column;
-  gap: $space-3;
-  margin-top: $space-6;
-  padding-top: $space-6;
-  border-top: 1px solid $color-border;
+  gap: $space-4;
+  margin-top: $space-8;
+  padding-top: $space-8;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }

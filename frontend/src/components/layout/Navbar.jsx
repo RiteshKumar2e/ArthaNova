@@ -49,14 +49,11 @@ export default function Navbar() {
         {/* Auth Actions */}
         <div className={styles.actions}>
           {isAuthenticated ? (
-            <>
-              <Link to="/dashboard" className="btn btn-secondary btn-sm">Dashboard</Link>
-              <button onClick={handleLogout} className="btn btn-ghost btn-sm">Logout</button>
-            </>
+            <Link to="/dashboard" className="btn btn-primary btn-sm">Dashboard</Link>
           ) : (
             <>
-              <Link to="/login" className="btn btn-ghost btn-sm" id="navbar-login-btn">Login</Link>
-              <Link to="/register" className="btn btn-primary btn-sm" id="navbar-register-btn">Get Started</Link>
+              <Link to="/login" className="btn btn-secondary btn-sm" id="navbar-login-btn">Login</Link>
+              <Link to="/register" className="btn btn-primary btn-sm" id="navbar-register-btn">Sign Up</Link>
             </>
           )}
         </div>
@@ -81,10 +78,7 @@ export default function Navbar() {
           ))}
           <div className={styles.mobileActions}>
             {isAuthenticated ? (
-              <>
-                <Link to="/dashboard" className="btn btn-primary btn-full" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-                <button onClick={handleLogout} className="btn btn-ghost btn-full">Logout</button>
-              </>
+              <Link to="/dashboard" className="btn btn-primary btn-full" onClick={() => setMenuOpen(false)}>Dashboard</Link>
             ) : (
               <>
                 <Link to="/login" className="btn btn-secondary btn-full" onClick={() => setMenuOpen(false)}>Login</Link>
