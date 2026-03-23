@@ -116,7 +116,7 @@ class DecisionEngine:
         
         # Find dominant signal
         if signal_counts:
-            dominant_signal = max(signal_counts, key=signal_counts.get)
+            dominant_signal = max(signal_counts, key=lambda x: signal_counts[x])
             confirmation_count = signal_counts.get(dominant_signal, 0)
         else:
             dominant_signal = None

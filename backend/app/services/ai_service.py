@@ -330,7 +330,7 @@ class EnhancedAIService:
                 # Record metric
                 await self.metrics_collector.record_latency(
                     "high_conviction_signal_generated",
-                    value=1.0
+                    1.0
                 )
             
             return trade_signal
