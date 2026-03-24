@@ -61,7 +61,7 @@ export default function LoginPage() {
     if (type === 'admin') {
       setForm({ email: 'admin@arthanova.in', password: 'Admin@1234', remember_me: false })
     } else {
-      setForm({ email: 'user@arthanova.in', password: 'Demo@1234', remember_me: false })
+      setForm({ email: 'demo@arthanova.in', password: 'Demo@1234', remember_me: false })
     }
     setErrors({})
     toast(`Form filled for ${type}! Click Login.`, { icon: '📝' })

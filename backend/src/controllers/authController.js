@@ -21,12 +21,14 @@ export const register = async (req, res) => {
   });
 
   const tokenData = { sub: user.id.toString(), email: user.email };
+  const { hashed_password: _, ...safeUser } = user;
 
   res.status(201).json({
     access_token: createAccessToken(tokenData),
     refresh_token: createRefreshToken(tokenData),
     token_type: 'bearer',
     expires_in: 3600,
+    user: safeUser,
   });
 };
 
@@ -50,12 +52,14 @@ export const login = async (req, res) => {
 
     await userService.updateUserLastLogin(user.id);
     const tokenData = { sub: user.id.toString(), email: user.email };
+    const { hashed_password: _, ...safeUser } = user;
 
     res.json({
       access_token: createAccessToken(tokenData),
       refresh_token: createRefreshToken(tokenData),
       token_type: 'bearer',
       expires_in: 3600,
+      user: safeUser,
     });
   } catch (error) {
     console.error(error);
@@ -89,7 +93,8 @@ export const refreshToken = async (req, res) => {
 };
 
 export const getMe = async (req, res) => {
-  res.json(req.user);
+  const { hashed_password: _, ...safeUser } = req.user;
+  res.json(safeUser);
 };
 
 export const logout = async (req, res) => {

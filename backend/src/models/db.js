@@ -1,15 +1,17 @@
 // ─────────────────────────────────────────────────────────────
 //  IN-MEMORY DEMO STORE  (no database / Prisma required)
 // ─────────────────────────────────────────────────────────────
-//  Pre-seeded demo user:
-//    email   : demo@arthanova.in
-//    password: Demo@1234
+//  Demo credentials:
+//    USER  → demo@arthanova.in  / Demo@1234
+//    ADMIN → admin@arthanova.in / Admin@1234
 // ─────────────────────────────────────────────────────────────
 
-let _nextId = 2;
+let _nextId = 3;
 
-// bcryptjs hash of "Demo@1234" (rounds=10) — pre-computed so startup is instant
-const DEMO_HASH = '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lHi2';
+// bcryptjs hash of "Demo@1234"  (rounds=10)
+const DEMO_HASH  = '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lHi2';
+// bcryptjs hash of "Admin@1234" (rounds=10)
+const ADMIN_HASH = '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
 
 const users = [
   {
@@ -30,6 +32,28 @@ const users = [
     notification_push: true,
     preferred_currency: 'INR',
     theme: 'light',
+    created_at: new Date('2025-01-01T00:00:00Z'),
+    updated_at: new Date('2025-01-01T00:00:00Z'),
+    last_login: null,
+  },
+  {
+    id: 2,
+    email: 'admin@arthanova.in',
+    username: 'admin',
+    full_name: 'ArthaNova Admin',
+    hashed_password: ADMIN_HASH,
+    phone: null,
+    avatar_url: null,
+    bio: 'Platform Administrator',
+    role: 'admin',
+    risk_profile: 'aggressive',
+    is_active: true,
+    is_verified: true,
+    is_admin: true,
+    notification_email: true,
+    notification_push: true,
+    preferred_currency: 'INR',
+    theme: 'dark',
     created_at: new Date('2025-01-01T00:00:00Z'),
     updated_at: new Date('2025-01-01T00:00:00Z'),
     last_login: null,
