@@ -84,99 +84,108 @@ export default function BacktestingPage() {
 
   return (
     <div className="page-wrapper animate-fadeIn">
-      <header className="page-header">
+      <header className={styles.pageHeader}>
         <div>
-          <h1 className="page-title">🔄 Backtesting Engine</h1>
-          <p className="page-subtitle">Simulate trading strategies on historical NSE data with institutional precision.</p>
+          <h1 className={styles.pageTitle}>BACKTESTING ENGINE</h1>
+          <p className={styles.pageSubtitle}>Analyze performance of automated strategies on historical market data</p>
         </div>
         <div className={styles.historyOverview}>
           <div className={styles.histStat}>
-            <span className={styles.histLabel}>Recent Runs</span>
+            <span className={styles.histLabel}>RECENT RUNS: </span>
             <span className={styles.histValue}>{history.length}</span>
           </div>
         </div>
       </header>
 
       <div className={styles.contentLayout}>
-        {/* Sidebar Controls */}
         <aside className={styles.controls}>
-          <div className="card">
-            <h3 className={styles.cardTitle}>Sim Parameters</h3>
-            <form onSubmit={handleRunBacktest} className={styles.form}>
-              <div className={styles.formGroup}>
-                <label>Strategy</label>
-                <select 
-                  value={params.strategy_name}
-                  onChange={(e) => setParams({...params, strategy_name: e.target.value})}
-                >
-                  {STRATEGIES.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Symbol</label>
-                <select 
-                  value={params.symbol}
-                  onChange={(e) => setParams({...params, symbol: e.target.value})}
-                >
-                  {stocks.map(s => <option key={s.symbol} value={s.symbol}>{s.symbol} — {s.name}</option>)}
-                  {stocks.length === 0 && <option value="RELIANCE">RELIANCE</option>}
-                </select>
-              </div>
-
-              <div className={styles.formRow}>
+          <div className="card" style={{ border: '4px solid #000', boxShadow: '6px 6px 0px #000', overflow: 'hidden' }}>
+            <h3 className={styles.cardHeader}>SIM PARAMETERS</h3>
+            <div className={styles.cardBody}>
+              <form onSubmit={handleRunBacktest} className={styles.form}>
                 <div className={styles.formGroup}>
-                  <label>Start Date</label>
+                  <label className={styles.label}>STRATEGY</label>
+                  <select 
+                    className={styles.select}
+                    value={params.strategy_name}
+                    onChange={(e) => setParams({...params, strategy_name: e.target.value})}
+                  >
+                    {STRATEGIES.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
+                  </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>SYMBOL</label>
+                  <select 
+                    className={styles.select}
+                    value={params.symbol}
+                    onChange={(e) => setParams({...params, symbol: e.target.value})}
+                  >
+                    {stocks.map(s => <option key={s.symbol} value={s.symbol}>{s.symbol} — {s.name}</option>)}
+                    {stocks.length === 0 && <option value="RELIANCE">RELIANCE</option>}
+                  </select>
+                </div>
+
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>START DATE</label>
+                    <input 
+                      className={styles.input}
+                      type="date" 
+                      value={params.start_date}
+                      onChange={(e) => setParams({...params, start_date: e.target.value})}
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>END DATE</label>
+                    <input 
+                      className={styles.input}
+                      type="date" 
+                      value={params.end_date}
+                      onChange={(e) => setParams({...params, end_date: e.target.value})}
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>INITIAL CAPITAL (₹)</label>
                   <input 
-                    type="date" 
-                    value={params.start_date}
-                    onChange={(e) => setParams({...params, start_date: e.target.value})}
+                    className={styles.input}
+                    type="number" 
+                    value={params.initial_capital}
+                    onChange={(e) => setParams({...params, initial_capital: parseInt(e.target.value)})}
                   />
                 </div>
-                <div className={styles.formGroup}>
-                  <label>End Date</label>
-                  <input 
-                    type="date" 
-                    value={params.end_date}
-                    onChange={(e) => setParams({...params, end_date: e.target.value})}
-                  />
-                </div>
-              </div>
 
-              <div className={styles.formGroup}>
-                <label>Initial Capital (₹)</label>
-                <input 
-                  type="number" 
-                  value={params.initial_capital}
-                  onChange={(e) => setParams({...params, initial_capital: parseInt(e.target.value)})}
-                />
-              </div>
-
-              <button 
-                type="submit" 
-                className={`btn btn-primary ${styles.runBtn}`}
-                disabled={loading}
-              >
-                {loading ? 'Processing...' : 'Run Simulation'}
-              </button>
-            </form>
+                <button 
+                  type="submit" 
+                  className={styles.button}
+                  disabled={loading}
+                  style={{ background: '#C4FF00', fontWeight: 950 }}
+                >
+                  {loading ? 'PROCESSING...' : 'RUN SIMULATION'}
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div className={`card ${styles.recentHistory}`}>
-            <h3 className={styles.cardTitle}>Job History</h3>
-            <div className={styles.histList}>
-              {history.map(run => (
-                <div key={run.id} className={styles.histItem}>
-                  <div className={styles.histItemMain}>
-                    <span className={styles.histSymbol}>{run.symbol}</span>
-                    <span className={styles.histStrategy}>{run.strategy_name}</span>
+          <div className="card" style={{ border: '4px solid #000', boxShadow: '6px 6px 0px #000', marginTop: 20, overflow: 'hidden' }}>
+            <h3 className={styles.cardHeader} style={{ background: '#FFDD55' }}>JOB HISTORY</h3>
+            <div className={styles.cardBody}>
+              <div className={styles.histList}>
+                {history.map(run => (
+                  <div key={run.id} className={styles.histItem} style={{ borderBottom: '2px solid #eee', padding: '8px 0' }}>
+                    <div className={styles.histItemMain}>
+                      <span className={styles.histSymbol}>{run.symbol}</span>
+                      <span className={styles.histStrategy}>{run.strategy_name}</span>
+                    </div>
+                    <div className={run.total_return_pct >= 0 ? styles.positiveText : styles.negativeText} style={{ fontWeight: 950, fontSize: '0.85rem' }}>
+                      {run.total_return_pct > 0 ? '+' : ''}{run.total_return_pct}%
+                    </div>
                   </div>
-                  <div className={run.total_return_pct >= 0 ? styles.posReturn : styles.negReturn}>
-                    {run.total_return_pct > 0 ? '+' : ''}{run.total_return_pct}%
-                  </div>
-                </div>
-              ))}
-              {history.length === 0 && <p className={styles.emptyHist}>No recent runs found.</p>}
+                ))}
+                {history.length === 0 && <p className={styles.emptyHist} style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#999', textAlign: 'center' }}>No recent runs found.</p>}
+              </div>
             </div>
           </div>
         </aside>

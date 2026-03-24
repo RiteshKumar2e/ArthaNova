@@ -20,7 +20,7 @@ export default function MarketOverviewPage() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>MARKET INTELLIGENCE</h1>
-          <p className={styles.pageTitleSub}>Real-time snapshot of Indian equity markets</p>
+          <p className={styles.pageSubtitle}>REAL-TIME SNAPSHOT OF INDIAN EQUITY MARKETS</p>
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <span className="badge badge-success" style={{ border: '3px solid #000' }}>NSE OPEN</span>
