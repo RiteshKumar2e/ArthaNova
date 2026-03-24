@@ -25,53 +25,67 @@ export default function FilingsAnalyzerPage() {
 
   return (
     <div className="page-wrapper animate-fadeIn">
-      <header className="page-header">
+      <div className={styles.pageHeader}>
         <div>
-          <h1 className="page-title">📋 Filings Analyzer</h1>
-          <p className="page-subtitle">Extract institutional-grade insights from 10-K, 10-Q, and Annual Reports using our proprietary RAG pipeline.</p>
+          <h1 className={styles.pageTitle}>FILINGS ANALYZER</h1>
+          <p className={styles.pageSubtitle}>EXTRACT INSTITUTIONAL-GRADE INSIGHTS FROM 10-K, 10-Q, AND ANNUAL REPORTS</p>
         </div>
         <div className={styles.premiumBadge}>
-          <span className={styles.badgeIcon}>✨</span>
-          <span>AI v1.1 Beta</span>
+          ✨ AI v1.1 BETA
         </div>
-      </header>
+      </div>
 
       <div className={styles.dashboardGrid}>
         {/* Left: Upload & Stats */}
         <div className={styles.leftCol}>
-          <div className={`card ${styles.uploadCard} ${dragActive ? styles.dragActive : ''}`}
+          <div className={`${styles.card} ${styles.uploadCard} ${dragActive ? styles.dragActive : ''}`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
           >
+            <input 
+              type="file" 
+              multiple={true} 
+              style={{ display: 'none' }} 
+              id="file-upload-input"
+              onChange={(e) => {
+                if (e.target.files?.length) {
+                  toast.success(`${e.target.files.length} file(s) selected for analysis!`);
+                }
+              }}
+            />
             <div className={styles.uploadIcon}>☁️</div>
-            <h3>Upload New Filing</h3>
+            <h3>UPLOAD NEW FILING</h3>
             <p>Drag and drop company annual reports or quarterly filings (PDF/DOCX)</p>
-            <button className="btn btn-primary" onClick={() => toast.success('Open file dialog')}>
-              Select Files
+            <button 
+              className="btn btn-primary btn-sm" 
+              onClick={() => document.getElementById('file-upload-input').click()} 
+              style={{ border: '3px solid #000' }}
+            >
+              SELECT FILES
             </button>
             <span className={styles.uploadHint}>AI handles table extraction & OCR automatically</span>
           </div>
 
           <div className={styles.statsRow}>
-            <div className={`card ${styles.statMini}`}>
-              <span className={styles.statLabel}>Analyzed</span>
+            <div className={styles.statMini}>
+              <span className={styles.statLabel}>ANALYZED</span>
               <span className={styles.statVal}>0</span>
             </div>
-            <div className={`card ${styles.statMini}`}>
-              <span className={styles.statLabel}>Confidence</span>
+            <div className={styles.statMini}>
+              <span className={styles.statLabel}>CONFIDENCE</span>
               <span className={styles.statVal}>N/A</span>
             </div>
           </div>
 
-          <div className="card">
-            <h3 className={styles.cardTitle}>Module Under Construction</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>MODULE UNDER CONSTRUCTION</div>
             <div className={styles.constructionNotice}>
-              <p>We are actively working on integrating advanced AI models and data pipelines for the Filings Analyzer feature. This will be available in the upcoming v1.1 release.</p>
+              <p>WE ARE ACTIVELY WORKING ON INTEGRATING ADVANCED AI MODELS AND DATA PIPELINES FOR THE FILINGS ANALYZER FEATURE. THIS WILL BE AVAILABLE IN THE UPCOMING V1.1 RELEASE.</p>
               <div className={styles.constructionVisual}>
                 <div className={styles.loadingBar}><div className={styles.loadingProgress}></div></div>
-                <span>Syncing with SEBI Edgar Data...</span>
+                <span>SYNCING WITH SEBI EDGAR DATA...</span>
               </div>
             </div>
           </div>
@@ -79,17 +93,17 @@ export default function FilingsAnalyzerPage() {
 
         {/* Right: Filing List & Preview */}
         <div className={styles.rightCol}>
-          <div className="card">
-            <h3 className={styles.cardTitle}>Recent Corporate Filings</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>RECENT CORPORATE FILINGS</div>
             <div className={styles.tableWrapper}>
               <table className={styles.filingsTable}>
                 <thead>
                   <tr>
-                    <th>Document Name</th>
-                    <th>Category</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>AI Confidence</th>
+                    <th>DOCUMENT NAME</th>
+                    <th>CATEGORY</th>
+                    <th>DATE</th>
+                    <th>STATUS</th>
+                    <th>AI CONFIDENCE</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -99,8 +113,8 @@ export default function FilingsAnalyzerPage() {
                       <td className={styles.fileType}>{f.type}</td>
                       <td>{f.date}</td>
                       <td>
-                        <span className={`${styles.statusBadge} ${styles[f.status]}`}>
-                          {f.status}
+                        <span className="badge badge-info">
+                          {f.status?.toUpperCase()}
                         </span>
                       </td>
                       <td className={styles.confidenceCell}>
@@ -108,17 +122,24 @@ export default function FilingsAnalyzerPage() {
                       </td>
                     </tr>
                   ))}
+                  {filings.length === 0 && (
+                    <tr>
+                      <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', fontWeight: 900, color: '#888' }}>
+                        NO RECENT FILINGS FOUND
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div className={`card ${styles.previewCard}`}>
-            <h3 className={styles.cardTitle}>AI Insight Preview</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>AI INSIGHT PREVIEW</div>
             <div className={styles.previewContent}>
               <div className={styles.previewPlaceholder}>
                 <div className={styles.eyeIcon}>👁️</div>
-                <p>Select a filing to see extracted financial summaries and management sentiment analysis.</p>
+                <p>SELECT A FILING TO SEE EXTRACTED FINANCIAL SUMMARIES AND MANAGEMENT SENTIMENT ANALYSIS.</p>
               </div>
             </div>
           </div>
