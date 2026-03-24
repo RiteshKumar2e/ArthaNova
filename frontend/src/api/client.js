@@ -47,6 +47,16 @@ api.interceptors.response.use(
   }
 )
 
+export const adminAPI = {
+  getStats: () => api.get('/admin/stats'),
+  getUsers: () => api.get('/admin/users'),
+  videoEngine: {
+    listJobs: () => api.get('/admin/video-engine/jobs'),
+    createJob: (data) => api.post('/admin/video-engine/jobs', data),
+    deleteJob: (id) => api.delete(`/admin/video-engine/jobs/${id}`),
+  }
+}
+
 export default api
 
 // ─── API Modules ──────────────────────────────────────────────────────────────

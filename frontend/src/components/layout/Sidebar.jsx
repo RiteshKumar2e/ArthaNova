@@ -20,6 +20,7 @@ const USER_NAV = [
   {
     section: 'TOOLS', items: [
       { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },
+      { to: '/videos', icon: '🎬', label: 'AI Video Gen', roles: ['user', 'admin'] },
     ]
   },
   {

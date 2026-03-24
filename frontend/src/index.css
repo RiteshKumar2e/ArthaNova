@@ -206,6 +206,32 @@ p { margin: 0; }
 }
 .neo-input::placeholder { color: #888; font-weight: 400; }
 
+.neo-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: var(--border-width) solid var(--border);
+  background: var(--bg-white);
+  font-family: var(--sans);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"><path d="M6 9l6 6 6-6"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+  padding-right: 48px;
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+.neo-select:focus, .neo-select:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translate(-1.5px, -1.5px);
+}
+
 /* ── Neo-brutalist Label ────────────────────────────────── */
 .neo-label {
   display: block;

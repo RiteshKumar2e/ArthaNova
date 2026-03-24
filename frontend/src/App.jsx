@@ -27,13 +27,13 @@ import BacktestingPage from './pages/app/BacktestingPage'
 import FilingsAnalyzerPage from './pages/app/FilingsAnalyzerPage'
 import OpportunityRadarPage from './pages/app/OpportunityRadarPage'
 import ProfilePage from './pages/app/ProfilePage'
+import VideoInsightsPage from './pages/app/VideoInsightsPage'
 import {
   InsiderActivityPage,
   DealsTrackerPage,
   TechnicalAnalysisPage,
   WatchlistPage,
   RiskAnalyzerPage,
-  VideoInsightsPage,
   NotificationsPage,
   SettingsPage
 } from './pages/app/PlaceholderPages'
