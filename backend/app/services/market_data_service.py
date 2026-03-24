@@ -199,8 +199,9 @@ class MarketDataService:
             # Prepare response
             data_list = []
             for idx, row in hist.iterrows():
+                date_str = pd.Timestamp(idx).strftime("%Y-%m-%d") if isinstance(idx, (pd.Timestamp, datetime)) else str(idx)
                 data_list.append({
-                    "date": idx.strftime("%Y-%m-%d") if hasattr(idx, 'strftime') else str(idx),
+                    "date": date_str,
                     "open": float(row["Open"]),
                     "high": float(row["High"]),
                     "low": float(row["Low"]),

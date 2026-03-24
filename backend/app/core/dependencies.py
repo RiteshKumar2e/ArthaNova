@@ -25,13 +25,15 @@ async def get_current_user(
             detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user_id = payload.get("sub")
-    if not user_id:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
-
     import logging
     user_logger = logging.getLogger("arthanova.auth")
+    user_logger.info(f"🔑 AUTH ATTEMPT: Checking token payload")
     
+    user_id = payload.get("sub")
+    if not user_id:
+        user_logger.error(f"🚨 AUTH FAILURE: No sub in payload")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
+
     user = await get_user_by_id(db, int(user_id))
     if not user:
         user_logger.error(f"🚨 AUTH FAILURE: User ID {user_id} not in database")
@@ -42,6 +44,7 @@ async def get_current_user(
         user_logger.error(f"🚨 AUTH FAILURE: User {user.email} is INACTIVE (418 TRIGGERED)")
         raise HTTPException(status_code=418, detail="Account is inactive")
 
+    user_logger.info(f"✅ AUTH SUCCESS: {user.email}")
     return user
 
 

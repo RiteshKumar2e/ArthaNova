@@ -9,15 +9,20 @@ from app.core.dependencies import get_db, get_current_user
 from app.models.user import User, Notification
 from app.schemas.schemas import NotificationResponse, NotificationCreate, MessageResponse
 
-router = APIRouter(prefix="/notifications", tags=["Notifications"])
+router = APIRouter(tags=["Notifications"])
 
 
-@router.get("/", response_model=List[NotificationResponse])
+@router.get("", response_model=List[NotificationResponse])
 async def get_notifications(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     """Retrieve all notifications for the current user, including global ones."""
+    # Debug trace for 403
+    import logging
+    logger = logging.getLogger("arthanova.notifications")
+    logger.info(f"🔍 [NOTIF] Fetching for user_id: {current_user.id} ({current_user.email})")
+    
     result = await db.execute(
         select(Notification)
         .where(or_(Notification.user_id == current_user.id, Notification.user_id == None))
@@ -59,8 +64,16 @@ async def mark_as_read(
     if not notification:
         raise HTTPException(status_code=404, detail="Notification not found")
     
-    notification.is_read = True
+    await db.execute(
+        update(Notification)
+        .where(Notification.id == notification_id)
+        .values(is_read=True)
+    )
     await db.commit()
+    result = await db.execute(
+        select(Notification).where(Notification.id == notification_id)
+    )
+    notification = result.scalar_one()
     await db.refresh(notification)
     return notification
 
@@ -95,7 +108,7 @@ async def send_notification(
     db: AsyncSession = Depends(get_db)
 ):
     """Send a notification (Admin only functionality)."""
-    if not current_user.is_admin:
+    if not getattr(current_user, 'is_admin', False):
         raise HTTPException(status_code=403, detail="Not authorized")
     
     new_notif = Notification(
@@ -117,7 +130,7 @@ async def list_all_notifications_admin(
     db: AsyncSession = Depends(get_db)
 ):
     """Admin: Retrieve all notifications in the system."""
-    if not current_user.is_admin:
+    if not getattr(current_user, 'is_admin', False):
         raise HTTPException(status_code=403, detail="Admin access required")
     
     result = await db.execute(
