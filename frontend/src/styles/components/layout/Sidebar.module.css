@@ -33,43 +33,48 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1.25rem 1rem;
+  gap: 0.85rem;
+  padding: 1.5rem 1rem;
   background: #000;
-  border-bottom: 3px solid #000;
+  border-bottom: 4px solid #000;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .brandIcon {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   background: #C4FF00;
-  border: 3px solid #C4FF00;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   font-weight: 950;
   color: #000;
   flex-shrink: 0;
+  border: 4px solid #000;
+  box-shadow: none;
 }
 
 .brandName {
   font-family: 'Archivo Black', sans-serif;
-  font-size: 0.95rem;
+  font-size: 1.35rem;
   font-weight: 950;
   text-transform: uppercase;
   color: #C4FF00;
-  line-height: 1.1;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
 }
 
 .brandTagline {
   font-family: 'Archivo Black', sans-serif;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(196,255,0,0.55);
+  color: #C4FF00;
+  opacity: 0.6;
 }
 
 /* ── User info ───────────────────────── */

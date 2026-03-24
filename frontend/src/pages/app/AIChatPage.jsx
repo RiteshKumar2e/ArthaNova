@@ -56,7 +56,7 @@ export default function AIChatPage() {
     e.preventDefault()
     if (!input.trim() || loading) return
 
-    const userMsg = { role: 'user', content: input, created_at: new Date() }
+    const userMsg = { role: 'user', content: input, created_at: new Date(), id: Date.now() }
     setMessages((prev) => [...prev, userMsg])
     setInput('')
     setLoading(true)
@@ -68,7 +68,11 @@ export default function AIChatPage() {
         include_portfolio: true,
       })
       const data = res.data
-      setActiveSession({ id: data.session_id, title: input.slice(0, 60) })
+      
+      if (!activeSession) {
+        setActiveSession({ id: data.session_id, title: input.slice(0, 60) })
+        loadSessions()
+      }
       
       // Store orchestration data for visualization
       const orchestrationData = {
@@ -80,14 +84,14 @@ export default function AIChatPage() {
       }
       
       setMessages((prev) => [
-        ...prev,
+        ...prev.map(m => m.id === userMsg.id ? { ...m, id: data.user_message_id || m.id } : m),
         { 
           role: 'assistant', 
           content: data.content, 
           sources: data.sources, 
           created_at: data.created_at,
           orchestration: orchestrationData,
-          messageId: Date.now()
+          id: data.message_id
         },
       ])
       
@@ -96,13 +100,53 @@ export default function AIChatPage() {
         setCurrentOrchestration(orchestrationData)
         setShowOrchestration(true)
       }
-      
-      if (!activeSession) loadSessions()
     } catch {
       toast.error('AI response failed. Please try again.')
       setMessages((prev) => prev.slice(0, -1))
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeleteMessage = async (messageId) => {
+    if (!window.confirm('Are you sure you want to delete this message?')) return
+    
+    try {
+      await aiAPI.deleteMessage(messageId)
+      setMessages(prev => prev.filter(m => m.id !== messageId))
+      toast.success('Message deleted')
+    } catch {
+      toast.error('Failed to delete message')
+    }
+  }
+
+  const handleClearSession = async () => {
+    if (!activeSession) return
+    if (!window.confirm('Clear all messages in this chat?')) return
+    
+    try {
+      await aiAPI.clearSession(activeSession.id)
+      setMessages([])
+      toast.success('Chat cleared')
+    } catch {
+      toast.error('Failed to clear chat')
+    }
+  }
+
+  const handleDeleteSession = async (e, sessionId) => {
+    e.stopPropagation()
+    if (!window.confirm('Delete this entire conversation?')) return
+    
+    try {
+      await aiAPI.deleteSession(sessionId)
+      setSessions(prev => prev.filter(s => s.id !== sessionId))
+      if (activeSession?.id === sessionId) {
+        setActiveSession(null)
+        setMessages([])
+      }
+      toast.success('Session deleted')
+    } catch {
+      toast.error('Failed to delete session')
     }
   }
 
@@ -132,11 +176,21 @@ export default function AIChatPage() {
         </div>
         <div className={styles.sessionsList}>
           {sessions.map((s) => (
-            <button key={s.id} className={`${styles.sessionItem} ${activeSession?.id === s.id ? styles.activeSession : ''}`}
-              onClick={() => loadSession(s.id)}>
-              <div className={styles.sessionTitle}>{s.title?.toUpperCase() || 'NEW CONVERSATION'}</div>
-              <div className={styles.sessionDate}>{new Date(s.created_at).toLocaleDateString()}</div>
-            </button>
+            <div key={s.id} className={`${styles.sessionItem} ${activeSession?.id === s.id ? styles.activeSession : ''}`}
+              onClick={() => loadSession(s.id)}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div className={styles.sessionTitle}>{s.title?.toUpperCase() || 'NEW CONVERSATION'}</div>
+                <div className={styles.sessionDate}>{new Date(s.created_at).toLocaleDateString()}</div>
+              </div>
+              <button 
+                onClick={(e) => handleDeleteSession(e, s.id)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem', padding: '4px' }}
+                title="Delete session"
+              >
+                🗑️
+              </button>
+            </div>
           ))}
           {sessions.length === 0 && (
             <div style={{ textAlign: 'center', padding: '2rem', fontWeight: 900, textTransform: 'uppercase', color: '#888' }}>
@@ -153,8 +207,12 @@ export default function AIChatPage() {
             <h2 className={styles.chatTitle}>ARTHANOVA AI</h2>
             <p className={styles.chatSubtitle}>Multi-Agent System • Portfolio-aware • Autonomous Decision Making</p>
           </div>
-          <div className={styles.chatBadge}>
-            <SystemHealthIndicator compact={true} />
+          <div className={styles.headerRight}>
+            {activeSession && messages.length > 0 && (
+              <button className={styles.clearBtn} onClick={handleClearSession}>
+                🧹 Clear Chat
+              </button>
+            )}
           </div>
         </div>
 
@@ -179,7 +237,7 @@ export default function AIChatPage() {
           )}
 
           {messages.map((msg, i) => (
-            <div key={i} className={`${styles.message} ${msg.role === 'user' ? styles.userMsg : styles.aiMsg}`}>
+            <div key={msg.id || i} className={`${styles.message} ${msg.role === 'user' ? styles.userMsg : styles.aiMsg}`}>
               <div className={msg.role === 'user' ? styles.msgAvatarUser : styles.msgAvatar}>
                 {msg.role === 'user' ? (user?.full_name?.charAt(0) || 'U') : '🤖'}
               </div>
@@ -191,11 +249,11 @@ export default function AIChatPage() {
                   <div className={styles.agentBreakdown}>
                     <button 
                       className={styles.agentsToggle}
-                      onClick={() => setExpandedMessageId(expandedMessageId === msg.messageId ? null : msg.messageId)}
+                      onClick={() => setExpandedMessageId(expandedMessageId === msg.id ? null : msg.id)}
                     >
                       🔗 {msg.orchestration.execution_time ? msg.orchestration.execution_time.toFixed(0) : '0'}ms • {msg.orchestration.agents_used.length} AGENTS
                     </button>
-                    {expandedMessageId === msg.messageId && (
+                    {expandedMessageId === msg.id && (
                       <div className={styles.agentsDetail}>
                         {msg.orchestration.agents_used.map((agent, j) => (
                           <div key={j} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #ddd', fontSize: '0.7rem', fontWeight: 900 }}>
@@ -217,8 +275,19 @@ export default function AIChatPage() {
                     ))}
                   </div>
                 )}
-                <div className={styles.msgTime}>
-                  {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+                  <div className={styles.msgTime}>
+                    {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                  <div className={styles.msgActions}>
+                    <button 
+                      className={styles.deleteMsgBtn}
+                      onClick={() => handleDeleteMessage(msg.id)}
+                      title="Delete message"
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

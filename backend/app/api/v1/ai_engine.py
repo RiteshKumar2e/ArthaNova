@@ -68,6 +68,7 @@ async def send_chat_message(
         user_msg = ChatMessage(session_id=session.id, role="user", content=sanitized_input)
         db.add(user_msg)
         await db.commit()
+        await db.refresh(user_msg)
         
         # Fetch chat history for context (last 6 messages)
         history_result = await db.execute(
@@ -85,20 +86,31 @@ async def send_chat_message(
         
         # MULTI-AGENT ORCHESTRATION
         # Use orchestrator for intelligent routing and multi-agent response
-        orchestration_result = await ai_service.orchestrate_query(
-            user_id=current_user.id,  # type: ignore
-            user_input=sanitized_input,
-            session_id=session.id if session else None,  # type: ignore
-            portfolio_data={"holdings": []},  # Can be enhanced with actual portfolio data
-        )
-        
-        if orchestration_result.get("success"):
-            ai_text = orchestration_result.get("final_response", "Unable to generate response")
-            agent_responses = orchestration_result.get("agent_responses", {})
-        else:
-            # Fallback to direct LLM if orchestration fails
-            ai_text = await ai_service.get_chat_completion(messages, user_id=current_user.id)  # type: ignore
-            agent_responses = {}
+        try:
+            orchestration_result = await ai_service.orchestrate_query(
+                user_id=current_user.id,  # type: ignore
+                user_input=sanitized_input,
+                session_id=session.id if session else None,  # type: ignore
+                portfolio_data={"holdings": []},  # Can be enhanced with actual portfolio data
+            )
+            
+            if orchestration_result.get("success"):
+                ai_text = orchestration_result.get("final_response", "Unable to generate response")
+                agent_responses = orchestration_result.get("agent_responses", {})
+            else:
+                # Fallback to direct LLM if orchestration fails
+                logger.warning(f"Orchestration failed: {orchestration_result.get('error')}")
+                ai_text = await ai_service.get_chat_completion(messages, user_id=current_user.id)  # type: ignore
+                agent_responses = {}
+        except Exception as e:
+            logger.error(f"Orchestration error: {e}", exc_info=True)
+            try:
+                # Fallback to direct LLM
+                ai_text = await ai_service.get_chat_completion(messages, user_id=current_user.id)  # type: ignore
+                agent_responses = {}
+            except Exception as fallback_error:
+                logger.error(f"Even fallback LLM failed: {fallback_error}", exc_info=True)
+                raise HTTPException(status_code=500, detail=f"AI service error: {str(e)}")
         
         # Generate sources from agent responses
         sources = []
@@ -133,6 +145,7 @@ async def send_chat_message(
         
         return {
             "session_id": session.id,
+            "user_message_id": user_msg.id,
             "message_id": ai_msg.id,
             "role": "assistant",
             "content": ai_text,
@@ -237,6 +250,68 @@ async def delete_session(
     except Exception as e:
         logger.exception(f"Error deleting session {session_id}: {e}")
         raise HTTPException(status_code=500, detail="Error deleting session")
+
+
+@router.delete("/chat/messages/{message_id}", response_model=MessageResponse)
+async def delete_message(
+    message_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a single chat message (selective delete)"""
+    try:
+        # Check if message exists and belongs to user
+        result = await db.execute(
+            select(ChatMessage).join(ChatSession).where(
+                ChatMessage.id == message_id,
+                ChatSession.user_id == current_user.id
+            )
+        )
+        message = result.scalar_one_or_none()
+        if not message:
+            raise HTTPException(status_code=404, detail="Message not found")
+        
+        await db.delete(message)
+        await db.commit()
+        
+        logger.info(f"Message {message_id} deleted for user {current_user.id}")
+        return MessageResponse(message="Message deleted successfully")
+    except Exception as e:
+        logger.exception(f"Error deleting message {message_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error deleting message")
+
+
+@router.delete("/chat/sessions/{session_id}/clear", response_model=MessageResponse)
+async def clear_session_messages(
+    session_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Clear all messages in a session (clear all)"""
+    try:
+        # Verify session ownership
+        result = await db.execute(
+            select(ChatSession).where(
+                ChatSession.id == session_id,
+                ChatSession.user_id == current_user.id
+            )
+        )
+        session = result.scalar_one_or_none()
+        if not session:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Delete all messages for this session
+        from sqlalchemy import delete
+        await db.execute(
+            delete(ChatMessage).where(ChatMessage.session_id == session_id)
+        )
+        await db.commit()
+        
+        logger.info(f"Session {session_id} cleared for user {current_user.id}")
+        return MessageResponse(message="Session cleared successfully")
+    except Exception as e:
+        logger.exception(f"Error clearing session {session_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error clearing session")
 
 
 @router.get("/opportunity-radar")

@@ -94,6 +94,8 @@ export const aiAPI = {
   getSessions: () => api.get('/ai/chat/sessions'),
   getSession: (id) => api.get(`/ai/chat/sessions/${id}`),
   deleteSession: (id) => api.delete(`/ai/chat/sessions/${id}`),
+  clearSession: (id) => api.delete(`/ai/chat/sessions/${id}/clear`),
+  deleteMessage: (id) => api.delete(`/ai/chat/messages/${id}`),
   opportunityRadar: () => api.get('/ai/opportunity-radar'),
   chartPatterns: (symbol) => api.get(`/ai/chart-patterns/${symbol}`),
   // Admin monitoring endpoints

@@ -81,11 +81,11 @@ export default function Sidebar({ collapsed, onToggle, onNavigate }) {
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
       {/* Brand */}
       <div className={styles.brand}>
-        <span className={styles.brandIcon}>▲</span>
+        <div className={styles.brandIcon}>▲</div>
         {!collapsed && (
-          <div>
-            <div className={styles.brandName}>ArthaNova</div>
-            <div className={styles.brandTagline}>{isAdmin ? 'Administration' : 'AI for India'}</div>
+          <div className={styles.brandText}>
+            <div className={styles.brandName}>ARTHANOVA</div>
+            <div className={styles.brandTagline}>AI FOR INDIA</div>
           </div>
         )}
       </div>
