@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useAuthStore } from '../store/authStore';
+import { aiAPI } from '../api/client';
 import '../styles/components/HighConvictionTrades.css';
 
 const HighConvictionTrades = () => {
-  const { accessToken } = useAuthStore();
   const [trades, setTrades] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // 'all', 'buy', 'sell'
   const [sortBy, setSortBy] = useState('confidence'); // 'confidence', 'rr_ratio'
 
   useEffect(() => {
-    if (accessToken) {
-      fetchHighConvictionTrades();
-      const interval = setInterval(fetchHighConvictionTrades, 30000); // Refresh every 30s
-      return () => clearInterval(interval);
-    }
-  }, [accessToken]);
+    fetchHighConvictionTrades();
+    const interval = setInterval(fetchHighConvictionTrades, 30000); // Refresh every 30s
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchHighConvictionTrades = async () => {
     try {
-      const response = await fetch('/api/v1/ai/high-conviction-trades', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      setTrades(data);
+      const response = await aiAPI.getHighConvictionTrades();
+      setTrades(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching high-conviction trades:', error);

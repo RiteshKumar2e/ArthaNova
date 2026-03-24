@@ -92,6 +92,8 @@ export const aiAPI = {
   getAuditTrail: () => api.get('/admin/ai/audit-trail'),
   getComplianceViolations: () => api.get('/admin/ai/compliance/violations'),
   getPerformanceMetrics: () => api.get('/admin/ai/metrics/performance'),
+  getHighConvictionTrades: () => api.get('/ai/high-conviction-trades'),
+  getRiskAlerts: () => api.get('/ai/risk-alerts'),
 }
 
 export const newsAPI = {

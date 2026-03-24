@@ -22,9 +22,9 @@ export default function MarketOverviewPage() {
           <h1 className={styles.pageTitle}>MARKET INTELLIGENCE</h1>
           <p className={styles.pageSubtitle}>REAL-TIME SNAPSHOT OF INDIAN EQUITY MARKETS</p>
         </div>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div className={styles.headerActions}>
           <span className="badge badge-success" style={{ border: '3px solid #000' }}>NSE OPEN</span>
-          <span style={{ fontSize: '0.7rem', fontWeight: 900, color: '#000', textTransform: 'uppercase' }}>
+          <span className={styles.syncText}>
             LAST SYNC: {new Date().toLocaleTimeString()}
           </span>
         </div>

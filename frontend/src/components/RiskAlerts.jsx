@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useAuthStore } from '../store/authStore';
+import { aiAPI } from '../api/client';
 import '../styles/components/RiskAlerts.css';
 
 const RiskAlerts = () => {
-  const { accessToken } = useAuthStore();
   const [alerts, setAlerts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedAlert, setExpandedAlert] = useState(null);
   const [filterLevel, setFilterLevel] = useState('all'); // 'all', 'high', 'medium', 'low'
 
   useEffect(() => {
-    if (accessToken) {
-      fetchRiskAlerts();
-      const interval = setInterval(fetchRiskAlerts, 30000); // Refresh every 30s
-      return () => clearInterval(interval);
-    }
-  }, [accessToken]);
+    fetchRiskAlerts();
+    const interval = setInterval(fetchRiskAlerts, 30000); // Refresh every 30s
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchRiskAlerts = async () => {
     try {
-      const response = await fetch('/api/v1/ai/risk-alerts', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      setAlerts(data);
+      const response = await aiAPI.getRiskAlerts();
+      setAlerts(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching risk alerts:', error);
