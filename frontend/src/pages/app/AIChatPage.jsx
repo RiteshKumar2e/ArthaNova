@@ -19,6 +19,8 @@ export default function AIChatPage() {
   const [expandedMessageId, setExpandedMessageId] = useState(null)
   const messagesEndRef = useRef(null)
 
+  const [showHistory, setShowHistory] = useState(false)
+
   useEffect(() => {
     loadSessions()
   }, [])
@@ -36,6 +38,7 @@ export default function AIChatPage() {
 
   const loadSession = async (sessionId) => {
     setSessionLoading(true)
+    setShowHistory(false) // Close modal on select
     try {
       const res = await aiAPI.getSession(sessionId)
       setActiveSession({ id: sessionId, title: res.data?.session?.title || 'Chat' })
@@ -50,6 +53,7 @@ export default function AIChatPage() {
   const startNewChat = () => {
     setActiveSession(null)
     setMessages([])
+    setShowHistory(false)
   }
 
   const sendMessage = async (e) => {
@@ -161,44 +165,47 @@ export default function AIChatPage() {
 
   return (
     <div className={styles.chatWrapper}>
-      {/* Sidebar - Sessions */}
-      <div className={styles.chatSidebar}>
-        <div className={styles.sidebarHeader}>
-          <div className={styles.sidebarTitle}>🤖 AI CHATS</div>
-          <button 
-            className="btn btn-primary btn-sm" 
-            style={{ borderRadius: 0, fontWeight: 900, border: '3px solid #000' }} 
-            onClick={startNewChat} 
-            id="new-chat-btn"
-          >
-            + NEW
-          </button>
-        </div>
-        <div className={styles.sessionsList}>
-          {sessions.map((s) => (
-            <div key={s.id} className={`${styles.sessionItem} ${activeSession?.id === s.id ? styles.activeSession : ''}`}
-              onClick={() => loadSession(s.id)}
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div className={styles.sessionTitle}>{s.title?.toUpperCase() || 'NEW CONVERSATION'}</div>
-                <div className={styles.sessionDate}>{new Date(s.created_at).toLocaleDateString()}</div>
-              </div>
+      {/* History Modal */}
+      {showHistory && (
+        <div className={styles.historyOverlay} onClick={() => setShowHistory(false)}>
+          <div className={styles.historyPopup} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.popupHeader}>
+              <h3>📜 CONVERSATION HISTORY</h3>
               <button 
-                onClick={(e) => handleDeleteSession(e, s.id)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem', padding: '4px' }}
-                title="Delete session"
-              >
-                🗑️
-              </button>
+                className={styles.closeBtn} 
+                onClick={() => setShowHistory(false)}
+              >✕</button>
             </div>
-          ))}
-          {sessions.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '2rem', fontWeight: 900, textTransform: 'uppercase', color: '#888' }}>
-              No chats found.
+            
+            <div className={styles.popupList}>
+              {sessions.map((s) => (
+                <div 
+                  key={s.id} 
+                  className={`${styles.popupItem} ${activeSession?.id === s.id ? styles.activeItem : ''}`}
+                  onClick={() => loadSession(s.id)}
+                >
+                  <div className={styles.itemInfo}>
+                    <div className={styles.itemTitle}>{s.title?.toUpperCase() || 'NEW CONVERSATION'}</div>
+                    <div className={styles.itemDate}>{new Date(s.created_at).toLocaleDateString()}</div>
+                  </div>
+                  <button 
+                    className={styles.deleteSessionBtn}
+                    onClick={(e) => handleDeleteSession(e, s.id)}
+                    title="Delete session"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
+              {sessions.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '3rem', fontWeight: 900 }}>
+                  NO HISTORY FOUND.
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Chat Area */}
       <div className={styles.chatMain}>
@@ -208,9 +215,23 @@ export default function AIChatPage() {
             <p className={styles.chatSubtitle}>Multi-Agent System • Portfolio-aware • Autonomous Decision Making</p>
           </div>
           <div className={styles.headerRight}>
+            <button 
+              className={styles.newChatBtn}
+              onClick={startNewChat}
+              id="new-chat-btn"
+            >
+              + NEW CHAT
+            </button>
+            <button 
+              className={styles.historyBtn} 
+              onClick={() => setShowHistory(true)}
+              id="show-history-btn"
+            >
+              📜 HISTORY
+            </button>
             {activeSession && messages.length > 0 && (
               <button className={styles.clearBtn} onClick={handleClearSession}>
-                🧹 Clear Chat
+                🧹 Clear
               </button>
             )}
           </div>
