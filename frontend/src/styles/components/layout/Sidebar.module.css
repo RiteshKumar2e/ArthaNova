@@ -35,7 +35,7 @@
   align-items: center;
   gap: 0.85rem;
   padding: 1.5rem 1rem;
-  background: #000;
+  background: #fff;
   border-bottom: 4px solid #000;
   flex-shrink: 0;
   position: relative;
@@ -62,7 +62,7 @@
   font-size: 1.35rem;
   font-weight: 950;
   text-transform: uppercase;
-  color: #C4FF00;
+  color: #000;
   line-height: 0.95;
   letter-spacing: -0.04em;
 }

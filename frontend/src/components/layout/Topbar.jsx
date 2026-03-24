@@ -34,6 +34,11 @@ export default function Topbar({ onToggleSidebar }) {
         <button onClick={onToggleSidebar} className={styles.menuBtn} aria-label="Toggle sidebar">
           ☰
         </button>
+        {/* Platform Logo */}
+        <div className={styles.topbarLogo}>
+          <div className={styles.topbarLogoIcon}>▲</div>
+          <span className={styles.topbarLogoText}>ARTHANOVA</span>
+        </div>
         <div className={styles.searchBox}>
           <span className={styles.searchIcon}>🔍</span>
           <input

@@ -79,18 +79,7 @@ export default function Sidebar({ collapsed, onToggle, onNavigate }) {
 
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
-      {/* Brand */}
-      <div className={styles.brand}>
-        <div className={styles.brandIcon}>▲</div>
-        {!collapsed && (
-          <div className={styles.brandText}>
-            <div className={styles.brandName}>ARTHANOVA</div>
-            <div className={styles.brandTagline}>AI FOR INDIA</div>
-          </div>
-        )}
-      </div>
-
-      {/* User Info */}
+      {/* Navigation */}
       {!collapsed && user && (
         <div className={styles.userInfo}>
           <div className={styles.userAvatar}>
