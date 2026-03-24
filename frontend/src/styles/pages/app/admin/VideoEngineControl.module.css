@@ -8,6 +8,9 @@
   gap: 16px;
   margin-bottom: 24px;
 }
+@media (max-width: 768px) {
+  .engineGrid { grid-template-columns: 1fr; }
+}
 
 .card {
   background: #fff;
@@ -98,4 +101,18 @@
   justify-content: center;
   min-height: 140px;
   color: #888;
+}
+
+/* Extreme Mobile Scaling */
+@media (max-width: 480px) {
+  .container { padding: 8px; }
+  
+  :global(.page-title) { font-size: 1rem !important; }
+  :global(.page-subtitle) { font-size: 0.55rem !important; }
+
+  .clusterValue { font-size: 1.5rem !important; }
+  .clusterLabel { font-size: 0.55rem !important; }
+  
+  .videoTable th { padding: 8px 10px !important; font-size: 0.5rem !important; }
+  .videoTable td { padding: 8px 10px !important; font-size: 0.6rem !important; }
 }
