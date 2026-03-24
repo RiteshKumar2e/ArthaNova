@@ -2,10 +2,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/ArthaNova-v1.0.0-blue?style=for-the-badge&logo=react" alt="ArthaNova Version" />
-  <img src="https://img.shields.io/badge/Python-3.10+-yellow?style=for-the-badge&logo=python" alt="Python Version" />
-  <img src="https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge&logo=fastapi" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Node.js-v18+-green?style=for-the-badge&logo=nodedotjs" alt="Node.js Version" />
+  <img src="https://img.shields.io/badge/Express-Framework-black?style=for-the-badge&logo=express" alt="Express" />
   <img src="https://img.shields.io/badge/Frontend-React%2018-61DAFB?style=for-the-badge&logo=react" alt="React" />
-  <img src="https://img.shields.io/badge/Database-SQLAlchemy%202.0-red?style=for-the-badge&logo=sqlite" alt="Database" />
+  <img src="https://img.shields.io/badge/Database-Prisma%20ORM-2D3748?style=for-the-badge&logo=prisma" alt="Database" />
 </p>
 
 ---
@@ -39,11 +39,11 @@
 
 | Layer | Technical Stack | Core Capabilities |
 | :--- | :--- | :--- |
-| **🌐 API Core** | `FastAPI`, `Pydantic v2`, `Uvicorn` | Asynchronous high-concurrency requests, automatic schema validation. |
+| **🌐 API Core** | `Node.js`, `Express.js`, `Zod` | Asynchronous high-concurrency requests, automatic schema validation. |
 | **⚛️ App Shell** | `React 18`, `Vite 6`, `Zustand` | Persistent global state, Atomic design system, Optimized HMR. |
-| **🔐 Security** | `JWT (PyJWT)`, `Bcrypt`, `RBAC Guards` | Multi-tiered authorization, Token rotation, Encrypted persistence. |
-| **💾 Persistence** | `SQLAlchemy 2.0`, `Async Engines` | Clean relational mapping with asynchronous database orchestration. |
-| **🎨 Design** | `SCSS Modules`, `Glassmorphism` | Scalable design tokens, Variable-driven theming, Premium aesthetics. |
+| **🔐 Security** | `JWT`, `Bcrypt`, `RBAC Guards` | Multi-tiered authorization, Token rotation, Encrypted persistence. |
+| **💾 Persistence** | `Prisma ORM`, `SQLite/PostgreSQL` | Clean relational mapping with modern database orchestration. |
+| **🎨 Design** | `CSS Modules`, `Glassmorphism` | Scalable design tokens, Variable-driven theming, Premium aesthetics. |
 
 ---
 
@@ -54,15 +54,14 @@
 # Enter the backend directory
 cd backend
 
-# Initialize Virtual Environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\\Scripts\\activate
+# Install Modern Backend Dependencies
+npm install
 
-# Install Institutional-grade Dependencies
-pip install -r requirements.txt
+# Initialize Database (Prisma)
+npx prisma generate
 
 # Launch the Sentinel Engine
-python main.py  # Serving on http://127.0.0.1:8000
+npm start  # Serving on http://localhost:8000
 ```
 
 ### 2️⃣ Frontend Setup (The Dashboard)
@@ -83,20 +82,21 @@ npm run dev  # Serving on http://localhost:5173
 
 ```text
 ArthaNova/
-├── 🌐 backend/                 # Python FastAPI Microservices
-│   ├── app/                    # Application logic
-│   │   ├── api/v1/             # Modular Routers (Auth, User, Admin, etc.)
-│   │   ├── core/               # Configuration, Security, Dependencies
-│   │   ├── models/             # SQLAlchemy Relational Models
-│   │   ├── services/           # External Business Logic & Integrations
-│   │   └── schemas/            # Pydantic Response/Request Objects
-│   ├── tests/                  # Integrity verification suite
+├── 🌐 backend/                 # Node.js Express Backend
+│   ├── src/                    # Source architecture
+│   │   ├── controllers/        # Route handlers
+│   │   ├── routes/             # API Endpoints registry
+│   │   ├── services/           # Business logic & DB operations
+│   │   ├── models/             # DB Client & Schema
+│   │   ├── middlewares/        # Auth & Logging guards
+│   │   └── utils/              # Helper functions
+│   ├── prisma/                 # Prisma DB Schema
 ├── ⚛️ frontend/                # React Fiber Interface
 │   ├── src/                    # Source architecture
 │   │   ├── components/         # Atomic UI (Common, Admin, Layout)
 │   │   ├── pages/              # View-level Logic & Redirection
 │   │   ├── store/              # Reactive State (Zustand Persistent)
-│   │   └── styles/             # Design System Tokens & SCSS
+│   │   └── styles/             # Design System Tokens & CSS
 │   └── public/                 # Static graphical assets
 └── 📄 README.md                # Integrated Documentation Hub
 ```

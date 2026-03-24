@@ -1,0 +1,192 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./arthanova.db"
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  username          String    @unique
+  full_name         String
+  hashed_password   String
+  phone             String?
+  avatar_url        String?
+  bio               String?   
+  
+  role              String    @default("user")
+  risk_profile      String    @default("moderate")
+  
+  is_active        Boolean   @default(true)
+  is_verified      Boolean   @default(false)
+  is_admin         Boolean   @default(false)
+
+  notification_email Boolean  @default(true)
+  notification_push  Boolean  @default(true)
+  preferred_currency String   @default("INR")
+  theme             String    @default("light")
+
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  last_login        DateTime?
+
+  portfolio         Portfolio?
+  watchlists        Watchlist[]
+  alerts            Alert[]
+  notifications     Notification[]
+  chat_sessions     ChatSession[]
+  backtest_results  BacktestResult[]
+
+  @@map("users")
+}
+
+model Portfolio {
+  id              Int       @id @default(autoincrement())
+  user_id         Int       @unique
+  name            String    @default("My Portfolio")
+  total_invested  Float     @default(0.0)
+  current_value   Float     @default(0.0)
+  total_pnl        Float     @default(0.0)
+  risk_score      Float?
+  
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  user            User      @relation(fields: [user_id], references: [id])
+  holdings        Holding[]
+
+  @@map("portfolios")
+}
+
+model Holding {
+  id              Int       @id @default(autoincrement())
+  portfolio_id    Int
+  symbol          String
+  company_name    String
+  quantity        Float
+  avg_buy_price   Float
+  current_price   Float?
+  sector          String?
+  exchange        String    @default("NSE")
+  
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  portfolio       Portfolio @relation(fields: [portfolio_id], references: [id])
+
+  @@map("holdings")
+}
+
+model Watchlist {
+  id              Int       @id @default(autoincrement())
+  user_id         Int
+  name            String
+  description     String?
+  is_default      Boolean   @default(false)
+  created_at      DateTime  @default(now())
+
+  user            User      @relation(fields: [user_id], references: [id])
+  items           WatchlistItem[]
+
+  @@map("watchlists")
+}
+
+model WatchlistItem {
+  id              Int       @id @default(autoincrement())
+  watchlist_id    Int
+  symbol          String
+  company_name    String
+  added_at        DateTime  @default(now())
+
+  watchlist       Watchlist @relation(fields: [watchlist_id], references: [id], onDelete: Cascade)
+
+  @@map("watchlist_items")
+}
+
+model Alert {
+  id              Int       @id @default(autoincrement())
+  user_id         Int
+  symbol          String?
+  alert_type      String    // price, volume, news, ai_signal
+  condition       String    // above, below, change_pct
+  target_value    Float?
+  message         String?
+  is_active       Boolean   @default(true)
+  is_triggered    Boolean   @default(false)
+  triggered_at    DateTime?
+  created_at      DateTime  @default(now())
+
+  user            User      @relation(fields: [user_id], references: [id])
+
+  @@map("alerts")
+}
+
+model Notification {
+  id              Int       @id @default(autoincrement())
+  user_id         Int?      // Null for global
+  type            String    @default("info")
+  title           String
+  message         String
+  is_read         Boolean   @default(false)
+  data            String?   // Store JSON as string for SQLite compatibility or use JSON if provider supports it.
+  created_at      DateTime  @default(now())
+
+  user            User?     @relation(fields: [user_id], references: [id])
+
+  @@map("notifications")
+}
+
+model ChatSession {
+  id              Int       @id @default(autoincrement())
+  user_id         Int
+  title           String?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  user            User      @relation(fields: [user_id], references: [id])
+  messages        ChatMessage[]
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id              Int       @id @default(autoincrement())
+  session_id      Int
+  role            String    // user, assistant
+  content         String
+  sources         String?   // JSON representation
+  orchestration   String?   // JSON representation
+  created_at      DateTime  @default(now())
+
+  session         ChatSession @relation(fields: [session_id], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model BacktestResult {
+  id              Int       @id @default(autoincrement())
+  user_id         Int
+  strategy_name   String
+  symbol          String
+  start_date      DateTime
+  end_date        DateTime
+  initial_capital Float
+  final_value     Float
+  total_return_pct Float
+  max_drawdown_pct Float
+  sharpe_ratio    Float?
+  total_trades    Int       @default(0)
+  parameters      String?   // JSON representation
+  trade_log       String?   // JSON representation
+  created_at      DateTime  @default(now())
+
+  user            User      @relation(fields: [user_id], references: [id])
+
+  @@map("backtest_results")
+}
