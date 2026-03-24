@@ -1,97 +1,151 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../../../store/authStore';
+import styles from '../../../styles/pages/app/admin/VideoEngineControl.module.css';
 
 export default function VideoEngineControl() {
-  const [pipelines, setPipelines] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [videos, setVideos] = useState([
+    { id: 'JOB-901', title: 'MARKET RECAP: NIFTY 50', duration: '0:45', format: 'MP4 (4K)', status: 'COMPLETED' },
+    { id: 'JOB-902', title: 'AI INSIGHT: RBI POLICY', duration: '1:12', format: 'MP4 (HD)', status: 'PENDING' },
+    { id: 'JOB-903', title: 'TECHNICAL SETUP: BANKNIFTY', duration: '0:58', format: 'MP4 (4K)', status: 'FAILED' },
+  ]);
+  const [cluster, setCluster] = useState({ nodes: 12, load: '42%' });
   const { accessToken } = useAuthStore();
 
   useEffect(() => {
-    const fetchStatus = async () => {
-      try {
-        const response = await axios.get('/api/v1/admin/video/pipelines', {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        });
-        setPipelines(response.data);
-      } catch (error) {
-        console.error('Error fetching video engine status:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStatus();
-  }, [accessToken]);
+    // Simulate real-time cluster load updates
+    const interval = setInterval(() => {
+      setCluster(prev => ({ ...prev, load: `${Math.floor(Math.random() * 80 + 20)}%` }));
+    }, 5000);
+    setLoading(false);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleCreateJob = (e) => {
+    e.preventDefault();
+    alert('NEW RENDERING JOB INITIALIZED IN CLUSTER');
+    setShowModal(false);
+  };
+
+  const handleAction = (job, action) => {
+    alert(`${action} TRIGGERED FOR JOB: ${job}`);
+  };
 
   return (
-    <div className="animate-fadeIn">
+    <div className={styles.container + " animate-fadeIn"}>
       <div className="page-header">
         <div>
-          <h1 className="page-title">Video Engine Control Panel 🎬</h1>
-          <p className="page-subtitle">Manage automated stock video generation pipelines and rendering clusters.</p>
+          <h1 className="page-title">VIDEO ENGINE CONTROL PANEL 🎥</h1>
+          <p className="page-subtitle">MANAGE AUTOMATED STOCK VIDEO GENERATION PIPELINES AND RENDERING CLUSTERS.</p>
         </div>
-        <button className="btn btn-primary">➕ Create New Job</button>
+        <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>➕ CREATE NEW JOB</button>
       </div>
 
-      <div className="grid-2" style={{ marginBottom: 24 }}>
-        <div className="card">
-          <div className="card-header">
-            <h3>Render Jobs Status (Live)</h3>
+      <div className={styles.engineGrid}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3>RENDER JOBS STATUS (LIVE)</h3>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minHeight: 120, alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🎥</div>
-            <p style={{ color: '#5E6C84', fontSize: '0.85rem' }}>No active rendering jobs at the moment.</p>
+          <div className={styles.emptyArea}>
+             <div style={{ fontSize: '1.5rem', transform: 'rotate(-5deg)' }}>🎬</div>
+             <p style={{ fontSize: '0.65rem', fontWeight: 950, marginTop: 8 }}>3 ACTIVE JOBS IN QUEUE</p>
           </div>
+          <button className="btn btn-sm btn-secondary btn-full" style={{ borderTop: '4px solid #000' }} onClick={() => alert('VIEWING FULL SYSTEM QUEUE...')}>VIEW QUEUE</button>
         </div>
 
-        <div className="card">
-          <div className="card-header">
-            <h3>GPU Rendering Cluster</h3>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+             <h3>GPU RENDERING CLUSTER</h3>
           </div>
-          <div style={{ padding: 16, height: 120, display: 'flex', gap: 24, alignItems: 'center' }}>
-            <div style={{ flex: 1, textAlign: 'center' }}>
-               <div style={{ fontSize: '2rem', fontWeight: 700, color: '#00875A' }}>0</div>
-               <div style={{ fontSize: '0.75rem', color: '#5E6C84' }}>Online Nodes</div>
-            </div>
-            <div style={{ height: '100%', width: 1, background: '#DFE1E6' }}></div>
-            <div style={{ flex: 1, textAlign: 'center' }}>
-               <div style={{ fontSize: '2rem', fontWeight: 700, color: '#0052CC' }}>0%</div>
-               <div style={{ fontSize: '0.75rem', color: '#5E6C84' }}>Cluster Load</div>
-            </div>
+          <div className={styles.clusterStats}>
+             <div className={styles.clusterItem}>
+                <div className={styles.clusterValue} style={{ color: '#14a800' }}>{cluster.nodes}</div>
+                <div className={styles.clusterLabel}>ONLINE NODES</div>
+             </div>
+             <div style={{ width: 3, height: 40, background: '#000' }}></div>
+             <div className={styles.clusterItem}>
+                <div className={styles.clusterValue} style={{ color: '#00A8FF' }}>{cluster.load}</div>
+                <div className={styles.clusterLabel}>CLUSTER LOAD</div>
+             </div>
           </div>
-          <div style={{ display: 'flex', gap: 8, padding: 16, paddingTop: 0 }}>
-             <button className="btn btn-sm btn-secondary" style={{ flex: 1 }}>Manage Cluster</button>
-             <button className="btn btn-sm btn-secondary" style={{ flex: 1 }}>Clear Cache</button>
+          <div style={{ display: 'flex', borderTop: '4px solid #000' }}>
+             <button className="btn btn-sm btn-secondary" style={{ flex: 1, border: 'none' }} onClick={() => alert('MANAGING CLUSTER NODES...')}>MANAGE CLUSTER</button>
+             <button className="btn btn-sm btn-secondary" style={{ flex: 1, borderLeft: '4px solid #000', borderTop: 'none', borderRight: 'none', borderBottom: 'none' }} onClick={() => alert('CLEARING ENGINE CACHE...')}>CLEAR CACHE</button>
           </div>
         </div>
       </div>
 
-      <div className="card">
-         <div className="card-header">
-            <h3>Recent Generated Videos</h3>
+      <div className={styles.card}>
+         <div className={styles.cardHeader} style={{ background: '#000' }}>
+            <h3 style={{ color: '#fff' }}>RECENT GENERATED VIDEOS</h3>
          </div>
          <div className="table-responsive">
-            <table className="table">
+            <table className={styles.videoTable}>
                <thead>
                   <tr>
-                     <th>Video Title</th>
-                     <th>Job ID</th>
-                     <th>Duration</th>
-                     <th>Format</th>
-                     <th>Status</th>
-                     <th>Actions</th>
+                     <th>VIDEO TITLE</th>
+                     <th>JOB ID</th>
+                     <th>DURATION</th>
+                     <th>FORMAT</th>
+                     <th>STATUS</th>
+                     <th style={{ textAlign: 'center' }}>ACTIONS</th>
                   </tr>
                </thead>
                <tbody>
-                  <tr>
-                    <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
-                      No videos have been generated yet.
-                    </td>
-                  </tr>
+                  {videos.map(vid => (
+                    <tr key={vid.id}>
+                       <td><strong className="text-upper" style={{ fontSize: '0.75rem' }}>{vid.title}</strong></td>
+                       <td><span style={{ fontSize: '0.6rem', fontWeight: 800 }}>{vid.id}</span></td>
+                       <td><span style={{ fontWeight: 800 }}>{vid.duration}</span></td>
+                       <td><span style={{ fontSize: '0.6rem', fontWeight: 950 }}>{vid.format}</span></td>
+                       <td>
+                          <span className={`${styles.statusBadge} ${vid.status === 'COMPLETED' ? styles.statusSuccess : vid.status === 'PENDING' ? styles.statusPending : styles.statusfailed}`}>
+                            {vid.status}
+                          </span>
+                       </td>
+                       <td>
+                          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+                             <button className="btn btn-sm btn-secondary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => handleAction(vid.id, 'DOWNLOAD')}>DOWNLOAD</button>
+                             <button className="btn btn-sm btn-secondary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => handleAction(vid.id, 'DELETE')}>DELETE</button>
+                          </div>
+                       </td>
+                    </tr>
+                  ))}
                </tbody>
             </table>
          </div>
       </div>
+
+      {showModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', border: '4px solid #000', boxShadow: '8px 8px 0px #000', width: '90%', maxWidth: '400px' }}>
+            <div style={{ background: 'var(--primary)', padding: '12px', borderBottom: '4px solid #000', display: 'flex', justifyContent: 'space-between' }}>
+              <h2 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 950 }}>CREATE NEW RENDERING JOB</h2>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', fontWeight: 950, cursor: 'pointer' }}>×</button>
+            </div>
+            <form onSubmit={handleCreateJob} style={{ padding: '20px' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontWeight: 950, fontSize: '0.6rem', marginBottom: '6px' }}>VIDEO TITLE</label>
+                <input className="form-control" style={{ width: '100%' }} required placeholder="E.G. MARKET RECAP" />
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontWeight: 950, fontSize: '0.6rem', marginBottom: '6px' }}>RENDER QUALITY</label>
+                <select className="form-control" style={{ width: '100%' }}>
+                  <option>4K ULTRA HD</option>
+                  <option>1080P FULL HD</option>
+                  <option>720P HD</option>
+                </select>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '20px' }}>
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => setShowModal(false)}>CANCEL</button>
+                <button type="submit" className="btn btn-sm btn-primary">START RENDER</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

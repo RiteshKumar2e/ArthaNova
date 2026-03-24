@@ -1,91 +1,121 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styles from '../../../styles/pages/app/admin/AlertsSignalsControl.module.css';
 
 export default function AlertsSignalsControl() {
-  const SIGNALS = [];
+  const [logicSwitches, setLogicSwitches] = useState([
+    { id: 1, label: 'TECHNICAL PATTERN ALERTS', status: true },
+    { id: 2, label: 'FUNDAMENTAL DIVERGENCE ALERTS', status: true },
+    { id: 3, label: 'SENTIMENT SPIKE ALERTS', status: false },
+    { id: 4, label: 'PORTFOLIO RISK ALERTS', status: true },
+    { id: 5, label: 'IPO OPPORTUNITY ALERTS', status: true },
+  ]);
+
+  const [signals, setSignals] = useState([
+    { id: 'SIG-819', symbol: 'RELIANCE', pattern: 'GOLDEN CROSS', confidence: 94, status: 'PENDING' },
+    { id: 'SIG-820', symbol: 'HDFCBANK', pattern: 'BEARISH DIV', confidence: 81, status: 'FLAGGED' },
+    { id: 'SIG-821', symbol: 'TCS', pattern: 'BREAKOUT', confidence: 88, status: 'PENDING' },
+  ]);
+
+  const toggleSwitch = (id) => {
+    setLogicSwitches(prev => prev.map(s => s.id === id ? { ...s, status: !s.status } : s));
+  };
+
+  const handleDisableAll = () => {
+    if (window.confirm('FORCE DISABLE ALL ACTIVE ALERT CHANNELS?')) {
+      setLogicSwitches(prev => prev.map(s => ({ ...s, status: false })));
+      alert('ALL ALERT SYSTEMS OFFLINE');
+    }
+  };
+
+  const handleSignalAction = (id, action) => {
+    alert(`${action} TRIGGERED FOR SIGNAL: ${id}`);
+    setSignals(prev => prev.filter(s => s.id !== id));
+  };
 
   return (
-    <div className="animate-fadeIn">
+    <div className={styles.container + " animate-fadeIn"}>
       <div className="page-header">
         <div>
-          <h1 className="page-title">Alerts & Signals Control ⚠️</h1>
-          <p className="page-subtitle">Monitor and override AI-generated signals before they reach users.</p>
+          <h1 className="page-title">ALERTS & SIGNALS CONTROL ⚠️</h1>
+          <p className="page-subtitle">MONITOR AND OVERRIDE AI-GENERATED SIGNALS BEFORE THEY REACH USERS.</p>
         </div>
-        <button className="btn btn-danger">🚫 Disable All Alerts</button>
+        <button className="btn btn-danger btn-sm" onClick={handleDisableAll}>🚫 DISABLE ALL ALERTS</button>
       </div>
 
-      <div className="grid-2" style={{ marginBottom: 24 }}>
-        <div className="card">
-          <div className="card-header">
-            <h3>AI Logic Switchboard</h3>
+      <div className={styles.switchGrid}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3>AI LOGIC SWITCHBOARD</h3>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-             {[
-               { label: 'Technical Pattern Alerts', status: true },
-               { label: 'Fundamental Divergence Alerts', status: true },
-               { label: 'Sentiment Spike Alerts', status: false },
-               { label: 'Portfolio Risk Alerts', status: true },
-               { label: 'IPO Opportunity Alerts', status: true },
-             ].map(logic => (
-               <div key={logic.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottom: '1px solid #DFE1E6' }}>
-                  <span>{logic.label}</span>
-                  <div style={{ color: logic.status ? '#00875A' : '#DE350B', fontWeight: 600 }}>{logic.status ? '● ON' : '○ OFF'}</div>
+          <div className={styles.switchList}>
+             {logicSwitches.map(logic => (
+               <div key={logic.id} className={styles.switchRow}>
+                  <span className={styles.switchLabel}>{logic.label}</span>
+                  <button 
+                    className={`${styles.toggleBtn} ${logic.status ? styles.toggleOn : styles.toggleOff}`}
+                    onClick={() => toggleSwitch(logic.id)}
+                  >
+                    {logic.status ? '● ON' : '○ OFF'}
+                  </button>
                </div>
              ))}
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header">
-            <h3>Signal Performance</h3>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+             <h3>SIGNAL PERFORMANCE</h3>
           </div>
-          <div style={{ padding: 16, height: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-            <p style={{ color: '#5E6C84', fontSize: '0.85rem' }}>Insufficient data to generate accuracy trends.</p>
+          <div className={styles.chartArea}>
+             <div style={{ fontSize: '2rem', color: '#eee' }}>📊</div>
+             <p style={{ color: '#888', fontSize: '0.7rem', fontWeight: 700, textAlign: 'center' }}>INSUFFICIENT DATA TO GENERATE ACCURACY TRENDS.</p>
+             <div className={styles.chartLabel}>ACCURACY TRENDS (LAST 8 DAYS)</div>
           </div>
-          <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#5E6C84' }}>Accuracy Trends (Last 8 Days)</p>
+          <button className="btn btn-sm btn-secondary btn-full" style={{ borderTop: '4px solid #000' }} onClick={() => alert('SYNCHRONIZING ANALYTICS...')}>🔄 SYNC PERFORMANCE DATA</button>
         </div>
       </div>
 
-      <div className="card">
-         <div className="card-header">
-            <h3>Pending Signals for Approval</h3>
+      <div className={styles.card}>
+         <div className={styles.cardHeader} style={{ background: '#000' }}>
+            <h3 style={{ color: '#fff' }}>PENDING SIGNALS FOR APPROVAL</h3>
          </div>
          <div className="table-responsive">
-            <table className="table">
+            <table className={styles.signalsTable}>
                <thead>
                   <tr>
-                     <th>Signal ID</th>
-                     <th>Stock</th>
-                     <th>Pattern</th>
-                     <th>Confidence</th>
-                     <th>Status</th>
-                     <th>Action</th>
+                     <th>SIGNAL ID</th>
+                     <th>STOCK</th>
+                     <th>PATTERN</th>
+                     <th>CONFIDENCE</th>
+                     <th>STATUS</th>
+                     <th style={{ textAlign: 'center' }}>ACTIONS</th>
                   </tr>
                </thead>
                <tbody>
-                  {SIGNALS.length > 0 ? (
-                    SIGNALS.map(sig => (
+                  {signals.length > 0 ? (
+                    signals.map(sig => (
                        <tr key={sig.id}>
-                          <td>{sig.id}</td>
-                          <td><strong>{sig.symbol}</strong></td>
-                          <td>{sig.type}</td>
-                          <td><span className="badge badge-success">{sig.confidence}</span></td>
+                          <td><span style={{ fontSize: '0.65rem', fontWeight: 950 }}>{sig.id}</span></td>
+                          <td><strong className="text-upper">{sig.symbol}</strong></td>
+                          <td><span style={{ fontWeight: 800, fontSize: '0.7rem' }}>{sig.pattern}</span></td>
+                          <td><span className={styles.confidence}>{sig.confidence}%</span></td>
                           <td>
-                             <span className={`badge ${sig.status === 'Active' ? 'badge-success' : sig.status === 'Override Pending' ? 'badge-warning' : sig.status === 'Flagged' ? 'badge-danger' : 'badge-danger'}`}>
+                             <span className={styles.statusBadge} style={{ color: sig.status === 'PENDING' ? '#000' : '#FF3131' }}>
                                 {sig.status}
                              </span>
                           </td>
                           <td>
-                             <div style={{ display: 'flex', gap: 8 }}>
-                                <button className="btn btn-sm btn-primary">Approve</button>
-                                <button className="btn btn-sm btn-danger">Override</button>
+                             <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+                                <button className="btn btn-sm btn-primary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => handleSignalAction(sig.id, 'APPROVE')}>APPROVE</button>
+                                <button className="btn btn-sm btn-danger" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => handleSignalAction(sig.id, 'OVERRIDE')}>OVERRIDE</button>
                              </div>
                           </td>
                        </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
-                        No pending signals for approval.
+                      <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF', fontSize: '0.75rem', fontWeight: 800 }}>
+                        NO PENDING SIGNALS DETECTED.
                       </td>
                     </tr>
                   )}
