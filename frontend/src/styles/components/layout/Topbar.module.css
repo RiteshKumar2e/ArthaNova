@@ -259,7 +259,7 @@
   .profileName { display: none; }
 }
 @media (max-width: 640px) {
-  .topbar { padding: 0 0.75rem; gap: 0.5rem; height: 56px; }
+  .topbar { padding: 0 0.75rem; gap: 0.5rem; height: 56px; z-index: 1001; }
   .searchBox { max-width: none; height: 36px; padding: 0 0.5rem; }
   .searchShortcut { display: none; }
   .menuBtn, .iconBtn { width: 36px; height: 36px; font-size: 0.9rem; }
