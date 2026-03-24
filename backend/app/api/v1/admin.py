@@ -2,12 +2,12 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, desc
+from sqlalchemy import select, func, desc, or_
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 import logging
 
-from app.core.dependencies import get_db, get_current_active_admin
+from app.core.dependencies import get_db, get_current_active_admin, get_current_user
 from app.models.user import User, UserRole
 from app.schemas.schemas import MessageResponse
 from app.services.ai_service import ai_service
@@ -264,18 +264,43 @@ async def get_performance_metrics(
             "error": str(e)
         }
 
-@router.get("/video/pipelines")
-async def get_video_engine_status(
-    admin_user: User = Depends(get_current_active_admin)
+@router.get("/video-engine/jobs")
+async def list_video_jobs(
+    current_user: User = Depends(get_current_user)
 ):
-    """Monitor video generation pipelines."""
+    """List all video rendering jobs (Admin sees all, user sees own)."""
+    # Mock data for demonstration
+    mock_jobs = [
+        {"id": "V-101", "title": "NIFTY 50 RECAP", "user_id": 1, "user_name": "Ritesh", "duration": "60s", "format": "MP4", "status": "COMPLETED", "created_at": "2024-03-24T10:00:00Z"},
+        {"id": "V-102", "title": "RELIANCE Q3 INSIGHT", "user_id": 1, "user_name": "Ritesh", "duration": "30s", "format": "MP4", "status": "PENDING", "created_at": "2024-03-24T12:30:00Z"},
+        {"id": "V-103", "title": "MARKET BREADTH ANALYSIS", "user_id": 2, "user_name": "Anmol", "duration": "120s", "format": "MOV", "status": "COMPLETED", "created_at": "2024-03-24T14:15:00Z"},
+    ]
+    
+    # Filter for non-admins
+    # Check if user is admin by role or is_admin flag
+    if current_user.role.value != 'admin' and not getattr(current_user, 'is_admin', False):  # type: ignore
+        return {"jobs": [j for j in mock_jobs if j["user_id"] == current_user.id]}
+    
+    return {"jobs": mock_jobs}
+
+@router.post("/video-engine/jobs")
+async def create_video_job(
+    data: Dict[str, Any],
+    current_user: User = Depends(get_current_user)
+):
+    """Create a new video rendering job."""
     return {
-        "active_jobs": 3,
-        "completed_today": 45,
-        "failed_today": 2,
-        "pipelines": [
-            {"id": "p-1", "name": "Daily Market Summary", "status": "idle"},
-            {"id": "p-2", "name": "Stock Deep Dive", "status": "processing", "progress": 65},
-            {"id": "p-3", "name": "Alert Triggered Video", "status": "waiting"}
-        ]
+        "id": f"V-{datetime.now().strftime('%M%S')}",
+        "title": data.get("title", "UNTITLED"),
+        "user_id": current_user.id,
+        "user_name": current_user.full_name or current_user.username,
+        "status": "PENDING"
     }
+
+@router.delete("/video-engine/jobs/{job_id}")
+async def delete_video_job(
+    job_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete a video rendering job."""
+    return {"message": f"Job {job_id} deleted successfully"}

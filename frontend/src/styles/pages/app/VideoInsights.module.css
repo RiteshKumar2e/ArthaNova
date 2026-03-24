@@ -168,6 +168,19 @@
 }
 
 @media (max-width: 768px) {
-  .videoGrid { grid-template-columns: 1fr; }
+  .title { font-size: 1.2rem; }
+  .card { padding: 16px; }
+  .videoGrid { 
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    gap: 16px;
+  }
   .generateSection { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 1.1rem; }
+  .subtitle { font-size: 0.65rem; }
+  .card h3 { font-size: 0.8rem; margin-bottom: 16px; }
+  .videoGrid { grid-template-columns: 1fr; }
+  .videoThumb { height: 140px; }
 }
