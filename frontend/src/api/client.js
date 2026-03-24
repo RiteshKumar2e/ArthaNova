@@ -28,7 +28,7 @@ api.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const response = await axios.post('/api/v1/auth/refresh', { refresh_token: refreshToken })
+          const response = await axios.post('/api/v1/auth_debug/refresh', { refresh_token: refreshToken })
           const { access_token, refresh_token } = response.data
           updateTokens(access_token, refresh_token)
           originalRequest.headers.Authorization = `Bearer ${access_token}`
@@ -65,7 +65,7 @@ export const authAPI = {
 }
 
 export const stocksAPI = {
-  list: (params) => api.get('/stocks/', { params }),
+  list: (params) => api.get('/stocks', { params }),
   getDetail: (symbol) => api.get(`/stocks/${symbol}`),
   getOHLCV: (symbol, period) => api.get(`/stocks/${symbol}/ohlcv`, { params: { period } }),
   marketOverview: () => api.get('/stocks/market-overview'),
@@ -73,7 +73,7 @@ export const stocksAPI = {
 }
 
 export const portfolioAPI = {
-  get: () => api.get('/portfolio/'),
+  get: () => api.get('/portfolio'),
   addHolding: (data) => api.post('/portfolio/holdings', data),
   removeHolding: (id) => api.delete(`/portfolio/holdings/${id}`),
   analytics: () => api.get('/portfolio/analytics'),
@@ -95,7 +95,7 @@ export const aiAPI = {
 }
 
 export const newsAPI = {
-  list: (params) => api.get('/news/', { params }),
+  list: (params) => api.get('/news', { params }),
   sentimentSummary: () => api.get('/news/sentiment-summary'),
 }
 
@@ -113,19 +113,19 @@ export const dealsAPI = {
 }
 
 export const alertsAPI = {
-  list: () => api.get('/alerts/'),
-  create: (data) => api.post('/alerts/', data),
+  list: () => api.get('/alerts'),
+  create: (data) => api.post('/alerts', data),
   update: (id, data) => api.put(`/alerts/${id}`, data),
   delete: (id) => api.delete(`/alerts/${id}`),
 }
 
 export const backtestAPI = {
-  run: (data) => api.post('/backtest/', data),
-  history: () => api.get('/backtest/'),
+  run: (data) => api.post('/backtest', data),
+  history: () => api.get('/backtest'),
 }
 
 export const userAPI = {
   getProfile: () => api.get('/users/me'),
   updateProfile: (data) => api.put('/users/me', data),
-  listUsers: () => api.get('/users/'),
+  listUsers: () => api.get('/users'),
 }

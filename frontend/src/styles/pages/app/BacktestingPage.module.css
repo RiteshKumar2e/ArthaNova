@@ -7,13 +7,41 @@
   width: 100%;
 }
 
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 12px;
+  border-bottom: 4px solid #000;
+  margin-bottom: 24px;
+}
+
 .pageTitle {
   font-family: var(--heading);
   font-size: 1.6rem;
   font-weight: 950;
   text-transform: uppercase;
-  padding-bottom: 12px;
-  border-bottom: 4px solid #000;
+  margin-bottom: 2px;
+}
+
+.pageSubtitle {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #666;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .pageTitle {
+    font-size: 1.25rem;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #000;
+  }
 }
 
 .contentLayout {

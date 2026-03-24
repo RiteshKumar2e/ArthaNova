@@ -104,7 +104,7 @@ export default function MarketOverviewPage() {
                         <div className={styles.breadthLabel}>FIXED</div>
                       </div>
                     </div>
-                    <div className={styles.vixBanner} style={{ 
+                    <div className={styles.vixBanner} style={{
                       background: data?.vix < 15 ? '#C4FF00' : data?.vix < 20 ? '#FFDD55' : '#FF3131',
                       color: data?.vix >= 20 ? '#fff' : '#000'
                     }}>
@@ -123,30 +123,30 @@ export default function MarketOverviewPage() {
             </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={sectors}>
-                <XAxis 
-                  dataKey="name" 
-                  tick={{ fontSize: 10, fontWeight: 900, fill: '#000' }} 
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 10, fontWeight: 900, fill: '#000' }}
                   axisLine={{ stroke: '#000', strokeWidth: 3 }}
                 />
-                <YAxis 
-                  tick={{ fontSize: 11, fontWeight: 900, fill: '#000' }} 
+                <YAxis
+                  tick={{ fontSize: 11, fontWeight: 900, fill: '#000' }}
                   axisLine={{ stroke: '#000', strokeWidth: 3 }}
-                  tickFormatter={(v) => `${v}%`} 
+                  tickFormatter={(v) => `${v}%`}
                 />
-                <Tooltip 
+                <Tooltip
                   cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                  contentStyle={{ 
-                    background: '#000', 
-                    border: '4px solid #fff', 
-                    color: '#fff', 
+                  contentStyle={{
+                    background: '#000',
+                    border: '4px solid #fff',
+                    color: '#fff',
                     fontFamily: 'Archivo Black',
                     textTransform: 'uppercase'
-                  }} 
+                  }}
                 />
                 <Bar dataKey="change_pct" radius={[4, 4, 0, 0]}>
                   {sectors.map((entry, index) => (
-                    <Cell 
-                      key={index} 
+                    <Cell
+                      key={index}
                       fill={entry.change_pct >= 0 ? '#C4FF00' : '#FF3131'}
                       stroke="#000"
                       strokeWidth={2}

@@ -17,12 +17,22 @@ const SystemHealthIndicator = ({ compact = false }) => {
 
   const fetchHealth = async () => {
     try {
-      const response = await fetch('/api/v1/admin/ai/status', {
+      const response = await fetch('/api/v1/admin/ai/system-status', {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      setHealth(data);
+      
+      // Map nested backend response to component state
+      const healthData = {
+        circuit_breaker_state: data.system?.circuit_breaker?.state || 'CLOSED',
+        successful_requests: data.system?.circuit_breaker?.success_count || 0,
+        total_requests: (data.system?.circuit_breaker?.success_count || 0) + (data.system?.circuit_breaker?.failure_count || 0),
+        avg_response_time: data.performance?.latency_metrics?.orchestration?.avg_ms || 0,
+        agents_count: Object.keys(data.agents || {}).length || 0,
+      };
+      
+      setHealth(healthData);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching system health:', error);

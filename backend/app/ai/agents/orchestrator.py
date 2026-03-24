@@ -371,9 +371,16 @@ Be concise, professional, and specific."""
             if len(agent_responses) > 1:
                 final_response = await self.synthesize_responses(agent_responses, user_input)
                 self.metrics.multi_agent_executions += 1
-            else:
+            elif len(agent_responses) == 1:
                 agent = list(agent_responses.values())[0]
                 final_response = agent.content
+            else:
+                # No agents invoked - fallback to direct LLM call via ai_service
+                self.logger.warning("No agents invoked for query, falling back to direct LLM")
+                final_response = await self.ai_service.get_chat_completion([
+                    {"role": "system", "content": "You are ArthaNova AI. Provide a direct helpful response to the user query."},
+                    {"role": "user", "content": user_input}
+                ])
             
             # Record metrics
             orchestration_time_ms = (time.time() - orchestration_start) * 1000

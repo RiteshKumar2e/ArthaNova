@@ -210,9 +210,38 @@
   padding: var(--sp-6);
 }
 
+.headerActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.syncText {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.chartHeader {
+  background: transparent;
+  border: none;
+  padding: 0 0 20px 0;
+}
+
+.chartHeader h3 {
+  font-family: var(--heading);
+  font-size: 0.85rem;
+  font-weight: 950;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Updated media queries */
 @media (max-width: 900px) {
   .marketContainer { padding: 12px; }
-  .pageHeader { flex-direction: column; align-items: stretch; gap: 12px; }
+  .pageHeader { flex-direction: column; align-items: stretch; gap: 12px; padding-bottom: 20px; }
+  .headerActions { justify-content: space-between; }
   .pageTitle { font-size: 1.4rem; }
   .indicesGrid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .middleGrid { grid-template-columns: 1fr; }
@@ -225,6 +254,9 @@
   .breadthGrid { grid-template-columns: 1fr; gap: 10px; }
   .cardHeader h3 { font-size: 0.75rem; }
   .cardBody { padding: 12px; }
+  .headerActions { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .syncText { font-size: 0.6rem; }
+  .vixBanner { font-size: 0.7rem; padding: 10px; }
 }
 
 

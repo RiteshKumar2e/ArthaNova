@@ -459,9 +459,9 @@
     position: relative;
     top: 0; left: 0; 
     align-self: flex-start;
-    margin-bottom: 2rem;
-    padding: 6px 12px;
-    font-size: 0.65rem;
+    margin-bottom: 1.5rem;
+    padding: 4px 10px;
+    font-size: 0.6rem;
     box-shadow: 2px 2px 0px #000;
   }
   .homeIcon { font-size: 0.8rem; }
@@ -486,6 +486,8 @@
   .authCardLight, .authCardWide { padding: 1.25rem; box-shadow: 4px 4px 0px #000; }
   .submitBtnLight { font-size: 0.85rem; padding: 12px; }
   .socialBtnLight { font-size: 0.7rem; }
+  .homeText { display: none; }
+  .homeButtonLight { padding: 4px 8px; }
 }
 
 

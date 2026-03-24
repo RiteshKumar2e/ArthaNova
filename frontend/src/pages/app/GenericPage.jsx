@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react'
 export default function GenericPage({ title, description, icon }) {
   return (
     <div className="page-wrapper animate-fadeIn">
-      <div className="page-header" style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '4px solid #000' }}>
+      <div className="page-header">
         <div>
-          <h1 className="page-title" style={{ fontSize: '1.5rem', fontWeight: 950, textTransform: 'uppercase' }}>{icon} {title?.toUpperCase()}</h1>
-          <p className="page-subtitle" style={{ fontSize: '0.8rem', fontWeight: 800, color: '#666', textTransform: 'uppercase' }}>{description}</p>
+          <h1 className="page-title">{icon} {title?.toUpperCase()}</h1>
+          <p className="page-subtitle">{description}</p>
         </div>
       </div>
+
       <div className="card" style={{ 
         display: 'flex', 
         flexDirection: 'column', 

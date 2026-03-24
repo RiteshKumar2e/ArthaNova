@@ -18,7 +18,7 @@ export default function BacktestingPage() {
   const [results, setResults] = useState(null)
   const [history, setHistory] = useState([])
   const [stocks, setStocks] = useState([])
-  
+
   const [params, setParams] = useState({
     symbol: 'RELIANCE',
     strategy_name: 'EMA Crossover (20/50)',
@@ -55,7 +55,7 @@ export default function BacktestingPage() {
     if (e) e.preventDefault()
     setLoading(true)
     setResults(null)
-    
+
     try {
       const resp = await backtestAPI.run(params)
       setResults(resp.data)
@@ -71,7 +71,7 @@ export default function BacktestingPage() {
 
   // Generate equity curve data from results
   const equityCurveData = results?.trade_log?.reduce((acc, trade, idx) => {
-    const lastBalance = idx === 0 ? params.initial_capital : acc[idx-1].balance
+    const lastBalance = idx === 0 ? params.initial_capital : acc[idx - 1].balance
     const newBalance = lastBalance + trade.pnl
     acc.push({
       name: `Trade ${trade.trade}`,
@@ -105,10 +105,10 @@ export default function BacktestingPage() {
               <form onSubmit={handleRunBacktest} className={styles.form}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>STRATEGY</label>
-                  <select 
+                  <select
                     className={styles.select}
                     value={params.strategy_name}
-                    onChange={(e) => setParams({...params, strategy_name: e.target.value})}
+                    onChange={(e) => setParams({ ...params, strategy_name: e.target.value })}
                   >
                     {STRATEGIES.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
                   </select>
@@ -116,10 +116,10 @@ export default function BacktestingPage() {
 
                 <div className={styles.formGroup}>
                   <label className={styles.label}>SYMBOL</label>
-                  <select 
+                  <select
                     className={styles.select}
                     value={params.symbol}
-                    onChange={(e) => setParams({...params, symbol: e.target.value})}
+                    onChange={(e) => setParams({ ...params, symbol: e.target.value })}
                   >
                     {stocks.map(s => <option key={s.symbol} value={s.symbol}>{s.symbol} — {s.name}</option>)}
                     {stocks.length === 0 && <option value="RELIANCE">RELIANCE</option>}
@@ -129,36 +129,36 @@ export default function BacktestingPage() {
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>START DATE</label>
-                    <input 
+                    <input
                       className={styles.input}
-                      type="date" 
+                      type="date"
                       value={params.start_date}
-                      onChange={(e) => setParams({...params, start_date: e.target.value})}
+                      onChange={(e) => setParams({ ...params, start_date: e.target.value })}
                     />
                   </div>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>END DATE</label>
-                    <input 
+                    <input
                       className={styles.input}
-                      type="date" 
+                      type="date"
                       value={params.end_date}
-                      onChange={(e) => setParams({...params, end_date: e.target.value})}
+                      onChange={(e) => setParams({ ...params, end_date: e.target.value })}
                     />
                   </div>
                 </div>
 
                 <div className={styles.formGroup}>
                   <label className={styles.label}>INITIAL CAPITAL (₹)</label>
-                  <input 
+                  <input
                     className={styles.input}
-                    type="number" 
+                    type="number"
                     value={params.initial_capital}
-                    onChange={(e) => setParams({...params, initial_capital: parseInt(e.target.value)})}
+                    onChange={(e) => setParams({ ...params, initial_capital: parseInt(e.target.value) })}
                   />
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className={styles.button}
                   disabled={loading}
                   style={{ background: '#C4FF00', fontWeight: 950 }}
@@ -217,7 +217,7 @@ export default function BacktestingPage() {
                   <span className={`${styles.statValue} ${results.total_return_pct >= 0 ? styles.positiveText : styles.negativeText}`}>
                     {results.total_return_pct > 0 ? '+' : ''}{results.total_return_pct}%
                   </span>
-                  <div className={styles.progressBar}><div className={styles.progressFill} style={{width: '75%', background: results.total_return_pct >= 0 ? '#00875A' : '#DE350B'}}></div></div>
+                  <div className={styles.progressBar}><div className={styles.progressFill} style={{ width: '75%', background: results.total_return_pct >= 0 ? '#00875A' : '#DE350B' }}></div></div>
                 </div>
                 <div className={styles.statCard}>
                   <span className={styles.statLabel}>Sharpe Ratio</span>
@@ -244,30 +244,30 @@ export default function BacktestingPage() {
                     <AreaChart data={equityCurveData}>
                       <defs>
                         <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#0052CC" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#0052CC" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#0052CC" stopOpacity={0.1} />
+                          <stop offset="95%" stopColor="#0052CC" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
                       <XAxis dataKey="name" hide />
-                      <YAxis 
-                        domain={['auto', 'auto']} 
+                      <YAxis
+                        domain={['auto', 'auto']}
                         tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
                         orientation="right"
                         stroke="#97A0AF"
                         fontSize={12}
                       />
-                      <Tooltip 
+                      <Tooltip
                         contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                         formatter={(val) => [`₹${val.toLocaleString()}`, 'Capital']}
                       />
-                      <Area 
-                        type="monotone" 
-                        dataKey="balance" 
-                        stroke="#0052CC" 
+                      <Area
+                        type="monotone"
+                        dataKey="balance"
+                        stroke="#0052CC"
                         strokeWidth={3}
-                        fillOpacity={1} 
-                        fill="url(#colorBalance)" 
+                        fillOpacity={1}
+                        fill="url(#colorBalance)"
                         animationDuration={1500}
                       />
                     </AreaChart>
