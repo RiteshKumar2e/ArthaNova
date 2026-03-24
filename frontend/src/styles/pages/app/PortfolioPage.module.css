@@ -3,70 +3,80 @@
 .portfolioContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-6);
+  gap: var(--sp-5); /* Tighter gap */
   width: 100%;
 }
 
 .pageHeader {
-  padding-bottom: var(--sp-5);
-  border-bottom: var(--border-width) solid var(--border);
+  padding-bottom: 20px;
+  border-bottom: 4px solid #000;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
+
 .pageTitle {
   font-family: var(--heading);
-  font-size: var(--fs-2xl);
-  font-weight: 900;
+  font-size: 1.6rem; /* Smaller title */
+  font-weight: 950;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.pageSubtitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #666;
   text-transform: uppercase;
 }
 
 /* Summary cards */
 .summaryCards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--sp-5);
-  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
 }
 
 .summaryCard {
-  background: var(--bg-white);
-  border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-sm);
-  padding: var(--sp-5) var(--sp-6);
-  text-align: center;
-  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  padding: 16px 20px;
+  text-align: left;
+  transition: all 0.1s ease;
 }
-.summaryCard:nth-child(1) { background: var(--primary); }
-.summaryCard:nth-child(2) { background: var(--secondary); }
-.summaryCard:nth-child(3) { background: var(--accent); }
-.summaryCard:nth-child(4) { background: var(--yellow); }
+
 .summaryCard:hover {
   transform: translate(-2px, -2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 6px 6px 0px #000;
 }
 
 .statValue {
   font-family: var(--heading);
-  font-size: var(--fs-2xl);
-  font-weight: 900;
+  font-size: 1.4rem;
+  font-weight: 950;
   text-transform: uppercase;
-  color: var(--text);
-  margin-bottom: var(--sp-2);
+  color: #000;
   line-height: 1;
+  margin-bottom: 4px;
 }
 
 .statLabel {
   font-family: var(--heading);
-  font-size: var(--fs-xs);
-  font-weight: 900;
+  font-size: 0.65rem;
+  font-weight: 950;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #111;
+  letter-spacing: 0.05em;
+  color: rgba(0,0,0,0.6);
 }
 
 /* Portfolio grid */
 .portfolioGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--sp-6);
+  gap: 24px;
   width: 100%;
 }
 
@@ -74,22 +84,29 @@
   .portfolioGrid { grid-template-columns: 2fr 1fr; }
 }
 
-/* Holdings table */
-.holdings {
-  background-color: var(--bg-white);
-  border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-sm);
+/* Holdings section */
+.holdingsCard {
+  background-color: #fff;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0px #000;
   overflow: hidden;
 }
 
 .holdingsHeader {
-  padding: var(--sp-4) var(--sp-5);
-  border-bottom: var(--border-width) solid var(--border);
+  padding: 14px 20px;
+  border-bottom: 4px solid #000;
   background: var(--primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.holdingsHeader h3 {
   font-family: var(--heading);
-  font-size: var(--fs-md);
-  font-weight: 900;
+  font-size: 0.85rem;
+  font-weight: 950;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .holdingsTable {
@@ -98,45 +115,60 @@
 }
 
 .holdingsTable th {
-  padding: var(--sp-4) var(--sp-5);
+  padding: 12px 18px;
   text-align: left;
-  border-bottom: var(--border-width) solid var(--border);
-  background: rgba(196, 255, 0, 0.15);
+  border-bottom: 3px solid #000;
+  background: #f8f8f8;
   font-family: var(--heading);
-  font-size: var(--fs-xs);
-  font-weight: 900;
+  font-size: 0.65rem;
+  font-weight: 950;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .holdingsTable td {
-  padding: var(--sp-4) var(--sp-5);
-  border-bottom: 2px solid rgba(0,0,0,0.08);
-  font-size: var(--fs-sm);
-  font-weight: 600;
+  padding: 12px 18px;
+  border-bottom: 2px solid #eee;
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 .holdingsTable tr:last-child td { border-bottom: none; }
-.holdingsTable tr:hover td { background: rgba(196, 255, 0, 0.08); }
+.holdingsTable tr:hover td { background: rgba(196, 255, 0, 0.05); }
 
 .symbol {
   font-family: var(--heading);
-  font-weight: 900;
-  font-size: var(--fs-base);
-  color: var(--text);
+  font-weight: 950;
+  font-size: 1rem;
+  color: #000;
 }
 
-.value { text-align: right; font-weight: 700; }
-.change { text-align: right; font-family: var(--heading); font-weight: 900; }
-.changePositive { color: #14a800; }
-.changeNegative { color: var(--color-danger); }
+.company {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #666;
+}
 
-@media (max-width: 768px) {
+.value { text-align: right; font-weight: 800; }
+.change { 
+  text-align: right; 
+  font-family: var(--heading); 
+  font-size: 0.8rem;
+  font-weight: 950; 
+  padding: 4px 8px;
+  border: 2px solid #000;
+}
+
+.up { background: var(--color-success); color: #000; }
+.down { background: var(--color-danger); color: #fff; }
+
+@media (max-width: 900px) {
   .summaryCards { grid-template-columns: 1fr 1fr; }
-  .holdingsTable { font-size: var(--fs-xs); }
-  .holdingsTable th, .holdingsTable td { padding: var(--sp-3); }
 }
 
 @media (max-width: 480px) {
   .summaryCards { grid-template-columns: 1fr; }
+  .holdingsTable { font-size: 0.75rem; }
+  .holdingsTable th, .holdingsTable td { padding: 10px; }
 }
+
