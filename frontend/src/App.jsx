@@ -28,11 +28,11 @@ import FilingsAnalyzerPage from './pages/app/FilingsAnalyzerPage'
 import OpportunityRadarPage from './pages/app/OpportunityRadarPage'
 import ProfilePage from './pages/app/ProfilePage'
 import VideoInsightsPage from './pages/app/VideoInsightsPage'
+import WatchlistPage from './pages/app/WatchlistPage'
 import {
   InsiderActivityPage,
   DealsTrackerPage,
   TechnicalAnalysisPage,
-  WatchlistPage,
   RiskAnalyzerPage,
   NotificationsPage,
   SettingsPage

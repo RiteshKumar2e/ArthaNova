@@ -3,7 +3,6 @@ import GenericPage from './GenericPage'
 export const InsiderActivityPage = () => <GenericPage title="Insider Activity" description="Track promoter buying and selling patterns" icon="👤" />
 export const DealsTrackerPage = () => <GenericPage title="Bulk & Block Deals" description="Follow institutional money flows in real-time" icon="🤝" />
 export const TechnicalAnalysisPage = () => <GenericPage title="Technical Analysis" description="Advanced screener with 50+ technical indicators" icon="📈" />
-export const WatchlistPage = () => <GenericPage title="Watchlist" description="Monitor your favorite stocks and receive AI alerts" icon="⭐" />
 export const RiskAnalyzerPage = () => <GenericPage title="Risk Analyzer" description="Deep dive into your portfolio's exposure and Beta" icon="🛡️" />
 export const BacktestingPage = () => <GenericPage title="Backtesting Engine" description="Simulate your trading strategy against historical NSE data" icon="🔁" />
 export const VideoInsightsPage = () => <GenericPage title="Video Insights Engine" description="Auto-generated 60s video summaries of market moving events" icon="🎬" />

@@ -138,6 +138,15 @@ export const backtestAPI = {
   history: () => api.get('/backtest'),
 }
 
+export const watchlistAPI = {
+  list: () => api.get('/watchlist'),
+  get: (id) => api.get(`/watchlist/${id}`),
+  create: (data) => api.post('/watchlist', data),
+  delete: (id) => api.delete(`/watchlist/${id}`),
+  addItem: (id, data) => api.post(`/watchlist/${id}/items`, data),
+  removeItem: (watchlistId, itemId) => api.delete(`/watchlist/${watchlistId}/items/${itemId}`),
+}
+
 export const userAPI = {
   getProfile: () => api.get('/users/me'),
   updateProfile: (data) => api.put('/users/me', data),
