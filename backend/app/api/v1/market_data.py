@@ -1,56 +1,132 @@
-"""ArthaNova — News, IPO, Insider, and Deals API routers."""
+"""
+ArthaNova — Market Data API Routers
+Integrates real market data providers: News, IPO, Insider, Deals, Stock Data
+"""
 
 import random
+import logging
 from datetime import datetime, timezone, timedelta
-from fastapi import APIRouter, Query
+from typing import Optional
+from fastapi import APIRouter, Query, HTTPException
 from app.core.dependencies import get_current_user
 from fastapi import Depends
 from app.models.user import User
+from app.services.news_service import get_news_service
+from app.services.market_data_service import get_market_data_service
+
+logger = logging.getLogger(__name__)
 
 # ─── News Router ───────────────────────────────────────────────────────────────
 news_router = APIRouter(prefix="/news", tags=["News Intelligence"])
 
-NEWS_DATA = [
-    {"id": 1, "headline": "RBI holds repo rate at 6.5%; signals accommodative stance for growth", "source": "Economic Times", "sector": "Banking", "sentiment": "Positive", "sentiment_score": 0.72, "tags": ["RBI", "Monetary Policy", "Banking"]},
-    {"id": 2, "headline": "Reliance Industries Q3 profit up 12% YoY, beats analyst estimates", "source": "Business Standard", "sector": "Energy", "sentiment": "Positive", "sentiment_score": 0.84, "tags": ["RELIANCE", "Earnings", "Oil & Gas"]},
-    {"id": 3, "headline": "FII outflows continue for third consecutive week amid global uncertainty", "source": "Mint", "sector": "Markets", "sentiment": "Negative", "sentiment_score": -0.55, "tags": ["FII", "Markets", "Global"]},
-    {"id": 4, "headline": "IT sector faces headwinds as US tech spending slows; TCS, Infosys under watch", "source": "NDTV Profit", "sector": "IT", "sentiment": "Negative", "sentiment_score": -0.42, "tags": ["TCS", "INFY", "IT Sector"]},
-    {"id": 5, "headline": "Adani Green Energy secures ₹12,000 Cr project from SECI for solar capacity", "source": "Reuters", "sector": "Renewable Energy", "sentiment": "Positive", "sentiment_score": 0.79, "tags": ["ADANIGREEN", "Solar", "Renewable"]},
-    {"id": 6, "headline": "Bajaj Finance raises concerns over asset quality; provisions increase 18%", "source": "Moneycontrol", "sector": "NBFC", "sentiment": "Negative", "sentiment_score": -0.61, "tags": ["BAJFINANCE", "NBFC", "Asset Quality"]},
-    {"id": 7, "headline": "Nifty 50 eyes 22,500 as global cues positive; IT stocks lead gains", "source": "LiveMint", "sector": "Markets", "sentiment": "Positive", "sentiment_score": 0.68, "tags": ["NIFTY", "Bull Market", "IT"]},
-    {"id": 8, "headline": "SEBI proposes new framework for algo trading; retail investors to benefit", "source": "Economic Times", "sector": "Regulatory", "sentiment": "Neutral", "sentiment_score": 0.15, "tags": ["SEBI", "Regulation", "Algo Trading"]},
-]
 
 @news_router.get("/")
 async def get_news(
     sector: str = Query(None),
-    sentiment: str = Query(None),
     page: int = Query(1, ge=1),
     per_page: int = Query(10, ge=1, le=50),
 ):
+    """
+    Get market news with sentiment analysis.
+    Filters by sector if provided.
+    """
+    try:
+        news_service = get_news_service()
+        
+        # Fetch from real news API
+        news_data = await news_service.get_market_news(
+            sector=sector,
+            limit=per_page * page,
+            page=page
+        )
+        
+        if news_data.get("error"):
+            logger.warning(f"News API error: {news_data.get('error')}")
+            # Fallback to mock data if API fails
+            return await _get_mock_news(sector, page, per_page)
+        
+        items = news_data.get("items", [])
+        total = news_data.get("total", len(items))
+        
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "per_page": per_page,
+            "provider": "newsapi",
+        }
+    
+    except Exception as e:
+        logger.error(f"News fetch failed: {e}")
+        return await _get_mock_news(sector, page, per_page)
+
+
+@news_router.get("/sentiment-summary")
+async def get_sentiment_summary():
+    """Get overall market sentiment from news analysis."""
+    try:
+        news_service = get_news_service()
+        sentiment = await news_service.get_market_sentiment()
+        
+        if not sentiment.get("error"):
+            return sentiment
+        else:
+            # Fallback
+            return _get_mock_sentiment_summary()
+    
+    except Exception as e:
+        logger.error(f"Sentiment summary failed: {e}")
+        return _get_mock_sentiment_summary()
+
+
+@news_router.get("/trending")
+async def get_trending_topics():
+    """Get trending market topics from latest news."""
+    try:
+        news_service = get_news_service()
+        trending = await news_service.get_trending_topics(limit=10)
+        
+        if not trending.get("error"):
+            return trending
+        else:
+            return {"trending_topics": [], "error": "Failed to fetch trending topics"}
+    
+    except Exception as e:
+        logger.error(f"Trending topics fetch failed: {e}")
+        return {"trending_topics": [], "error": str(e)}
+
+
+async def _get_mock_news(sector: Optional[str], page: int, per_page: int):
+    """Fallback mock news if API fails."""
+    NEWS_DATA = [
+        {"id": 1, "headline": "RBI holds repo rate at 6.5%; signals accommodative stance for growth", "source": "Economic Times", "sector": "Banking", "sentiment": "Positive", "sentiment_score": 0.72, "tags": ["RBI", "Monetary Policy", "Banking"]},
+        {"id": 2, "headline": "Reliance Industries Q3 profit up 12% YoY, beats analyst estimates", "source": "Business Standard", "sector": "Energy", "sentiment": "Positive", "sentiment_score": 0.84, "tags": ["RELIANCE", "Earnings", "Oil & Gas"]},
+        {"id": 3, "headline": "FII outflows continue for third consecutive week amid global uncertainty", "source": "Mint", "sector": "Markets", "sentiment": "Negative", "sentiment_score": -0.55, "tags": ["FII", "Markets", "Global"]},
+        {"id": 4, "headline": "IT sector faces headwinds as US tech spending slows; TCS, Infosys under watch", "source": "NDTV Profit", "sector": "IT", "sentiment": "Negative", "sentiment_score": -0.42, "tags": ["TCS", "INFY", "IT Sector"]},
+        {"id": 5, "headline": "Adani Green Energy secures ₹12,000 Cr project from SECI for solar capacity", "source": "Reuters", "sector": "Renewable Energy", "sentiment": "Positive", "sentiment_score": 0.79, "tags": ["ADANIGREEN", "Solar", "Renewable"]},
+    ]
+    
     items = NEWS_DATA.copy()
     if sector:
         items = [n for n in items if n["sector"].lower() == sector.lower()]
-    if sentiment:
-        items = [n for n in items if n["sentiment"].lower() == sentiment.lower()]
-
-    # Add timestamps
+    
     now = datetime.now(timezone.utc)
     for i, item in enumerate(items):
         item["published_at"] = (now - timedelta(hours=i * 2 + random.randint(0, 3))).isoformat()
-        item["summary"] = f"AI Summary: {item['headline']}. Market participants are closely tracking this development given its potential impact on sector valuations and investor sentiment."
-
+        item["summary"] = f"Market update: {item['headline']}"
+    
     start = (page - 1) * per_page
     return {
         "items": items[start:start + per_page],
         "total": len(items),
         "page": page,
         "per_page": per_page,
+        "provider": "mock",
     }
 
 
-@news_router.get("/sentiment-summary")
-async def get_sentiment_summary():
+def _get_mock_sentiment_summary():
+    """Fallback mock sentiment summary."""
     return {
         "overall_market_sentiment": "Cautiously Bullish",
         "sentiment_score": 0.34,
@@ -162,3 +238,162 @@ async def get_deals(deal_type: str = Query("all", regex="^(all|bulk|block)$")):
             "exchange": random.choice(["NSE", "BSE"]),
         })
     return {"items": deals, "total": len(deals)}
+
+
+# ─── Stock Data Router ────────────────────────────────────────────────────────
+stock_router = APIRouter(prefix="/stocks", tags=["Stock Data & Analytics"])
+
+
+@stock_router.get("/quote/{symbol}")
+async def get_stock_quote(symbol: str):
+    """
+    Get real-time stock quote with multiple provider fallback.
+    """
+    try:
+        market_service = get_market_data_service()
+        quote = await market_service.get_stock_price(symbol)
+        
+        if quote.get("error"):
+            logger.warning(f"Quote fetch failed for {symbol}")
+            raise HTTPException(status_code=404, detail="Stock quote not available")
+        
+        return quote
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Stock quote error for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch stock quote")
+
+
+@stock_router.get("/historical/{symbol}")
+async def get_stock_historical(
+    symbol: str,
+    days: int = Query(30, ge=1, le=365),
+    interval: str = Query("1d", regex="^(1d|1wk|1mo)$")
+):
+    """
+    Get historical price data with technical indicators.
+    """
+    try:
+        market_service = get_market_data_service()
+        data = await market_service.get_historical_data(symbol, days=days, interval=interval)
+        
+        if data.get("error"):
+            raise HTTPException(status_code=404, detail="Historical data not available")
+        
+        return data
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Historical data error for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch historical data")
+
+
+@stock_router.get("/info/{symbol}")
+async def get_stock_info(symbol: str):
+    """
+    Get company fundamentals: P/E ratio, market cap, sector, etc.
+    """
+    try:
+        market_service = get_market_data_service()
+        info = await market_service.get_company_info(symbol)
+        
+        if info.get("error"):
+            raise HTTPException(status_code=404, detail="Company info not available")
+        
+        return info
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Company info error for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch company info")
+
+
+@stock_router.get("/market-overview")
+async def get_market_overview():
+    """
+    Get India market overview: Nifty, Sensex, market status, etc.
+    """
+    try:
+        market_service = get_market_data_service()
+        overview = await market_service.get_market_overview()
+        
+        return overview
+    
+    except Exception as e:
+        logger.error(f"Market overview error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch market overview")
+
+
+@stock_router.get("/sectors")
+async def get_sector_performance():
+    """
+    Get sector-wise performance.
+    """
+    try:
+        market_service = get_market_data_service()
+        sectors = await market_service.get_sector_performance()
+        
+        return sectors
+    
+    except Exception as e:
+        logger.error(f"Sector performance error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch sector performance")
+
+
+# ─── Forex Router ────────────────────────────────────────────────────────────
+forex_router = APIRouter(prefix="/forex", tags=["Forex Data"])
+
+
+@forex_router.get("/rate")
+async def get_forex_rate(
+    from_currency: str = Query(...),
+    to_currency: str = Query(...)
+):
+    """Get forex conversion rate (USD/INR, EUR/INR, etc.)"""
+    try:
+        market_service = get_market_data_service()
+        rate = await market_service.get_forex_rate(from_currency, to_currency)
+        
+        if not rate:
+            raise HTTPException(status_code=404, detail="Forex rate not available")
+        
+        return rate
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Forex rate error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch forex rate")
+
+
+# ─── Company News Router ──────────────────────────────────────────────────────
+company_news_router = APIRouter(prefix="/company-news", tags=["Company News"])
+
+
+@company_news_router.get("/{symbol}")
+async def get_company_specific_news(
+    symbol: str,
+    limit: int = Query(10, ge=1, le=50)
+):
+    """Get news specific to a company/stock."""
+    try:
+        news_service = get_news_service()
+        news = await news_service.get_company_news(symbol, limit=limit)
+        
+        if news.get("error"):
+            logger.warning(f"Company news not available for {symbol}")
+            return {
+                "symbol": symbol,
+                "items": [],
+                "provider": "mock",
+            }
+        
+        return news
+    
+    except Exception as e:
+        logger.error(f"Company news error for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch company news")

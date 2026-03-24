@@ -40,6 +40,23 @@ class Settings(BaseModel):
     GROQ_MODEL: str = "llama-3.3-70b-versatile"
     GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
 
+    # Market Data APIs
+    # News & Intelligence
+    NEWS_API_KEY: str = ""
+    
+    # Stock Market Data Providers
+    ALPHA_VANTAGE_API_KEY: str = ""
+    POLYGON_API_KEY: str = ""
+    MARKETSTACK_API_KEY: str = ""
+    FINNHUB_API_KEY: str = ""
+    RAPIDAPI_KEY: str = ""
+    
+    # Image Generation
+    STABILITY_API_KEY: str = ""
+    
+    # Video Generation  
+    PIKA_API_KEY: str = ""
+
     # Email
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587

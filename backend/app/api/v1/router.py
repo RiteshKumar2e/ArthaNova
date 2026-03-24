@@ -10,6 +10,9 @@ from app.api.v1.market_data import (
     ipo_router,
     insider_router,
     deals_router,
+    stock_router,
+    forex_router,
+    company_news_router,
 )
 from app.api.v1.user import router as user_router
 from app.api.v1.alerts import router as alerts_router
@@ -28,5 +31,8 @@ api_router.include_router(news_router)
 api_router.include_router(ipo_router)
 api_router.include_router(insider_router)
 api_router.include_router(deals_router)
+api_router.include_router(stock_router)
+api_router.include_router(forex_router)
+api_router.include_router(company_news_router)
 api_router.include_router(alerts_router)
 api_router.include_router(backtest_router)
