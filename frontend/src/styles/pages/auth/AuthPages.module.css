@@ -455,13 +455,31 @@
   .authCardLight, .authCardWide { padding: 1.5rem; margin: 1rem; }
   .authTitleLight { font-size: 1.5rem; }
   .brandIconLight { font-size: 1.1rem; padding: 0.4rem 1rem; }
-  .homeButtonLight { top: 1rem; left: 1rem; padding: 6px 10px; font-size: 0.65rem; }
+  .homeButtonLight { 
+    position: relative;
+    top: 0; left: 0; 
+    align-self: flex-start;
+    margin-bottom: 2rem;
+    padding: 6px 12px;
+    font-size: 0.65rem;
+    box-shadow: 2px 2px 0px #000;
+  }
+  .homeIcon { font-size: 0.8rem; }
+
+  .authPageLight { 
+    justify-content: flex-start;
+    padding-top: 1.5rem;
+  }
+  .brandIconLight { font-size: 1rem; padding: 0.3rem 0.6rem; margin-bottom: 1rem; }
+  .authTitleLight { font-size: 1.4rem; }
+
   .riskOptionsLight { grid-template-columns: 1fr; gap: 0.75rem; }
   .formRowLight { grid-template-columns: 1fr; }
   .stepDividerLight { display: none; }
   .regStepIndicatorLight { gap: 1rem; overflow-x: auto; justify-content: flex-start; padding: 1rem 0.5rem; }
   .demoBtnsLight { flex-direction: column; }
   .floatingBox { display: none; }
+
 }
 
 @media (max-width: 480px) {
