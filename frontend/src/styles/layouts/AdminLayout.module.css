@@ -36,10 +36,15 @@
 @media (max-width: 992px) {
   .content {
     margin-left: 0 !important;
+    padding-left: 0 !important;
   }
 
   .main {
     padding: var(--space-6);
+  }
+  
+  .adminContainer {
+    max-width: 100% !important;
   }
 }
 
