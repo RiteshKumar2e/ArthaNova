@@ -20,10 +20,10 @@
 
 .pageTitle {
   font-family: var(--heading);
-  font-size: var(--fs-3xl);
-  font-weight: 900;
+  font-size: 1.6rem;
+  font-weight: 950;
   text-transform: uppercase;
-  margin-bottom: var(--sp-1);
+  margin-bottom: 2px;
   color: #000;
   line-height: 1;
 }
@@ -43,10 +43,10 @@
 }
 
 .indexCard {
-  padding: var(--sp-6);
+  padding: 20px;
   background-color: #fff;
   border: 4px solid #000;
-  box-shadow: 8px 8px 0px #000;
+  box-shadow: 6px 6px 0px #000;
   text-align: left;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   position: relative;
@@ -55,25 +55,25 @@
 
 .indexCard:hover {
   transform: translate(-3px, -3px);
-  box-shadow: 11px 11px 0px #000;
+  box-shadow: 9px 9px 0px #000;
 }
 
 .indexName {
   font-family: var(--heading);
-  font-size: 0.7rem;
-  font-weight: 900;
+  font-size: 0.65rem;
+  font-weight: 950;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: #666;
-  margin-bottom: var(--sp-4);
+  margin-bottom: 12px;
 }
 
 .indexValue {
   font-family: var(--heading);
-  font-size: var(--fs-2xl);
-  font-weight: 900;
+  font-size: 1.6rem;
+  font-weight: 950;
   color: #000;
-  margin-bottom: var(--sp-3);
+  margin-bottom: 10px;
   line-height: 1;
 }
 
@@ -101,13 +101,13 @@
 .card {
   background: #fff;
   border: 4px solid #000;
-  box-shadow: 8px 8px 0px #000;
+  box-shadow: 6px 6px 0px #000;
   display: flex;
   flex-direction: column;
 }
 
 .cardHeader {
-  padding: var(--sp-4) var(--sp-5);
+  padding: 12px 18px;
   background: #f8f8f8;
   border-bottom: 4px solid #000;
   display: flex;
@@ -117,14 +117,15 @@
 
 .cardHeader h3 {
   font-family: var(--heading);
-  font-size: var(--fs-md);
+  font-size: 0.85rem;
+  font-weight: 950;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .cardBody {
-  padding: var(--sp-5);
+  padding: 18px;
   flex: 1;
 }
 
