@@ -18,12 +18,6 @@ export default function AuditLogs() {
         setLogs(response.data);
       } catch (error) {
         console.error('Error fetching audit logs:', error);
-        // Fallback for demo
-        setLogs([
-          { id: 1, timestamp: new Date().toISOString(), user: 'admin@arthanova.ai', action: 'LOGIN_SUCCESS', details: 'AUTHENTICATED FROM MUMBAI CLUSTER', ip: '122.161.49.201' },
-          { id: 2, timestamp: new Date(Date.now() - 1000*60*15).toISOString(), user: 'system_bot', action: 'SYNC_START', details: 'NIFTY 50 HISTORICAL DATASTREAM', ip: '10.0.4.12' },
-          { id: 3, timestamp: new Date(Date.now() - 1000*60*45).toISOString(), user: 'ritesh@arthanova.ai', action: 'ROLE_UPDATE', details: 'MODIFIED "ANALYST" PERMISSIONS', ip: '122.161.52.12' },
-        ]);
       } finally {
         setLoading(false);
       }

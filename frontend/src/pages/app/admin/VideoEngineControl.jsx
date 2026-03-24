@@ -6,12 +6,8 @@ import styles from '../../../styles/pages/app/admin/VideoEngineControl.module.cs
 export default function VideoEngineControl() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [videos, setVideos] = useState([
-    { id: 'JOB-901', title: 'MARKET RECAP: NIFTY 50', duration: '0:45', format: 'MP4 (4K)', status: 'COMPLETED' },
-    { id: 'JOB-902', title: 'AI INSIGHT: RBI POLICY', duration: '1:12', format: 'MP4 (HD)', status: 'PENDING' },
-    { id: 'JOB-903', title: 'TECHNICAL SETUP: BANKNIFTY', duration: '0:58', format: 'MP4 (4K)', status: 'FAILED' },
-  ]);
-  const [cluster, setCluster] = useState({ nodes: 12, load: '42%' });
+  const [videos, setVideos] = useState([]);
+  const [cluster, setCluster] = useState({ nodes: 0, load: '0%' });
   const { accessToken } = useAuthStore();
 
   useEffect(() => {

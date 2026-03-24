@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import styles from '../../../styles/pages/app/admin/RoleAccessControl.module.css';
 
 export default function RoleAccessControl() {
-  const [roles, setRoles] = useState([
-    { name: 'ADMIN', users: 3, permissions: 'ALL ACCESS', status: 'CORE' },
-    { name: 'MODERATOR', users: 8, permissions: 'CONTENT, USER MODERATION', status: 'DEPARTMENT' },
-    { name: 'COMPLIANCE', users: 2, permissions: 'LOGS, SETTINGS REVIEW', status: 'LEGAL' },
-    { name: 'SUPPORT', users: 15, permissions: 'USER VIEW, NOTIFICATION', status: 'SERVICE' },
-  ]);
+  const [roles, setRoles] = useState([]);
+  const [securityGroups, setSecurityGroups] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [newRole, setNewRole] = useState({ name: '', status: 'DEPARTMENT', permissions: '' });

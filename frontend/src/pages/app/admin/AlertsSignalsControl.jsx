@@ -2,19 +2,8 @@ import React, { useState } from 'react';
 import styles from '../../../styles/pages/app/admin/AlertsSignalsControl.module.css';
 
 export default function AlertsSignalsControl() {
-  const [logicSwitches, setLogicSwitches] = useState([
-    { id: 1, label: 'TECHNICAL PATTERN ALERTS', status: true },
-    { id: 2, label: 'FUNDAMENTAL DIVERGENCE ALERTS', status: true },
-    { id: 3, label: 'SENTIMENT SPIKE ALERTS', status: false },
-    { id: 4, label: 'PORTFOLIO RISK ALERTS', status: true },
-    { id: 5, label: 'IPO OPPORTUNITY ALERTS', status: true },
-  ]);
-
-  const [signals, setSignals] = useState([
-    { id: 'SIG-819', symbol: 'RELIANCE', pattern: 'GOLDEN CROSS', confidence: 94, status: 'PENDING' },
-    { id: 'SIG-820', symbol: 'HDFCBANK', pattern: 'BEARISH DIV', confidence: 81, status: 'FLAGGED' },
-    { id: 'SIG-821', symbol: 'TCS', pattern: 'BREAKOUT', confidence: 88, status: 'PENDING' },
-  ]);
+  const [logicSwitches, setLogicSwitches] = useState([]);
+  const [signals, setSignals] = useState([]);
 
   const toggleSwitch = (id) => {
     setLogicSwitches(prev => prev.map(s => s.id === id ? { ...s, status: !s.status } : s));

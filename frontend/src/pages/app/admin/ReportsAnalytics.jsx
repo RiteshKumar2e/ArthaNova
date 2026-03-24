@@ -4,19 +4,8 @@ import styles from '../../../styles/pages/app/admin/ReportsAnalytics.module.css'
 export default function ReportsAnalytics() {
   const [range, setRange] = useState('LAST 30 DAYS');
   
-  const KPIS = [
-    { label: 'ACTIVE USERS (MAU)', value: '14,250', change: '+12%', positive: true },
-    { label: 'AVG. SESSION TIME', value: '8M 22S', change: '+5%', positive: true },
-    { label: 'SIGNAL ENGAGEMENT', value: '42%', change: '-3%', positive: false },
-    { label: 'VIDEO PLAYS', value: '4,821', change: '+24%', positive: true },
-  ];
-
-  const STOCKS = [
-    { symbol: 'RELIANCE', users: '4,210', engagement: '18K', sentiment: 'BULLISH' },
-    { symbol: 'HDFCBANK', users: '3,892', engagement: '15K', sentiment: 'MODERATE' },
-    { symbol: 'TCS', users: '2,901', engagement: '12K', sentiment: 'BEARISH' },
-    { symbol: 'ZOMATO', users: '2,402', engagement: '11K', sentiment: 'BULLISH' },
-  ];
+  const KPIS = [];
+  const STOCKS = [];
 
   const handleExport = (format) => {
     alert(`GENERATING ${format} REPORT FOR ${range}...`);

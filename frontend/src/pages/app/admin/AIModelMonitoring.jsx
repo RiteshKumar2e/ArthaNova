@@ -18,16 +18,6 @@ export default function AIModelMonitoring() {
         setStatus(response.data);
       } catch (error) {
         console.error('Error fetching AI status:', error);
-        // Fallback for demo
-        setStatus({
-          system: { orchestrator: { total_queries: 18420, multi_agent_executions: 412, compliance_blocks: 12 } },
-          performance: { latency_metrics: { orchestration: { avg: 142 } } },
-          agents: {
-            "TECHNICAL ANALYST": { name: "TECHNICAL ANALYST", capability: "PATTERN RECOGNITION", status: "idle", metrics: { avg_response_time_ms: 84, autonomy_score: "94%" } },
-            "SENTIMENT ANALYST": { name: "SENTIMENT ANALYST", capability: "NLP ANALYSIS", status: "processing", metrics: { avg_response_time_ms: 156, autonomy_score: "88%" } },
-            "PORTFOLIO AGENT": { name: "PORTFOLIO AGENT", capability: "RISK MODELING", status: "idle", metrics: { avg_response_time_ms: 210, autonomy_score: "91%" } },
-          }
-        });
       } finally {
         setLoading(false);
       }

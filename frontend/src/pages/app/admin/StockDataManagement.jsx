@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import styles from '../../../styles/pages/app/admin/StockDataManagement.module.css';
 
 export default function StockDataManagement() {
-  const [datasets, setDatasets] = useState([
-    { name: 'NIFTY 50 HISTORICAL', status: 'HEALTHY', lastSync: 'YESTERDAY', sources: 'NSE, YAHOO', count: '1.2M ROWS' },
-    { name: 'LIVE MARKET QUOTES', status: 'SYNCING', lastSync: '10S AGO', sources: 'UPSTOX, INTRINIO', count: 'LIVE STREAM' },
-    { name: 'COMPANY FILINGS (PDF)', status: 'SYNCING', lastSync: '2M AGO', sources: 'BSE, SEC', count: '45,210 DOCS' },
-    { name: 'INSIDER ACTIVITY FEED', status: 'ERROR', lastSync: '2H AGO', sources: 'BSE CORPORATE', count: '890 ROWS' },
-  ]);
+  const [datasets, setDatasets] = useState([]);
 
   const [loading, setLoading] = useState(false);
 

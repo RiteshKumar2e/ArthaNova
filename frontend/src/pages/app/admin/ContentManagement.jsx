@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import styles from '../../../styles/pages/app/admin/ContentManagement.module.css';
 
 export default function ContentManagement() {
-  const [content, setContent] = useState([
-    { id: 1, title: 'RBI POLICY AND MARKET IMPACT', type: 'INSIGHT', author: 'AI AGENT 1', status: 'PUBLISHED', date: 'MAR 18' },
-    { id: 2, title: 'ADANI GROUP DEBT ANALYSIS', type: 'NEWS', author: 'ADMIN MAIN', status: 'DRAFT', date: 'MAR 17' },
-    { id: 3, title: 'NIFTY 50 TECHNICAL SETUP', type: 'FORECAST', author: 'AI ANALYTICS', status: 'IN REVIEW', date: 'MAR 16' },
-  ]);
+  const [contentItems, setContentItems] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({ title: '', type: 'INSIGHT' });
