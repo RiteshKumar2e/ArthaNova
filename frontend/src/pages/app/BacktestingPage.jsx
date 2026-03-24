@@ -276,8 +276,10 @@ export default function BacktestingPage() {
               </div>
 
               {/* Trade Log */}
-              <div className="card">
-                <h3 className={styles.cardTitle}>Execution Log (Last 20 Trades)</h3>
+              <div style={{ marginTop: 24 }}>
+                <h3 className={styles.resultsTitle} style={{ paddingLeft: 0, paddingBottom: 10, borderBottom: 'none' }}>
+                  EXECUTION LOG (LAST 20 TRADES)
+                </h3>
                 <div className={styles.tableWrapper}>
                   <table className={styles.tradeTable}>
                     <thead>

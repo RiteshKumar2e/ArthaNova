@@ -211,6 +211,86 @@
   color: var(--text);
 }
 
+
+/* Trade Log Table */
+.tableWrapper {
+  overflow-x: auto;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0px #000;
+  margin-top: 12px;
+}
+
+.tradeTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.tradeTable thead {
+  background: #000;
+  color: #fff;
+  text-align: left;
+}
+
+.tradeTable th:nth-child(n+3),
+.tradeTable td:nth-child(n+3) {
+  text-align: right;
+}
+
+.tradeTable th {
+  padding: 10px 14px;
+  font-family: var(--heading);
+  font-size: 0.7rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 4px solid #000;
+}
+
+.tradeTable td {
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-bottom: 2px solid #eee;
+  color: #000;
+}
+.tradeTable td:first-child {
+  font-family: var(--heading);
+  font-size: 0.7rem;
+  font-weight: 950;
+  color: #666;
+}
+
+.tradeTable tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.tradeTable tr:hover {
+  background: rgba(196, 255, 0, 0.05);
+}
+
+.monoFont {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.posText { color: #14a800; }
+.negText { color: #FF3131; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 2px solid #000;
+  font-family: var(--heading);
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.buyBadge { background: #C4FF00; color: #000; }
+.sellBadge { background: #FFDD55; color: #000; }
+
 @media (max-width: 768px) {
   .metricsRow { grid-template-columns: 1fr 1fr; }
   .metricCard { border-bottom: var(--border-width) solid var(--border); }
