@@ -1,107 +1,175 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
+import { notificationsAPI } from '../../../api/client'
+import { toast } from 'react-hot-toast'
 
 export default function GlobalNotifications() {
-  const NOTIFICATIONS = [];
+  const [history, setHistory] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [formData, setFormData] = useState({
+    title: '',
+    message: '',
+    type: 'info', // info, success, warning, danger, market, ai_alert
+    user_id: null // null for all
+  })
+  const [sending, setSending] = useState(false)
+
+  useEffect(() => {
+    fetchHistory()
+  }, [])
+
+  const fetchHistory = async () => {
+    try {
+      setLoading(true)
+      const res = await notificationsAPI.adminList()
+      setHistory(res.data)
+    } catch (err) {
+      toast.error('Failed to load notification history')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSend = async (e) => {
+    e.preventDefault()
+    if (!formData.title || !formData.message) {
+      return toast.error('Title and message are required')
+    }
+
+    try {
+      setSending(true)
+      await notificationsAPI.send(formData)
+      toast.success('Notification dispatched successfully')
+      setFormData({ title: '', message: '', type: 'info', user_id: null })
+      fetchHistory()
+    } catch (err) {
+      toast.error('Failed to dispatch notification')
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <div className="animate-fadeIn">
       <div className="page-header">
         <div>
-          <h1 className="page-title">Notification System 🔔</h1>
-          <p className="page-subtitle">Send global alerts, targeted push notifications, and segment-based messages.</p>
-        </div>
-        <button className="btn btn-primary">➕ New Notification</button>
-      </div>
-
-      <div className="card" style={{ marginBottom: 24 }}>
-        <div className="card-header">
-          <h3>Create Notification</h3>
-        </div>
-        <div style={{ padding: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-          <div>
-            <div style={{ marginBottom: 16 }}>
-               <label style={{ display: 'block', marginBottom: 8, fontSize: '0.875rem', fontWeight: 600 }}>Recipient Group</label>
-               <select className="form-control">
-                  <option>All Users</option>
-                  <option>Premium Only</option>
-                  <option>Institutional Clients</option>
-                  <option>New (Last 30 Days)</option>
-                  <option>Custom ID List</option>
-               </select>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-               <label style={{ display: 'block', marginBottom: 8, fontSize: '0.875rem', fontWeight: 600 }}>Notification Type</label>
-               <select className="form-control">
-                  <option>In-App Alert</option>
-                  <option>Push Notification</option>
-                  <option>Email Blast</option>
-                  <option>All Channels</option>
-               </select>
-            </div>
-          </div>
-          <div>
-            <div style={{ marginBottom: 16 }}>
-               <label style={{ display: 'block', marginBottom: 8, fontSize: '0.875rem', fontWeight: 600 }}>Message Title</label>
-               <input type="text" className="form-control" placeholder="Short, Punchy Title" />
-            </div>
-            <div style={{ marginBottom: 16 }}>
-               <label style={{ display: 'block', marginBottom: 8, fontSize: '0.875rem', fontWeight: 600 }}>Message Content</label>
-               <textarea className="form-control" placeholder="Write your notification message here..." style={{ height: 100 }}></textarea>
-            </div>
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
-               <button className="btn btn-secondary">💾 Save Draft</button>
-               <button className="btn btn-primary">🚀 Send Now</button>
-            </div>
-          </div>
+          <h1 className="page-title">Global Notifications 🔔</h1>
+          <p className="page-subtitle">Broadcast system updates, market alerts, and AI insights to users.</p>
         </div>
       </div>
 
-      <div className="card">
-         <div className="card-header">
-            <h3>Sent Notifications History</h3>
-         </div>
-         <div className="table-responsive">
-            <table className="table">
-               <thead>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Creation Form */}
+        <div className="lg:col-span-1">
+          <div className="card">
+            <div className="card-header">
+              <h3>Create Broadcast</h3>
+            </div>
+            <form onSubmit={handleSend} className="p-6">
+              <div className="mb-4">
+                <label className="label">Message Title</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="e.g., Market Hours Update"
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="label">Notification Type</label>
+                <select 
+                  className="form-control"
+                  value={formData.type}
+                  onChange={(e) => setFormData({...formData, type: e.target.value})}
+                >
+                  <option value="info">System Info</option>
+                  <option value="success">Success / Achievement</option>
+                  <option value="warning">Maintenance / Warning</option>
+                  <option value="danger">Urgent / Multi-sig</option>
+                  <option value="market">Market Event</option>
+                  <option value="ai_alert">AI Conviction Signal</option>
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="label">Broadcast Message</label>
+                <textarea 
+                  className="form-control" 
+                  placeholder="The actual message content..."
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                ></textarea>
+              </div>
+
+              <div className="mb-4">
+                <label className="label">Recipient</label>
+                <select 
+                  className="form-control"
+                  onChange={(e) => setFormData({...formData, user_id: e.target.value === 'all' ? null : parseInt(e.target.value)})}
+                >
+                  <option value="all">Broadcast to All Users</option>
+                  <option value="test" disabled>More segments coming soon...</option>
+                </select>
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn btn-primary w-full mt-4"
+                disabled={sending}
+              >
+                {sending ? 'Dispatching...' : '🚀 Send Notification'}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* History Table */}
+        <div className="lg:col-span-2">
+          <div className="card">
+            <div className="card-header flex justify-between items-center">
+              <h3>Dispatch History</h3>
+              <button onClick={fetchHistory} className="btn btn-sm btn-secondary">Refresh</button>
+            </div>
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
                   <tr>
-                     <th>Notification Title</th>
-                     <th>Audience Type</th>
-                     <th>Sender</th>
-                     <th>Status</th>
-                     <th>Sent Time</th>
-                     <th>Actions</th>
+                    <th>Title & Type</th>
+                    <th>Message Snippet</th>
+                    <th>Sent At</th>
+                    <th>Recipient</th>
                   </tr>
-               </thead>
-               <tbody>
-                  {NOTIFICATIONS.length > 0 ? (
-                    NOTIFICATIONS.map((n, i) => (
-                      <tr key={i}>
-                         <td><strong>{n.title}</strong></td>
-                         <td><span className="badge badge-secondary">{n.type}</span></td>
-                         <td>{n.author}</td>
-                         <td>
-                            <span className={`badge ${n.status === 'Sent' ? 'badge-success' : 'badge-warning'}`}>{n.status}</span>
-                         </td>
-                         <td>{n.sentDate}</td>
-                         <td>
-                            <div style={{ display: 'flex', gap: 8 }}>
-                               <button className="btn btn-sm btn-secondary">Stats</button>
-                               <button className="btn btn-sm btn-secondary">Clone</button>
-                            </div>
-                         </td>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr><td colSpan="4" className="text-center py-8">Loading history...</td></tr>
+                  ) : history.length > 0 ? (
+                    history.map((n) => (
+                      <tr key={n.id}>
+                        <td>
+                          <div className="font-bold uppercase text-[10px] tracking-wider mb-1 opacity-60">{n.type}</div>
+                          <div className="font-bold">{n.title}</div>
+                        </td>
+                        <td className="max-w-[200px] truncate">{n.message}</td>
+                        <td className="text-xs">{new Date(n.created_at).toLocaleString()}</td>
+                        <td>
+                          <span className={`badge ${n.user_id ? 'badge-secondary' : 'badge-primary'}`}>
+                            {n.user_id ? `User #${n.user_id}` : 'Global'}
+                          </span>
+                        </td>
                       </tr>
                     ))
                   ) : (
-                    <tr>
-                      <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#97A0AF' }}>
-                        No global notifications sent recently.
-                      </td>
-                    </tr>
+                    <tr><td colSpan="4" className="text-center py-12 text-gray-500">No broadcasts recorded yet.</td></tr>
                   )}
-               </tbody>
-            </table>
-         </div>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 }

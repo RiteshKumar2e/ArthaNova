@@ -152,7 +152,8 @@ export const notificationsAPI = {
   markRead: (id) => api.put(`/notifications/${id}/read`),
   markAllRead: () => api.post('/notifications/read-all'),
   delete: (id) => api.delete(`/notifications/${id}`),
-  send: (data) => api.post('/notifications/send'), // Admin
+  send: (data) => api.post('/notifications/send', data), // Admin
+  adminList: () => api.get('/notifications/admin/list'), // Admin
 }
 
 export const userAPI = {

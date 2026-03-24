@@ -5,9 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete, update, or_
 
-from app.db.database import get_db
+from app.core.dependencies import get_db, get_current_user
 from app.models.user import User, Notification
-from app.api.v1.auth import get_current_user
 from app.schemas.schemas import NotificationResponse, NotificationCreate, MessageResponse
 
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
@@ -110,3 +109,19 @@ async def send_notification(
     await db.commit()
     await db.refresh(new_notif)
     return new_notif
+
+
+@router.get("/admin/list", response_model=List[NotificationResponse])
+async def list_all_notifications_admin(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Admin: Retrieve all notifications in the system."""
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    result = await db.execute(
+        select(Notification)
+        .order_by(Notification.created_at.desc())
+    )
+    return result.scalars().all()

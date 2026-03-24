@@ -6,23 +6,11 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import decode_token
-from app.db.database import AsyncSessionLocal
+from app.db.database import AsyncSessionLocal, get_db
 from app.models.user import User
 from app.services.user_service import get_user_by_id
 
 security = HTTPBearer()
-
-
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with AsyncSessionLocal() as session:
-        try:
-            yield session
-            await session.commit()
-        except Exception:
-            await session.rollback()
-            raise
-        finally:
-            await session.close()
 
 
 async def get_current_user(
