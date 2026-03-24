@@ -260,3 +260,23 @@ class PaginatedResponse(BaseModel):
     page: int
     per_page: int
     total_pages: int
+class NotificationResponse(BaseModel):
+    id: int
+    user_id: Optional[int]
+    type: str
+    title: str
+    message: str
+    is_read: bool
+    data: Optional[dict]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class NotificationCreate(BaseModel):
+    user_id: Optional[int] = None
+    type: str = "info"
+    title: str
+    message: str
+    data: Optional[dict] = None

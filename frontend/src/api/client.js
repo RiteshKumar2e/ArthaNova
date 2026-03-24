@@ -147,6 +147,14 @@ export const watchlistAPI = {
   removeItem: (watchlistId, itemId) => api.delete(`/watchlist/${watchlistId}/items/${itemId}`),
 }
 
+export const notificationsAPI = {
+  list: () => api.get('/notifications'),
+  markRead: (id) => api.put(`/notifications/${id}/read`),
+  markAllRead: () => api.post('/notifications/read-all'),
+  delete: (id) => api.delete(`/notifications/${id}`),
+  send: (data) => api.post('/notifications/send'), // Admin
+}
+
 export const userAPI = {
   getProfile: () => api.get('/users/me'),
   updateProfile: (data) => api.put('/users/me', data),

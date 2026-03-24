@@ -54,6 +54,7 @@ class User(Base):
     portfolio = relationship("Portfolio", back_populates="user", uselist=False)
     watchlists = relationship("Watchlist", back_populates="user")
     alerts = relationship("Alert", back_populates="user")
+    notifications = relationship("Notification", back_populates="user")
     chat_sessions = relationship("ChatSession", back_populates="user")
 
 
@@ -134,6 +135,21 @@ class Alert(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="alerts")
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Null means global
+    type = Column(String(50), default="info")  # info, market, ai_alert, system
+    title = Column(String(255), nullable=False)
+    message = Column(Text, nullable=False)
+    is_read = Column(Boolean, default=False)
+    data = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="notifications")
 
 
 class ChatSession(Base):

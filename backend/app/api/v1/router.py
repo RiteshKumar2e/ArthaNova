@@ -19,6 +19,7 @@ from app.api.v1.alerts import router as alerts_router
 from app.api.v1.backtest import router as backtest_router
 from app.api.v1.admin import router as admin_router
 from app.api.v1.watchlist import router as watchlist_router
+from app.api.v1.notifications import router as notifications_router
 
 api_router = APIRouter()
 
@@ -38,3 +39,4 @@ api_router.include_router(company_news_router)
 api_router.include_router(alerts_router)
 api_router.include_router(backtest_router)
 api_router.include_router(watchlist_router)
+api_router.include_router(notifications_router)

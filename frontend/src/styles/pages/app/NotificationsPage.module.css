@@ -1,0 +1,250 @@
+/* ── Notifications Page — Neo-Brutalist Layout ── */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  border-bottom: 5px solid #000;
+  padding-bottom: 24px;
+}
+
+.header h1 {
+  font-family: var(--heading);
+  font-size: 2.5rem;
+  font-weight: 950;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.header p {
+  font-weight: 950;
+  text-transform: uppercase;
+  color: #666;
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+.markAllBtn {
+  background: var(--primary);
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  padding: 10px 20px;
+  font-family: var(--heading);
+  font-weight: 950;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.markAllBtn:hover {
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 5.5px 5.5px 0px #000;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.filterBtn {
+  padding: 8px 16px;
+  background: #fff;
+  border: 3px solid #000;
+  font-family: var(--heading);
+  font-weight: 950;
+  font-size: 0.75rem;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #000;
+  transition: all 0.1s ease;
+}
+
+.filterBtn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px #000;
+}
+
+.filterBtn.active {
+  background: #000;
+  color: #fff;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
+}
+
+/* Timeline/List */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.notifCard {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 8px 8px 0px #000;
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.notifCard.unread {
+  border-left-width: 12px;
+  background: #fdfdfd;
+}
+
+.notifCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0px #000;
+}
+
+.notifIcon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  background: #f0f0f0;
+  border: 3px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0px #000;
+}
+
+.notifContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notifHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.notifHeader h3 {
+  font-family: var(--heading);
+  font-size: 1.1rem;
+  font-weight: 950;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.time {
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.message {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.notifActions {
+  display: flex;
+  gap: 16px;
+}
+
+.notifActions button {
+  padding: 6px 12px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-family: var(--heading);
+  font-weight: 950;
+  font-size: 0.65rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.notifActions button:hover {
+  opacity: 0.8;
+}
+
+.deleteBtn {
+  background: #eee !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+}
+
+.emptyState {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 10px 10px 0px #000;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.emptyState h2 {
+  font-family: var(--heading);
+  font-size: 1.5rem;
+  font-weight: 950;
+  margin-top: 24px;
+}
+
+.emptyState p {
+  font-weight: 800;
+  color: #666;
+  margin-top: 12px;
+}
+
+.loader {
+  text-align: center;
+  padding: 40px;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+  .container { padding: 20px 15px; }
+  .header { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; }
+  .header h1 { font-size: 1.8rem; }
+  .header p { font-size: 0.7rem; }
+  .markAllBtn { width: 100%; padding: 12px; font-size: 0.7rem; }
+  
+  .filters { 
+    gap: 8px; 
+    margin-bottom: 20px; 
+    padding-bottom: 10px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filterBtn { padding: 6px 12px; font-size: 0.65rem; border-width: 2px; }
+
+  .notifCard { flex-direction: column; gap: 12px; padding: 16px; border-width: 3px; box-shadow: 4px 4px 0px #000; }
+  .notifIcon { width: 40px; height: 40px; min-width: 40px; font-size: 1.2rem; border-width: 2px; }
+  .notifHeader { flex-direction: column; gap: 4px; }
+  .notifHeader h3 { font-size: 0.95rem; }
+  .message { font-size: 0.85rem; margin-bottom: 16px; }
+  
+  .emptyState { padding: 40px 20px; border-width: 3px; box-shadow: 6px 6px 0px #000; }
+  .emptyState h2 { font-size: 1.2rem; margin-top: 16px; }
+  .emptyState p { font-size: 0.75rem; }
+}

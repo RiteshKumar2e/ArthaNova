@@ -40,3 +40,12 @@ async def drop_tables():
     """Drop all database tables (use with caution)."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
+
+
+async def get_db():
+    """Dependency for providing an async database session."""
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session
+        finally:
+            await session.close()

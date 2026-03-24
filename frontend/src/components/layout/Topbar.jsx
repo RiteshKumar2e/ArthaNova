@@ -1,10 +1,32 @@
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import { notificationsAPI } from '../../api/client'
 import styles from '../../styles/components/layout/Topbar.module.css'
 
 export default function Topbar({ onToggleSidebar }) {
   const { user } = useAuthStore()
   const navigate = useNavigate()
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    if (user) {
+      fetchUnreadCount()
+      // Optional: Polling every 60 seconds
+      const interval = setInterval(fetchUnreadCount, 60000)
+      return () => clearInterval(interval)
+    }
+  }, [user])
+
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await notificationsAPI.list()
+      const unread = res.data.filter(n => !n.is_read).length
+      setUnreadCount(unread)
+    } catch (err) {
+      console.error('Failed to fetch notifications', err)
+    }
+  }
 
   return (
     <header className={styles.topbar}>
@@ -41,7 +63,7 @@ export default function Topbar({ onToggleSidebar }) {
         {/* Notifications */}
         <Link to="/notifications" className={styles.iconBtn} title="Notifications">
           <span>🔔</span>
-          <span className={styles.notifBadge}>3</span>
+          {unreadCount > 0 && <span className={styles.notifBadge}>{unreadCount}</span>}
         </Link>
 
         {/* Profile */}

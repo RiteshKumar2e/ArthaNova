@@ -29,12 +29,12 @@ import OpportunityRadarPage from './pages/app/OpportunityRadarPage'
 import ProfilePage from './pages/app/ProfilePage'
 import VideoInsightsPage from './pages/app/VideoInsightsPage'
 import WatchlistPage from './pages/app/WatchlistPage'
+import NotificationsPage from './pages/app/NotificationsPage'
 import {
   InsiderActivityPage,
   DealsTrackerPage,
   TechnicalAnalysisPage,
   RiskAnalyzerPage,
-  NotificationsPage,
   SettingsPage
 } from './pages/app/PlaceholderPages'
 
