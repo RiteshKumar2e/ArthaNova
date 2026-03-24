@@ -1,0 +1,171 @@
+/* ── Stock Detail Page — Neo-Brutalist Style ── */
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  width: 100%;
+}
+
+/* Header */
+.headerSection {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+.headerLeft {}
+.stockSymbol {
+  font-family: var(--heading);
+  font-size: var(--fs-3xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: var(--sp-2);
+  background: var(--primary);
+  display: inline-block;
+  padding: var(--sp-2) var(--sp-4);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-xs);
+}
+.stockName {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: #333;
+}
+
+.priceBlock {
+  text-align: right;
+}
+.price {
+  font-family: var(--heading);
+  font-size: var(--fs-3xl);
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+.priceChange {
+  font-family: var(--heading);
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  margin-top: var(--sp-1);
+}
+.changePositive { color: #14a800; }
+.changeNegative { color: var(--color-danger); }
+
+/* Back button */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px 20px;
+  background-color: var(--bg-white);
+  color: var(--text);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-xs);
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.backButton:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-sm);
+  background: var(--yellow);
+}
+
+/* Metrics grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-5);
+  width: 100%;
+}
+
+.metricCard {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-5) var(--sp-6);
+  text-align: center;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.metricCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-md);
+}
+.metricLabel {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+  margin-bottom: var(--sp-2);
+}
+.metricValue {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  color: var(--text);
+}
+
+/* Info card */
+.infoCard {
+  background-color: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.infoCardHeader {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--accent);
+  border-bottom: var(--border-width) solid var(--border);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 2px solid rgba(0,0,0,0.07);
+  font-size: var(--fs-sm);
+}
+.infoRow:last-child { border-bottom: none; }
+.infoRow:hover { background: rgba(196, 255, 0, 0.08); }
+
+.infoKey {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #444;
+}
+.infoVal {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .metricsGrid { grid-template-columns: repeat(2, 1fr); }
+  .headerSection { flex-direction: column; align-items: flex-start; }
+  .priceBlock { text-align: left; }
+  .stockSymbol { font-size: var(--fs-2xl); }
+  .price { font-size: var(--fs-2xl); }
+}

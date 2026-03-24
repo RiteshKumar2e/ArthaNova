@@ -1,111 +1,347 @@
+/* ============================================================
+   ArthaNova — Global Neo-Brutalist Design System
+   Based on ZUPER-style: cream grid bg, thick borders, hard shadows,
+   bright accent colors, bold uppercase typography
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Neo-brutalist Palette */
+  --primary:   #C4FF00;   /* Lime Green  */
+  --secondary: #FF6AC1;   /* Pink        */
+  --accent:    #00F0FF;   /* Cyan        */
+  --yellow:    #FFDD55;   /* Yellow      */
+  --purple:    #A855F7;   /* Purple      */
+  --orange:    #FF6B2B;   /* Orange      */
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Backgrounds */
+  --bg:        #FDFCE8;   /* Cream       */
+  --bg-white:  #FFFFFF;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
+  /* Text / Border */
+  --text:      #000000;
+  --border:    #000000;
+  --border-width: 3px;
+
+  /* Hard box-shadows */
+  --shadow-xs: 2px 2px 0px var(--border);
+  --shadow-sm: 4px 4px 0px var(--border);
+  --shadow-md: 6px 6px 0px var(--border);
+  --shadow-lg: 8px 8px 0px var(--border);
+  --shadow-xl: 12px 12px 0px var(--border);
+
+  /* Semantic */
+  --color-success: #39FF14;
+  --color-danger:  #FF3131;
+  --color-warning: #FFDD55;
+  --color-info:    #00F0FF;
+
+  /* Typography */
+  --sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --heading: 'Archivo Black', sans-serif;
+  --mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Font sizes */
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.875rem;
+  --fs-base: 1rem;
+  --fs-md:   1.125rem;
+  --fs-lg:   1.375rem;
+  --fs-xl:   1.75rem;
+  --fs-2xl:  2.25rem;
+  --fs-3xl:  3rem;
+  --fs-4xl:  4.5rem;
+
+  /* Spacing */
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-5:  1.25rem;
+  --sp-6:  1.5rem;
+  --sp-8:  2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-20: 5rem;
+
+  /* Border radius – neo-brutalism = sharp */
+  --radius: 0px;
+
+  /* Layout */
+  --sidebar-width:           280px;
+  --sidebar-collapsed-width: 72px;
+  --topbar-height:           72px;
+
+  /* Transitions – snappy */
+  --t-fast: 0.1s ease;
+  --t-base: 0.15s ease;
+
+  /* Z-index */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+
+  font-family: var(--sans);
   color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  line-height: 1.5;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+/* ── Global Reset ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+#root { min-height: 100vh; }
+
+/* ── Typography ─────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading);
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+h1 { font-size: var(--fs-4xl); }
+h2 { font-size: var(--fs-3xl); }
+h3 { font-size: var(--fs-2xl); }
+h4 { font-size: var(--fs-xl);  }
+
+p { margin: 0; }
+
+/* ── Neo-brutalist Card ─────────────────────────────────── */
+.neo-box {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-6);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.neo-box:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Neo-brutalist Buttons ──────────────────────────────── */
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 14px 28px;
+  border: var(--border-width) solid var(--border);
+  background-color: var(--primary);
+  color: #000;
+  font-family: var(--heading);
+  font-size: var(--fs-base);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  user-select: none;
+  white-space: nowrap;
+}
+.neo-btn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-md);
+}
+.neo-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.neo-btn.pink   { background-color: var(--secondary); }
+.neo-btn.cyan   { background-color: var(--accent);    }
+.neo-btn.yellow { background-color: var(--yellow);    }
+.neo-btn.purple { background-color: var(--purple); color: #fff; }
+.neo-btn.orange { background-color: var(--orange); }
+.neo-btn.white  { background-color: #fff; }
+.neo-btn.black  { background-color: #000; color: #fff; }
+
+/* ── Neo-brutalist Inputs ───────────────────────────────── */
+.neo-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: var(--border-width) solid var(--border);
+  background: var(--bg-white);
+  font-family: var(--sans);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  outline: none;
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+.neo-input:focus {
+  box-shadow: var(--shadow-sm);
+  transform: translate(-1px, -1px);
+}
+.neo-input::placeholder { color: #888; font-weight: 400; }
+
+/* ── Neo-brutalist Label ────────────────────────────────── */
+.neo-label {
+  display: block;
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sp-2);
+}
+
+/* ── Highlight tag (yellow box behind text) ─────────────── */
+.neo-tag {
+  display: inline-block;
+  background: var(--yellow);
+  border: var(--border-width) solid var(--border);
+  padding: 2px 10px;
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-xs);
+}
+.neo-tag.pink   { background: var(--secondary); }
+.neo-tag.lime   { background: var(--primary);   }
+.neo-tag.cyan   { background: var(--accent);    }
+
+/* ── Section title with colored slab ───────────────────────*/
+.section-heading {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-6);
+  display: inline-block;
+  background: var(--primary);
+  border: var(--border-width) solid var(--border);
+  padding: var(--sp-2) var(--sp-5);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Utility classes ────────────────────────────────────── */
+.text-center { text-align: center; }
+.text-upper  { text-transform: uppercase; }
+.font-black  { font-family: var(--heading); font-weight: 900; }
+
+.bg-lime    { background: var(--primary);   }
+.bg-pink    { background: var(--secondary); }
+.bg-cyan    { background: var(--accent);    }
+.bg-yellow  { background: var(--yellow);    }
+.bg-white   { background: var(--bg-white);  }
+.bg-black   { background: #000; color: #fff;}
+
+.border-box {
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* ── Global Button Utility Classes (.btn) ───────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 12px 28px;
+  border: 3px solid #000;
+  background: #C4FF00;
+  color: #000;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #000;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+.btn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0px #000;
+}
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+/* Size variants */
+.btn-lg { padding: 15px 36px; font-size: 1rem; }
+.btn-sm { padding: 8px 18px; font-size: 0.8rem; }
+
+/* Color variants */
+.btn-primary  { background: #C4FF00; color: #000; }
+.btn-pink,
+.btn-secondary{ background: #FF6AC1; color: #000; }
+.btn-cyan     { background: #00F0FF; color: #000; }
+.btn-yellow   { background: #FFDD55; color: #000; }
+.btn-purple   { background: #A855F7; color: #fff; }
+.btn-black    { background: #000;    color: #C4FF00; }
+.btn-white    { background: #fff;    color: #000; }
+.btn-full     { width: 100%; }
+
+/* ── Global Form Utilities ──────────────────────────────── */
+.form-group {
   display: flex;
   flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 3px solid #000;
+  background: #FDFCE8;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  box-shadow: 3px 3px 0px #000;
+  outline: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
   box-sizing: border-box;
+  resize: vertical;
 }
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.form-control:focus {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000;
 }
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
+.form-control::placeholder { color: #888; font-weight: 400; }

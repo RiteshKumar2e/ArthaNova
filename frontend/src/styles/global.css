@@ -1,0 +1,92 @@
+/* ArthaNova — Global Styles
+   Imports variables and sets global element defaults.
+   The design system tokens are defined in src/index.css and src/styles/variables.css */
+
+/* ── Smooth scrolling ───────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ── Links ──────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Images ─────────────────────────────────────────────── */
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Lists ──────────────────────────────────────────────── */
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Form elements ──────────────────────────────────────── */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button { cursor: pointer; }
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* ── Neo-brutalist focus ring ───────────────────────────── */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ── App layout wrapper ─────────────────────────────────── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Page container (used inside layouts) ───────────────── */
+.page-content {
+  flex: 1;
+  padding: var(--sp-8);
+  width: 100%;
+  box-sizing: border-box;
+  max-width: var(--content-max-width, 1600px);
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding: var(--sp-4);
+  }
+}
+
+/* ── Utility: visually hidden (accessibility) ───────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Transition reset for reduced-motion ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

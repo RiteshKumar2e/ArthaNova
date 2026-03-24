@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
-import styles from '../../styles/pages/app/ProfilePage.module.scss'
+import styles from '../../styles/pages/app/ProfilePage.module.css'
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuthStore()

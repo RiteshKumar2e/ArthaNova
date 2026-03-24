@@ -4,7 +4,7 @@ import { useAuthStore } from '../../store/authStore'
 import toast from 'react-hot-toast'
 import AgentOrchestrationVisualizer from '../../components/AgentOrchestrationVisualizer'
 import SystemHealthIndicator from '../../components/SystemHealthIndicator'
-import styles from '../../styles/pages/app/AIChatPage.module.scss'
+import styles from '../../styles/pages/app/AIChatPage.module.css'
 
 export default function AIChatPage() {
   const { user } = useAuthStore()
@@ -30,7 +30,7 @@ export default function AIChatPage() {
   const loadSessions = async () => {
     try {
       const res = await aiAPI.getSessions()
-      setSessions(res.data)
+      setSessions(res.data || [])
     } catch {}
   }
 
@@ -38,8 +38,8 @@ export default function AIChatPage() {
     setSessionLoading(true)
     try {
       const res = await aiAPI.getSession(sessionId)
-      setActiveSession({ id: sessionId, title: res.data.session.title })
-      setMessages(res.data.messages)
+      setActiveSession({ id: sessionId, title: res.data?.session?.title || 'Chat' })
+      setMessages(res.data?.messages || [])
     } catch {
       toast.error('Failed to load session')
     } finally {

@@ -1,0 +1,175 @@
+/* ── Footer — Neo-Brutalist ──
+   Matches Footer.jsx class names exactly:
+   footer, container, top, brand, brandRow, brandIcon, brandName, brandDesc,
+   socials, social, linksGrid, linkGroup, bottom, disclaimer
+   ─────────────────────────────────────────────────────────────────── */
+
+.footer {
+  background: #000;
+  color: #fff;
+  border-top: 3px solid #000;
+  box-shadow: 0 -4px 0px #C4FF00;
+  padding: 4rem 0 0;
+  margin-top: auto;
+}
+
+/* ── Inner container ─────────── */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+/* ── Top grid ────────────────── */
+.top {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  gap: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 3px solid rgba(255,255,255,0.1);
+}
+
+/* ── Brand column ─────────────  */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.brandRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #C4FF00;
+  border: 3px solid #fff;
+  box-shadow: 4px 4px 0px #C4FF00;
+  padding: 0.35rem 1rem;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #000;
+  align-self: flex-start;
+}
+
+.brandIcon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.brandName { /* no extra styles needed */ }
+
+.brandDesc {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 320px;
+}
+
+.socials {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border: 3px solid #fff;
+  box-shadow: 3px 3px 0px #C4FF00;
+  color: #000;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.social:hover {
+  background: #C4FF00;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #C4FF00;
+}
+
+/* ── Links grid ──────────────── */
+.linksGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.linkGroup h4 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #C4FF00;
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #C4FF00;
+}
+
+.linkGroup a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  transition: all 0.1s ease;
+  display: inline-block;
+}
+.linkGroup a:hover {
+  color: #C4FF00;
+  padding-left: 0.4rem;
+}
+
+/* ── Bottom bar ──────────────── */
+.bottom {
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.bottom p {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+.disclaimer {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  color: rgba(255,255,255,0.3) !important;
+  max-width: 700px;
+}
+
+/* ── Responsive ──────────────── */
+@media (max-width: 1100px) {
+  .top { grid-template-columns: 1fr; gap: 2rem; }
+  .linksGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .container { padding: 0 1rem; }
+  .footer { padding: 2.5rem 0 0; }
+  .linksGrid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+}

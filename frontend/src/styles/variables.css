@@ -1,0 +1,174 @@
+/* ArthaNova — CSS Variable Aliases (Neo-Brutalist System)
+   These map the old semantic names to the new design system tokens
+   defined in index.css so all existing components keep working.     */
+
+:root {
+  /* ── Brand / Palette ─────────────────────────────────────── */
+  --color-primary:        var(--primary);
+  --color-primary-dark:   #A3D600;
+  --color-primary-light:  #E5FF99;
+  --color-secondary:      var(--secondary);
+  --color-secondary-light:#FFB3E0;
+  --color-accent:         var(--accent);
+  --color-accent-light:   #B3FAFF;
+  --color-yellow:         var(--yellow);
+  --color-purple:         var(--purple);
+  --color-orange:         var(--orange);
+
+  /* ── Semantic ────────────────────────────────────────────── */
+  --color-success:        #39FF14;
+  --color-success-light:  #D4FFC1;
+  --color-warning:        #FFDD55;
+  --color-warning-light:  #FFFFD1;
+  --color-danger:         #FF3131;
+  --color-danger-light:   #FFD1D1;
+  --color-info:           #00F0FF;
+  --color-info-light:     #D1FFFF;
+
+  /* ── Neutral ─────────────────────────────────────────────── */
+  --color-white:          #FFFFFF;
+  --color-bg:             var(--bg);
+  --color-bg-alt:         #FFFFFF;
+  --color-surface:        #FFFFFF;
+  --color-surface-raised: #FFFFFF;
+  --color-border:         var(--border);
+  --color-border-strong:  #000000;
+
+  /* ── Text ────────────────────────────────────────────────── */
+  --color-text-primary:   #000000;
+  --color-text-secondary: #111111;
+  --color-text-tertiary:  #333333;
+  --color-text-inverse:   #FFFFFF;
+  --color-text-link:      #000000;
+
+  /* ── Sidebar ─────────────────────────────────────────────── */
+  --color-sidebar-bg:        #FFFFFF;
+  --color-sidebar-text:      #000000;
+  --color-sidebar-active:    #000000;
+  --color-sidebar-hover:     rgba(196, 255, 0, 0.25);
+  --color-sidebar-active-bg: var(--primary);
+
+  /* ── Shadows (hard neo-brutalist shadows) ────────────────── */
+  --shadow-xs: 2px 2px 0px #000;
+  --shadow-sm: 4px 4px 0px #000;
+  --shadow-md: 6px 6px 0px #000;
+  --shadow-lg: 8px 8px 0px #000;
+  --shadow-xl: 12px 12px 0px #000;
+
+  /* ── Typography ──────────────────────────────────────────── */
+  --font-primary:  var(--sans);
+  --font-heading:  var(--heading);
+  --font-mono:     var(--mono);
+
+  --font-size-xs:   var(--fs-xs);
+  --font-size-sm:   var(--fs-sm);
+  --font-size-base: var(--fs-base);
+  --font-size-md:   var(--fs-md);
+  --font-size-lg:   var(--fs-lg);
+  --font-size-xl:   var(--fs-xl);
+  --font-size-2xl:  var(--fs-2xl);
+  --font-size-3xl:  var(--fs-3xl);
+  --font-size-4xl:  var(--fs-4xl);
+
+  --font-weight-light:     400;
+  --font-weight-regular:   400;
+  --font-weight-medium:    600;
+  --font-weight-semibold:  700;
+  --font-weight-bold:      800;
+  --font-weight-extrabold: 900;
+
+  /* ── Spacing ─────────────────────────────────────────────── */
+  --space-1:  var(--sp-1);
+  --space-2:  var(--sp-2);
+  --space-3:  var(--sp-3);
+  --space-4:  var(--sp-4);
+  --space-5:  var(--sp-5);
+  --space-6:  var(--sp-6);
+  --space-8:  var(--sp-8);
+  --space-10: var(--sp-10);
+  --space-12: var(--sp-12);
+  --space-16: var(--sp-16);
+  --space-20: var(--sp-20);
+
+  /* ── Border Radius (sharp = neo-brutalism) ────────────────── */
+  --radius-sm:   0px;
+  --radius-md:   0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-2xl:  0px;
+  --radius-full: 9999px;
+
+  /* ── Layout ──────────────────────────────────────────────── */
+  --sidebar-width:           280px;
+  --sidebar-collapsed-width: 72px;
+  --topbar-height:           72px;
+  --content-max-width:       1600px;
+
+  /* ── Transitions (snappy) ─────────────────────────────────── */
+  --transition-fast: var(--t-fast);
+  --transition-base: var(--t-base);
+  --transition-slow: 0.25s ease;
+
+  /* ── Breakpoints ─────────────────────────────────────────── */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl:1400px;
+
+  /* ── Z-Index ─────────────────────────────────────────────── */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+
+  /* ── Container ────────────────────────────────────────────── */
+  --container-sm:        576px;
+  --container-md:        768px;
+  --container-lg:        992px;
+  --container-xl:        1200px;
+  --container-2xl:       1400px;
+  --container-fluid:     100%;
+  --container-max-width: 1600px;
+  --container-padding:   var(--sp-6);
+
+  /* ── Component Sizes ─────────────────────────────────────── */
+  --size-card-padding:        var(--sp-5);
+  --size-card-border-radius:  0px;           /* sharp! */
+  --size-card-gap:            var(--sp-5);
+  --size-card-shadow:         4px 4px 0px #000;
+
+  --size-button-padding-y:    0.875rem;
+  --size-button-padding-x:    1.75rem;
+  --size-button-height:       48px;
+  --size-button-border-radius:0px;
+
+  --size-input-padding-y:     0.75rem;
+  --size-input-padding-x:     1rem;
+  --size-input-height:        48px;
+  --size-input-border-radius: 0px;
+
+  --size-badge-padding-y:     0.25rem;
+  --size-badge-padding-x:     0.6rem;
+  --size-badge-border-radius: 0px;
+  --size-badge-font-size:     0.75rem;
+
+  /* ── Grid ────────────────────────────────────────────────── */
+  --grid-gap-sm: var(--sp-3);
+  --grid-gap-md: var(--sp-5);
+  --grid-gap-lg: var(--sp-8);
+  --grid-gap-xl: var(--sp-10);
+
+  --section-padding-y: var(--sp-16);
+  --section-padding-x: var(--sp-8);
+  --section-margin-y:  var(--sp-10);
+
+  /* ── Line Heights ─────────────────────────────────────────── */
+  --line-height-tight:   1.1;
+  --line-height-normal:  1.5;
+  --line-height-relaxed: 1.75;
+  --line-height-loose:   2;
+}

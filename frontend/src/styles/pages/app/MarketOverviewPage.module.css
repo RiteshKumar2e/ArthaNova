@@ -1,0 +1,138 @@
+/* ── Market Overview Page — Neo-Brutalist Style ── */
+
+.marketContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  width: 100%;
+}
+
+.pageTitle {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+/* Indices */
+.indicesSection {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: var(--border-width) solid var(--border);
+  background: var(--primary);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.indicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  border-top: none;
+}
+
+.indexCard {
+  padding: var(--sp-5) var(--sp-5);
+  border-right: var(--border-width) solid var(--border);
+  border-bottom: var(--border-width) solid var(--border);
+  background-color: var(--bg-white);
+  text-align: center;
+  transition: all var(--t-fast);
+}
+.indexCard:last-child { border-right: none; }
+.indexCard:hover {
+  background: rgba(196, 255, 0, 0.15);
+  transform: scale(1.01);
+}
+
+.indexName {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+  margin-bottom: var(--sp-3);
+}
+
+.indexValue {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: var(--sp-2);
+  line-height: 1;
+}
+
+.indexChange {
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.changePositive { color: #14a800; }
+.changeNegative { color: var(--color-danger); }
+
+/* Sector section */
+.sectorSection {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.sectorTitle {
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: var(--border-width) solid var(--border);
+  background: var(--accent);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sectorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-5);
+  padding: var(--sp-5);
+}
+
+.sectorCard {
+  padding: var(--sp-5);
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-xs);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.sectorCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-sm);
+  background: rgba(196, 255, 0, 0.2);
+}
+
+.sectorName {
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-2);
+}
+
+@media (max-width: 768px) {
+  .indicesGrid { grid-template-columns: repeat(2, 1fr); }
+  .sectorGrid { grid-template-columns: 1fr; }
+  .indexValue { font-size: var(--fs-xl); }
+}

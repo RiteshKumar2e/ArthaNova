@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import styles from '../../styles/pages/auth/AuthPages.module.scss'
+import styles from '../../styles/pages/auth/AuthPages.module.css'
 
 export default function Captcha({ onVerify }) {
   const [status, setStatus] = useState('idle') // idle, loading, success

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
-import styles from '../../styles/pages/auth/AuthPages.module.scss'
+import styles from '../../styles/pages/auth/AuthPages.module.css'
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('')

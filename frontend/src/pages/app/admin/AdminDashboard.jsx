@@ -4,7 +4,7 @@ import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useAuthStore } from '../../../store/authStore';
 import RiskAlerts from '../../../components/RiskAlerts';
-import styles from '../../../styles/pages/app/admin/AdminDashboard.module.scss';
+import styles from '../../../styles/pages/app/admin/AdminDashboard.module.css';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);

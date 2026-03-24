@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import styles from '../../styles/components/layout/Sidebar.module.scss'
+import styles from '../../styles/components/layout/Sidebar.module.css'
 
 const USER_NAV = [
   {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import '../styles/components/HighConvictionTrades.scss';
+import '../styles/components/HighConvictionTrades.css';
 
 const HighConvictionTrades = () => {
   const { accessToken } = useAuthStore();

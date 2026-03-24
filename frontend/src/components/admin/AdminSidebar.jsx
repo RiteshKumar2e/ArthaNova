@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import styles from '../../styles/components/layout/AdminSidebar.module.scss'
+import styles from '../../styles/components/layout/AdminSidebar.module.css'
 
 const ADMIN_NAV = [
   { section: 'Platform', items: [

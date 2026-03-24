@@ -1,0 +1,181 @@
+/* ── Filings Analyzer Page — Neo-Brutalist Style ── */
+
+.filingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  width: 100%;
+}
+
+.pageTitle {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+/* Search bar */
+.searchBar {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  border: var(--border-width) solid var(--border);
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  outline: none;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.input:focus {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.searchBtn {
+  padding: 12px 24px;
+  background: var(--primary);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-xs);
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.searchBtn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Layout */
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-6);
+  width: 100%;
+}
+@media (min-width: 1200px) {
+  .dashboardGrid { grid-template-columns: 340px 1fr; }
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+/* Base card */
+.card {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--secondary);
+  border-bottom: var(--border-width) solid var(--border);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.cardBody { padding: var(--sp-5); }
+
+/* Filings grid */
+.filingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--sp-5);
+}
+
+.filingCard {
+  background-color: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.filingCard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-md);
+}
+
+.filingCardTop {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--primary);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.filingCompany {
+  font-family: var(--heading);
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: var(--sp-2);
+}
+
+.filingType {
+  display: inline-block;
+  background: #000;
+  color: var(--primary);
+  border: 2px solid #000;
+  padding: 3px 10px;
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.filingBody {
+  padding: var(--sp-4) var(--sp-5);
+}
+
+.filingDate {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+  margin-bottom: var(--sp-3);
+}
+
+.filingDescription {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: #333;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .filingGrid { grid-template-columns: 1fr; }
+  .searchBar { flex-direction: column; }
+  .input, .searchBtn { width: 100%; }
+}

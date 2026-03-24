@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
-import { FiEye, FiEyeOff, FiMail, FiLock, FiTrendingUp } from 'react-icons/fi'
-import styles from '../../styles/pages/auth/AuthPages.module.scss'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
+import styles from '../../styles/pages/auth/AuthPages.module.css'
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '', remember_me: false })
@@ -69,39 +69,39 @@ export default function LoginPage() {
 
   return (
     <div className={styles.authPageLight}>
+      {/* Decorative Boxes */}
+      <div className={`${styles.floatingBox} ${styles.box1}`}></div>
+      <div className={`${styles.floatingBox} ${styles.box2}`}></div>
+      <div className={`${styles.floatingBox} ${styles.box3}`}></div>
+
       <Link to="/" className={styles.homeButtonLight}>
         <span className={styles.homeIcon}>&larr;</span>
         <span className={styles.homeText}>Back to Home</span>
       </Link>
 
-      <div className={styles.authCardLight}>
-        {/* Brand Logo */}
-        <div className={styles.authBrandLight}>
-          <div className={styles.brandIconLight}>
-            <FiTrendingUp />
-          </div>
-          <div className={styles.brandTextLight}>
-            Artha<span>Nova</span>
-          </div>
-        </div>
+      {/* Brand Header */}
+      <div className={styles.authBrandLight}>
+        <Link to="/" className={styles.brandIconLight}>
+          <span>▲</span>
+          <span>ARTHANOVA</span>
+        </Link>
+        <h1 className={styles.authTitleLight}>WELCOME BACK!</h1>
+        <p className={styles.authSubtitleLight}>Sign in to access your account</p>
+      </div>
 
-        {/* Header */}
-        <div className={styles.authHeaderLight}>
-          <h1 className={styles.authTitleLight}>Welcome Back!</h1>
-          <p className={styles.authSubtitleLight}>Sign in to your account</p>
-        </div>
+      <div className={styles.authCardLight}>
 
         <form onSubmit={handleSubmit} className={styles.authFormLight}>
           {/* Email Input */}
           <div className={styles.inputGroupLight}>
+            <label htmlFor="login-email">EMAIL</label>
             <div className={styles.inputWrapperLight}>
-              <FiMail className={styles.inputIconLight} />
               <input
                 id="login-email"
                 name="email"
                 type="email"
                 className={`${styles.inputFieldLight} ${errors.email ? styles.hasError : ''}`}
-                placeholder="Email address"
+                placeholder="email@example.com"
                 value={form.email}
                 onChange={handleChange}
                 autoComplete="email"
@@ -112,14 +112,14 @@ export default function LoginPage() {
 
           {/* Password Input */}
           <div className={styles.inputGroupLight}>
+            <label htmlFor="login-password">PASSWORD</label>
             <div className={styles.inputWrapperLight}>
-              <FiLock className={styles.inputIconLight} />
               <input
                 id="login-password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                className={`${styles.inputFieldLight} ${styles.inputFieldLightWithToggle} ${errors.password ? styles.hasError : ''}`}
-                placeholder="Password"
+                className={`${styles.inputFieldLight} ${errors.password ? styles.hasError : ''}`}
+                placeholder="Enter your password"
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="current-password"
@@ -130,30 +130,30 @@ export default function LoginPage() {
                 onClick={() => setShowPassword(!showPassword)}
                 tabIndex="-1"
               >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+                {showPassword ? "HIDE" : "SHOW"}
               </button>
             </div>
             {errors.password && <div className={styles.errorTextLight}>{errors.password}</div>}
           </div>
 
-          {/* Forgot Password Link */}
-          <Link to="/forgot-password" className={styles.forgotLinkLight}>
-            Forgot Password?
-          </Link>
-
-          {/* Remember Me */}
+          {/* Settings Row */}
           <div className={styles.checkboxRowLight}>
-            <input
-              type="checkbox"
-              id="remember_me"
-              name="remember_me"
-              className={styles.checkboxLight}
-              checked={form.remember_me}
-              onChange={handleChange}
-            />
-            <label htmlFor="remember_me" className={styles.checkboxLabelLight}>
-              Remember me
-            </label>
+            <div className={styles.rememberMeSection}>
+              <input
+                type="checkbox"
+                id="remember_me"
+                name="remember_me"
+                className={styles.checkboxLight}
+                checked={form.remember_me}
+                onChange={handleChange}
+              />
+              <label htmlFor="remember_me" className={styles.checkboxLabelLight}>
+                Remember me
+              </label>
+            </div>
+            <Link to="/forgot-password" className={styles.forgotLinkLight}>
+              Forgot Password?
+            </Link>
           </div>
 
           {/* Submit Button */}
@@ -163,13 +163,22 @@ export default function LoginPage() {
             id="login-submit-btn"
             disabled={loading}
           >
-            {loading ? <span className={styles.spinnerLight} /> : 'Login'}
+            {loading ? <span className={styles.spinnerLight} /> : 'SIGN IN'}
           </button>
         </form>
 
+        {/* Social Login */}
+        <div className={styles.socialDividerLight}>
+          <span>OR CONTINUE WITH</span>
+        </div>
+        <button type="button" className={styles.socialBtnLight}>
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/02-08-2017/google.svg" alt="Google" />
+          CONTINUE WITH GOOGLE
+        </button>
+
         {/* Sign Up Link */}
         <p className={styles.authSwitchLight}>
-          New to ArthaNova? <Link to="/register">Register Now</Link>
+          Don't have an account? <Link to="/register">SIGN UP HERE!</Link>
         </p>
 
         {/* Demo Login Buttons */}

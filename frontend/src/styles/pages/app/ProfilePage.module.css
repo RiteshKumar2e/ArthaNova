@@ -1,0 +1,205 @@
+/* ── Profile Page — Neo-Brutalist Style ── */
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  max-width: 900px;
+  width: 100%;
+}
+
+.pageTitle {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+/* Avatar + name hero */
+.profileHero {
+  background: var(--primary);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-md);
+  padding: var(--sp-8) var(--sp-8);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  flex-wrap: wrap;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: #000;
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  color: var(--primary);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.heroName {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: var(--sp-2);
+}
+
+.userEmail {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: #111;
+}
+
+/* Profile card */
+.profileCard {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--accent);
+  border-bottom: var(--border-width) solid var(--border);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.profileForm,
+.formSection {
+  padding: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-5);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.label {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: var(--border-width) solid var(--border);
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  outline: none;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  box-sizing: border-box;
+}
+.input:focus {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-sm);
+}
+.input::placeholder { color: #777; font-weight: 400; }
+
+.button,
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  background-color: var(--primary);
+  color: #000;
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  width: fit-content;
+}
+.button:hover, .editButton:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-md);
+}
+.button:active, .editButton:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+/* Details card */
+.detailsCard {
+  background-color: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.detailsTitle {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--yellow);
+  border-bottom: var(--border-width) solid var(--border);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 2px solid rgba(0,0,0,0.07);
+}
+.detailRow:last-child { border-bottom: none; }
+.detailRow:hover { background: rgba(196, 255, 0, 0.08); }
+
+.detailLabel {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #444;
+}
+
+.detailValue {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .formRow { grid-template-columns: 1fr; }
+  .profileHero { padding: var(--sp-5); }
+  .button, .editButton { width: 100%; }
+}

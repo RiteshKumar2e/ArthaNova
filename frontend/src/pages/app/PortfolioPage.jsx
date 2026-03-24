@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { portfolioAPI } from '../../api/client'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import toast from 'react-hot-toast'
-import styles from '../../styles/pages/app/PortfolioPage.module.scss'
+import styles from '../../styles/pages/app/PortfolioPage.module.css'
 
 const COLORS = ['#0052CC', '#00875A', '#FF6B35', '#9333EA', '#FF991F', '#0065FF', '#DE350B', '#34D399']
 
@@ -59,9 +59,9 @@ export default function PortfolioPage() {
 
       {/* Add Form */}
       {showAdd && (
-        <div className="card" style={{ marginBottom: 20 }}>
-          <h3 style={{ fontSize: '1rem', marginBottom: 16 }}>Add Holding</h3>
-          <form onSubmit={handleAdd} style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>
+        <div className="card" style={{ marginBottom: 30, background: 'var(--color-yellow)', border: '4px solid #000' }}>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: 20, fontWeight: 900, textTransform: 'uppercase' }}>Add New Holding</h3>
+          <form onSubmit={handleAdd} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Symbol</label>
               <input className="form-control" placeholder="RELIANCE" value={form.symbol}
@@ -87,16 +87,9 @@ export default function PortfolioPage() {
               <input className="form-control" placeholder="Energy" value={form.sector}
                 onChange={(e) => setForm((p) => ({ ...p, sector: e.target.value }))} />
             </div>
-            <div className="form-group" style={{ marginBottom: 0, display: 'flex', alignItems: 'flex-end', gap: 8 }}>
-              <div style={{ flex: 1 }}>
-                <label className="form-label">Exchange</label>
-                <select className="form-control" value={form.exchange} onChange={(e) => setForm((p) => ({ ...p, exchange: e.target.value }))}>
-                  <option>NSE</option>
-                  <option>BSE</option>
-                </select>
-              </div>
-              <button type="submit" className="btn btn-primary">Add</button>
-              <button type="button" className="btn btn-ghost" onClick={() => setShowAdd(false)}>Cancel</button>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10 }}>
+              <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Add</button>
+              <button type="button" className="btn btn-ghost" onClick={() => setShowAdd(false)}>✕</button>
             </div>
           </form>
         </div>
@@ -105,69 +98,68 @@ export default function PortfolioPage() {
       {/* Summary Cards */}
       {portfolio && (
         <>
-          <div className="grid-4" style={{ marginBottom: 24 }}>
-            <div className="metric-card">
+          <div className="grid-4" style={{ marginBottom: 32 }}>
+            <div className="metric-card" style={{ background: 'white' }}>
               <div className="metric-label">Total Invested</div>
               <div className="metric-value">₹{portfolio.total_invested?.toLocaleString()}</div>
             </div>
-            <div className="metric-card">
+            <div className="metric-card" style={{ background: 'var(--color-primary-light)' }}>
               <div className="metric-label">Current Value</div>
               <div className="metric-value">₹{portfolio.current_value?.toLocaleString()}</div>
-              <div className={`metric-change ${portfolio.total_pnl >= 0 ? 'positive' : 'negative'}`}>
+              <div className={`badge ${portfolio.total_pnl >= 0 ? 'badge-success' : 'badge-danger'}`} style={{ marginTop: 8 }}>
                 {portfolio.total_pnl >= 0 ? '▲' : '▼'} {Math.abs(portfolio.total_pnl_pct)}%
               </div>
             </div>
-            <div className="metric-card">
+            <div className="metric-card" style={{ background: portfolio.total_pnl >= 0 ? 'var(--color-primary)' : 'var(--color-secondary)' }}>
               <div className="metric-label">Total P&L</div>
-              <div className="metric-value" style={{ color: portfolio.total_pnl >= 0 ? '#00875A' : '#DE350B' }}>
+              <div className="metric-value">
                 {portfolio.total_pnl >= 0 ? '+' : ''}₹{portfolio.total_pnl?.toLocaleString()}
               </div>
             </div>
-            <div className="metric-card">
+            <div className="metric-card" style={{ background: 'var(--color-yellow)' }}>
               <div className="metric-label">Risk Score</div>
               <div className="metric-value">{portfolio.risk_score} / 10</div>
-              <div className="metric-change" style={{ color: '#FF991F' }}>Moderate</div>
             </div>
           </div>
 
-          <div className="grid-2" style={{ marginBottom: 24 }}>
+          <div className="grid-2" style={{ marginBottom: 32 }}>
             {/* Sector Allocation Pie */}
             <div className="card">
-              <div className="card-header"><h3 style={{ fontSize: '1rem' }}>Sector Allocation</h3></div>
+              <div className="card-header"><h3 style={{ fontSize: '1.1rem', fontWeight: 900 }}>Sector Allocation</h3></div>
               {portfolio.sector_allocation?.length > 0 ? (
-                <ResponsiveContainer width="100%" height={220}>
+                <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
                     <Pie data={portfolio.sector_allocation} cx="50%" cy="50%" innerRadius={60} outerRadius={90}
-                      dataKey="value" nameKey="sector" paddingAngle={3}>
+                      dataKey="value" nameKey="sector" paddingAngle={5}>
                       {portfolio.sector_allocation.map((_, i) => (
-                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                        <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="#000" strokeWidth={2} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(v) => [`₹${v.toLocaleString()}`, 'Value']} contentStyle={{ borderRadius: 8, fontSize: 12 }} />
-                    <Legend formatter={(v) => <span style={{ fontSize: '0.75rem' }}>{v}</span>} />
+                    <Tooltip 
+                       contentStyle={{ background: '#fff', border: '3px solid #000', borderRadius: '0', boxShadow: '4px 4px 0px #000', fontWeight: 900 }} 
+                       formatter={(v) => [`₹${v.toLocaleString()}`, 'Value']} 
+                    />
+                    <Legend verticalAlign="bottom" height={36} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="empty-state">
-                  <div className="empty-icon">📊</div>
-                  <div className="empty-title">No holdings yet</div>
-                </div>
+                <div className="empty-state">No holdings yet</div>
               )}
             </div>
 
             {/* AI Recommendations */}
-            <div className="card">
-              <div className="card-header"><h3 style={{ fontSize: '1rem' }}>🤖 AI Portfolio Insights</h3></div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div className="card" style={{ background: 'var(--color-accent-light)' }}>
+              <div className="card-header"><h3 style={{ fontSize: '1.1rem', fontWeight: 900 }}>🤖 AI Portfolio Insights</h3></div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
                 {portfolio.holdings?.length > 0 ? (
-                  <div style={{ padding: '20px', textAlign: 'center', background: '#F4F5F7', borderRadius: 8 }}>
-                    <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🧠</div>
-                    <p style={{ fontSize: '0.85rem', color: '#172B4D', fontWeight: 500 }}>AI is analyzing your {portfolio.holdings.length} holdings...</p>
-                    <p style={{ fontSize: '0.75rem', color: '#5E6C84', marginTop: 4 }}>Deep insights on sector concentration and risk will appear here shortly.</p>
+                  <div style={{ padding: '24px', textAlign: 'center', background: 'white', border: '3px solid #000', boxShadow: '5px 5px 0px #000' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: 12 }}>🧠</div>
+                    <p style={{ fontSize: '1rem', color: '#000', fontWeight: 900, textTransform: 'uppercase' }}>AI Analysis in Progress</p>
+                    <p style={{ fontSize: '0.85rem', color: '#333', marginTop: 8, fontWeight: 700 }}>Scanning {portfolio.holdings.length} holdings for risk and concentration...</p>
                   </div>
                 ) : (
-                  <div style={{ padding: '20px', textAlign: 'center', background: '#F4F5F7', borderRadius: 8 }}>
-                    <p style={{ fontSize: '0.8rem', color: '#5E6C84' }}>No data for AI analysis. Add some holdings to receive personalized insights.</p>
+                  <div style={{ padding: '24px', textAlign: 'center', background: 'white', border: '3px solid #000' }}>
+                    <p style={{ fontSize: '0.9rem', color: '#000', fontWeight: 800 }}>Add holdings to unlock AI insights.</p>
                   </div>
                 )}
               </div>

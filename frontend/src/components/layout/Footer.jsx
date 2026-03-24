@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import styles from '../../styles/components/layout/Footer.module.scss'
+import styles from '../../styles/components/layout/Footer.module.css'
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa'
 
 export default function Footer() {

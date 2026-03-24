@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import styles from '../../styles/components/layout/Topbar.module.scss'
+import styles from '../../styles/components/layout/Topbar.module.css'
 
 export default function Topbar({ onToggleSidebar }) {
   const { user } = useAuthStore()

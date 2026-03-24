@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import '../styles/components/SystemHealthIndicator.scss';
+import '../styles/components/SystemHealthIndicator.css';
 
 const SystemHealthIndicator = ({ compact = false }) => {
   const { accessToken } = useAuthStore();

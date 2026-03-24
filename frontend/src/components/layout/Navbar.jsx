@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import styles from '../../styles/components/layout/Navbar.module.scss'
+import styles from '../../styles/components/layout/Navbar.module.css'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },

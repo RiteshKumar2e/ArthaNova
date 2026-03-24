@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { backtestAPI, stocksAPI } from '../../api/client'
-import styles from '../../styles/pages/app/BacktestingPage.module.scss'
+import styles from '../../styles/pages/app/BacktestingPage.module.css'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   AreaChart, Area

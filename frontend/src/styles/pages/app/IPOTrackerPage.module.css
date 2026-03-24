@@ -1,0 +1,151 @@
+/* ── IPO Tracker Page — Neo-Brutalist Style ── */
+
+.ipoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  width: 100%;
+}
+
+.pageTitle {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+/* Filter bar */
+.statusFilter {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.statusButton {
+  padding: 10px 20px;
+  border: var(--border-width) solid var(--border);
+  background-color: var(--bg-white);
+  cursor: pointer;
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--t-fast);
+}
+.statusButton:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-sm);
+  background: rgba(196, 255, 0, 0.2);
+}
+.statusButton.active {
+  background-color: var(--primary);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* IPO grid */
+.ipoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--sp-5);
+  width: 100%;
+}
+
+.ipoCard {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.ipoCard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-md);
+}
+
+.ipoCardHeader {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--primary);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.ipoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.ipoCompanyName,
+.companyName {
+  font-family: var(--heading);
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.ipoStatus,
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border: var(--border-width) solid var(--border);
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  box-shadow: var(--shadow-xs);
+}
+.statusUpcoming { background: var(--accent); }
+.statusFiled    { background: var(--yellow); }
+.statusListed   { background: var(--primary); }
+
+.ipoDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+.ipoDetail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-sm);
+  padding: var(--sp-3) var(--sp-5);
+  border-bottom: 2px solid rgba(0,0,0,0.07);
+}
+.ipoDetail:last-child { border-bottom: none; }
+.ipoDetail:hover { background: rgba(196, 255, 0, 0.08); }
+
+.ipoDetailLabel,
+.date {
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #444;
+}
+
+.ipoDetailValue,
+.priceRange {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .ipoGrid { grid-template-columns: 1fr; }
+}

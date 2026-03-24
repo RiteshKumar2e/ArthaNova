@@ -1,22 +1,20 @@
-
-
 .wrapper {
   display: flex;
   min-height: 100vh;
-  background: $color-bg;
+  background: var(--color-bg);
 }
 
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: $sidebar-width;
+  margin-left: 240px;
   min-width: 0;
-  transition: margin-left $transition-base;
+  transition: margin-left 0.25s ease;
 }
 
 .wrapper.collapsed .content {
-  margin-left: $sidebar-collapsed-width;
+  margin-left: 64px;
 }
 
 .main {
@@ -25,7 +23,7 @@
   padding: 0;
 }
 
-@media (max-width: #{$breakpoint-lg}) {
+@media (max-width: 992px) {
   .content {
     margin-left: 0;
   }

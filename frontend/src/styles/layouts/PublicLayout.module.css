@@ -1,0 +1,42 @@
+/* ── Public Layout — Neo-Brutalist ──
+   Matches: PublicLayout.jsx (.wrapper, .main, .container, .section)
+   ─────────────────────────────────── */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* BG grid comes from body in index.css — DO NOT override here */
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  width: 100%;
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 992px) {
+  .section { padding: 2.5rem 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 1rem; }
+  .section { padding: 2rem 1rem; margin: 1.5rem 0; }
+}

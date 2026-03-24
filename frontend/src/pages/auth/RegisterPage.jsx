@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
-import { FiEye, FiEyeOff, FiMail, FiLock, FiUser, FiPhone, FiAtSign, FiTrendingUp } from 'react-icons/fi'
-import styles from '../../styles/pages/auth/AuthPages.module.scss'
+import styles from '../../styles/pages/auth/AuthPages.module.css'
 
 const STEPS = ['Details', 'Profile', 'Preferences']
 
@@ -32,9 +31,10 @@ export default function RegisterPage() {
     const e = {}
     if (s === 0) {
       if (!form.full_name || form.full_name.length < 2) e.full_name = 'Full name is required'
-      if (!form.email) e.email = 'Email is required'
-      if (!form.password || form.password.length < 8) e.password = 'Password must be at least 8 characters'
+      if (!form.email) e.email = 'Email address is required'
+      if (!form.password || form.password.length < 6) e.password = 'Min 6 characters'
       if (form.password !== form.confirm_password) e.confirm_password = 'Passwords do not match'
+      if (!form.agree_terms) e.agree_terms = 'Please agree to terms'
     }
     if (s === 1) {
       if (!form.username || form.username.length < 3) e.username = 'Username must be at least 3 characters'
@@ -71,26 +71,24 @@ export default function RegisterPage() {
 
   return (
     <div className={styles.authPageLight}>
+      {/* Decorative Boxes */}
+      <div className={`${styles.floatingBox} ${styles.box1}`}></div>
+      <div className={`${styles.floatingBox} ${styles.box2}`}></div>
+      <div className={`${styles.floatingBox} ${styles.box3}`}></div>
+
       <Link to="/" className={styles.homeButtonLight}>
         <span className={styles.homeIcon}>&larr;</span>
         <span className={styles.homeText}>Back to Home</span>
       </Link>
 
-      <div className={styles.authCardLight}>
-        {/* Brand Logo */}
+      <div className={styles.authCardWide}>
+        {/* Brand Header */}
         <div className={styles.authBrandLight}>
-          <div className={styles.brandIconLight}>
-            <FiTrendingUp />
-          </div>
-          <div className={styles.brandTextLight}>
-            Artha<span>Nova</span>
-          </div>
-        </div>
-
-        {/* Header */}
-        <div className={styles.authHeaderLight}>
-          <h1 className={styles.authTitleLight}>Create Your Account</h1>
-          <p className={styles.authSubtitleLight}>Join ArthaNova and start investing smarter</p>
+          <Link to="/" className={styles.brandIconLight}>
+            <span>▲</span>
+            <span>ARTHANOVA</span>
+          </Link>
+          <p className={styles.authSubtitleLight}>Start your financial journey</p>
         </div>
 
         {/* Step Indicator */}
@@ -116,103 +114,109 @@ export default function RegisterPage() {
           {/* Step 0: Basic Details */}
           {step === 0 && (
             <>
-              {/* Full Name */}
-              <div className={styles.inputGroupLight}>
-                <div className={styles.inputWrapperLight}>
-                  <FiUser className={styles.inputIconLight} />
-                  <input
-                    id="reg-name"
-                    name="full_name"
-                    type="text"
-                    className={`${styles.inputFieldLight} ${errors.full_name ? styles.hasError : ''}`}
-                    placeholder="Full Name"
-                    value={form.full_name}
-                    onChange={handleChange}
-                  />
+              {/* Row 1: Name & Email */}
+              <div className={styles.formRowLight}>
+                <div className={styles.inputGroupLight}>
+                  <label>FULL NAME</label>
+                  <div className={styles.inputWrapperLight}>
+                    <input
+                      id="reg-name"
+                      name="full_name"
+                      type="text"
+                      className={`${styles.inputFieldLight} ${errors.full_name ? styles.hasError : ''}`}
+                      placeholder="e.g. John Doe"
+                      value={form.full_name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {errors.full_name && <div className={styles.errorTextLight}>{errors.full_name}</div>}
                 </div>
-                {errors.full_name && <div className={styles.errorTextLight}>{errors.full_name}</div>}
+
+                <div className={styles.inputGroupLight}>
+                  <label>EMAIL ADDRESS</label>
+                  <div className={styles.inputWrapperLight}>
+                    <input
+                      id="reg-email"
+                      name="email"
+                      type="email"
+                      className={`${styles.inputFieldLight} ${errors.email ? styles.hasError : ''}`}
+                      placeholder="email@example.com"
+                      value={form.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {errors.email && <div className={styles.errorTextLight}>{errors.email}</div>}
+                </div>
               </div>
 
-              {/* Email */}
-              <div className={styles.inputGroupLight}>
-                <div className={styles.inputWrapperLight}>
-                  <FiMail className={styles.inputIconLight} />
-                  <input
-                    id="reg-email"
-                    name="email"
-                    type="email"
-                    className={`${styles.inputFieldLight} ${errors.email ? styles.hasError : ''}`}
-                    placeholder="Email address"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
+              {/* Password & Confirm */}
+              <div className={styles.formRowLight}>
+                {/* Password */}
+                <div className={styles.inputGroupLight}>
+                  <label>PASSWORD</label>
+                  <div className={styles.inputWrapperLight}>
+                    <input
+                      id="reg-password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      className={`${styles.inputFieldLight} ${errors.password ? styles.hasError : ''}`}
+                      placeholder="Min 6 chars"
+                      value={form.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      className={styles.passwordToggleLight}
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex="-1"
+                    >
+                      {showPassword ? "HIDE" : "SHOW"}
+                    </button>
+                  </div>
+                  {errors.password && <div className={styles.errorTextLight}>{errors.password}</div>}
                 </div>
-                {errors.email && <div className={styles.errorTextLight}>{errors.email}</div>}
-              </div>
 
-              {/* Password */}
-              <div className={styles.inputGroupLight}>
-                <div className={styles.inputWrapperLight}>
-                  <FiLock className={styles.inputIconLight} />
-                  <input
-                    id="reg-password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    className={`${styles.inputFieldLight} ${styles.inputFieldLightWithToggle} ${errors.password ? styles.hasError : ''}`}
-                    placeholder="Password"
-                    value={form.password}
-                    onChange={handleChange}
-                  />
-                  <button
-                    type="button"
-                    className={styles.passwordToggleLight}
-                    onClick={() => setShowPassword(!showPassword)}
-                    tabIndex="-1"
-                  >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
+                {/* Confirm Password */}
+                <div className={styles.inputGroupLight}>
+                  <label>CONFIRM</label>
+                  <div className={styles.inputWrapperLight}>
+                    <input
+                      id="reg-confirm-password"
+                      name="confirm_password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      className={`${styles.inputFieldLight} ${errors.confirm_password ? styles.hasError : ''}`}
+                      placeholder="Re-enter"
+                      value={form.confirm_password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      className={styles.passwordToggleLight}
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      tabIndex="-1"
+                    >
+                      {showConfirmPassword ? "HIDE" : "SHOW"}
+                    </button>
+                  </div>
+                  {errors.confirm_password && <div className={styles.errorTextLight}>{errors.confirm_password}</div>}
                 </div>
-                {errors.password && <div className={styles.errorTextLight}>{errors.password}</div>}
-              </div>
-
-              {/* Confirm Password */}
-              <div className={styles.inputGroupLight}>
-                <div className={styles.inputWrapperLight}>
-                  <FiLock className={styles.inputIconLight} />
-                  <input
-                    id="reg-confirm"
-                    name="confirm_password"
-                    type={showConfirmPassword ? "text" : "password"}
-                    className={`${styles.inputFieldLight} ${styles.inputFieldLightWithToggle} ${errors.confirm_password ? styles.hasError : ''}`}
-                    placeholder="Confirm Password"
-                    value={form.confirm_password}
-                    onChange={handleChange}
-                  />
-                  <button
-                    type="button"
-                    className={styles.passwordToggleLight}
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    tabIndex="-1"
-                  >
-                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
-                </div>
-                {errors.confirm_password && <div className={styles.errorTextLight}>{errors.confirm_password}</div>}
               </div>
 
               {/* Terms Agreement */}
               <div className={styles.checkboxRowLight}>
-                <input
-                  type="checkbox"
-                  id="agree_terms"
-                  name="agree_terms"
-                  className={styles.checkboxLight}
-                  checked={form.agree_terms}
-                  onChange={handleChange}
-                />
-                <label htmlFor="agree_terms" className={styles.checkboxLabelLight}>
-                  I agree to <a href="/terms" target="_blank">Terms & Conditions</a>
-                </label>
+                <div className={styles.rememberMeSection}>
+                  <input
+                    type="checkbox"
+                    id="agree_terms"
+                    name="agree_terms"
+                    className={styles.checkboxLight}
+                    checked={form.agree_terms}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="agree_terms" className={styles.checkboxLabelLight}>
+                    I agree to Terms & Conditions
+                  </label>
+                </div>
               </div>
             </>
           )}
@@ -220,10 +224,9 @@ export default function RegisterPage() {
           {/* Step 1: Profile Info */}
           {step === 1 && (
             <>
-              {/* Username */}
               <div className={styles.inputGroupLight}>
+                <label>USERNAME</label>
                 <div className={styles.inputWrapperLight}>
-                  <FiAtSign className={styles.inputIconLight} />
                   <input
                     id="reg-username"
                     name="username"
@@ -236,28 +239,13 @@ export default function RegisterPage() {
                 </div>
                 {errors.username && <div className={styles.errorTextLight}>{errors.username}</div>}
               </div>
-
-              {/* Phone */}
-              <div className={styles.inputGroupLight}>
-                <div className={styles.inputWrapperLight}>
-                  <FiPhone className={styles.inputIconLight} />
-                  <input
-                    id="reg-phone"
-                    name="phone"
-                    type="tel"
-                    className={styles.inputFieldLight}
-                    placeholder="Phone Number (Optional)"
-                    value={form.phone}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
             </>
           )}
 
           {/* Step 2: Risk Profile */}
           {step === 2 && (
             <div className={styles.inputGroupLight}>
+              <label>SELECT RISK PROFILE</label>
               <div className={styles.riskOptionsLight}>
                 {['conservative', 'moderate', 'aggressive'].map((r) => (
                   <label
@@ -292,22 +280,22 @@ export default function RegisterPage() {
                 className={styles.backBtnLight}
                 onClick={() => setStep((s) => s - 1)}
               >
-                Back
+                BACK
               </button>
             )}
             <button
               type="submit"
-              className={styles.nextBtnLight}
+              className={styles.submitBtnLight}
               disabled={loading}
             >
-              {loading ? <span className={styles.spinnerLight} /> : step === 2 ? 'Sign Up' : 'Next Step'}
+              {loading ? <span className={styles.spinnerLight} /> : step === 2 ? 'SIGN UP' : 'NEXT STEP'}
             </button>
           </div>
         </form>
 
         {/* Login Link */}
         <p className={styles.authSwitchLight}>
-          Already have an account? <Link to="/login">Login Here</Link>
+          Already have an account? <Link to="/login">LOGIN HERE!</Link>
         </p>
       </div>
     </div>

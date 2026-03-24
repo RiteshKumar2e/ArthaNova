@@ -1,0 +1,134 @@
+/* ── Opportunity Radar Page — Neo-Brutalist Style ── */
+
+.radarContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  width: 100%;
+}
+
+.pageTitle {
+  font-family: var(--heading);
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-bottom: var(--sp-4);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+/* Radar chart panel */
+.radarChart {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.radarChartHeader {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--accent);
+  border-bottom: var(--border-width) solid var(--border);
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.radarChartBody {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-6);
+}
+
+/* Opportunity score */
+.opportunityScore {
+  font-family: var(--heading);
+  font-size: var(--fs-4xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: var(--sp-4);
+  background: var(--primary);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: inline-block;
+  padding: var(--sp-3) var(--sp-6);
+}
+
+.opportunityDescription {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Signal cards grid */
+.radarSignals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-5);
+  width: 100%;
+}
+
+.signalCard {
+  background: var(--bg-white);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.signalCard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-md);
+}
+.signalCard:nth-child(1) .signalHeader { background: var(--primary); }
+.signalCard:nth-child(2) .signalHeader { background: var(--secondary); }
+.signalCard:nth-child(3) .signalHeader { background: var(--accent); }
+.signalCard:nth-child(4) .signalHeader { background: var(--yellow); }
+
+.signalHeader {
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: var(--border-width) solid var(--border);
+  background: var(--primary);
+}
+
+.signalTitle {
+  font-family: var(--heading);
+  font-size: var(--fs-md);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.signalBody {
+  padding: var(--sp-4) var(--sp-5);
+}
+
+.signalDescription {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: var(--sp-3);
+}
+
+.riskIndicator {
+  padding-top: var(--sp-3);
+  border-top: 2px solid rgba(0,0,0,0.1);
+  font-family: var(--heading);
+  font-size: var(--fs-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.riskLow  { color: #14a800; }
+.riskMed  { color: #996600; }
+.riskHigh { color: var(--color-danger); }
+
+@media (max-width: 768px) {
+  .radarSignals { grid-template-columns: 1fr; }
+}

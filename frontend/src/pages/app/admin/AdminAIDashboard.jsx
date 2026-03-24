@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useAuthStore } from '../../../store/authStore';
-import '../../../styles/pages/admin/AdminAIDashboard.scss';
+import '../../../styles/pages/admin/AdminAIDashboard.css';
 
 const AdminAIDashboard = () => {
   const { accessToken } = useAuthStore();

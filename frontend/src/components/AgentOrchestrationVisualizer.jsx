@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/components/AgentOrchestrationVisualizer.scss';
+import '../styles/components/AgentOrchestrationVisualizer.css';
 
 const AgentOrchestrationVisualizer = ({ orchestrationData, isLoading }) => {
   const [animationPhase, setAnimationPhase] = useState(0);

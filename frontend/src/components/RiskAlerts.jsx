@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import '../styles/components/RiskAlerts.scss';
+import '../styles/components/RiskAlerts.css';
 
 const RiskAlerts = () => {
   const { accessToken } = useAuthStore();

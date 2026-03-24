@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import styles from '../../styles/pages/public/LandingPage.module.scss'
+import styles from '../../styles/pages/public/LandingPage.module.css'
 
 const FEATURES = [
   { 
@@ -39,27 +39,30 @@ export default function LandingPage() {
     <div className={styles.page}>
       {/* ─── Hero Section ─────────────────────────────────────────────────── */}
       <section className={styles.hero}>
+        {/* Floating Decorative Elements */}
+        <div className={`${styles.floatingBox} ${styles.box1}`}></div>
+        <div className={`${styles.floatingBox} ${styles.box2}`}></div>
+        <div className={`${styles.floatingBox} ${styles.box3}`}></div>
+
         <div className={styles.container}>
           <div className={styles.heroCentered}>
             <div className={styles.heroContent}>
               <div className={styles.badgeLine}>
-                <span className={styles.badge}>New</span>
-                <span className={styles.badgeText}>AI Opportunity Radar 2.0 is live</span>
+                🚀 #1 INTELLIGENCE FOR MODERN INVESTORS
               </div>
               <h1 className={styles.heroTitle}>
-                Intelligence for the <br />
-                <span className={styles.gradText}>Modern Investor</span>
+                ArthaNova <br />
+                <span className={styles.gradText}>THE SMART EDGE</span>
               </h1>
               <p className={styles.heroLead}>
-                ArthaNova combines institutional-grade data with advanced AI to give you an edge in the Indian equity markets. 
-                Identify trends, manage risk, and invest with conviction.
+                Intelligence for the Indian markets. Identify trends, manage risk, and invest with institutional-grade AI and data. 🚀
               </p>
               <div className={styles.ctaGroup}>
                 <Link to="/register" className="btn btn-primary btn-lg">
-                  Get Started Free
+                  START NOW →
                 </Link>
-                <Link to="/market" className="btn btn-secondary btn-lg">
-                  Live Market View
+                <Link to="/market" className="btn btn-yellow btn-lg">
+                  LEARN MORE
                 </Link>
               </div>
             </div>
@@ -71,7 +74,7 @@ export default function LandingPage() {
       <section className={styles.capabilities} id="features">
         <div className={styles.container}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Precision Tools for Better Decisions</h2>
+            <h2 className={styles.sectionTitle}>Precision Tools 🛠️</h2>
             <p className={styles.sectionDesc}>
               Stop guessing and start analyzing. Our platform provides the data and intelligence 
               you need to outperform the benchmarks.
@@ -98,26 +101,26 @@ export default function LandingPage() {
                 <div className={styles.chatUser}>Analyze my portfolio risk...</div>
                 <div className={styles.chatAI}>
                   <div className={styles.aiHeader}>
-                    <span className={styles.aiTag}>AI Analyst</span>
+                    <span className={styles.aiTag}>AI ANALYST</span>
                   </div>
-                  <p>ArthaNova AI detects <strong>sector concentration</strong> in your current holdings. Recommendation: Diversify into Mid-cap IT or Consumer Goods for lower volatility.</p>
+                  <p>ArthaNova AI detects <strong>sector concentration</strong> in your current holdings. Recommendation: Diversify into Mid-cap IT or Consumer Goods.</p>
                   <div className={styles.aiFooter}>Sources: NSE Filings, Multi-Agent Analysis</div>
                 </div>
               </div>
             </div>
             <div className={styles.showcaseContent}>
-              <h2 className={styles.showcaseTitle}>Your Personal AI Financial Analyst</h2>
+              <h2 className={styles.showcaseTitle}>Your Personal AI Analyst 🤖</h2>
               <p className={styles.showcaseText}>
                 The markets move fast. ArthaNova's AI works 24/7 to scan every filing, 
-                every news update, and every price movement to keep you ahead of the curve.
+                every news update, and every price movement.
               </p>
               <ul className={styles.checkList}>
-                <li>Context-aware portfolio analysis</li>
-                <li>Plain-English summaries of complex data</li>
-                <li>Real-time sentiment tracking</li>
-                <li>Transparent, source-grounded insights</li>
+                <li>✅ Context-aware portfolio analysis</li>
+                <li>✅ Plain-English summaries</li>
+                <li>✅ Real-time sentiment tracking</li>
+                <li>✅ Source-grounded insights</li>
               </ul>
-              <Link to="/register" className="btn btn-primary btn-lg">Explore AI Chat</Link>
+              <Link to="/register" className="btn btn-primary btn-lg">EXPLORE AI CHAT</Link>
             </div>
           </div>
         </div>
@@ -129,55 +132,19 @@ export default function LandingPage() {
           <div className={styles.impactGrid}>
             <div className={styles.impactItem}>
               <div className={styles.impactVal}>5,000+</div>
-              <div className={styles.impactLabel}>Instruments Tracked</div>
+              <div className={styles.impactLabel}>INSTRUMENTS</div>
             </div>
             <div className={styles.impactItem}>
               <div className={styles.impactVal}>98%</div>
-              <div className={styles.impactLabel}>Backtest Accuracy</div>
+              <div className={styles.impactLabel}>ACCURACY</div>
             </div>
             <div className={styles.impactItem}>
               <div className={styles.impactVal}>&lt; 1s</div>
-              <div className={styles.impactLabel}>Insight Latency</div>
+              <div className={styles.impactLabel}>LATENCY</div>
             </div>
             <div className={styles.impactItem}>
               <div className={styles.impactVal}>100%</div>
-              <div className={styles.impactLabel}>Data Transparency</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ─── How It Works ────────────────────────────────────────────────── */}
-      <section className={styles.howItWorks} id="how-it-works">
-        <div className={styles.container}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>How ArthaNova Works</h2>
-            <p className={styles.sectionDesc}>
-              A seamless intelligence pipeline from raw data to actionable investment decisions.
-            </p>
-          </div>
-          <div className={styles.stepsGrid}>
-            <div className={styles.stepCard}>
-              <div className={styles.stepNumber}>01</div>
-              <h3 className={styles.stepTitle}>Connect & Centralize</h3>
-              <p className={styles.stepDesc}>
-                Securely link your broker accounts or upload your portfolio. We aggregate all your holdings in one unified view.
-              </p>
-            </div>
-            <div className={styles.stepCard}>
-              <div className={styles.stepNumber}>02</div>
-              <h3 className={styles.stepTitle}>AI Analysis</h3>
-              <p className={styles.stepDesc}>
-                Our proprietary models scan fundamentals, technicals, and alternative data like news and filings specifically for the Indian market.
-              </p>
-            </div>
-            <div className={styles.stepCard}>
-              <div className={styles.stepNumber}>03</div>
-              <h3 className={styles.stepTitle}>Actionable Insights</h3>
-              <p className={styles.stepDesc}>
-                Receive clear, plain-English recommendations, risk alerts, and deep-dive reports through our conversational AI interface.
-              </p>
+              <div className={styles.impactLabel}>TRANSPARENCY</div>
             </div>
           </div>
         </div>
@@ -188,22 +155,22 @@ export default function LandingPage() {
         <div className={styles.container}>
           <div className={styles.contactGrid}>
             <div className={styles.contactInfo}>
-              <h2 className={styles.sectionTitle}>Get in Touch</h2>
+              <h2 className={styles.sectionTitle}>GET IN TOUCH ✉️</h2>
               <p className={styles.sectionDesc}>
-                Have questions about our AI models or institutional data sources? Our team of financial analysts is ready to help.
+                Have questions about our AI models? Our team is ready to help.
               </p>
               <div className={styles.contactDetails}>
                 <div className={styles.contactItem}>
                   <div className={styles.contactIcon}>📍</div>
                   <div>
-                    <strong>Office</strong>
-                    <p>BKC, Mumbai, Maharashtra, India</p>
+                    <strong>OFFICE</strong>
+                    <p>BKC, Mumbai, India</p>
                   </div>
                 </div>
                 <div className={styles.contactItem}>
                   <div className={styles.contactIcon}>✉️</div>
                   <div>
-                    <strong>Email</strong>
+                    <strong>EMAIL</strong>
                     <p>support@arthanova.in</p>
                   </div>
                 </div>
@@ -220,14 +187,14 @@ export default function LandingPage() {
               </div>
               <div className="form-group">
                 <label>Message</label>
-                <textarea className="form-control" rows="4" placeholder="How can we help you?"></textarea>
+                <textarea className="form-control" rows="4" placeholder="How can we help?"></textarea>
               </div>
-              <button type="submit" className="btn btn-primary btn-full">Send Message</button>
+              <button type="submit" className="btn btn-primary btn-full">SEND MESSAGE</button>
             </form>
           </div>
         </div>
       </section>
-
     </div>
   )
 }
+
