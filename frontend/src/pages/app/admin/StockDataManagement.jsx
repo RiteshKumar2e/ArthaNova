@@ -1,78 +1,95 @@
 import React from 'react';
+import styles from '../../../styles/pages/app/admin/StockDataManagement.module.css';
 
 export default function StockDataManagement() {
   const DATASETS = [
-    { name: 'Nifty 50 Historical', status: 'Healthy', lastSync: 'Yesterday', sources: 'NSE, Yahoo', count: '1.2M Rows' },
-    { name: 'Live Market Quotes', status: 'Syncing', lastSync: '10s ago', sources: 'Upstox, Intrinio', count: 'Live Stream' },
-    { name: 'Company Filings (PDF)', status: 'Syncing', lastSync: '2m ago', sources: 'BSE, SEC', count: '45,210 Docs' },
-    { name: 'Insider Activity Feed', status: 'Critical Error', lastSync: '2h ago', sources: 'BSE Corporate', count: '890 Rows' },
+    { name: 'NIFTY 50 HISTORICAL', status: 'HEALTHY', lastSync: 'YESTERDAY', sources: 'NSE, YAHOO', count: '1.2M ROWS' },
+    { name: 'LIVE MARKET QUOTES', status: 'SYNCING', lastSync: '10S AGO', sources: 'UPSTOX, INTRINIO', count: 'LIVE STREAM' },
+    { name: 'COMPANY FILINGS (PDF)', status: 'SYNCING', lastSync: '2M AGO', sources: 'BSE, SEC', count: '45,210 DOCS' },
+    { name: 'INSIDER ACTIVITY FEED', status: 'ERROR', lastSync: '2H AGO', sources: 'BSE CORPORATE', count: '890 ROWS' },
   ];
 
+  const getStatusClass = (status) => {
+    if (status === 'HEALTHY') return styles.statCardHealthy;
+    if (status === 'SYNCING') return styles.statCardSyncing;
+    return styles.statCardError;
+  };
+
+  const getProgressClass = (status) => {
+    if (status === 'HEALTHY') return styles.progressHealthy;
+    if (status === 'SYNCING') return styles.progressSyncing;
+    return styles.progressError;
+  };
+
+  const getBadgeClass = (status) => {
+    if (status === 'HEALTHY') return styles.badgeHealthy;
+    if (status === 'SYNCING') return styles.badgeSyncing;
+    return styles.badgeError;
+  };
+
   return (
-    <div className="animate-fadeIn">
+    <div className={styles.container + " animate-fadeIn"}>
       <div className="page-header">
         <div>
-          <h1 className="page-title">Stock & Data Management 💾</h1>
-          <p className="page-subtitle">Control ingestion pipelines, data sources, and historical datasets.</p>
+          <h1 className="page-title">STOCK & DATA MANAGEMENT 💾</h1>
+          <p className="page-subtitle">CONTROL INGESTION PIPELINES, DATA SOURCES, AND HISTORICAL DATASETS.</p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <button className="btn btn-secondary">🛠️ Repair Source</button>
-          <button className="btn btn-primary">🔄 Master Sys Refresh</button>
+          <button className="btn btn-secondary btn-sm">🛠️ REPAIR SOURCE</button>
+          <button className="btn btn-primary btn-sm">🔄 MASTER SYS REFRESH</button>
         </div>
       </div>
 
-      <div className="grid-4" style={{ marginBottom: 24 }}>
+      <div className={styles.statsGrid}>
         {DATASETS.map(ds => (
-          <div key={ds.name} className="metric-card">
-            <div className={`metric-change ${ds.status === 'Healthy' ? 'positive' : ds.status === 'Critical Error' ? 'negative' : ''}`}>
+          <div key={ds.name} className={`${styles.statCard} ${getStatusClass(ds.status)}`}>
+            <div className={styles.statusText} style={{ color: ds.status === 'HEALTHY' ? '#14a800' : (ds.status === 'SYNCING' ? '#00A8FF' : '#FF3131') }}>
                {ds.status}
             </div>
-            <div className="metric-label" style={{ marginTop: 8 }}>{ds.name}</div>
-            <div className="metric-value" style={{ fontSize: '1.2rem', margin: '4px 0' }}>{ds.count}</div>
-            <div style={{ fontSize: '0.75rem', color: '#5E6C84' }}>Last Sync: {ds.lastSync}</div>
+            <div className={styles.label}>{ds.name}</div>
+            <div className={styles.value}>{ds.count}</div>
+            <div className={styles.syncText}>LAST SYNC: {ds.lastSync}</div>
           </div>
         ))}
       </div>
 
-      <div className="card">
-        <div className="card-header">
-          <h3>Ingestion Pipelines</h3>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h3>INGESTION PIPELINES</h3>
         </div>
         <div className="table-responsive">
-          <table className="table">
+          <table className={styles.pipelineTable}>
             <thead>
               <tr>
-                <th>Dataset Name</th>
-                <th>Sources</th>
-                <th>Status</th>
-                <th>Health Score</th>
-                <th>Control</th>
+                <th>DATASET NAME</th>
+                <th>SOURCES</th>
+                <th>SYNC STATUS</th>
+                <th>HEALTH SCORE</th>
+                <th style={{ textAlign: 'center' }}>CONTROL</th>
               </tr>
             </thead>
             <tbody>
               {DATASETS.map(ds => (
                 <tr key={ds.name}>
-                  <td><strong>{ds.name}</strong></td>
-                  <td>{ds.sources}</td>
+                  <td><strong className="text-upper" style={{ fontSize: '0.75rem' }}>{ds.name}</strong></td>
+                  <td><span style={{ fontWeight: 800, fontSize: '0.7rem' }}>{ds.sources}</span></td>
                   <td>
-                    <span className={`badge ${ds.status === 'Healthy' ? 'badge-success' : ds.status === 'Syncing' ? 'badge-primary' : 'badge-danger'}`}>
+                    <span className={`${styles.badge} ${getBadgeClass(ds.status)}`}>
                       {ds.status}
                     </span>
                   </td>
                   <td>
-                    <div className="progress" style={{ height: 8, width: 100, borderRadius: 4, background: '#F4F5F7' }}>
-                      <div style={{ 
-                        height: 8, 
-                        width: ds.status === 'Healthy' ? '100%' : ds.status === 'Syncing' ? '70%' : '20%', 
-                        background: ds.status === 'Healthy' ? '#00875A' : ds.status === 'Syncing' ? '#0052CC' : '#DE350B',
-                        borderRadius: 4
-                      }}></div>
+                    <div className={styles.progressRoot}>
+                      <div 
+                        className={`${styles.progressBar} ${getProgressClass(ds.status)}`}
+                        style={{ width: ds.status === 'HEALTHY' ? '100%' : (ds.status === 'SYNCING' ? '70%' : '25%') }}
+                      />
                     </div>
                   </td>
                   <td>
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      <button className="btn btn-sm btn-secondary">Logs</button>
-                      <button className="btn btn-sm btn-primary">Refresh</button>
+                    <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+                      <button className="btn btn-sm btn-secondary" style={{ padding: '6px 14px', fontSize: '0.65rem' }}>LOGS</button>
+                      <button className="btn btn-sm btn-primary" style={{ padding: '6px 14px', fontSize: '0.65rem' }}>REFRESH</button>
                     </div>
                   </td>
                 </tr>

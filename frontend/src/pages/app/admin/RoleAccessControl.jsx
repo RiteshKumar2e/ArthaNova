@@ -1,89 +1,109 @@
 import React from 'react';
+import styles from '../../../styles/pages/app/admin/RoleAccessControl.module.css';
 
 export default function RoleAccessControl() {
   const ROLES = [
-    { name: 'Admin', users: 3, permissions: 'All Access', status: 'Core' },
-    { name: 'Analyst', users: 12, permissions: 'Content, AI Monitoring', status: 'Department' },
-    { name: 'Moderator', users: 8, permissions: 'Content, User Moderation', status: 'Department' },
-    { name: 'Compliance', users: 2, permissions: 'Logs, Settings Review', status: 'Legal' },
-    { name: 'Support', users: 15, permissions: 'User View, Notification', status: 'Service' },
+    { name: 'ADMIN', users: 3, permissions: 'ALL ACCESS', status: 'CORE' },
+    // Filtered out Analyst as requested
+    { name: 'MODERATOR', users: 8, permissions: 'CONTENT, USER MODERATION', status: 'DEPARTMENT' },
+    { name: 'COMPLIANCE', users: 2, permissions: 'LOGS, SETTINGS REVIEW', status: 'LEGAL' },
+    { name: 'SUPPORT', users: 15, permissions: 'USER VIEW, NOTIFICATION', status: 'SERVICE' },
+  ];
+
+  const MATRIX = [
+    { mod: 'PLATFORM', r: true, w: true, d: true },
+    { mod: 'CONTENT', r: true, w: true, d: false },
+    { mod: 'AI SYSTEM', r: true, w: false, d: false },
+    { mod: 'USERS', r: true, w: true, d: false },
+  ];
+
+  const SECURITY = [
+    { title: 'FULL IDENTITY ACCESS (SSO REQUIRED)', active: true },
+    { title: 'FINANCIAL TRANSACTION AUTHORIZATION', active: false },
+    { title: 'SYSTEM KEY ACCESS (ENCLAVE)', active: true },
   ];
 
   return (
-    <div className="animate-fadeIn">
+    <div className={styles.container + " animate-fadeIn"}>
       <div className="page-header">
         <div>
-          <h1 className="page-title">Role & Access Control 🛡️</h1>
-          <p className="page-subtitle">Manage workspace permissions, custom roles, and RBAC policies.</p>
+          <h1 className="page-title">ROLE & ACCESS CONTROL 🛡️</h1>
+          <p className="page-subtitle">MANAGE WORKSPACE PERMISSIONS, CUSTOM ROLES, AND RBAC POLICIES.</p>
         </div>
-        <button className="btn btn-primary">➕ Define New Role</button>
+        <button className="btn btn-primary btn-sm">➕ DEFINE NEW ROLE</button>
       </div>
 
-      <div className="grid-2" style={{ marginBottom: 24 }}>
-        <div className="card">
-          <div className="card-header">
-             <h3>Permission Matrix (Overview)</h3>
+      <div className={styles.dashboardGrid}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+             <h3>PERMISSION MATRIX (OVERVIEW)</h3>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, padding: 16 }}>
-             {['Platform', 'Content', 'AI System', 'Users'].map(mod => (
-                <div key={mod} style={{ background: '#F4F5F7', padding: 12, borderRadius: 8, textAlign: 'center' }}>
-                   <div style={{ fontWeight: 600, fontSize: '0.8rem', marginBottom: 8 }}>{mod}</div>
-                   <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
-                      <span title="Read" style={{ color: '#00875A' }}>R</span>
-                      <span title="Write" style={{ color: '#0052CC' }}>W</span>
-                      <span title="Delete" style={{ color: '#DE350B' }}>D</span>
+          <div className={styles.cardBody}>
+            <div className={styles.matrixGrid}>
+              {MATRIX.map(item => (
+                <div key={item.mod} className={styles.matrixItem}>
+                   <span className={styles.matrixTitle}>{item.mod}</span>
+                   <div className={styles.matrixActions}>
+                      <span className={item.r ? styles.r : ''} title="READ">R</span>
+                      <span className={item.w ? styles.w : ''} title="WRITE">W</span>
+                      <span className={item.d ? styles.d : ''} title="DELETE">D</span>
                    </div>
                 </div>
-             ))}
-          </div>
-          <div style={{ padding: 16, borderTop: '1px solid #DFE1E6' }}>
-             <button className="btn btn-sm btn-secondary" style={{ width: '100%' }}>🛠️ Edit Master Matrix</button>
+              ))}
+            </div>
+            <button className="btn btn-sm btn-secondary btn-full">🛠️ EDIT MASTER MATRIX</button>
           </div>
         </div>
 
-        <div className="card">
-           <div className="card-header">
-              <h3>Security Groups</h3>
+        <div className={styles.card}>
+           <div className={styles.cardHeader}>
+              <h3>SSO & SECURITY GROUPS</h3>
            </div>
-           {[
-             { title: 'Full Identity Access (SSO Required)', active: true },
-             { title: 'Financial Transaction Authorization', active: false },
-             { title: 'System Key Access (Enclave)', active: true },
-           ].map((sec, i) => (
-             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', borderBottom: i < 2 ? '1px solid #DFE1E6' : 'none' }}>
-                <span style={{ fontSize: '0.875rem' }}>{sec.title}</span>
-                <span className={`badge ${sec.active ? 'badge-success' : 'badge-danger'}`}>{sec.active ? 'ENFORCED' : 'OFF'}</span>
+           <div className={styles.cardBody}>
+             <div className={styles.secList}>
+               {SECURITY.map((sec, i) => (
+                 <div key={i} className={styles.secRow}>
+                    <span className={styles.secTitle}>{sec.title}</span>
+                    <span className={`${styles.statusBadge} ${sec.active ? styles.statusOn : styles.statusOff}`}>
+                      {sec.active ? 'ENFORCED' : 'OFF'}
+                    </span>
+                 </div>
+               ))}
              </div>
-           ))}
+           </div>
         </div>
       </div>
 
-      <div className="card">
-         <div className="card-header">
-            <h3>Defined Workspace Roles</h3>
+      <div className={styles.card}>
+         <div className={styles.cardHeader} style={{ background: '#000' }}>
+            <h3 style={{ color: '#fff' }}>DEFINED WORKSPACE ROLES</h3>
          </div>
          <div className="table-responsive">
-            <table className="table">
+            <table className={styles.roleTable}>
                <thead>
                   <tr>
-                     <th>Role Name</th>
-                     <th>Team Count</th>
-                     <th>Permission Summary</th>
-                     <th>Group Level</th>
-                     <th>Action</th>
+                     <th>ROLE NAME</th>
+                     <th>TEAM COUNT</th>
+                     <th>PERMISSION SUMMARY</th>
+                     <th>GROUP LEVEL</th>
+                     <th style={{ textAlign: 'center' }}>ACTION</th>
                   </tr>
                </thead>
                <tbody>
                   {ROLES.map(role => (
                     <tr key={role.name}>
-                       <td><strong>{role.name}</strong></td>
-                       <td>{role.users} Members</td>
-                       <td>{role.permissions}</td>
-                       <td><span className="badge badge-primary">{role.status}</span></td>
+                       <td><strong className="text-upper">{role.name}</strong></td>
+                       <td><span style={{ fontWeight: 800, fontSize: '0.7rem' }}>{role.users} MEMBERS</span></td>
+                       <td><span style={{ fontSize: '0.7rem', color: '#555', fontWeight: 700 }}>{role.permissions}</span></td>
                        <td>
-                          <div style={{ display: 'flex', gap: 8 }}>
-                             <button className="btn btn-sm btn-secondary">Permissions</button>
-                             <button className="btn btn-sm btn-secondary">Logs</button>
+                        <span className={`${styles.badge} ${role.status === 'CORE' ? styles.badgeCore : (role.status === 'LEGAL' ? styles.badgeLegal : styles.badgeDept)}`}>
+                          {role.status}
+                        </span>
+                       </td>
+                       <td>
+                          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+                             <button className="btn btn-sm btn-secondary" style={{ padding: '6px 12px', fontSize: '0.65rem' }}>PERMISSIONS</button>
+                             <button className="btn btn-sm btn-secondary" style={{ padding: '6px 12px', fontSize: '0.65rem' }}>LOGS</button>
                           </div>
                        </td>
                     </tr>
