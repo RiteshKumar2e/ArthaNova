@@ -120,19 +120,28 @@ export default function AIChatPage() {
       {/* Sidebar - Sessions */}
       <div className={styles.chatSidebar}>
         <div className={styles.sidebarHeader}>
-          <div className={styles.sidebarTitle}>🤖 AI Chats</div>
-          <button className="btn btn-primary btn-sm" onClick={startNewChat} id="new-chat-btn">+ New</button>
+          <div className={styles.sidebarTitle}>🤖 AI CHATS</div>
+          <button 
+            className="btn btn-primary btn-sm" 
+            style={{ borderRadius: 0, fontWeight: 900, border: '3px solid #000' }} 
+            onClick={startNewChat} 
+            id="new-chat-btn"
+          >
+            + NEW
+          </button>
         </div>
         <div className={styles.sessionsList}>
           {sessions.map((s) => (
             <button key={s.id} className={`${styles.sessionItem} ${activeSession?.id === s.id ? styles.activeSession : ''}`}
               onClick={() => loadSession(s.id)}>
-              <div className={styles.sessionTitle}>{s.title || 'New Conversation'}</div>
+              <div className={styles.sessionTitle}>{s.title?.toUpperCase() || 'NEW CONVERSATION'}</div>
               <div className={styles.sessionDate}>{new Date(s.created_at).toLocaleDateString()}</div>
             </button>
           ))}
           {sessions.length === 0 && (
-            <div className={styles.noSessions}>No conversations yet. Start chatting!</div>
+            <div style={{ textAlign: 'center', padding: '2rem', fontWeight: 900, textTransform: 'uppercase', color: '#888' }}>
+              No chats found.
+            </div>
           )}
         </div>
       </div>
@@ -141,7 +150,7 @@ export default function AIChatPage() {
       <div className={styles.chatMain}>
         <div className={styles.chatHeader}>
           <div>
-            <h2 className={styles.chatTitle}>ArthaNova AI</h2>
+            <h2 className={styles.chatTitle}>ARTHANOVA AI</h2>
             <p className={styles.chatSubtitle}>Multi-Agent System • Portfolio-aware • Autonomous Decision Making</p>
           </div>
           <div className={styles.chatBadge}>
@@ -149,20 +158,12 @@ export default function AIChatPage() {
           </div>
         </div>
 
-        {/* Orchestration Visualizer */}
-        {showOrchestration && currentOrchestration && (
-          <div className={styles.orchestrationPanel}>
-            <button className={styles.closeOrchestration} onClick={() => setShowOrchestration(false)}>✕</button>
-            <AgentOrchestrationVisualizer orchestrationData={currentOrchestration} isLoading={false} />
-          </div>
-        )}
-
         <div className={styles.messagesArea}>
           {messages.length === 0 && !sessionLoading && (
             <div className={styles.welcomeScreen}>
               <div className={styles.welcomeIcon}>🤖</div>
-              <h3>Ask ArthaNova AI Anything</h3>
-              <p>Get intelligent, source-grounded answers about Indian markets, your portfolio, stocks, and investment strategies.</p>
+              <h3>ASK ARTHANOVA AI ANYTHING</h3>
+              <p style={{ fontWeight: 600, color: '#444' }}>Get intelligent, source-grounded answers about Indian markets, your portfolio, and investment strategies.</p>
               <div className={styles.suggestions}>
                 {SUGGESTED.map((s) => (
                   <button key={s} className={styles.suggestion} onClick={() => setInput(s)}>{s}</button>
@@ -171,13 +172,17 @@ export default function AIChatPage() {
             </div>
           )}
 
-          {sessionLoading && <div className={styles.loadingMessages}><div className="spinner" /></div>}
+          {sessionLoading && (
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
+              <div className="spinner" style={{ width: 40, height: 40, border: '4px solid #000' }} />
+            </div>
+          )}
 
           {messages.map((msg, i) => (
             <div key={i} className={`${styles.message} ${msg.role === 'user' ? styles.userMsg : styles.aiMsg}`}>
-              {msg.role === 'assistant' && (
-                <div className={styles.msgAvatar}>🤖</div>
-              )}
+              <div className={msg.role === 'user' ? styles.msgAvatarUser : styles.msgAvatar}>
+                {msg.role === 'user' ? (user?.full_name?.charAt(0) || 'U') : '🤖'}
+              </div>
               <div className={styles.msgContent}>
                 <div className={styles.msgText}>{msg.content}</div>
                 
@@ -188,16 +193,14 @@ export default function AIChatPage() {
                       className={styles.agentsToggle}
                       onClick={() => setExpandedMessageId(expandedMessageId === msg.messageId ? null : msg.messageId)}
                     >
-                      🔗 Used {msg.orchestration.agents_used.length} agents • {msg.orchestration.execution_time ? msg.orchestration.execution_time.toFixed(0) : '0'}ms
+                      🔗 {msg.orchestration.execution_time ? msg.orchestration.execution_time.toFixed(0) : '0'}ms • {msg.orchestration.agents_used.length} AGENTS
                     </button>
                     {expandedMessageId === msg.messageId && (
                       <div className={styles.agentsDetail}>
                         {msg.orchestration.agents_used.map((agent, j) => (
-                          <div key={j} className={styles.agentDetail}>
-                            <span className={styles.agentName}>{agent}</span>
-                            {msg.orchestration.agent_responses?.[agent] && (
-                              <span className={styles.agentStatus}>✓ Completed</span>
-                            )}
+                          <div key={j} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #ddd', fontSize: '0.7rem', fontWeight: 900 }}>
+                            <span style={{ textTransform: 'uppercase' }}>{agent}</span>
+                            <span style={{ color: '#14a800' }}>✓ COMPLETE</span>
                           </div>
                         ))}
                       </div>
@@ -206,10 +209,11 @@ export default function AIChatPage() {
                 )}
                 
                 {msg.sources && msg.sources.length > 0 && (
-                  <div className={styles.sources}>
-                    <div className={styles.sourcesLabel}>📋 Sources:</div>
+                  <div style={{ marginTop: 15, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {msg.sources.map((src, j) => (
-                      <span key={j} className={styles.sourceChip}>{src.title}</span>
+                      <span key={j} style={{ padding: '2px 8px', background: '#000', color: '#fff', fontSize: '0.6rem', fontWeight: 900, textTransform: 'uppercase' }}>
+                        {src.title}
+                      </span>
                     ))}
                   </div>
                 )}
@@ -217,18 +221,15 @@ export default function AIChatPage() {
                   {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
-              {msg.role === 'user' && (
-                <div className={styles.msgAvatarUser}>{user?.full_name?.charAt(0) || 'U'}</div>
-              )}
             </div>
           ))}
 
           {loading && (
             <div className={`${styles.message} ${styles.aiMsg}`}>
               <div className={styles.msgAvatar}>🤖</div>
-              <div className={styles.msgContent}>
-                <div className={styles.typing}>
-                  <span /><span /><span />
+              <div className={styles.msgContent} style={{ minWidth: 80 }}>
+                <div className="typing">
+                  <span style={{ background: '#000' }}/><span style={{ background: '#000' }}/><span style={{ background: '#000' }}/>
                 </div>
               </div>
             </div>
@@ -251,7 +252,7 @@ export default function AIChatPage() {
               rows={1}
               disabled={loading}
             />
-            <button type="submit" className={`btn btn-primary ${styles.sendBtn}`} disabled={!input.trim() || loading} id="send-message-btn">
+            <button type="submit" className={styles.sendBtn} disabled={!input.trim() || loading} id="send-message-btn">
               {loading ? <span className="spinner" style={{ width: 16, height: 16 }} /> : '➤'}
             </button>
           </div>
@@ -259,5 +260,5 @@ export default function AIChatPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }
