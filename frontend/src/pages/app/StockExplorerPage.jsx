@@ -34,79 +34,97 @@ export default function StockExplorerPage() {
   }, [search])
 
   return (
-    <div className="page-wrapper animate-fadeIn">
-      <div className="page-header">
+    <div className={styles.explorerContainer + " animate-fadeIn"}>
+      <div className={styles.pageHeader}>
         <div>
-          <h1 className="page-title">Stock Explorer</h1>
-          <p className="page-subtitle">Discover and screen {total}+ NSE stocks with AI insights</p>
+          <h1 className={styles.pageTitle}>STOCK EXPLORER</h1>
+          <p className={styles.pageTitleSub}>Discover and screen {total}+ NSE stocks with AI insights</p>
         </div>
-        <Link to="/technical" className="btn btn-secondary btn-sm">📈 Technical Analysis</Link>
+        <Link to="/technical" className={styles.techAnalysisBtn}>
+          📈 TECHNICAL ANALYSIS
+        </Link>
       </div>
 
-      {/* Filters */}
-      <div className="card" style={{ marginBottom: 30, background: 'var(--color-primary-light)' }}>
-        <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: 280 }}>
-            <input className="form-control" style={{ border: '4px solid #000', fontSize: '1.1rem' }} placeholder="🔍 Search stock symbol or company..." value={search}
-              onChange={(e) => setSearch(e.target.value)} />
+      {/* Filters & Search */}
+      <div className={styles.filterCard}>
+        <div className={styles.filterBar}>
+          <div className={styles.searchWrapper}>
+            <input 
+              className={styles.searchInput} 
+              placeholder="🔍 Search stock symbol or company..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)} 
+            />
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <div className={styles.sectorFilters}>
             {SECTORS.map((s) => (
-              <button key={s} className={`btn btn-sm ${sector === s ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ borderRadius: 0 }}
-                onClick={() => { setSector(s); setPage(1) }}>
-                {s}
+              <button 
+                key={s} 
+                className={`${styles.filterBtn} ${sector === s ? styles.active : ''}`}
+                onClick={() => { setSector(s); setPage(1) }}
+              >
+                {s.toUpperCase()}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div className="table-wrapper" style={{ border: 'none', boxShadow: 'none' }}>
-          <table className="data-table">
-            <thead style={{ background: '#000' }}>
+      {/* Stocks Table */}
+      <div className={styles.stockTableCard}>
+        <div className={styles.tableWrapper}>
+          <table className={styles.explorerTable}>
+            <thead>
               <tr>
-                <th style={{ color: 'white' }}>Symbol</th>
-                <th style={{ color: 'white' }}>Company</th>
-                <th style={{ color: 'white' }}>Sector</th>
-                <th style={{ textAlign: 'right', color: 'white' }}>LTP</th>
-                <th style={{ textAlign: 'right', color: 'white' }}>Change (%)</th>
-                <th style={{ textAlign: 'right', color: 'white' }}>P/E Ratio</th>
-                <th style={{ color: 'white' }}>AI Signal</th>
-                <th style={{ color: 'white' }}>Action</th>
+                <th>SYMBOL</th>
+                <th>COMPANY</th>
+                <th>SECTOR</th>
+                <th style={{ textAlign: 'right' }}>LTP</th>
+                <th style={{ textAlign: 'right' }}>CHANGE (%)</th>
+                <th style={{ textAlign: 'right' }}>P/E RATIO</th>
+                <th>AI SIGNAL</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                Array.from({ length: 8 }).map((_, i) => (
+                Array.from({ length: 10 }).map((_, i) => (
                   <tr key={i}>
                     {Array.from({ length: 8 }).map((_, j) => (
-                      <td key={j}><div className="skeleton" style={{ height: 20, background: '#eee' }} /></td>
+                      <td key={j}><div className="skeleton" style={{ height: 24, border: '2px solid #eee' }} /></td>
                     ))}
                   </tr>
                 ))
+              ) : stocks.length === 0 ? (
+                <tr>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '4rem', fontWeight: 900, textTransform: 'uppercase', color: '#888' }}>
+                    No stocks found matching your criteria.
+                  </td>
+                </tr>
               ) : stocks.map((stock) => (
                 <tr key={stock.symbol}>
-                  <td><strong style={{ color: '#000', fontSize: '1.1rem' }}>{stock.symbol}</strong></td>
-                  <td style={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 700 }}>{stock.company_name}</td>
-                  <td><span className="badge" style={{ background: 'var(--color-yellow)' }}>{stock.sector}</span></td>
-                  <td style={{ textAlign: 'right', fontWeight: 900 }}>₹{stock.ltp?.toLocaleString()}</td>
-                  <td style={{ textAlign: 'right' }}>
-                    <span className={stock.change >= 0 ? 'badge badge-success' : 'badge badge-danger'}>
+                  <td className={styles.symbolCell}>{stock.symbol}</td>
+                  <td className={styles.companyCell}>{stock.company_name}</td>
+                  <td>
+                    <span className="badge" style={{ background: '#FFDD55', border: '2px solid #000', fontSize: '0.65rem' }}>
+                      {stock.sector?.toUpperCase()}
+                    </span>
+                  </td>
+                  <td className={styles.priceCell}>₹{stock.ltp?.toLocaleString()}</td>
+                  <td className={styles.changeCell}>
+                    <span className={`badge ${stock.change_pct >= 0 ? 'badge-success' : 'badge-danger'}`} style={{ border: '2px solid #000' }}>
                       {stock.change_pct >= 0 ? '▲' : '▼'} {Math.abs(stock.change_pct)}%
                     </span>
                   </td>
-                  <td style={{ textAlign: 'right', fontWeight: 800 }}>{stock.pe_ratio || '—'}</td>
+                  <td style={{ textAlign: 'right' }}>{stock.pe_ratio || '—'}</td>
                   <td>
-                    <span className={`badge ${['Buy','Strong Buy'].includes(stock.ai_insight?.signal) ? 'badge-success' : stock.ai_insight?.signal === 'Hold' ? 'badge-warning' : 'badge-danger'}`}>
-                      {stock.ai_insight?.signal || 'N/A'}
+                    <span className={`badge ${['Buy','Strong Buy'].includes(stock.ai_insight?.signal) ? 'badge-success' : stock.ai_insight?.signal === 'Hold' ? 'badge-warning' : 'badge-danger'}`} style={{ border: '2px solid #000' }}>
+                      {stock.ai_insight?.signal?.toUpperCase() || 'N/A'}
                     </span>
                   </td>
                   <td>
-                    <Link to={`/stocks/${stock.symbol}`} className="btn btn-primary btn-sm">
-                      View details
+                    <Link to={`/stocks/${stock.symbol}`} className={styles.actionBtn}>
+                      VIEW DETAILS
                     </Link>
                   </td>
                 </tr>
@@ -116,6 +134,6 @@ export default function StockExplorerPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 

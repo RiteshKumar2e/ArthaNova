@@ -7,131 +7,190 @@
   width: 100%;
 }
 
+.pageHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-6);
+  margin-bottom: var(--sp-4);
+  background: transparent;
+}
+
 .pageTitle {
   font-family: var(--heading);
-  font-size: var(--fs-2xl);
+  font-size: var(--fs-3xl);
   font-weight: 900;
   text-transform: uppercase;
-  padding-bottom: var(--sp-4);
-  border-bottom: var(--border-width) solid var(--border);
+  margin-bottom: var(--sp-1);
+  color: #000;
+  line-height: 1;
+}
+
+.pageTitleSub {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: #555;
+}
+
+.techAnalysisBtn {
+  padding: 12px 24px;
+  background: #FF6AC1;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  font-family: var(--heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #000;
+  text-decoration: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.techAnalysisBtn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
 }
 
 /* Filter bar */
+.filterCard {
+  background: var(--color-primary-light);
+  border: 4px solid #000;
+  box-shadow: 8px 8px 0px #000;
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-8);
+}
+
 .filterBar {
   display: flex;
-  gap: var(--sp-3);
+  gap: var(--sp-5);
   align-items: center;
   flex-wrap: wrap;
-  padding: var(--sp-4) var(--sp-5);
-  background: var(--bg-white);
-  border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-sm);
-  width: 100%;
-  box-sizing: border-box;
 }
 
-.filter {
-  padding: 10px 20px;
-  border: var(--border-width) solid var(--border);
-  background-color: var(--bg-white);
-  cursor: pointer;
+.searchWrapper {
+  flex: 1;
+  min-width: 300px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 14px 20px;
+  background: #fff;
+  border: 4px solid #000;
   font-family: var(--heading);
-  font-size: var(--fs-sm);
-  font-weight: 900;
+  font-size: 1rem;
+  outline: none;
+}
+
+.sectorFilters {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  padding: 8px 16px;
+  background: #fff;
+  border: 3px solid #000;
+  font-family: var(--heading);
+  font-size: 0.7rem;
   text-transform: uppercase;
-  box-shadow: var(--shadow-xs);
-  transition: all var(--t-fast);
-}
-.filter:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: var(--shadow-sm);
-  background: rgba(196, 255, 0, 0.2);
-}
-.filter.active {
-  background: var(--primary);
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: background 0.1s ease;
 }
 
-/* Stock grid */
-.stockGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--sp-5);
-  width: 100%;
-}
+.filterBtn:hover { background: #000; color: #fff; }
+.filterBtn.active { background: #000; color: #fff; }
 
-.stockCard {
-  background-color: var(--bg-white);
-  border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-sm);
+/* Table styling */
+.stockTableCard {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 10px 10px 0px #000;
   overflow: hidden;
-  cursor: pointer;
-  transition: transform var(--t-fast), box-shadow var(--t-fast);
-}
-.stockCard:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: var(--shadow-md);
+  margin-bottom: var(--sp-8);
 }
 
-.stockCardHeader {
-  padding: var(--sp-4) var(--sp-5);
-  background: var(--primary);
-  border-bottom: var(--border-width) solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.tableWrapper {
+  overflow-x: auto;
 }
 
-.stockSymbol {
+.explorerTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.explorerTable thead {
+  background: #000;
+  color: #fff;
+}
+
+.explorerTable th {
+  padding: 16px 20px;
   font-family: var(--heading);
-  font-size: var(--fs-xl);
-  font-weight: 900;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  color: var(--text);
+  text-align: left;
+  letter-spacing: 0.05em;
+  border-right: 2px solid rgba(255,255,255,0.1);
 }
 
-.stockChange {
-  font-family: var(--heading);
-  font-size: var(--fs-md);
-  font-weight: 900;
-  text-transform: uppercase;
-}
-.changePositive { color: #14a800; }
-.changeNegative { color: var(--color-danger); }
+.explorerTable th:last-child { border-right: none; }
 
-.stockCardBody {
-  padding: var(--sp-4) var(--sp-5);
-}
-
-.stockName {
-  font-size: var(--fs-sm);
+.explorerTable td {
+  padding: 16px 20px;
+  border-bottom: 2px solid #eee;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #333;
-  margin-bottom: var(--sp-3);
 }
 
-.stockPrice {
+.explorerTable tr:last-child td { border-bottom: none; }
+
+.explorerTable tr:hover td {
+  background: rgba(196, 255, 0, 0.05);
+}
+
+.symbolCell {
   font-family: var(--heading);
-  font-size: var(--fs-2xl);
-  font-weight: 900;
-  color: var(--text);
-  margin-bottom: var(--sp-1);
+  font-size: 1.1rem;
+  color: #000;
 }
 
-.stockMeta {
-  display: flex;
-  gap: var(--sp-4);
-  font-size: var(--fs-xs);
-  font-weight: 600;
+.companyCell {
   color: #555;
-  margin-top: var(--sp-3);
-  padding-top: var(--sp-3);
-  border-top: 2px solid rgba(0,0,0,0.07);
+  font-size: 0.85rem;
+}
+
+.priceCell {
+  font-family: var(--heading);
+  font-size: 1rem;
+  text-align: right;
+}
+
+.changeCell { text-align: right; }
+
+.actionBtn {
+  padding: 8px 12px;
+  background: #000;
+  color: #fff;
+  border: 3px solid #000;
+  font-family: var(--heading);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.1s ease;
+}
+
+.actionBtn:hover { background: var(--color-primary); color: #000; }
+
+@media (max-width: 1024px) {
+  .filterBar { flex-direction: column; align-items: stretch; }
+  .searchWrapper { min-width: 100%; }
 }
 
 @media (max-width: 768px) {
-  .filterBar { flex-direction: column; align-items: stretch; }
-  .filter { text-align: center; }
-  .stockGrid { grid-template-columns: 1fr; }
+  .pageTitle { font-size: var(--fs-2xl); }
 }
+
