@@ -1,0 +1,252 @@
+.container {
+  padding: 0;
+  max-width: 100%;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 8px 8px 0px #000;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-bottom: 4px solid #000;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.cardBody {
+  padding: 20px;
+  flex: 1;
+}
+
+.settingItem {
+  margin-bottom: 24px;
+}
+
+.settingItem:last-child {
+  margin-bottom: 0;
+}
+
+.settingLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.settingLabel {
+  font-size: 0.75rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.neoInput {
+  width: 100%;
+  padding: 12px;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  font-weight: 800;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.neoInput:focus {
+  outline: none;
+  background: #fdfdfd;
+  box-shadow: 6px 6px 0px #000;
+  transform: translate(-2px, -2px);
+}
+
+.toggleSwitch {
+  width: 50px;
+  height: 26px;
+  border: 3px solid #000;
+  border-radius: 13px;
+  background: #eee;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggleSwitchActive {
+  background: #14a800;
+}
+
+.toggleHandle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  transition: left 0.2s ease-in-out;
+}
+
+.toggleHandleActive {
+  left: 24px;
+}
+
+.dangerZone {
+  margin-top: 32px;
+  padding: 24px;
+  border: 4px solid #000;
+  background: #ffe4e1;
+  box-shadow: 8px 8px 0px #ff3131;
+}
+
+.dangerZone h4 {
+  color: #ff3131;
+  margin-top: 0;
+  font-size: 1rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.dangerActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ── MOBILE SCALING ── */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 10px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .settingsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .headerActions button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    box-shadow: 3px 3px 0px #000;
+    padding: 8px !important;
+    font-size: 0.7rem !important;
+  }
+
+  .card {
+     box-shadow: 4px 4px 0px #000;
+     border-width: 2px;
+     width: 96%;
+     margin: 0 auto;
+  }
+
+  .cardHeader {
+     padding: 6px 12px;
+     border-bottom-width: 2px;
+  }
+
+  .cardHeader h3 {
+     font-size: 0.75rem;
+  }
+
+  .neoInput {
+     border-width: 2px;
+     box-shadow: 3px 3px 0px #000;
+     padding: 8px !important;
+     font-size: 0.7rem !important;
+  }
+
+  .toggleSwitch {
+     border-width: 2px;
+     width: 40px;
+     height: 22px;
+  }
+
+  .toggleHandle {
+     width: 14px;
+     height: 14px;
+  }
+
+  .toggleHandleActive {
+     left: 18px;
+  }
+
+  .dangerActions {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .dangerActions button {
+    width: 100%;
+    box-shadow: 3px 3px 0px #000;
+    padding: 8px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+     padding: 8px;
+  }
+
+  .card {
+     width: 98%;
+  }
+
+  .cardBody {
+    padding: 12px;
+  }
+  
+  .settingItem {
+     margin-bottom: 16px;
+  }
+
+  .settingLabel {
+    font-size: 0.55rem;
+    letter-spacing: 0.2px;
+  }
+  
+  .dangerZone {
+     padding: 12px;
+     box-shadow: 4px 4px 0px #ff3131;
+     margin-bottom: 20px;
+     border-width: 2px;
+     width: 96%;
+     margin-left: auto;
+     margin-right: auto;
+  }
+
+  .dangerZone h4 {
+     font-size: 0.8rem;
+  }
+}

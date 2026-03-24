@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../../styles/pages/app/admin/ReportsAnalytics.module.css';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function ReportsAnalytics() {
   const [range, setRange] = useState('LAST 30 DAYS');
@@ -18,7 +20,69 @@ export default function ReportsAnalytics() {
 
   const handleExport = (format) => {
     if (format === 'PDF') {
-      window.print();
+      const doc = new jsPDF();
+      
+      // 1. Header & Branding
+      doc.setFontSize(22);
+      doc.setTextColor(0, 0, 0);
+      doc.setFont("helvetica", "bold");
+      doc.text("ARTHANOVA", 15, 20);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text("ADMINISTRATIVE PERFORMANCE REPORT", 15, 26);
+      
+      doc.setDrawColor(0);
+      doc.setLineWidth(1);
+      doc.line(15, 30, 195, 30);
+      
+      // 2. Report metadata
+      doc.setFontSize(9);
+      doc.setTextColor(50);
+      doc.text(`GENERATED: ${new Date().toLocaleString()}`, 15, 38);
+      doc.text(`SELECTED RANGE: ${range}`, 15, 43);
+      
+      // 3. KPI Analysis Table
+      doc.setFontSize(12);
+      doc.setTextColor(0);
+      doc.text("EXECUTIVE METRICS SUMMARY", 15, 55);
+      
+      const kpiData = kpis.length > 0 ? kpis.map(k => [k.label, k.value, k.change]) : [["PLATFORM REACH", "0.0", "NO DATA"], ["AVG SESSION", "0.0", "NO DATA"], ["PRO CONVERSION", "0.0", "NO DATA"], ["REVENUE", "0.0", "NO DATA"]];
+      
+      autoTable(doc, {
+        startY: 60,
+        head: [['METRIC KEY', 'CURRENT VALUE', 'PERIOD GROWTH']],
+        body: kpiData,
+        theme: 'grid',
+        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], fontStyle: 'bold' },
+        styles: { fontSize: 8, cellPadding: 5 }
+      });
+      
+      // 4. Stocks Table
+      const finalY = (doc).lastAutoTable.finalY || 60;
+      doc.setFontSize(12);
+      doc.text("ASSET ENGAGEMENT BREAKDOWN", 15, finalY + 15);
+      
+      const stockData = stocks.length > 0 ? stocks.map(s => [s.symbol, s.users, s.engagement, s.sentiment]) : [["NO DATA DETECTED", "-", "-", "-"]];
+      
+      autoTable(doc, {
+        startY: finalY + 20,
+        head: [['STOCK SYMBOL', 'ACTIVE USERS', 'ENGAGEMENT', 'SENTIMENT']],
+        body: stockData,
+        theme: 'striped',
+        headStyles: { fillColor: [0, 82, 204], textColor: [255, 255, 255] },
+        styles: { fontSize: 8 }
+      });
+      
+      // 5. Footer
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.text("CONFIDENTIAL - ARTHANOVA INTERNAL USE ONLY", 105, 285, { align: "center" });
+      }
+      
+      doc.save(`ArthaNova_Report_${range.replace(" ", "_")}.pdf`);
     } else {
       alert(`GENERATING ${format === 'PDF' ? 'SECURE PDF' : format} REPORT FOR ${range}...`);
     }
@@ -205,3 +269,5 @@ export default function ReportsAnalytics() {
     </div>
   );
 }
+
+// End of file
