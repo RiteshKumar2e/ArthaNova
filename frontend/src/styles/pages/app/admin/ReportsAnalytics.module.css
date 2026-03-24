@@ -45,6 +45,34 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 16px;
 }
+@media (max-width: 900px) {
+  .reportGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 12px; }
+  .kpiValue { font-size: 1.4rem; }
+}
+
+/* Extreme Mobile Scaling */
+@media (max-width: 480px) {
+  .container { padding: 8px; }
+  
+  :global(.page-header) {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  
+  :global(.page-title) { font-size: 1.1rem !important; }
+  :global(.page-subtitle) { font-size: 0.55rem !important; }
+
+  .kpiValue { font-size: 1.2rem !important; }
+  .kpiCard { padding: 10px !important; }
+  
+  .stockTable th { padding: 8px 10px !important; font-size: 0.5rem !important; }
+  .stockTable td { padding: 8px 10px !important; font-size: 0.6rem !important; }
+}
 
 .card {
   background: #fff;
@@ -62,6 +90,98 @@
   font-weight: 950;
   text-transform: uppercase;
   margin: 0;
+}
+
+/* ── PRINT LOGIC ── */
+.printOnly {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+  
+  :global(#root), .noPrint, :global(.sidebar), :global(.topbar) {
+    display: none !important;
+  }
+  
+  .printOnly {
+    display: block !important;
+    background: #fff !important;
+    color: #000 !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+
+  .printHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #000;
+    padding-bottom: 12px;
+    margin-bottom: 30px;
+  }
+
+  .printLogo {
+    font-family: var(--heading);
+    font-size: 1.8rem;
+    font-weight: 950;
+    letter-spacing: -2px;
+  }
+
+  .printMeta {
+    text-align: right;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .printSummaryTitle {
+    font-family: var(--heading);
+    font-size: 0.9rem;
+    font-weight: 950;
+    padding: 6px 12px;
+    background: #eee;
+    border: 1px solid #000;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    display: inline-block;
+  }
+
+  .printKpiTable, .printDataTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+
+  .printKpiTable th, .printDataTable th {
+    background: #000 !important;
+    color: #fff !important;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .printKpiTable td, .printDataTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .printFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-align: center;
+    border-top: 1px dashed #ccc;
+    padding-top: 10px;
+  }
 }
 
 .stockTable {

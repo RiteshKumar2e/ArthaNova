@@ -37,7 +37,7 @@ async def get_admin_stats(
         "users": {
             "total": total_users,
             "active": active_users,
-            "growth_pct": 12.5
+            "growth_pct": 0.0
         },
         "system": {
             "uptime": "N/A",
@@ -125,18 +125,14 @@ async def get_ai_system_status(
     return {
         "timestamp": datetime.now().isoformat(),
         "system": {
-            "circuit_breaker": {"state": "CLOSED", "success_count": 100, "failure_count": 2},
-            "orchestrator": {"agents_active": 5, "requests_processed": 250},
+            "circuit_breaker": {"state": "CLOSED", "success_count": 0, "failure_count": 0},
+            "orchestrator": {"agents_active": 0, "requests_processed": 0},
             "audit_entries": 0,
         },
-        "agents": {
-            "technical_agent": {"status": "ready", "last_signal": "HOLD"},
-            "fundamental_agent": {"status": "ready", "last_signal": "BUY"},
-            "risk_agent": {"status": "ready", "last_signal": "MONITOR"},
-        },
+        "agents": {},
         "performance": {
-            "latency_metrics": {"orchestration": {"avg_ms": 145, "p95_ms": 320}},
-            "cost_metrics": {"total_tokens": 5000, "estimated_cost_usd": 0.15},
+            "latency_metrics": {"orchestration": {"avg_ms": 0, "p95_ms": 0}},
+            "cost_metrics": {"total_tokens": 0, "estimated_cost_usd": 0.0},
         },
         "status": "operational",
     }
@@ -255,11 +251,7 @@ async def list_video_jobs(
 ):
     """List all video rendering jobs (Admin sees all, user sees own)."""
     # Mock data for demonstration
-    mock_jobs = [
-        {"id": "V-101", "title": "NIFTY 50 RECAP", "user_id": 1, "user_name": "Ritesh", "duration": "60s", "format": "MP4", "status": "COMPLETED", "created_at": "2024-03-24T10:00:00Z"},
-        {"id": "V-102", "title": "RELIANCE Q3 INSIGHT", "user_id": 1, "user_name": "Ritesh", "duration": "30s", "format": "MP4", "status": "PENDING", "created_at": "2024-03-24T12:30:00Z"},
-        {"id": "V-103", "title": "MARKET BREADTH ANALYSIS", "user_id": 2, "user_name": "Anmol", "duration": "120s", "format": "MOV", "status": "COMPLETED", "created_at": "2024-03-24T14:15:00Z"},
-    ]
+    mock_jobs = []
     
     # Filter for non-admins
     # Check if user is admin by role or is_admin flag
