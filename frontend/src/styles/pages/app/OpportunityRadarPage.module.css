@@ -9,11 +9,11 @@
 
 .pageTitle {
   font-family: var(--heading);
-  font-size: var(--fs-2xl);
-  font-weight: 900;
+  font-size: 1.6rem;
+  font-weight: 950;
   text-transform: uppercase;
-  padding-bottom: var(--sp-4);
-  border-bottom: var(--border-width) solid var(--border);
+  padding-bottom: 12px;
+  border-bottom: 4px solid #000;
 }
 
 /* Radar chart panel */
@@ -25,36 +25,36 @@
 }
 
 .radarChartHeader {
-  padding: var(--sp-4) var(--sp-5);
+  padding: 12px 18px;
   background: var(--accent);
-  border-bottom: var(--border-width) solid var(--border);
+  border-bottom: 4px solid #000;
   font-family: var(--heading);
-  font-size: var(--fs-md);
-  font-weight: 900;
+  font-size: 0.85rem;
+  font-weight: 950;
   text-transform: uppercase;
 }
 
 .radarChartBody {
-  min-height: 380px;
+  min-height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sp-6);
+  padding: 24px;
 }
 
 /* Opportunity score */
 .opportunityScore {
   font-family: var(--heading);
-  font-size: var(--fs-4xl);
-  font-weight: 900;
+  font-size: 2.2rem;
+  font-weight: 950;
   text-transform: uppercase;
   line-height: 1;
-  margin-bottom: var(--sp-4);
+  margin-bottom: 12px;
   background: var(--primary);
-  border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-sm);
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px #000;
   display: inline-block;
-  padding: var(--sp-3) var(--sp-6);
+  padding: 10px 22px;
 }
 
 .opportunityDescription {
@@ -74,15 +74,15 @@
 
 .signalCard {
   background: var(--bg-white);
-  border: var(--border-width) solid var(--border);
-  box-shadow: var(--shadow-sm);
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px #000;
   overflow: hidden;
   cursor: pointer;
-  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 .signalCard:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: var(--shadow-md);
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 5.5px 5.5px 0px #000;
 }
 .signalCard:nth-child(1) .signalHeader { background: var(--primary); }
 .signalCard:nth-child(2) .signalHeader { background: var(--secondary); }
@@ -97,32 +97,31 @@
 
 .signalTitle {
   font-family: var(--heading);
-  font-size: var(--fs-md);
-  font-weight: 900;
+  font-size: 0.85rem;
+  font-weight: 950;
   text-transform: uppercase;
   color: var(--text);
 }
 
 .signalBody {
-  padding: var(--sp-4) var(--sp-5);
+  padding: 12px 18px;
 }
 
 .signalDescription {
-  font-size: var(--fs-sm);
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 650;
   color: #333;
-  line-height: 1.6;
-  margin-bottom: var(--sp-3);
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
 
 .riskIndicator {
-  padding-top: var(--sp-3);
+  padding-top: 10px;
   border-top: 2px solid rgba(0,0,0,0.1);
   font-family: var(--heading);
-  font-size: var(--fs-xs);
-  font-weight: 900;
+  font-size: 0.65rem;
+  font-weight: 950;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .riskLow  { color: #14a800; }
