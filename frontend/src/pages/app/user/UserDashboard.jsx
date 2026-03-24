@@ -32,12 +32,12 @@ export default function UserDashboard({ user }) {
   return (
     <div className="animate-fadeIn">
       {/* Header */}
-      <div className="page-header">
+      <div className={styles.pageHeader}>
         <div>
-          <h1 className="page-title">
+          <h1 className={styles.pageTitle}>
             Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, {user?.full_name?.split(' ')[0] || 'Investor'} 👋
           </h1>
-          <p className="page-subtitle">Here's your market intelligence snapshot for today.</p>
+          <p className={styles.pageTitleSub}>Here's your market intelligence snapshot for today.</p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
           <Link to="/ai-chat" className="btn btn-secondary btn-sm">🤖 Ask AI</Link>
@@ -46,15 +46,15 @@ export default function UserDashboard({ user }) {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid-4" style={{ marginBottom: 24 }}>
+      <div className={styles.statsRow} style={{ marginBottom: 24 }}>
         {QUICK_STATS.map((stat) => (
-          <div key={stat.label} className="metric-card">
+          <div key={stat.label} className={styles.stat}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-              <div className="metric-label">{stat.label}</div>
+              <div className={styles.statLabel}>{stat.label}</div>
               <span style={{ fontSize: '1.2rem' }}>{stat.icon}</span>
             </div>
-            <div className="metric-value">{stat.value}</div>
-            <div className={`metric-change ${stat.positive === true ? 'positive' : stat.positive === false ? 'negative' : ''}`}>
+            <div className={styles.statValue}>{stat.value}</div>
+            <div className={`${styles.statChange} ${stat.positive === true ? styles.up : stat.positive === false ? styles.down : ''}`}>
               {stat.positive === true ? '▲' : stat.positive === false ? '▼' : ''} {stat.change}
             </div>
           </div>
@@ -62,10 +62,8 @@ export default function UserDashboard({ user }) {
       </div>
 
       <div className={styles.mainGrid}>
-        <div className="card" style={{ gridColumn: 'span 2' }}>
-          <div className="card-header">
-            <h3>Portfolio Performance (30D)</h3>
-          </div>
+        <div className={styles.gridItem} style={{ gridColumn: 'span 2' }}>
+          <div className={styles.gridItemTitle}>Portfolio Performance (30D)</div>
           <div style={{ padding: '20px', textAlign: 'center' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>📈</div>
             <p style={{ color: '#5E6C84' }}>No performance data available yet. Start by adding holdings to your portfolio.</p>
@@ -73,10 +71,8 @@ export default function UserDashboard({ user }) {
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header">
-            <h3>🎯 AI Opportunity Signals</h3>
-          </div>
+        <div className={styles.gridItem}>
+          <div className={styles.gridItemTitle}>🎯 AI Opportunity Signals</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {AI_SIGNALS.length > 0 ? (
               AI_SIGNALS.map((signal) => (
