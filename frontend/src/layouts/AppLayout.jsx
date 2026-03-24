@@ -5,17 +5,33 @@ import Topbar from '../components/layout/Topbar'
 import styles from '../styles/layouts/AppLayout.module.css'
 
 export default function AppLayout() {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 992)
+
+  const toggleSidebar = () => setSidebarCollapsed(!sidebarCollapsed)
+  const closeSidebarOnMobile = () => {
+    if (window.innerWidth < 992) setSidebarCollapsed(true)
+  }
 
   return (
     <div className={`${styles.wrapper} ${sidebarCollapsed ? styles.collapsed : ''}`}>
-      <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
+      {/* Mobile Backdrop */}
+      {!sidebarCollapsed && window.innerWidth < 992 && (
+        <div className={styles.backdrop} onClick={() => setSidebarCollapsed(true)} />
+      )}
+      
+      <Sidebar 
+        collapsed={sidebarCollapsed} 
+        onToggle={toggleSidebar} 
+        onNavigate={closeSidebarOnMobile}
+      />
+      
       <div className={styles.content}>
-        <Topbar onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
+        <Topbar onToggleSidebar={toggleSidebar} />
         <main className={styles.main}>
           <Outlet />
         </main>
       </div>
     </div>
   )
+
 }

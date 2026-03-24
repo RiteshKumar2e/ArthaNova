@@ -164,11 +164,25 @@
 
 @media (max-width: 900px) {
   .summaryCards { grid-template-columns: 1fr 1fr; }
+  .pageHeader { flex-direction: column; align-items: stretch; gap: 12px; }
+  .pageTitle { font-size: 1.25rem; }
+}
+
+@media (max-width: 768px) {
+  /* Hide Company, LTP, Change Price on mobile */
+  .holdingsTable th:nth-child(2), .holdingsTable td:nth-child(2),
+  .holdingsTable th:nth-child(5), .holdingsTable td:nth-child(5),
+  .holdingsTable th:nth-child(6), .holdingsTable td:nth-child(6) {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
   .summaryCards { grid-template-columns: 1fr; }
   .holdingsTable { font-size: 0.75rem; }
-  .holdingsTable th, .holdingsTable td { padding: 10px; }
+  .holdingsTable th, .holdingsTable td { padding: 8px; }
+  .symbol { font-size: 0.85rem; }
+  .statValue { font-size: 1.15rem; }
 }
+
 

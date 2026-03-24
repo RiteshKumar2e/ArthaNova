@@ -451,12 +451,25 @@
 }
 
 /* ── Responsive ──────────────────────────────────────── */
-@media (max-width: 576px) {
-  .authCardLight { padding: 1.75rem 1.25rem; }
-  .authTitleLight { font-size: 1.75rem; }
+@media (max-width: 768px) {
+  .authCardLight, .authCardWide { padding: 1.5rem; margin: 1rem; }
+  .authTitleLight { font-size: 1.5rem; }
+  .brandIconLight { font-size: 1.1rem; padding: 0.4rem 1rem; }
+  .homeButtonLight { top: 1rem; left: 1rem; padding: 6px 10px; font-size: 0.65rem; }
+  .riskOptionsLight { grid-template-columns: 1fr; gap: 0.75rem; }
+  .formRowLight { grid-template-columns: 1fr; }
+  .stepDividerLight { display: none; }
+  .regStepIndicatorLight { gap: 1rem; overflow-x: auto; justify-content: flex-start; padding: 1rem 0.5rem; }
   .demoBtnsLight { flex-direction: column; }
-  .homeButtonLight { top: 0.75rem; left: 0.75rem; padding: 6px 12px; }
+  .floatingBox { display: none; }
 }
+
+@media (max-width: 480px) {
+  .authCardLight, .authCardWide { padding: 1.25rem; box-shadow: 4px 4px 0px #000; }
+  .submitBtnLight { font-size: 0.85rem; padding: 12px; }
+  .socialBtnLight { font-size: 0.7rem; }
+}
+
 
 /* ═══════════════════════════════════════════════════════
    Register Page specific classes

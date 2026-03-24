@@ -292,9 +292,41 @@
   font-size: 0.6rem;
 }
 
-@media (max-width: 900px) {
-  .chatSidebar { display: none; }
-  .suggestions { grid-template-columns: 1fr; }
+@media (max-width: 992px) {
+  .chatSidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    background: #fff;
+    width: 260px;
+  }
+  .chatSidebar.open {
+    transform: translateX(0);
+  }
 }
+
+@media (max-width: 768px) {
+  .chatHeader { padding: 12px 16px; }
+  .messagesArea { padding: 12px; gap: 12px; }
+  .message { max-width: 92%; }
+  .msgContent { padding: 10px 14px; }
+  .msgText { font-size: 0.85rem; }
+  .inputArea { padding: 12px 16px; }
+  .welcomeScreen { padding: 16px; margin: 10px; box-shadow: 4px 4px 0px #000; }
+  .welcomeScreen h3 { font-size: 1.1rem; }
+  .suggestions { grid-template-columns: 1fr; gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  .chatTitle { font-size: 0.95rem; }
+  .chatSubtitle { display: none; }
+  .msgAvatar, .msgAvatarUser { width: 28px; height: 28px; min-width: 28px; font-size: 0.65rem; }
+  .chatInput { font-size: 0.85rem; padding: 10px 12px; }
+  .sendBtn { width: 40px; height: 40px; font-size: 0.85rem; }
+}
+
 
 

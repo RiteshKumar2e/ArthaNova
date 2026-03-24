@@ -198,3 +198,23 @@
   justify-content: flex-end;
   gap: 12px;
 }
+@media (max-width: 992px) {
+  .container { padding: 12px; }
+  .searchHeader { flex-direction: column; padding: 10px; gap: 8px; }
+  .roleSelect { width: 100%; }
+}
+
+@media (max-width: 768px) {
+  /* Hide non-essential columns on mobile */
+  .userTable th:nth-child(4), .userTable td:nth-child(4),
+  .userTable th:nth-child(5), .userTable td:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .userName { font-size: 0.65rem; }
+  .userEmail { font-size: 0.55rem; }
+  .actions { flex-direction: column; gap: 4px; }
+  .actions .btn { padding: 3px 6px; font-size: 0.55rem !important; }
+}

@@ -184,7 +184,30 @@
 .performanceLabel { color: #666; font-size: 0.65rem; text-transform: uppercase; }
 
 @media (max-width: 768px) {
-  .statsGrid { grid-template-columns: 1fr 1fr; }
-  .tabNav { flex-direction: column; border: none; }
-  .tabButton { transform: none !important; box-shadow: 4px 4px 0px #000; }
+  .adminDashboard { padding: 12px; }
+  .statsGrid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .statCard { padding: 8px; }
+  .value { font-size: 1.1rem; }
+  .tabNav { 
+    flex-direction: row; 
+    border-bottom: 3px solid #000; 
+    overflow-x: auto; 
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabNav::-webkit-scrollbar { display: none; }
+  .tabButton { 
+    white-space: nowrap; 
+    flex-shrink: 0; 
+    font-size: 0.65rem; 
+    padding: 6px 10px;
+    transform: none !important; 
+  }
 }
+
+@media (max-width: 480px) {
+  .statsGrid { grid-template-columns: 1fr; }
+  .contentRow { grid-template-columns: 1fr; }
+}
+

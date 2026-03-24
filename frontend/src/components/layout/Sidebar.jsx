@@ -64,7 +64,7 @@ const ADMIN_NAV = [
   ]},
 ]
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, onToggle, onNavigate }) {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
   const isAdmin = user?.role === 'admin' || user?.is_admin === true
@@ -126,6 +126,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
                   title={collapsed ? item.label : undefined}
+                  onClick={onNavigate}
                 >
                   {({ isActive }) => (
                     <>

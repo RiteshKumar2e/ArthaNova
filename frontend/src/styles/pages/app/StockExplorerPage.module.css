@@ -192,6 +192,21 @@
 }
 
 @media (max-width: 768px) {
-  .pageTitle { font-size: var(--fs-2xl); }
+  .pageHeader { flex-direction: column; align-items: stretch; }
+  .pageTitle { font-size: var(--fs-xl); }
+  /* Hide Company, Sector, PE Ratio on mobile to fit symbols and prices */
+  .explorerTable th:nth-child(2), .explorerTable td:nth-child(2),
+  .explorerTable th:nth-child(3), .explorerTable td:nth-child(3),
+  .explorerTable th:nth-child(6), .explorerTable td:nth-child(6) {
+    display: none;
+  }
 }
+
+@media (max-width: 480px) {
+  .symbolCell { font-size: 0.9rem; }
+  .priceCell { font-size: 0.85rem; }
+  .actionBtn { padding: 4px 8px; font-size: 0.55rem; }
+  .sectorFilters { display: none; } /* Hide sector buttons on very small screens to save space */
+}
+
 

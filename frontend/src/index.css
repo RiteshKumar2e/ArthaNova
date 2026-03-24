@@ -105,6 +105,16 @@ body {
   background-size: 32px 32px;
 }
 
+@media (max-width: 768px) {
+  body {
+    background-size: 24px 24px;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  }
+}
+
+
 #root { min-height: 100vh; }
 
 /* ── Typography ─────────────────────────────────────────── */
@@ -482,8 +492,31 @@ select.form-control {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-  .page-header { flex-direction: column; align-items: flex-start; }
-  .page-title { font-size: var(--fs-2xl); }
+@media (max-width: 992px) {
+  :root { --sidebar-width: 0px; }
+  .page-wrapper { padding: 12px; }
 }
+
+
+@media (max-width: 768px) {
+  .page-header { flex-direction: column; align-items: flex-start; gap: 8px; border-bottom: 3px solid #000; padding-bottom: 12px; width: 100%; }
+  .page-title { font-size: 1.25rem; }
+  .page-subtitle { font-size: 0.65rem; }
+  .grid-4, .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+  .btn { padding: 8px 14px; font-size: 0.65rem; box-shadow: 3px 3px 0px #000; }
+  .btn-lg { padding: 10px 18px; font-size: 0.75rem; }
+  .neo-box { padding: 12px; }
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 3px solid #000;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header { align-items: stretch; }
+  .btn { width: 100%; }
+}
+
 
