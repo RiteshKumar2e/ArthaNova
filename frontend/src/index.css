@@ -366,23 +366,23 @@ select.form-control {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
   gap: 16px;
   flex-wrap: wrap;
-  padding-bottom: 12px;
-  border-bottom: 4px solid #000;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #000;
 }
 
 .page-title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 950;
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   letter-spacing: -0.02em;
 }
 
 .page-subtitle {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 800;
   color: #666;
   text-transform: uppercase;

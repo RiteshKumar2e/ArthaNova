@@ -111,47 +111,31 @@ export default function AdminDashboard() {
   ] : [];
 
   return (
-    <div className={styles.adminDashboard}>
-      <div className="page-header" style={{ marginBottom: 32 }}>
+    <div className={styles.adminDashboard + " animate-fadeIn"}>
+      <div className="page-header">
         <div>
-          <h1 className="page-title">Admin Command Center 🛠️</h1>
-          <p className="page-subtitle">Governance, platform health, and AI system oversight.</p>
+          <h1 className="page-title">ADMIN COMMAND CENTER 🛠️</h1>
+          <p className="page-subtitle">GOVERNANCE, PLATFORM HEALTH, AND AI SYSTEM OVERSIGHT.</p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <Link to="/admin/settings" className="btn btn-secondary btn-sm">⚙️ System Settings</Link>
-          <Link to="/admin/users" className="btn btn-primary btn-sm">👥 User Management</Link>
+          <Link to="/admin/settings" className="btn btn-secondary btn-sm">⚙️ SYSTEM SETTINGS</Link>
+          <Link to="/admin/users" className="btn btn-primary btn-sm">👥 USER MANAGEMENT</Link>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid #e5e7eb' }}>
+      <div className={styles.tabNav}>
         <button
+          className={`${styles.tabButton} ${activeTab === 'overview' ? styles.active : ''}`}
           onClick={() => setActiveTab('overview')}
-          style={{
-            padding: '0.75rem 1.5rem',
-            background: activeTab === 'overview' ? '#3b82f6' : 'transparent',
-            color: activeTab === 'overview' ? 'white' : '#6b7280',
-            border: 'none',
-            borderBottom: activeTab === 'overview' ? '3px solid #3b82f6' : 'none',
-            cursor: 'pointer',
-            fontWeight: 600,
-          }}
         >
-          📊 Platform Overview
+          📊 PLATFORM OVERVIEW
         </button>
         <button
+          className={`${styles.tabButton} ${activeTab === 'ai' ? styles.active : ''}`}
           onClick={() => setActiveTab('ai')}
-          style={{
-            padding: '0.75rem 1.5rem',
-            background: activeTab === 'ai' ? '#3b82f6' : 'transparent',
-            color: activeTab === 'ai' ? 'white' : '#6b7280',
-            border: 'none',
-            borderBottom: activeTab === 'ai' ? '3px solid #3b82f6' : 'none',
-            cursor: 'pointer',
-            fontWeight: 600,
-          }}
         >
-          🧠 Multi-Agent AI System
+          🧠 MULTI-AGENT AI SYSTEM
         </button>
       </div>
 
@@ -161,8 +145,8 @@ export default function AdminDashboard() {
           <div className={styles.statsGrid}>
             {loading ? (
               [1, 2, 3, 4].map(i => (
-                <div key={i} className={`${styles.statCard} loading`}>
-                  <div className={styles.label}>Loading Stats...</div>
+                <div key={i} className={styles.statCard}>
+                  <div className={styles.label}>LOADING...</div>
                   <div className={styles.value}>----</div>
                 </div>
               ))
@@ -171,7 +155,7 @@ export default function AdminDashboard() {
                 <div className={styles.iconWrapper}>{stat.icon}</div>
                 <div className={styles.label}>{stat.label}</div>
                 <div className={styles.value}>{stat.value}</div>
-                <div className={`${styles.change} ${stat.positive ? styles.positive : styles.negative}`}>
+                <div className={styles.change}>
                   {stat.change}
                 </div>
               </div>
@@ -181,62 +165,66 @@ export default function AdminDashboard() {
           <div className={styles.contentRow}>
             <div className={styles.card}>
               <div className={styles.cardHeader}>
-                <h3>🖥️ System Registry Activity</h3>
+                <h3>🖥️ SYSTEM REGISTRY ACTIVITY</h3>
                 <span className="badge badge-secondary" style={{ fontSize: 10 }}>LIVE FEED</span>
               </div>
               <div className={styles.cardBody} style={{ padding: 0 }}>
-                <table className={styles.activityTable}>
-                  <thead>
-                    <tr>
-                      <th>Identity</th>
-                      <th>Operation</th>
-                      <th>Module</th>
-                      <th style={{ textAlign: 'right' }}>Timestamp</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {auditTrail.length === 0 ? (
-                      <tr><td colSpan="4" style={{ textAlign: 'center', padding: 20, color: '#97A0AF' }}>No recent system activity recorded.</td></tr>
-                    ) : auditTrail.slice(0, 8).map((entry, i) => (
-                      <tr key={i}>
-                        <td><strong>{entry.agent || 'System'}</strong></td>
-                        <td><span style={{ fontSize: '0.8rem', color: '#5E6C84' }}>{entry.action}</span></td>
-                        <td><span className="badge badge-secondary" style={{ fontSize: '0.7rem' }}>{entry.details?.query_type || 'Core'}</span></td>
-                        <td style={{ textAlign: 'right', fontSize: '0.75rem', color: '#97A0AF' }}>
-                          {new Date(entry.timestamp).toLocaleTimeString()}
-                        </td>
+                <div className={styles.tableWrapper}>
+                  <table className={styles.activityTable}>
+                    <thead>
+                      <tr>
+                        <th>IDENTITY</th>
+                        <th>OPERATION</th>
+                        <th>MODULE</th>
+                        <th style={{ textAlign: 'right' }}>TIMESTAMP</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {auditTrail.length === 0 ? (
+                        <tr><td colSpan="4" style={{ textAlign: 'center', padding: 40, fontWeight: 800, color: '#999' }}>NO RECENT SYSTEM ACTIVITY RECORDED.</td></tr>
+                      ) : auditTrail.slice(0, 8).map((entry, i) => (
+                        <tr key={i}>
+                          <td><strong>{entry.agent?.toUpperCase() || 'SYSTEM'}</strong></td>
+                          <td><span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#333' }}>{entry.action?.toUpperCase()}</span></td>
+                          <td><span className="badge badge-info" style={{ fontSize: '0.65rem' }}>{entry.details?.query_type?.toUpperCase() || 'CORE'}</span></td>
+                          <td style={{ textAlign: 'right', fontSize: '0.7rem', fontWeight: 800, color: '#666' }}>
+                            {new Date(entry.timestamp).toLocaleTimeString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
             <div className={styles.card}>
               <div className={styles.cardHeader}>
-                <h3>🚨 Health Monitor</h3>
+                <h3>🚨 HEALTH MONITOR</h3>
               </div>
-              <div className={styles.cardBody}>
+              <div className={styles.cardBody} style={{ padding: 0 }}>
                 <div className={styles.healthList}>
                   {complianceViolations.length === 0 ? (
-                    <div style={{ padding: 20, textAlign: 'center' }}>
-                      <div style={{ fontSize: '2rem', marginBottom: 12 }}>✔️</div>
-                      <p style={{ color: '#00875A', fontWeight: 600 }}>All systems compliant</p>
-                      <p style={{ fontSize: '0.8rem', color: '#5E6C84' }}>No safety violations or circuit breaks detected in current session.</p>
+                    <div style={{ padding: 40, textAlign: 'center' }}>
+                      <div style={{ fontSize: '2.5rem', marginBottom: 16 }}>✔️</div>
+                      <p style={{ color: '#14a800', fontWeight: 950, textTransform: 'uppercase' }}>ALL SYSTEMS COMPLIANT</p>
+                      <p style={{ fontSize: '0.7rem', fontWeight: 800, color: '#666', marginTop: 8 }}>NO SAFETY VIOLATIONS OR CIRCUIT BREAKS DETECTED IN CURRENT SESSION.</p>
                     </div>
                   ) : complianceViolations.map((log, i) => (
                     <div key={i} className={styles.healthItem}>
                       <div className={`${styles.typeIndicator} ${styles.error}`}></div>
                       <div className={styles.msgContainer}>
-                        <div className={styles.msg}>{log.violation_type}</div>
+                        <div className={styles.msg}>{log.violation_type?.toUpperCase()}</div>
                         <div className={styles.time}>{new Date(log.timestamp).toLocaleTimeString()}</div>
                       </div>
                     </div>
                   ))}
                 </div>
-                <button className="btn btn-sm btn-secondary" style={{ width: '100%', marginTop: 20 }}>
-                  Deep Diagnostic &rarr;
-                </button>
+                <div style={{ padding: 16 }}>
+                  <button className="btn btn-sm btn-secondary btn-full">
+                    DEEP DIAGNOSTIC &rarr;
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -246,47 +234,53 @@ export default function AdminDashboard() {
       {/* AI SYSTEM TAB */}
       {activeTab === 'ai' && (
         <>
-          {/* System Health Card */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-            <div style={{ background: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>🟢 Circuit Breaker Status</h3>
+          <div className={styles.aiGrid}>
+            <div className={styles.aiCard}>
+              <h3>🟢 CIRCUIT BREAKER</h3>
               {systemStatus && (
                 <>
-                  <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: getCircuitBreakerColor(systemStatus.circuit_breaker_state || 'CLOSED') }}></div>
-                    <span style={{ fontWeight: 600 }}>{systemStatus.circuit_breaker_state || 'CLOSED'}</span>
+                  <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 14, height: 14, border: '2px solid #000', borderRadius: '50%', backgroundColor: getCircuitBreakerColor(systemStatus.circuit_breaker_state || 'CLOSED') }}></div>
+                    <span style={{ fontWeight: 900, fontSize: '1rem' }}>{systemStatus.circuit_breaker_state || 'CLOSED'}</span>
                   </div>
-                  <div style={{ fontSize: '0.9rem', color: '#6b7280' }}>
-                    <div>✓ Success Rate: {((systemStatus.successful_requests / Math.max(systemStatus.total_requests, 1)) * 100).toFixed(1)}%</div>
-                    <div>⏱️ Avg Response: {(systemStatus.avg_response_time || 0).toFixed(0)}ms</div>
-                    <div>🤖 Active Agents: {systemStatus.agents_count || 0}</div>
+                  <div className={styles.performanceRow}>
+                    <span className={styles.performanceLabel}>SUCCESS RATE</span>
+                    <span>{((systemStatus.successful_requests / Math.max(systemStatus.total_requests, 1)) * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className={styles.performanceRow}>
+                    <span className={styles.performanceLabel}>AVG RESPONSE</span>
+                    <span>{(systemStatus.avg_response_time || 0).toFixed(0)}MS</span>
+                  </div>
+                  <div className={styles.performanceRow}>
+                    <span className={styles.performanceLabel}>ACTIVE AGENTS</span>
+                    <span>{systemStatus.agents_count || 0}</span>
                   </div>
                 </>
               )}
             </div>
 
-            {/* Agent Performance */}
-            <div style={{ background: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Agent Performance ({agentMetrics.length})</h3>
-              {agentMetrics.slice(0, 3).map((agent) => (
-                <div key={agent.name} style={{ marginBottom: '0.75rem', fontSize: '0.85rem' }}>
-                  <div style={{ fontWeight: 600 }}>{agent.name.toUpperCase()}</div>
-                  <div style={{ color: '#6b7280' }}>
-                    Success: {agent.metrics?.success_rate || 'N/A'} | 
-                    Response: {agent.metrics?.avg_response_time_ms || 0}ms
+            <div className={styles.aiCard}>
+              <h3>AGENT PERFORMANCE ({agentMetrics.length})</h3>
+              {agentMetrics.length === 0 ? (
+                 <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#999' }}>NO ACTIVE AGENTS FOUND</p>
+              ) : agentMetrics.slice(0, 3).map((agent) => (
+                <div key={agent.name} style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 900, fontSize: '0.75rem' }}>{agent.name.toUpperCase()}</div>
+                  <div className={styles.performanceRow} style={{ border: 'none', padding: 0 }}>
+                    <span className={styles.performanceLabel}>SUCCESS: {agent.metrics?.success_rate || 'N/A'}</span>
+                    <span>{agent.metrics?.avg_response_time_ms || 0}MS</span>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Compliance Status */}
-            <div style={{ background: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>⚖️ Compliance</h3>
-              <div style={{ fontSize: '0.9rem', color: complianceViolations.length === 0 ? '#10b981' : '#ef4444', fontWeight: 600 }}>
-                {complianceViolations.length === 0 ? '✓ No violations' : `⚠️ ${complianceViolations.length} violations`}
+            <div className={styles.aiCard}>
+              <h3>⚖️ COMPLIANCE STATUS</h3>
+              <div style={{ fontSize: '1rem', color: complianceViolations.length === 0 ? '#14a800' : '#FF3131', fontWeight: 950, marginBottom: 12 }}>
+                {complianceViolations.length === 0 ? '✓ COMPLIANT' : `⚠️ ${complianceViolations.length} VIOLATIONS`}
               </div>
               {complianceViolations.slice(0, 2).map((v, i) => (
-                <div key={i} style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.5rem' }}>
+                <div key={i} style={{ fontSize: '0.65rem', fontWeight: 800, color: '#666', marginTop: 4, textTransform: 'uppercase' }}>
                   {v.violation_type}
                 </div>
               ))}
@@ -294,14 +288,16 @@ export default function AdminDashboard() {
           </div>
 
           {/* Audit Trail */}
-          <div style={{ background: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem', marginBottom: '2rem' }}>
-            <h3 style={{ marginBottom: '1rem' }}>📋 Recent Audit Decisions</h3>
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {auditTrail.slice(0, 5).map((entry, i) => (
-                <div key={i} style={{ padding: '0.75rem', borderBottom: '1px solid #e5e7eb', fontSize: '0.85rem' }}>
-                  <div style={{ fontWeight: 600 }}>{entry.action}</div>
-                  <div style={{ color: '#6b7280' }}>{entry.decision}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{new Date(entry.timestamp).toLocaleString()}</div>
+          <div className={styles.card} style={{ marginBottom: 32 }}>
+            <div className={styles.cardHeader}>📋 RECENT AUDIT DECISIONS</div>
+            <div className={styles.cardBody} style={{ padding: 0, maxHeight: 300, overflowY: 'auto' }}>
+              {auditTrail.length === 0 ? (
+                <p style={{ padding: 40, textAlign: 'center', fontWeight: 900, color: '#999' }}>NO RECENT AUDIT DATA</p>
+              ) : auditTrail.slice(0, 5).map((entry, i) => (
+                <div key={i} style={{ padding: '12px 20px', borderBottom: '2px solid #eee' }}>
+                  <div style={{ fontWeight: 950, fontSize: '0.8rem', textTransform: 'uppercase' }}>{entry.action}</div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#555', margin: '4px 0' }}>{entry.decision?.toUpperCase()}</div>
+                  <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#999' }}>{new Date(entry.timestamp).toLocaleString()}</div>
                 </div>
               ))}
             </div>
