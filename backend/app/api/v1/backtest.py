@@ -15,7 +15,7 @@ router = APIRouter(prefix="/backtest", tags=["Backtesting Engine"])
 # All mock backtest functionality has been removed.
 
 
-@router.post("/", response_model=BacktestResponse)
+@router.post("", response_model=BacktestResponse)
 async def create_backtest(
     data: BacktestRequest,
     current_user: User = Depends(get_current_user),
@@ -69,7 +69,7 @@ async def create_backtest(
     }
 
 
-@router.get("/")
+@router.get("")
 async def get_backtest_history(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),

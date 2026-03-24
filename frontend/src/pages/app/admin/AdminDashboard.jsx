@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       };
 
       const [status, agents, audit, compliance, perf] = await Promise.all([
-        fetchEndpoint('/api/v1/admin/ai/status', {}),
+        fetchEndpoint('/api/v1/admin/ai/system-status', {}),
         fetchEndpoint('/api/v1/admin/ai/agents', { agents: [] }),
         fetchEndpoint('/api/v1/admin/ai/audit-trail', { entries: [] }),
         fetchEndpoint('/api/v1/admin/ai/compliance/violations', { violations: [] }),

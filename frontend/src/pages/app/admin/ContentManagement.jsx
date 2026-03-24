@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from '../../../styles/pages/app/admin/ContentManagement.module.css';
 
 export default function ContentManagement() {
-  const [contentItems, setContentItems] = useState([]);
+  const [content, setContent] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({ title: '', type: 'INSIGHT' });

@@ -140,3 +140,29 @@
 }
 .statusOn { background: #14a800; color: #fff; }
 .statusOff { background: #FF3131; color: #fff; }
+/* Extreme Mobile Scaling */
+@media (max-width: 480px) {
+  .container { padding: 8px; }
+  
+  :global(.page-header) {
+    padding-bottom: 8px !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  :global(.page-title) {
+    font-size: 1.1rem !important;
+  }
+  
+  :global(.page-subtitle) {
+    font-size: 0.6rem !important;
+  }
+
+  .matrixGrid { gap: 8px; }
+  .cardBody { padding: 12px; }
+  .secTitle { font-size: 0.65rem; }
+  
+  .roleTable th, .roleTable td {
+    padding: 6px 8px;
+    font-size: 0.6rem;
+  }
+}

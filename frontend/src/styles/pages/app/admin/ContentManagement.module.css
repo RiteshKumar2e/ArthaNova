@@ -1,12 +1,21 @@
 .container {
   padding: 16px 24px;
 }
+@media (max-width: 768px) {
+  .container { padding: 12px; }
+}
 
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
+}
+@media (max-width: 768px) {
+  .statsGrid { grid-template-columns: 1fr 1fr; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .statsGrid { grid-template-columns: 1fr; }
 }
 
 .statCard {
@@ -15,6 +24,9 @@
   box-shadow: 4px 4px 0px #000;
   padding: 16px;
   text-align: left;
+}
+@media (max-width: 768px) {
+  .statCard { padding: 12px; border-width: 3px; box-shadow: 2px 2px 0px #000; }
 }
 .statCard:nth-child(1) { background: var(--primary); }
 .statCard:nth-child(2) { background: var(--accent); }
@@ -35,6 +47,9 @@
   font-weight: 950;
   color: #000;
   line-height: 1;
+}
+@media (max-width: 768px) {
+  .statValue { font-size: 1.2rem; }
 }
 
 .card {
@@ -79,6 +94,43 @@
   font-weight: 700;
 }
 .contentTable tr:hover { background: #fafafa; }
+
+/* Mobile Table Handling */
+@media (max-width: 768px) {
+  .contentTable th, .contentTable td {
+    padding: 8px 10px;
+    font-size: 0.65rem;
+  }
+}
+
+/* Extreme Mobile Scaling */
+@media (max-width: 480px) {
+  .container { padding: 8px; }
+  
+  :global(.page-title) {
+    font-size: 1rem !important;
+    letter-spacing: -0.01em !important;
+  }
+  
+  :global(.page-subtitle) {
+    font-size: 0.55rem !important;
+    max-width: 100% !important;
+    line-height: 1.2 !important;
+  }
+
+  .statValue { font-size: 1rem !important; }
+  .statCard { padding: 8px !important; border-width: 2px !important; }
+  .statLabel { font-size: 0.5rem !important; }
+
+  .contentTable th {
+    padding: 6px 8px !important;
+    font-size: 0.5rem !important;
+  }
+  .contentTable td {
+    padding: 6px 8px !important;
+    font-size: 0.6rem !important;
+  }
+}
 
 .title {
   font-weight: 950;
