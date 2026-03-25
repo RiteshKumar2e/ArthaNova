@@ -53,7 +53,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link to="/login" className="btn btn-secondary btn-sm" id="navbar-login-btn">Login</Link>
-              <Link to="/register" className="btn btn-primary btn-sm" id="navbar-register-btn">Sign Up</Link>
+              <Link to="/admin/login" className="btn btn-primary btn-sm" id="navbar-admin-login-btn" style={{ background: '#C4FF00', color: '#000' }}>Admin Login</Link>
             </>
           )}
         </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link to="/login" className="btn btn-secondary btn-full" onClick={() => setMenuOpen(false)}>Login</Link>
-                <Link to="/register" className="btn btn-primary btn-full" onClick={() => setMenuOpen(false)}>Get Started</Link>
+                <Link to="/admin/login" className="btn btn-primary btn-full" onClick={() => setMenuOpen(false)} style={{ background: '#C4FF00', color: '#000' }}>Admin Login</Link>
               </>
             )}
           </div>

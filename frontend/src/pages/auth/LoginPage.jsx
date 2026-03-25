@@ -151,16 +151,6 @@ export default function LoginPage() {
     }
   }
 
-  const handleDemoLogin = (type) => {
-    if (type === 'admin') {
-      setForm({ email: 'admin@arthanova.in', password: 'Admin@1234', remember_me: false })
-    } else {
-      setForm({ email: 'demo@arthanova.in', password: 'Demo@1234', remember_me: false })
-    }
-    setErrors({})
-    toast(`Form filled for ${type}! Click Login.`, { icon: '📝' })
-  }
-
   return (
     <div className={styles.authPageLight}>
       {/* Decorative Boxes */}
@@ -295,18 +285,6 @@ export default function LoginPage() {
           Don't have an account? <Link to="/register">SIGN UP HERE!</Link>
         </p>
 
-        {/* Demo Login Buttons */}
-        <div className={styles.demoBoxLight}>
-          <p>Demo accounts</p>
-          <div className={styles.demoBtnsLight}>
-            <button type="button" className={styles.demoBtnLight} onClick={() => handleDemoLogin('user')}>
-              User Demo
-            </button>
-            <button type="button" className={styles.demoBtnLight} onClick={() => handleDemoLogin('admin')}>
-              Admin Demo
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* OTP Modal */}

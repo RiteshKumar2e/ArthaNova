@@ -69,31 +69,7 @@ async function setup() {
     `);
     console.log('✅ Holdings table ready');
 
-    // 4. Seed Demo Users
-    const demoEmail = 'demo@arthanova.in';
-    const adminEmail = 'admin@arthanova.in';
-
-    const existingUser = await db.queryFirst('SELECT id FROM users WHERE email = ?', [demoEmail]);
-    if (!existingUser) {
-      console.log('🌱 Seeding demo user...');
-      const demoHash = await bcrypt.hash('Demo@1234', 10);
-      await db.execute(
-        'INSERT INTO users (email, username, full_name, hashed_password, is_verified) VALUES (?, ?, ?, ?, ?)',
-        [demoEmail, 'demo_user', 'Demo User', demoHash, 1]
-      );
-    }
-
-    const existingAdmin = await db.queryFirst('SELECT id FROM users WHERE email = ?', [adminEmail]);
-    if (!existingAdmin) {
-      console.log('🌱 Seeding admin user...');
-      const adminHash = await bcrypt.hash('Admin@1234', 10);
-      await db.execute(
-        'INSERT INTO users (email, username, full_name, hashed_password, role, is_verified, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [adminEmail, 'admin', 'ArthaNova Admin', adminHash, 'admin', 1, 1]
-      );
-    }
-
-    console.log('🎉 Database setup and seeding complete!');
+    console.log('🎉 Database setup complete!');
     process.exit(0);
   } catch (error) {
     console.error('❌ Setup failed:', error);

@@ -10,6 +10,7 @@ import AdminLayout from './layouts/AdminLayout'
 // Public Pages
 import LandingPage from './pages/public/LandingPage'
 import LoginPage from './pages/auth/LoginPage'
+import AdminLoginPage from './pages/auth/AdminLoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
@@ -110,6 +111,7 @@ export default function App() {
 
       {/* Auth Routes (Standalone) */}
       <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      <Route path="/admin/login" element={<PublicRoute><AdminLoginPage /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
