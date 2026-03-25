@@ -45,57 +45,86 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
       ],
       subject: 'Your ArthaNova OTP for Login',
       htmlContent: `
-        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 0;">
-          <!-- Header -->
-          <div style="background: linear-gradient(135deg, #7C3AED 0%, #C026D3 100%); padding: 40px 20px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 700;">ArthaNova</h1>
-            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">Secure Authentication</p>
-          </div>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Verify Your Account - ArthaNova</title>
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #f6f9fc; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f6f9fc; padding: 40px 20px;">
+            <tr>
+              <td align="center">
+                <table width="100%" max-width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                  
+                  <!-- Header Section -->
+                  <tr>
+                    <td align="center" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%); padding: 60px 40px;">
+                      <div style="background-color: rgba(255,255,255,0.15); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                        <span style="font-size: 40px;">🔐</span>
+                      </div>
+                      <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px;">Verify Your Account</h1>
+                      <div style="display: inline-block; background-color: #FFD700; color: #000000; font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 6px; margin-top: 16px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        ArthaNova AI
+                      </div>
+                    </td>
+                  </tr>
 
-          <!-- Content -->
-          <div style="padding: 40px 20px; background: #f8f9fa;">
-            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-              <h2 style="color: #1f2937; margin: 0 0 10px 0; font-size: 24px; font-weight: 600;">Welcome Back!</h2>
-              <p style="color: #6b7280; margin: 0 0 30px 0; font-size: 15px; line-height: 1.6;">
-                We received your login request. Use the OTP below to complete your authentication:
-              </p>
+                  <!-- Body Section -->
+                  <tr>
+                    <td style="padding: 48px 40px;">
+                      <p style="color: #4B5563; font-size: 16px; line-height: 24px; text-align: center; margin: 0 0 40px 0;">
+                        Welcome, <strong>${userName}</strong>! Use the verification code below to complete your Google sign-in. This code will expire in <strong style="color: #111827;">10 minutes</strong>.
+                      </p>
 
-              <!-- OTP Box -->
-              <div style="background: linear-gradient(135deg, #f0f3ff 0%, #fef2f8 100%); padding: 25px; border-radius: 10px; text-align: center; margin: 30px 0; border: 2px solid #e9d5ff;">
-                <p style="color: #7c3aed; margin: 0 0 15px 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Your One-Time Password</p>
-                <div style="font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #7c3aed; font-family: 'Courier New', monospace; word-spacing: 10px;">
-                  ${otp}
-                </div>
-                <p style="color: #a78bfa; margin: 15px 0 0 0; font-size: 12px;">Valid for 5 minutes</p>
-              </div>
+                      <!-- OTP Box -->
+                      <div style="background-color: #ffffff; border: 2px solid #E5E7EB; border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 40px; border: 2.5px solid #6366F1;">
+                        <div style="color: #6B7280; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px;">
+                          Your Verification Code
+                        </div>
+                        <div style="font-size: 56px; font-weight: 800; color: #111827; letter-spacing: 12px; font-family: 'Monaco', 'Courier New', monospace; line-height: 1;">
+                          ${otp}
+                        </div>
+                      </div>
 
-              <!-- Security Notice -->
-              <div style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b; margin: 20px 0;">
-                <p style="color: #92400e; margin: 0; font-size: 13px; font-weight: 500;">
-                  🔒 <strong>Security Alert:</strong> Never share this OTP with anyone. ArthaNova support will never ask for your OTP.
-                </p>
-              </div>
+                      <!-- Security Notice -->
+                      <div style="background-color: #FFFBEB; border-radius: 12px; padding: 24px; border: 1px solid #FEF3C7; display: flex; align-items: flex-start; gap: 16px;">
+                        <span style="font-size: 20px;">🛡️</span>
+                        <div>
+                          <strong style="color: #92400E; font-size: 14px; display: block; margin-bottom: 4px;">Security Notice</strong>
+                          <p style="color: #B45309; font-size: 14px; margin: 0; line-height: 20px;">
+                            Never share this code with anyone. <strong style="color: #92400E;">ArthaNova AI</strong> will never ask for your verification code via phone or email.
+                          </p>
+                        </div>
+                      </div>
 
-              <!-- Additional Info -->
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-                <p style="color: #6b7280; margin: 0 0 10px 0; font-size: 13px;">
-                  <strong>Didn't request this login?</strong> You can safely ignore this email. If you suspect unauthorized access, contact our support team immediately.
-                </p>
-              </div>
-            </div>
-          </div>
+                      <!-- Footer Support -->
+                      <p style="text-align: center; color: #9CA3AF; font-size: 13px; margin-top: 40px;">
+                        If you didn't request this code, you can safely ignore this email.
+                      </p>
+                    </td>
+                  </tr>
 
-          <!-- Footer -->
-          <div style="background: #1f2937; padding: 20px; text-align: center; border-top: 1px solid #374151;">
-            <p style="color: #9ca3af; margin: 0; font-size: 12px;">
-              © 2026 ArthaNova. All rights reserved. | 
-              <a href="https://arthanova.vercel.app" style="color: #7c3aed; text-decoration: none;">Visit Dashboard</a>
-            </p>
-            <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 11px;">
-              This is an automated message from ArthaNova Security System
-            </p>
-          </div>
-        </div>
+                  <!-- Footer Section -->
+                  <tr>
+                    <td style="padding: 0 40px 40px 40px; text-align: center; border-top: 1px solid #F3F4F6; padding-top: 32px;">
+                      <p style="color: #9CA3AF; font-size: 12px; margin: 0;">
+                        &copy; 2026 ArthaNova Intelligence Platform. All rights reserved.
+                      </p>
+                      <div style="margin-top: 16px;">
+                        <a href="https://arthanova.vercel.app" style="color: #6366F1; text-decoration: none; font-size: 12px; font-weight: 500;">Visit Dashboard</a>
+                        <span style="color: #E5E7EB; margin: 0 8px;">&bull;</span>
+                        <a href="mailto:support@arthanova.in" style="color: #6366F1; text-decoration: none; font-size: 12px; font-weight: 500;">Contact Support</a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
       `,
       tags: ['OTP', 'Authentication', 'ArthaNova'],
     };

@@ -1,6 +1,8 @@
 import express from 'express';
 import { OAuth2Client } from 'google-auth-library';
 import { generateOTP, sendOTPByEmail, storeOTP, verifyOTP, resendOTP } from '../services/brevoService.js';
+import * as userService from '../services/userService.js';
+import { createAccessToken, createRefreshToken, hashPassword } from '../utils/auth.js';
 import settings from '../config/settings.js';
 
 const router = express.Router();
@@ -108,13 +110,6 @@ router.post('/otp-verify', async (req, res) => {
       });
     }
 
-    if (otp.length !== 6) {
-      return res.status(400).json({
-        error: 'Invalid OTP',
-        message: 'OTP must be 6 digits',
-      });
-    }
-
     console.log(`🔍 OTP Verification for: ${email}`);
 
     // Verify OTP
@@ -130,35 +125,48 @@ router.post('/otp-verify', async (req, res) => {
 
     console.log(`✅ OTP verified for ${email}`);
 
-    // TODO: In production, implement:
-    // 1. Create or get user from database
-    // 2. Generate Access Token
-    // 3. Generate Refresh Token
-    // 4. Save refresh token in database/Redis
-    // 5. Log authentication event
+    // 1. Get or Create user from database
+    let user = await userService.getUserByEmail(email);
 
-    // For now, return mock response
+    if (!user) {
+      console.log(`🆕 Creating new user for Google login: ${email}`);
+      const randomPassword = Math.random().toString(36).slice(-10) + 'A@1';
+      const hashedPassword = await hashPassword(randomPassword);
+      const generatedUsername = email.split('@')[0] + Math.floor(Math.random() * 1000);
+
+      user = await userService.createUser({
+        email,
+        username: generatedUsername,
+        full_name: fullName || 'Google User',
+        hashed_password: hashedPassword,
+      });
+    }
+
+    // 2. Update last login
+    await userService.updateUserLastLogin(user.id);
+
+    // 3. Generate Tokens
+    const tokenData = { sub: user.id.toString(), email: user.email };
+    const accessToken = createAccessToken(tokenData);
+    const refreshToken = createRefreshToken(tokenData);
+
+    // 4. Return same format as standard login
+    const { hashed_password, ...safeUser } = user;
+
     res.json({
       success: true,
-      message: 'OTP verified successfully',
-      otp_token: null,
-      // access_token: generateAccessToken(user),
-      // refresh_token: generateRefreshToken(user),
-      user: {
-        id: 'user-' + Date.now(),
-        email,
-        full_name: fullName || 'User',
-        role: 'user',
-        verified: true,
-        created_at: new Date().toISOString(),
-      },
+      message: 'Login successful',
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      token_type: 'bearer',
+      expires_in: 3600,
+      user: safeUser,
     });
   } catch (error) {
     console.error('❌ OTP Verify Error:', error);
     res.status(500).json({
       error: 'Internal server error',
-      message: 'Failed to verify OTP',
-      debug: process.env.DEBUG === 'true' ? error.message : undefined,
+      message: 'Failed to verify OTP: ' + error.message,
     });
   }
 });
