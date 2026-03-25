@@ -1,4 +1,5 @@
 import axios from 'axios';
+import crypto from 'crypto';
 import process from 'process';
 
 // Brevo API Configuration
@@ -112,7 +113,6 @@ const otpStore = new Map();
 
 export const storeOTP = (email, otp, expiryMinutes = 10) => {
   const expiryTime = Date.now() + expiryMinutes * 60 * 1000;
-  const crypto = require('crypto');
   const token = crypto.randomBytes(32).toString('hex');
 
   otpStore.set(email, {
