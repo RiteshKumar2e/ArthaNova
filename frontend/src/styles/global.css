@@ -90,3 +90,10 @@ select {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Text Selection (Neo-brutalist highlights) ────────────── */
+/* Default highlight pattern for the whole app */
+::selection {
+  background: #FFDD55; /* Intense Yellow */
+  color: #000;
+}

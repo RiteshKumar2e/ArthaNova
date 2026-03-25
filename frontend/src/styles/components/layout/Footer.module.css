@@ -13,6 +13,11 @@
   margin-top: auto;
 }
 
+.footer ::selection {
+  background: #FF6AC1; /* Shocking Pink for the footer */
+  color: #000;
+}
+
 /* ── Inner container ─────────── */
 .container {
   max-width: 1440px;
