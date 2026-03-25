@@ -7,6 +7,11 @@ import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { GoogleLogin } from '@react-oauth/google'
 import styles from '../../styles/pages/auth/AuthPages.module.css'
 
+// Check if Google Client ID is configured
+if (!import.meta.env.VITE_GOOGLE_CLIENT_ID) {
+  console.warn('⚠️ VITE_GOOGLE_CLIENT_ID not configured. Google Sign-In will not work. Add it to .env file.')
+}
+
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '', remember_me: false })
   const [showPassword, setShowPassword] = useState(false)
@@ -14,6 +19,14 @@ export default function LoginPage() {
   const [errors, setErrors] = useState({})
   const { login } = useAuthStore()
   const navigate = useNavigate()
+
+  const handleGoogleError = () => {
+    const msg = import.meta.env.VITE_GOOGLE_CLIENT_ID 
+      ? 'Google Sign-In failed. Please check your browser settings or Google OAuth configuration.' 
+      : 'Google Sign-In not configured. Please add VITE_GOOGLE_CLIENT_ID to your .env file. See .env.example for setup instructions.'
+    console.error('Google Sign-In Error:', msg)
+    toast.error(msg)
+  }
 
   const handleGoogleSuccess = async (credentialResponse) => {
     setLoading(true)
@@ -194,14 +207,28 @@ export default function LoginPage() {
           <span>OR CONTINUE WITH</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => toast.error('Google Sign-In failed')}
-            useOneTap
-            theme="filled_black"
-            shape="rectangular"
-            containerProps={{ style: { width: '100%', display: 'flex', justifyContent: 'center' } }}
-          />
+          {import.meta.env.VITE_GOOGLE_CLIENT_ID ? (
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap={false}
+              auto_select={false}
+              cancel_on_tap_outside={true}
+              containerProps={{ style: { width: '100%', display: 'flex', justifyContent: 'center' } }}
+            />
+          ) : (
+            <div style={{ 
+              width: '100%', 
+              padding: '12px', 
+              background: '#fff8dc', 
+              border: '2px solid #ff9800',
+              textAlign: 'center',
+              fontSize: '0.85rem',
+              color: '#666'
+            }}>
+              Google Sign-In is not configured. See .env.example for setup.
+            </div>
+          )}
         </div>
 
         {/* Sign Up Link */}

@@ -24,7 +24,14 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider 
+      clientId={GOOGLE_CLIENT_ID}
+      onScriptProps={{
+        async: true,
+        defer: true,
+        nonce: undefined,
+      }}
+    >
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <App />
