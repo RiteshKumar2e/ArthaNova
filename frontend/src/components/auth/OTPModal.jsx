@@ -5,7 +5,7 @@ import styles from '../../styles/pages/auth/OTPModal.module.css';
 export default function OTPModal({ email, fullName, otpToken, onComplete, onBack }) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
   const [attemptMessage, setAttemptMessage] = useState('');
 
   // Timer countdown
@@ -89,7 +89,7 @@ export default function OTPModal({ email, fullName, otpToken, onComplete, onBack
       // Call resend endpoint (you'll need to create this)
       toast.success('✉️ OTP resent to your email');
       setOtp(['', '', '', '', '', '']);
-      setTimeLeft(600); // Reset timer
+      setTimeLeft(300); // Reset to 5 minutes
       setAttemptMessage('');
     } catch (error) {
       toast.error('Failed to resend OTP');

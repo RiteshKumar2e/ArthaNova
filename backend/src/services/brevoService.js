@@ -32,10 +32,10 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
       throw new Error('Brevo API key not configured');
     }
 
-    const response = await brevoClient.post('/smtp/email', {
+    const payload = {
       sender: {
         name: 'ArthaNova',
-        email: 'noreply@arthanova.in',
+        email: 'riteshkumar90359@gmail.com',
       },
       to: [
         {
@@ -66,7 +66,7 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
                 <div style="font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #7c3aed; font-family: 'Courier New', monospace; word-spacing: 10px;">
                   ${otp}
                 </div>
-                <p style="color: #a78bfa; margin: 15px 0 0 0; font-size: 12px;">Valid for 10 minutes</p>
+                <p style="color: #a78bfa; margin: 15px 0 0 0; font-size: 12px;">Valid for 5 minutes</p>
               </div>
 
               <!-- Security Notice -->
@@ -98,12 +98,21 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
         </div>
       `,
       tags: ['OTP', 'Authentication', 'ArthaNova'],
-    });
+    };
 
-    console.log(`✅ OTP sent to ${email} via Brevo`);
-    return { success: true, message: 'OTP sent to email' };
+    console.log(`📤 Sending email via Brevo to: ${email}`);
+    const response = await brevoClient.post('/smtp/email', payload);
+
+    console.log(`📤 Brevo API Response Status: ${response.status}`);
+    console.log(`✅ Message ID: ${response.data.messageId || 'N/A'}`);
+    console.log(`✅ OTP email sent to ${email} via Brevo`);
+    
+    return { success: true, message: 'OTP sent to email', messageId: response.data.messageId };
   } catch (error) {
-    console.error('Brevo Email Error:', error.response?.data || error.message);
+    console.error('❌ Brevo Email Error:');
+    console.error('   Status:', error.response?.status);
+    console.error('   Data:', error.response?.data);
+    console.error('   Message:', error.message);
     throw new Error(`Failed to send OTP: ${error.response?.data?.message || error.message}`);
   }
 };
@@ -111,7 +120,7 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
 // Store OTP in memory (use Redis/DB for production)
 const otpStore = new Map();
 
-export const storeOTP = (email, otp, expiryMinutes = 10) => {
+export const storeOTP = (email, otp, expiryMinutes = 5) => {
   const expiryTime = Date.now() + expiryMinutes * 60 * 1000;
   const token = crypto.randomBytes(32).toString('hex');
 
