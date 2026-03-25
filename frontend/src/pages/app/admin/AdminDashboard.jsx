@@ -68,9 +68,18 @@ export default function AdminDashboard() {
             console.warn(`Failed to fetch ${url}: ${response.status}`);
             return errorDefault;
           }
-          return await response.json();
+          
+          // Check content type before parsing JSON
+          const contentType = response.headers.get('content-type');
+          if (!contentType?.includes('application/json')) {
+            console.warn(`Invalid content type for ${url}: ${contentType}`);
+            return errorDefault;
+          }
+          
+          const data = await response.json();
+          return data;
         } catch (err) {
-          console.warn(`Error fetching ${url}:`, err);
+          console.error(`Error fetching ${url}:`, err.message);
           return errorDefault;
         }
       };

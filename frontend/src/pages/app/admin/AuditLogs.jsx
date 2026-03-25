@@ -15,21 +15,24 @@ export default function AuditLogs() {
         const response = await axios.get('/api/v1/admin/logs/audit', {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
-        setLogs(response.data);
+        // Ensure logs is always an array
+        const logsData = Array.isArray(response.data) ? response.data : (response.data?.logs || []);
+        setLogs(logsData);
       } catch (error) {
         console.error('Error fetching audit logs:', error);
+        setLogs([]);
       } finally {
         setLoading(false);
       }
     };
-    fetchLogs();
+    if (accessToken) fetchLogs();
   }, [accessToken]);
 
-  const filteredLogs = logs.filter(log => 
-    log.user.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    log.details.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredLogs = Array.isArray(logs) ? logs.filter(log => 
+    (log?.user?.toLowerCase?.() || '').includes(searchTerm.toLowerCase()) || 
+    (log?.action?.toLowerCase?.() || '').includes(searchTerm.toLowerCase()) ||
+    (log?.details?.toLowerCase?.() || '').includes(searchTerm.toLowerCase())
+  ) : [];
 
   const handleExport = () => {
     alert('GENERATING SYSTEM AUDIT ARCHIVE (ZIP)...');

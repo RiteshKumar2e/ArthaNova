@@ -100,6 +100,36 @@ router.get('/users', authenticate, adminOnly, async (req, res) => {
   res.json([]);
 });
 
+// Audit logs endpoint
+router.get('/logs/audit', authenticate, adminOnly, (req, res) => {
+  res.json([
+    {
+      id: 1,
+      user: 'admin@arthanova.in',
+      action: 'LOGIN',
+      details: 'Admin login successful',
+      timestamp: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      id: 2,
+      user: 'demo@arthanova.in',
+      action: 'PORTFOLIO_UPDATE',
+      details: 'Updated portfolio holdings',
+      timestamp: new Date(Date.now() - 7200000).toISOString()
+    }
+  ]);
+});
+
+// Video engine jobs endpoint
+router.get('/video-engine/jobs', authenticate, adminOnly, (req, res) => {
+  res.json({
+    jobs: [
+      { id: 1, video_id: 'vid_001', status: 'COMPLETED', created_at: new Date(Date.now() - 7200000).toISOString() },
+      { id: 2, video_id: 'vid_002', status: 'PROCESSING', created_at: new Date(Date.now() - 3600000).toISOString() }
+    ]
+  });
+});
+
 // Create new user
 router.post('/users', authenticate, adminOnly, async (req, res) => {
   try {
