@@ -201,7 +201,13 @@ export default function Footer() {
           </div>
 
           <div className={styles.bottom}>
-            <p>© {new Date().getFullYear()} ArthaNova. All rights reserved.</p>
+            <div className={styles.copyrightRow}>
+              <div />
+              <p className={styles.copyrightText}>© {new Date().getFullYear()} ARTHANOVA. ALL RIGHTS RESERVED.</p>
+              <div className={styles.builderContainer}>
+                <p className={styles.builder}>BUILD BY RITESH KUMAR WITH <span className={styles.heart}>❤️</span></p>
+              </div>
+            </div>
             <p className={styles.disclaimer}>
               ⚠️ Investment involves risk. This platform provides AI-based analysis for informational purposes only and does not constitute SEBI-registered investment advice.
             </p>
