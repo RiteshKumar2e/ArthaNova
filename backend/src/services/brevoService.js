@@ -1,13 +1,13 @@
 import axios from 'axios';
 import crypto from 'crypto';
-import process from 'process';
+import settings from '../config/settings.js';
 
 // Brevo API Configuration
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const BREVO_API_KEY = settings.BREVO_API_KEY;
 const BREVO_API_BASE = 'https://api.brevo.com/v3';
 
 if (!BREVO_API_KEY) {
-  console.warn('⚠️  BREVO_API_KEY not configured. Email sending will fail.');
+  console.warn('⚠️  BREVO_API_KEY not configured in settings. Email sending will fail.');
 }
 
 const brevoClient = axios.create({
@@ -34,8 +34,8 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
 
     const payload = {
       sender: {
-        name: 'ArthaNova',
-        email: 'riteshkumar90359@gmail.com',
+        name: settings.BREVO_SENDER_NAME,
+        email: settings.BREVO_SENDER_EMAIL,
       },
       to: [
         {

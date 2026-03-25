@@ -48,6 +48,11 @@ const settings = {
   SMTP_PASSWORD: process.env.SMTP_PASSWORD || '',
   FROM_EMAIL: process.env.FROM_EMAIL || 'noreply@arthanova.in',
 
+  // Brevo Specific
+  BREVO_API_KEY: process.env.BREVO_API_KEY || '',
+  BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL || 'riteshkumar90359@gmail.com',
+  BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME || 'ArthaNova',
+
   // File Storage
   UPLOAD_DIR: path.join(process.cwd(), process.env.UPLOAD_DIR || 'uploads'),
   MAX_FILE_SIZE: parseInt(process.env.MAX_FILE_SIZE || '10485760'), // 10MB
