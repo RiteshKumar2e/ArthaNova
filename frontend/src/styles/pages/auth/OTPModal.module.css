@@ -1,0 +1,405 @@
+/* OTP Modal Backdrop */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Main Modal */
+.modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  position: relative;
+  animation: slideUp 0.4s ease-out;
+  border: 2px solid #f0f0f0;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Close Button */
+.closeBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.2s;
+  padding: 5px 10px;
+}
+
+.closeBtn:hover {
+  color: #ef4444;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.headerIcon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  animation: bounce 0.6s ease-in-out;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.subtitle strong {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+/* OTP Input Section */
+.otpSection {
+  margin: 30px 0;
+}
+
+.otpInputContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.otpInput {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  border: 3px solid #e5e7eb;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  color: #1f2937;
+  background: white;
+  font-family: 'Courier New', monospace;
+}
+
+.otpInput:focus {
+  outline: none;
+  border-color: #7c3aed;
+  background: #f3f0ff;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+  transform: scale(1.05);
+}
+
+.otpInput:hover:not(:disabled) {
+  border-color: #d1d5db;
+}
+
+.otpInput:disabled {
+  background: #f9fafb;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.otpInput::placeholder {
+  color: #d1d5db;
+}
+
+/* Attempt Message */
+.attemptMessage {
+  text-align: center;
+  padding: 10px 12px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Timer and Resend Section */
+.timerSection {
+  margin-top: 15px;
+}
+
+.timer {
+  text-align: center;
+  padding: 12px;
+  background: linear-gradient(135deg, #f0f3ff 0%, #fef2f8 100%);
+  border: 1.5px solid #e9d5ff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7c3aed;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+}
+
+.timer.expired {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.expiredText {
+  text-align: center;
+  color: #dc2626;
+  font-size: 13px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.resendPrompt {
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0;
+}
+
+.resendLink {
+  background: none;
+  border: none;
+  color: #7c3aed;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+  font-size: 13px;
+  padding: 0;
+}
+
+.resendLink:hover:not(:disabled) {
+  color: #c026d3;
+}
+
+.resendLink:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Security Note */
+.securityNote {
+  background: #fef3c7;
+  border: 1.5px solid #fcd34d;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.lockIcon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.securityNote p {
+  margin: 0;
+  color: #78350f;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.backBtn,
+.verifyBtn {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.backBtn {
+  background: #f3f4f6;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+}
+
+.backBtn:hover:not(:disabled) {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.backBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.verifyBtn {
+  background: #d1d5db;
+  color: #9ca3af;
+  border: 2px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.verifyBtn.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.verifyBtn.active:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+.verifyBtn:disabled:not(.active) {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Help Text */
+.helpText {
+  text-align: center;
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.contactLink {
+  color: #7c3aed;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.contactLink:hover {
+  color: #c026d3;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .modal {
+    padding: 30px;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .otpInputContainer {
+    gap: 8px;
+  }
+
+  .otpInput {
+    font-size: 24px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .headerIcon {
+    font-size: 40px;
+  }
+}

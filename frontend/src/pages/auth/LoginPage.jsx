@@ -5,6 +5,7 @@ import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { GoogleLogin } from '@react-oauth/google'
+import OTPModal from '../../components/auth/OTPModal'
 import styles from '../../styles/pages/auth/AuthPages.module.css'
 
 // Check if Google Client ID is configured
@@ -17,6 +18,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const [otpState, setOtpState] = useState(null) // { email, fullName, otpToken }
   const { login } = useAuthStore()
   const navigate = useNavigate()
 
@@ -31,22 +33,79 @@ export default function LoginPage() {
   const handleGoogleSuccess = async (credentialResponse) => {
     setLoading(true)
     try {
-      const res = await authAPI.googleLogin(credentialResponse.credential)
-      const { access_token, refresh_token, user } = res.data
-      login(user, access_token, refresh_token)
-      toast.success(`Welcome, ${user.full_name}!`)
+      // Step 1: Request OTP from backend
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/google/otp-request`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            idToken: credentialResponse.credential,
+          }),
+        }
+      )
 
-      if (user.role === 'admin' || user.is_admin === true) {
-        navigate('/admin')
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let data;
+      
+      if (contentType?.includes('application/json')) {
+        data = await response.json()
       } else {
-        navigate('/dashboard')
+        throw new Error(`Expected JSON response but got ${contentType || 'unknown content type'} (HTTP ${response.status})`)
       }
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Failed to request OTP')
+      }
+
+      // Show OTP modal
+      setOtpState({
+        email: data.email,
+        fullName: data.fullName,
+        otpToken: data.otp_token,
+      })
+
+      toast.success('✉️ OTP sent to your email')
     } catch (err) {
-      const msg = err.response?.data?.detail || 'Google Login failed.'
+      const msg = err.message || 'Failed to initiate Google login'
+      console.error('Google Success Error:', err)
       toast.error(msg)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleOTPComplete = async (data) => {
+    try {
+      // Step 2: OTP verified successfully
+      const { user, access_token, refresh_token } = data
+
+      // Save to auth store
+      if (user && access_token) {
+        login(user, access_token, refresh_token)
+        toast.success(`🎉 Welcome, ${user.full_name}!`)
+
+        // Redirect based on role
+        if (user.role === 'admin' || user.is_admin === true) {
+          navigate('/admin')
+        } else {
+          navigate('/dashboard')
+        }
+      } else {
+        // If backend doesn't return tokens yet, still close modal
+        setOtpState(null)
+        toast.success('Login successful!')
+        navigate('/dashboard')
+      }
+    } catch (err) {
+      console.error('OTP Complete Error:', err)
+      toast.error('Failed to complete login')
+    }
+  }
+
+  const handleOTPBack = () => {
+    setOtpState(null)
   }
 
   const handleChange = (e) => {
@@ -249,6 +308,17 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {/* OTP Modal */}
+      {otpState && (
+        <OTPModal
+          email={otpState.email}
+          fullName={otpState.fullName}
+          otpToken={otpState.otpToken}
+          onComplete={handleOTPComplete}
+          onBack={handleOTPBack}
+        />
+      )}
     </div>
   )
 }

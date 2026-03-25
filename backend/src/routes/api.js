@@ -5,12 +5,14 @@ import userRouter from './user.js';
 import portfolioRouter from './portfolio.js';
 import aiEngineRouter from './ai-engine.js';
 import adminRouter from './admin.js';
+import googleOtpAuthRouter from './google-otp-auth.js';
 import { newsRouter, ipoRouter, insiderRouter, dealsRouter, stockRouter } from './marketData.js';
 
 const apiRouter = express.Router();
 
 // Routers
 apiRouter.use('/auth_debug', authRouter);
+apiRouter.use('/auth/google', googleOtpAuthRouter);
 apiRouter.use('/stocks', stocksRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/portfolio', portfolioRouter);
