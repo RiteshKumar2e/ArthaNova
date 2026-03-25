@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
@@ -16,6 +16,17 @@ export default function AdminLoginPage() {
   const [otpState, setOtpState] = useState(null) // { email, fullName, otpToken }
   const { login } = useAuthStore()
   const navigate = useNavigate()
+  const [googleWidth, setGoogleWidth] = useState(400)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = Math.min(400, window.innerWidth - 48)
+      setGoogleWidth(width)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const handleGoogleError = () => {
     toast.error('Google Sign-In failed. Please check your browser settings.')
@@ -182,6 +193,9 @@ export default function AdminLoginPage() {
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
             useOneTap={false}
+            width={googleWidth.toString()}
+            size="large"
+            theme="outline"
           />
         </div>
 

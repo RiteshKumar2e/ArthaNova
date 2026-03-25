@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
@@ -21,6 +21,18 @@ export default function LoginPage() {
   const [otpState, setOtpState] = useState(null) // { email, fullName, otpToken }
   const { login } = useAuthStore()
   const navigate = useNavigate()
+  const [googleWidth, setGoogleWidth] = useState(400)
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 48px is typical padding/margin allowance for mobile
+      const width = Math.min(400, window.innerWidth - 48)
+      setGoogleWidth(width)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const handleGoogleError = () => {
     const msg = import.meta.env.VITE_GOOGLE_CLIENT_ID 
@@ -263,6 +275,9 @@ export default function LoginPage() {
               useOneTap={false}
               auto_select={false}
               cancel_on_tap_outside={true}
+              width={googleWidth.toString()}
+              size="large"
+              theme="outline"
               containerProps={{ style: { width: '100%', display: 'flex', justifyContent: 'center' } }}
             />
           ) : (
