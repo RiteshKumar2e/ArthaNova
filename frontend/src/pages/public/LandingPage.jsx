@@ -37,8 +37,8 @@ const FEATURES = [
 export default function LandingPage() {
   return (
     <div className={styles.page}>
-      {/* ─── Hero Section ─────────────────────────────────────────────────── */}
-      <section className={styles.hero}>
+      {/* ─── Hero Section (Home) ─────────────────────────────────────────── */}
+      <section className={styles.hero} id="home">
         {/* Floating Decorative Elements */}
         <div className={`${styles.floatingBox} ${styles.box1}`}></div>
         <div className={`${styles.floatingBox} ${styles.box2}`}></div>
@@ -70,29 +70,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Capabilities Section ─────────────────────────────────────────── */}
-      <section className={styles.capabilities} id="features">
-        <div className={styles.container}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Precision Tools 🛠️</h2>
-            <p className={styles.sectionDesc}>
-              Stop guessing and start analyzing. Our platform provides the data and intelligence 
-              you need to outperform the benchmarks.
-            </p>
-          </div>
-          <div className={styles.featuresGrid}>
-            {FEATURES.map((f, i) => (
-              <div key={i} className={styles.featureCard}>
-                <div className={styles.featureIcon}>{f.icon}</div>
-                <h3 className={styles.featureTitle}>{f.title}</h3>
-                <p className={styles.featureDesc}>{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Interactive Showcase ─────────────────────────────────────────── */}
+      {/* ─── About Section ─────────────────────────────────────────────────── */}
       <section className={styles.showcase} id="about">
         <div className={styles.container}>
           <div className={styles.showcaseGrid}>
@@ -121,6 +99,57 @@ export default function LandingPage() {
                 <li>✅ Source-grounded insights</li>
               </ul>
               <Link to="/register" className="btn btn-primary btn-lg">EXPLORE AI CHAT</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Features Section ─────────────────────────────────────────── */}
+      <section className={styles.capabilities} id="features">
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Precision Tools 🛠️</h2>
+            <p className={styles.sectionDesc}>
+              Stop guessing and start analyzing. Our platform provides the data and intelligence 
+              you need to outperform the benchmarks.
+            </p>
+          </div>
+          <div className={styles.featuresGrid}>
+            {FEATURES.map((f, i) => (
+              <div key={i} className={styles.featureCard}>
+                <div className={styles.featureIcon}>{f.icon}</div>
+                <h3 className={styles.featureTitle}>{f.title}</h3>
+                <p className={styles.featureDesc}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── How It Works Section ─────────────────────────────────────────── */}
+      <section className={styles.howItWorks} id="how-it-works">
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>How It Works ⚙️</h2>
+            <p className={styles.sectionDesc}>
+              Three simple steps to institutional-grade market intelligence.
+            </p>
+          </div>
+          <div className={styles.stepsGrid}>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>01</div>
+              <h3 className={styles.stepTitle}>Connect Data</h3>
+              <p className={styles.stepDesc}>Link your portfolio or watchlist to start the AI-driven analysis engine.</p>
+            </div>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>02</div>
+              <h3 className={styles.stepTitle}>Get Signals</h3>
+              <p className={styles.stepDesc}>Receive real-time multi-factor signals and deep sentiment analysis on your holdings.</p>
+            </div>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>03</div>
+              <h3 className={styles.stepTitle}>Execute Smart</h3>
+              <p className={styles.stepDesc}>Use our AI analyst to validate your trades and manage risk like a pro.</p>
             </div>
           </div>
         </div>

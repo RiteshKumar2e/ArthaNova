@@ -433,6 +433,66 @@
   gap: 1.25rem;
 }
 
+/* ═══════════════════════════════════════════
+   HOW IT WORKS SECTION
+   ═══════════════════════════════════════════ */
+.howItWorks {
+  padding: 5rem 0;
+  border-top: 3px solid #000;
+  background: #fff;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.stepCard {
+  background: #fff;
+  border: 3px solid #000;
+  box-shadow: 6px 6px 0px #000;
+  padding: 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stepCard:nth-child(2) {
+  background: #C4FF00;
+}
+
+.stepNumber {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(0,0,0,0.1);
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  line-height: 1;
+}
+
+.stepTitle {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #000;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.stepDesc {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
 /* ── Responsive ─────────────────────────── */
 @media (max-width: 992px) {
   .showcaseGrid { grid-template-columns: 1fr; }

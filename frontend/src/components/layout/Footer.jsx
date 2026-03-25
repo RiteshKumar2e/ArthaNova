@@ -42,11 +42,10 @@ export default function Footer() {
             </div>
             <div className={styles.linkGroup}>
               <h4>Company</h4>
-              <a href="#">About Us</a>
-              <a href="#">Blog</a>
-              <a href="#">Careers</a>
-              <a href="#">Press</a>
-              <a href="#">Contact</a>
+              <Link to="/about">About Us</Link>
+              <Link to="/features">Features</Link>
+              <Link to="/how-it-works">How It Works</Link>
+              <Link to="/contact">Contact</Link>
             </div>
             <div className={styles.linkGroup}>
               <h4>Legal</h4>

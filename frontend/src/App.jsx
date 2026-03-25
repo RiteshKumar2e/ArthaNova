@@ -74,8 +74,18 @@ export default function App() {
   const { pathname, hash } = useLocation()
 
   useEffect(() => {
-    if (hash) {
-      const element = document.getElementById(hash.slice(1))
+    const sectionMap = {
+      '/': 'home',
+      '/about': 'about',
+      '/features': 'features',
+      '/how-it-works': 'how-it-works',
+      '/contact': 'contact'
+    }
+
+    const targetId = hash ? hash.slice(1) : sectionMap[pathname]
+
+    if (targetId) {
+      const element = document.getElementById(targetId)
       if (element) {
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' })
@@ -91,6 +101,10 @@ export default function App() {
       {/* Public Routes */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<LandingPage />} />
+        <Route path="/features" element={<LandingPage />} />
+        <Route path="/how-it-works" element={<LandingPage />} />
+        <Route path="/contact" element={<LandingPage />} />
       </Route>
 
       {/* Auth Routes (Standalone) */}

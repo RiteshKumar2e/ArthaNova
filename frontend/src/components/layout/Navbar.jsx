@@ -5,10 +5,10 @@ import styles from '../../styles/components/layout/Navbar.module.css'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
-  { to: '/#about', label: 'About' },
-  { to: '/#features', label: 'Features' },
-  { to: '/#how-it-works', label: 'How It Works' },
-  { to: '/#contact', label: 'Contact' },
+  { to: '/about', label: 'About' },
+  { to: '/features', label: 'Features' },
+  { to: '/how-it-works', label: 'How It Works' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
