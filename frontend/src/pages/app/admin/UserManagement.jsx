@@ -21,10 +21,12 @@ export default function UserManagement() {
       const response = await axios.get('/api/v1/admin/users', {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
-      // Filter out analyst role as requested
-      setUsers(response.data.filter(u => u.role !== 'analyst'));
+      // Ensure response.data is an array before filtering
+      const usersList = Array.isArray(response.data) ? response.data : [];
+      setUsers(usersList.filter(u => u.role !== 'analyst'));
     } catch (error) {
       console.error('Error fetching users:', error);
+      setUsers([]);
     } finally {
       setLoading(false);
     }

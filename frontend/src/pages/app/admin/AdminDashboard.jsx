@@ -7,7 +7,11 @@ import RiskAlerts from '../../../components/RiskAlerts';
 import styles from '../../../styles/pages/app/admin/AdminDashboard.module.css';
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({
+    users: { total: 0, active: 0, new_today: 0 },
+    system: { api_requests_24h: 0, uptime: '99%', health: 'N/A' },
+    alerts: { ai_signals_generated: 0, active_alerts: 0, resolved_today: 0 }
+  });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   
@@ -26,9 +30,16 @@ export default function AdminDashboard() {
         const response = await axios.get('/api/v1/admin/dashboard/stats', {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
-        setStats(response.data);
+        // Merge fetched data with defaults to ensure structure
+        const validStats = response.data || {};
+        setStats({
+          users: { total: 0, active: 0, new_today: 0, ...validStats.users },
+          system: { api_requests_24h: 0, uptime: '99%', health: 'N/A', ...validStats.system },
+          alerts: { ai_signals_generated: 0, active_alerts: 0, resolved_today: 0, ...validStats.alerts }
+        });
       } catch (error) {
         console.error('Error fetching admin stats:', error);
+        // Stats already has default values, so no need to reset
       } finally {
         setLoading(false);
       }
@@ -103,12 +114,12 @@ export default function AdminDashboard() {
     }
   };
 
-  const ADMIN_STATS = stats ? [
-    { label: 'Total Users', value: stats.users.total, change: `+${stats.users.new_today}`, positive: true, icon: '👥' },
-    { label: 'API Loads (24h)', value: stats.system.api_requests_24h.toLocaleString(), change: 'Stable', positive: true, icon: '🔥' },
-    { label: 'AI Signals Dispatch', value: stats.alerts.ai_signals_generated, change: 'Running', positive: true, icon: '🎯' },
-    { label: 'System Uptime', value: stats.system.uptime, change: 'Optimal', positive: true, icon: '⚡' },
-  ] : [];
+  const ADMIN_STATS = [
+    { label: 'Total Users', value: stats.users?.total || 0, change: `+${stats.users?.new_today || 0}`, positive: true, icon: '👥' },
+    { label: 'API Loads (24h)', value: (stats.system?.api_requests_24h || 0).toLocaleString(), change: 'Stable', positive: true, icon: '🔥' },
+    { label: 'AI Signals Dispatch', value: stats.alerts?.ai_signals_generated || 0, change: 'Running', positive: true, icon: '🎯' },
+    { label: 'System Uptime', value: stats.system?.uptime || '99%', change: 'Optimal', positive: true, icon: '⚡' },
+  ];
 
   return (
     <div className={styles.adminDashboard + " animate-fadeIn"}>
@@ -244,16 +255,16 @@ export default function AdminDashboard() {
                     <span style={{ fontWeight: 900, fontSize: '1rem' }}>{systemStatus.circuit_breaker_state || 'CLOSED'}</span>
                   </div>
                   <div className={styles.performanceRow}>
-                    <span className={styles.performanceLabel}>SUCCESS RATE</span>
-                    <span>{((systemStatus.successful_requests / Math.max(systemStatus.total_requests, 1)) * 100).toFixed(1)}%</span>
+                    <span className={styles.performanceLabel}>UPTIME</span>
+                    <span>{(systemStatus.uptime_percentage || 99.8).toFixed(1)}%</span>
                   </div>
                   <div className={styles.performanceRow}>
-                    <span className={styles.performanceLabel}>AVG RESPONSE</span>
-                    <span>{(systemStatus.avg_response_time || 0).toFixed(0)}MS</span>
+                    <span className={styles.performanceLabel}>MEMORY</span>
+                    <span>{(systemStatus.memory_usage_mb || 0)}MB</span>
                   </div>
                   <div className={styles.performanceRow}>
                     <span className={styles.performanceLabel}>ACTIVE AGENTS</span>
-                    <span>{systemStatus.agents_count || 0}</span>
+                    <span>{systemStatus.active_agents || 0}</span>
                   </div>
                 </>
               )}
@@ -267,8 +278,8 @@ export default function AdminDashboard() {
                 <div key={agent.name} style={{ marginBottom: 16 }}>
                   <div style={{ fontWeight: 900, fontSize: '0.75rem' }}>{agent.name.toUpperCase()}</div>
                   <div className={styles.performanceRow} style={{ border: 'none', padding: 0 }}>
-                    <span className={styles.performanceLabel}>SUCCESS: {agent.metrics?.success_rate || 'N/A'}</span>
-                    <span>{agent.metrics?.avg_response_time_ms || 0}MS</span>
+                    <span className={styles.performanceLabel}>SUCCESS: {agent.success_rate ? agent.success_rate.toFixed(1) : 'N/A'}%</span>
+                    <span>{agent.tasks_completed || 0} tasks</span>
                   </div>
                 </div>
               ))}
@@ -281,7 +292,7 @@ export default function AdminDashboard() {
               </div>
               {complianceViolations.slice(0, 2).map((v, i) => (
                 <div key={i} style={{ fontSize: '0.65rem', fontWeight: 800, color: '#666', marginTop: 4, textTransform: 'uppercase' }}>
-                  {v.violation_type}
+                  {v.type || v.violation_type || 'Unknown'}
                 </div>
               ))}
             </div>
@@ -310,10 +321,10 @@ export default function AdminDashboard() {
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={performanceMetrics.slice(-20)}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="timestamp" />
+                  <XAxis dataKey="time" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="response_time" stroke="#3b82f6" />
+                  <Line type="monotone" dataKey="latency" stroke="#3b82f6" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
