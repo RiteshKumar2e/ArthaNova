@@ -1,67 +1,62 @@
-# ⚛️ ArthaNova — The AI-Powered Financial Sentinel 🇮🇳
+# ⚛️ ArthaNova — The Agentic Financial Sentinel 🇮🇳
 
 <p align="center">
-  <img src="https://img.shields.io/badge/ArthaNova-v1.0.0-blue?style=for-the-badge&logo=react" alt="ArthaNova Version" />
-  <img src="https://img.shields.io/badge/Node.js-v18+-green?style=for-the-badge&logo=nodedotjs" alt="Node.js Version" />
-  <img src="https://img.shields.io/badge/Express-Framework-black?style=for-the-badge&logo=express" alt="Express" />
-  <img src="https://img.shields.io/badge/Frontend-React%2018-61DAFB?style=for-the-badge&logo=react" alt="React" />
-  <img src="https://img.shields.io/badge/Database-Prisma%20ORM-2D3748?style=for-the-badge&logo=prisma" alt="Database" />
+  <img src="https://img.shields.io/badge/ArthaNova-v2.0.0-C4FF00?style=for-the-badge&logo=react&logoColor=black" alt="ArthaNova Version" />
+  <img src="https://img.shields.io/badge/LangGraph-Multi--Agent-black?style=for-the-badge&logo=langchain&logoColor=white" alt="LangGraph" />
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js Version" />
+  <img src="https://img.shields.io/badge/UI-Neo--Brutalism-FF6AC1?style=for-the-badge" alt="Neo-Brutalism UI" />
+  <img src="https://img.shields.io/badge/Database-Turso%20(libSQL)-4ea94b?style=for-the-badge&logo=sqlite" alt="Database" />
 </p>
 
 ---
 
 ## 💎 The ArthaNova Vision
-**ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with localized AI inference, ArthaNova democratizes sophisticated market analysis for every retail and institutional investor.
+**ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with **Stateful Multi-Agent AI Orchestration (LangGraph)**, ArthaNova democratizes sophisticated market analysis for every retail investor. We wrap this powerful engine in a striking, high-impact **Neo-Brutalist** design system.
+
+---
+
+## 🤖 Agentic Intelligence (Core Engine)
+The heart of ArthaNova is its LangGraph-powered Multi-Agent architecture. Unlike standard LLM wrappers, ArthaNova utilizes a suite of specialized, stateful agents that collaborate to find alpha:
+
+- **🕵️ SignalAgent**: Scours financial APIs for raw market events (Bulk deals, technical breakouts, volume surges).
+- **⚖️ ContextAgent**: Audits signals against your localized portfolio data and historical earnings using persistent memory.
+- **🧠 AnalystAgent**: Synthesizes the final high-conviction alerts, resolving conflicting indicators (e.g., RSI vs FII activity).
+- **💾 Agent Persistence (Memory)**: Built-in state checkpointing (Thread IDs) allows agents to "remember" your portfolio context, past risk tolerance, and historical breakout failures across sessions.
 
 ---
 
 ## 🚀 Platform Ecosystem
 
-### 🧠 Intelligence & Analytics
-- **🎯 Opportunity Radar**: Real-time breakout detection using institutional volume and technical pattern recognition.
-- **📰 Sentiment AI**: Quantified news analytics from major Indian financial media (MoneyControl, ET, Mint) using NLP pipelines.
-- **🛡️ Portfolio Health**: Deep-dive risk scoring, sector diversification analytics, and 1-click portfolio optimization.
-- **💬 Artha AI (RAG)**: Conversational interface with Retrieval-Augmented Generation (RAG) to query company filings and market reports.
+### 📊 Markets & Analytics
+- **🎯 Opportunity Radar**: Real-time breakout detection using algorithmic anomalies.
+- **📰 News Intelligence**: NLP pipelines that categorize Indian financial media (MoneyControl, ET, Mint) as bullish/bearish.
+- **🛡️ Portfolio Health**: Deep-dive risk scoring and concentration analytics simulated against live macro-events.
+- **💬 AI Chat (RAG)**: Conversational quant interface powered by Groq/Llama-3 to query company filings instantly.
 
-### 🎬 Media Engine
-- **Automated Video Summaries**: Daily stock performance and IPO summaries generated automatically via rendering pipelines.
-- **Smart Thumbnails**: Dynamic UI generation for market alerts and breaking news triggered by AI signals.
-
-### 🛠️ Admin Command Center (Governance)
-- **👥 User Lifecycle**: Comprehensive management of accounts, roles, and administrative statuses.
-- **🤖 AI Model Monitoring**: Real-time health tracking of Sentiment models, Technical Recognizers, and inference latencies.
-- **🎬 Render Cluster Control**: Centralized oversight for GPU-accelerated video rendering pipelines.
-- **🔔 Global Dispatch**: Command center for push notifications, broadcast alerts, and system-wide messaging.
-
----
-
-## 🏗️ Advanced Architecture
+### 🛠️ Architecture & Tech Stack
 
 | Layer | Technical Stack | Core Capabilities |
 | :--- | :--- | :--- |
-| **🌐 API Core** | `Node.js`, `Express.js`, `Zod` | Asynchronous high-concurrency requests, automatic schema validation. |
-| **⚛️ App Shell** | `React 18`, `Vite 6`, `Zustand` | Persistent global state, Atomic design system, Optimized HMR. |
-| **🔐 Security** | `JWT`, `Bcrypt`, `RBAC Guards` | Multi-tiered authorization, Token rotation, Encrypted persistence. |
-| **💾 Persistence** | `Prisma ORM`, `SQLite/PostgreSQL` | Clean relational mapping with modern database orchestration. |
-| **🎨 Design** | `CSS Modules`, `Glassmorphism` | Scalable design tokens, Variable-driven theming, Premium aesthetics. |
+| **🧠 Intelligence** | `LangGraph (JS)`, `LangChain`, `Groq` | Stateful agent memory, Sequential graph execution, Rapid LLM inference. |
+| **🌐 API Core** | `Node.js`, `Express.js`, `Zod` | Asynchronous concurrency, schema validation, robust REST endpoints. |
+| **⚛️ App Shell** | `React 18`, `Vite 6`, `Zustand` | Persistent global state, Atomic routing, high-performance DOM updates. |
+| **💾 Persistence**| `Turso (libSQL)` | Ultra-low latency edge database, SQLite compatibility, high read-throughput. |
+| **🎨 Design** | `Vanilla CSS Modules` | Custom Neo-Brutalist design tokens, high-contrast aesthetics, zero-bloat. |
 
 ---
 
 ## 🚦 System Initialization (Quickstart)
 
-### 1️⃣ Backend Setup (The API Engine)
+### 1️⃣ Backend Setup (The AI Engine)
 ```bash
 # Enter the backend directory
 cd backend
 
-# Install Modern Backend Dependencies
+# Install dependencies (Express, LangGraph, Turso client)
 npm install
 
-# Initialize Database (Prisma)
-npx prisma generate
-
 # Launch the Sentinel Engine
-npm start  # Serving on http://localhost:8000
+npm run dev  # Serving on http://localhost:8000
 ```
 
 ### 2️⃣ Frontend Setup (The Dashboard)
@@ -69,10 +64,10 @@ npm start  # Serving on http://localhost:8000
 # Enter the frontend directory
 cd frontend
 
-# Install Dependencies
+# Install UI Dependencies
 npm install
 
-# Boost the Development Server
+# Boot the Neo-Brutalist Interface
 npm run dev  # Serving on http://localhost:5173
 ```
 
@@ -82,31 +77,33 @@ npm run dev  # Serving on http://localhost:5173
 
 ```text
 ArthaNova/
-├── 🌐 backend/                 # Node.js Express Backend
-│   ├── src/                    # Source architecture
+├── 🌐 backend/                 # Node.js + Express + LangGraph Engine
+│   ├── src/
 │   │   ├── controllers/        # Route handlers
 │   │   ├── routes/             # API Endpoints registry
-│   │   ├── services/           # Business logic & DB operations
-│   │   ├── models/             # DB Client & Schema
-│   │   ├── middlewares/        # Auth & Logging guards
-│   │   └── utils/              # Helper functions
-│   ├── prisma/                 # Prisma DB Schema
-├── ⚛️ frontend/                # React Fiber Interface
-│   ├── src/                    # Source architecture
-│   │   ├── components/         # Atomic UI (Common, Admin, Layout)
-│   │   ├── pages/              # View-level Logic & Redirection
-│   │   ├── store/              # Reactive State (Zustand Persistent)
-│   │   └── styles/             # Design System Tokens & CSS
-│   └── public/                 # Static graphical assets
+│   │   ├── services/           # AI Multi-Agent Logic (aiAgentService.js)
+│   │   └── models/             # Turso Database Client (db.js)
+│   ├── .env                    # System Variables & API Keys
+│   └── package.json            # Backend dependencies
+├── ⚛️ frontend/                # React Vite Application
+│   ├── src/
+│   │   ├── components/         # Reusable Neo-Brutalist UI components
+│   │   ├── pages/              # Dashboards, Agentic UI, Portfolio
+│   │   ├── styles/             # Modular CSS for styling and Popups
+│   │   └── store/              # Zustand global state (Auth/User)
 └── 📄 README.md                # Integrated Documentation Hub
 ```
 
 ---
 
-## 🛠️ Security & Compliance
-- **RBAC Enforcement**: Strict server-side dependency injection for administrative endpoints.
-- **Audit Trails**: Every platform mutation is captured in the system audit logs for accountability.
-- **Hardware Isolation**: Separate computational pipelines for AI inference and Video rendering to prevent system bottlenecks.
+## 👨‍💻 Author & Connect
+
+**Ritesh Kumar**  
+Software Engineer & Quantitative AI Enthusiast  
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/riteshkumar-tech/)  
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github)](https://github.com/RiteshKumar2e)  
+[![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:riteshkumar90359@gmail.com)
 
 ---
-*Built with ❤️ for the Indian Investor by the ArthaNova Engineering Team.*
+*Architected for the upcoming wave of autonomous finance. Built with ❤️ for the Indian Investor.*
