@@ -3,6 +3,8 @@ import { authenticate } from '../middlewares/auth.js';
 
 const router = express.Router();
 
+import * as aiController from '../controllers/aiController.js';
+
 router.post('/chat', authenticate, async (req, res) => {
   // Mock AI Chat
   res.json({
@@ -76,5 +78,9 @@ router.get('/risk-alerts', authenticate, async (req, res) => {
     generated_at: new Date().toISOString()
   });
 });
+
+router.get('/bulk-deal-analysis', authenticate, aiController.getBulkDealAnalysis);
+router.get('/technical-breakout-analysis', authenticate, aiController.getTechnicalBreakoutAnalysis);
+router.get('/portfolio-news-prioritization', authenticate, aiController.getPortfolioNewsPrioritization);
 
 export default router;

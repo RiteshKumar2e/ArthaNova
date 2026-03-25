@@ -106,6 +106,9 @@ export const aiAPI = {
   getPerformanceMetrics: () => api.get('/admin/ai/metrics/performance'),
   getHighConvictionTrades: () => api.get('/ai/high-conviction-trades'),
   getRiskAlerts: () => api.get('/ai/risk-alerts'),
+  getBulkDealAnalysis: (symbol) => api.get('/ai/bulk-deal-analysis', { params: { symbol } }),
+  getTechnicalBreakoutAnalysis: (symbol) => api.get('/ai/technical-breakout-analysis', { params: { symbol } }),
+  getPortfolioNewsPrioritization: () => api.get('/ai/portfolio-news-prioritization'),
 }
 
 export const newsAPI = {

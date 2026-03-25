@@ -19,6 +19,7 @@ const USER_NAV = [
   },
   {
     section: 'TOOLS', items: [
+      { to: '/agent-intelligence', icon: '🔥', label: 'Agentic Intelligence', roles: ['user', 'admin'] },
       { to: '/radar', icon: '🎯', label: 'Opportunity Radar', roles: ['user', 'admin'] },
       { to: '/videos', icon: '🎬', label: 'AI Video Gen', roles: ['user', 'admin'] },
     ]
@@ -57,6 +58,7 @@ const ADMIN_NAV = [
     { to: '/admin/logs', icon: '📋', label: 'Audit Logs' },
   ]},
   { section: 'TOOLS', items: [
+    { to: '/agent-intelligence', icon: '🔥', label: 'Agentic Intelligence' },
     { to: '/backtest', icon: '🔄', label: 'Backtesting' },
     { to: '/filings', icon: '📋', label: 'Filings Analyzer' },
   ]},

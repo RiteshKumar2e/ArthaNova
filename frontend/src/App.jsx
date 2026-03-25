@@ -30,6 +30,7 @@ import ProfilePage from './pages/app/ProfilePage'
 import VideoInsightsPage from './pages/app/VideoInsightsPage'
 import WatchlistPage from './pages/app/WatchlistPage'
 import NotificationsPage from './pages/app/NotificationsPage'
+import AgenticIntelligencePage from './pages/app/AgenticIntelligencePage'
 import {
   InsiderActivityPage,
   DealsTrackerPage,
@@ -139,6 +140,7 @@ export default function App() {
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/risk" element={<RiskAnalyzerPage />} />
         <Route path="/backtest" element={<BacktestingPage />} />
+        <Route path="/agent-intelligence" element={<AgenticIntelligencePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
