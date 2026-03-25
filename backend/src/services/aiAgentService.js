@@ -101,7 +101,7 @@ export const prioritizePortfolioNews = async (userId) => {
   try {
     const portfolio = await db.queryFirst('SELECT id FROM portfolios WHERE user_id = ?', [userId]);
     if (portfolio) {
-      holdingsRaw = await db.query('SELECT symbol, quantity, current_price, sector FROM holdings WHERE portfolio_id = ?', [portfolio.id]);
+      const holdingsRaw = await db.query('SELECT symbol, quantity, current_price, sector FROM holdings WHERE portfolio_id = ?', [portfolio.id]);
       holdings = holdingsRaw || [];
     }
   } catch (err) {
