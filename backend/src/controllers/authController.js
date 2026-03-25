@@ -1,10 +1,10 @@
 import { hashPassword, verifyPassword, createAccessToken, createRefreshToken, verifyToken } from '../utils/auth.js';
 import * as userService from '../services/userService.js';
 import { OAuth2Client } from 'google-auth-library';
+import settings from '../config/settings.js';
 
-// Use the user's provided Google Client ID
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '951248037202-o57h719sdfj52fm5movmv5536k9uma6e.apps.googleusercontent.com';
-const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+// Use the central settings configuration
+const client = new OAuth2Client(settings.GOOGLE_CLIENT_ID);
 
 // DB operations are handled through userService which uses raw SQL now
 
@@ -16,7 +16,7 @@ export const googleLogin = async (req, res) => {
   try {
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: GOOGLE_CLIENT_ID,
+      audience: settings.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
     const { email, name } = payload;

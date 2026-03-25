@@ -59,6 +59,9 @@ const settings = {
 
   // Sentry
   SENTRY_DSN: process.env.SENTRY_DSN || '',
+
+  // Google OAuth
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
 };
 
 export default settings;
