@@ -100,7 +100,9 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
       tags: ['OTP', 'Authentication', 'ArthaNova'],
     };
 
-    console.log(`📤 Sending email via Brevo to: ${email}`);
+    console.log(`📤 Sending email via Brevo...`);
+    console.log(`   From: ${settings.BREVO_SENDER_NAME} <${settings.BREVO_SENDER_EMAIL}>`);
+    console.log(`   To: ${userName} <${email}>`);
     const response = await brevoClient.post('/smtp/email', payload);
 
     console.log(`📤 Brevo API Response Status: ${response.status}`);

@@ -50,7 +50,7 @@ const settings = {
 
   // Brevo Specific
   BREVO_API_KEY: process.env.BREVO_API_KEY || '',
-  BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL || 'riteshkumar90359@gmail.com',
+  BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL || 'ritesh90359@gmail.com',
   BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME || 'ArthaNova',
 
   // File Storage
