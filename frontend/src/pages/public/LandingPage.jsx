@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../../styles/pages/public/LandingPage.module.css'
 
@@ -35,6 +36,7 @@ const FEATURES = [
 
 
 export default function LandingPage() {
+  const [showModal, setShowModal] = useState(false)
   return (
     <div className={styles.page}>
       {/* ─── Hero Section (Home) ─────────────────────────────────────────── */}
@@ -61,9 +63,13 @@ export default function LandingPage() {
                 <Link to="/register" className="btn btn-primary btn-lg">
                   START NOW →
                 </Link>
-                <Link to="/market" className="btn btn-yellow btn-lg">
+                <button 
+                  onClick={() => setShowModal(true)}
+                  className="btn btn-yellow btn-lg"
+                  style={{cursor: 'pointer'}}
+                >
                   LEARN MORE
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -223,6 +229,33 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Modal Popup ─────────────────────────────────────────────────── */}
+      {showModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <button 
+              className={styles.closeBtn}
+              onClick={() => setShowModal(false)}
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+            <h2 className={styles.modalTitle}>THE MEANING OF ARTHANOVA</h2>
+            <div className={styles.modalContent}>
+              <p className={styles.modalStatement}>
+                <strong>"ARTHA"</strong> (अर्थ) — SANSKRIT FOR <em>WEALTH, VALUE, PROSPERITY</em><br/>
+                <strong>+</strong> <strong>"NOVA"</strong> — LATIN FOR <em>NEW, BRIGHT, INNOVATION</em>
+              </p>
+              <blockquote className={styles.modalQuote}>
+                <em>
+                  "ArthaNova: Democratizing institutional-grade market intelligence for 14 crore+ Indian retail investors—turning data into wealth through AI-powered opportunity discovery, real-time technical intelligence, conversational wisdom, and portfolio-aware decisions."
+                </em>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

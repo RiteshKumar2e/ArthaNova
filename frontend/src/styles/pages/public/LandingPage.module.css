@@ -130,6 +130,126 @@
 }
 
 /* ═══════════════════════════════════════════
+   MODAL OVERLAY & POPUP
+   ═══════════════════════════════════════════ */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 12px 12px 0px #000;
+  max-width: 700px;
+  width: 100%;
+  padding: 2.5rem;
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background: #C4FF00;
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.closeBtn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #000;
+}
+
+.modalTitle {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 1.25rem;
+  border-bottom: 3px solid #000;
+  padding-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.modalContent {
+  margin-bottom: 1.5rem;
+}
+
+.modalStatement {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.7;
+  color: #111;
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.modalStatement strong {
+  background: #C4FF00;
+  padding: 0.2rem 0.4rem;
+  display: inline-block;
+}
+
+.modalStatement em {
+  color: #00F0FF;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.modalQuote {
+  background: #f9f9f9;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  padding: 1.5rem;
+  margin: 0;
+  font-style: italic;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: #333;
+}
+
+.modalQuote em {
+  color: #000;
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════
    CAPABILITIES SECTION
    ═══════════════════════════════════════════ */
 .capabilities {
@@ -500,6 +620,8 @@
   .impactGrid { grid-template-columns: repeat(2, 1fr); }
   .impactItem { border-bottom: 3px solid #000; }
   .hero { padding: 4rem 0; }
+  .modal { max-width: 600px; padding: 2rem; }
+  .modalTitle { font-size: 1.5rem; }
 }
 
 @media (max-width: 768px) {
@@ -541,6 +663,12 @@
   .showcase { padding: 3rem 0; }
   .capabilities { padding: 3rem 0; }
   .contact { padding: 3rem 0; }
+  .modal { max-width: calc(100% - 2rem); padding: 1.5rem; box-shadow: 8px 8px 0px #000; }
+  .modalOverlay { padding: 0.5rem; }
+  .modalTitle { font-size: 1.25rem; margin-bottom: 1rem; }
+  .modalStatement { font-size: 0.85rem; }
+  .modalQuote { font-size: 0.85rem; padding: 1rem; }
+  .closeBtn { width: 36px; height: 36px; font-size: 1.25rem; }
   .box1, .box2, .box3 { display: none; }
 }
 
@@ -549,6 +677,12 @@
   .impactGrid { grid-template-columns: 1fr; }
   .sectionTitle { font-size: 1.5rem; }
   .container { padding: 0 1.25rem; }
+  .modal { max-width: 100%; padding: 1.25rem; }
+  .modalOverlay { padding: 0.25rem; }
+  .modalTitle { font-size: 1rem; margin-bottom: 0.75rem; }
+  .modalStatement { font-size: 0.8rem; line-height: 1.5; }
+  .modalQuote { font-size: 0.8rem; padding: 0.75rem; }
+  .closeBtn { width: 32px; height: 32px; font-size: 1.1rem; top: 0.75rem; right: 0.75rem; }
 }
 
 

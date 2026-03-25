@@ -36,9 +36,10 @@ export default function BacktestingPage() {
   const fetchHistory = async () => {
     try {
       const resp = await backtestAPI.history()
-      setHistory(resp.data)
+      setHistory(Array.isArray(resp.data) ? resp.data : (resp.data?.data || []))
     } catch (err) {
       console.error('Failed to fetch history', err)
+      setHistory([])
     }
   }
 
@@ -173,7 +174,7 @@ export default function BacktestingPage() {
             <h3 className={styles.cardHeader} style={{ background: '#FFDD55' }}>JOB HISTORY</h3>
             <div className={styles.cardBody}>
               <div className={styles.histList}>
-                {history.map(run => (
+                {(Array.isArray(history) ? history : []).map(run => (
                   <div key={run.id} className={styles.histItem} style={{ borderBottom: '2px solid #eee', padding: '8px 0' }}>
                     <div className={styles.histItemMain}>
                       <span className={styles.histSymbol}>{run.symbol}</span>
@@ -184,7 +185,7 @@ export default function BacktestingPage() {
                     </div>
                   </div>
                 ))}
-                {history.length === 0 && <p className={styles.emptyHist} style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#999', textAlign: 'center' }}>No recent runs found.</p>}
+                {(!Array.isArray(history) || history.length === 0) && <p className={styles.emptyHist} style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#999', textAlign: 'center' }}>No recent runs found.</p>}
               </div>
             </div>
           </div>

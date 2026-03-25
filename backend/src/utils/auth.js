@@ -8,7 +8,8 @@ import settings from '../config/settings.js';
  * @returns {Promise<string>}
  */
 export const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
+  // Reduced salt rounds to 4 for lightning-fast hackathon demo performance
+  const salt = await bcrypt.genSalt(4);
   return await bcrypt.hash(password, salt);
 };
 
