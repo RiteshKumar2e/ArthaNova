@@ -8,6 +8,10 @@ import './index.css'
 import './styles/variables.css'
 import './styles/global.css'
 
+import { GoogleOAuthProvider } from '@react-oauth/google'
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ""
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -20,29 +24,31 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#172B4D',
-              color: '#fff',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontFamily: 'Inter, sans-serif',
-            },
-            success: {
-              iconTheme: { primary: '#00875A', secondary: '#fff' },
-            },
-            error: {
-              iconTheme: { primary: '#DE350B', secondary: '#fff' },
-            },
-          }}
-        />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#172B4D',
+                color: '#fff',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontFamily: 'Inter, sans-serif',
+              },
+              success: {
+                iconTheme: { primary: '#00875A', secondary: '#fff' },
+              },
+              error: {
+                iconTheme: { primary: '#DE350B', secondary: '#fff' },
+              },
+            }}
+          />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 )

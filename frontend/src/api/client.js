@@ -63,6 +63,7 @@ export default api
 
 export const authAPI = {
   login: (data) => api.post('/auth_debug/login', data),
+  googleLogin: (credential) => api.post('/auth_debug/google', { credential }),
   register: (data) => api.post('/auth_debug/register', data),
   logout: () => api.post('/auth_debug/logout'),
   me: (token) => {

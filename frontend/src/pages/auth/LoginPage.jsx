@@ -4,6 +4,7 @@ import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { GoogleLogin } from '@react-oauth/google'
 import styles from '../../styles/pages/auth/AuthPages.module.css'
 
 export default function LoginPage() {
@@ -13,6 +14,27 @@ export default function LoginPage() {
   const [errors, setErrors] = useState({})
   const { login } = useAuthStore()
   const navigate = useNavigate()
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true)
+    try {
+      const res = await authAPI.googleLogin(credentialResponse.credential)
+      const { access_token, refresh_token, user } = res.data
+      login(user, access_token, refresh_token)
+      toast.success(`Welcome, ${user.full_name}!`)
+
+      if (user.role === 'admin' || user.is_admin === true) {
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Google Login failed.'
+      toast.error(msg)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -171,10 +193,16 @@ export default function LoginPage() {
         <div className={styles.socialDividerLight}>
           <span>OR CONTINUE WITH</span>
         </div>
-        <button type="button" className={styles.socialBtnLight}>
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/02-08-2017/google.svg" alt="Google" />
-          CONTINUE WITH GOOGLE
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => toast.error('Google Sign-In failed')}
+            useOneTap
+            theme="filled_black"
+            shape="rectangular"
+            containerProps={{ style: { width: '100%', display: 'flex', justifyContent: 'center' } }}
+          />
+        </div>
 
         {/* Sign Up Link */}
         <p className={styles.authSwitchLight}>

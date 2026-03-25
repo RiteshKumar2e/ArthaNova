@@ -1,7 +1,62 @@
 import { hashPassword, verifyPassword, createAccessToken, createRefreshToken, verifyToken } from '../utils/auth.js';
 import * as userService from '../services/userService.js';
+import { OAuth2Client } from 'google-auth-library';
+
+// Use the user's provided Google Client ID
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '951248037202-o57h719sdfj52fm5movmv5536k9uma6e.apps.googleusercontent.com';
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
 // DB operations are handled through userService which uses raw SQL now
 
+export const googleLogin = async (req, res) => {
+  const { credential } = req.body;
+  if (!credential) {
+    return res.status(400).json({ detail: 'Google credential is required' });
+  }
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { email, name } = payload;
+
+    let user = await userService.getUserByEmail(email);
+
+    if (!user) {
+      // Auto-register new users logging in via Google
+      const randomPassword = Math.random().toString(36).slice(-10) + 'A@1';
+      const hashedPassword = await hashPassword(randomPassword);
+      const generatedUsername = email.split('@')[0] + Math.floor(Math.random() * 10000);
+      
+      user = await userService.createUser({
+        email,
+        username: generatedUsername,
+        full_name: name || 'Google User',
+        hashed_password: hashedPassword,
+      });
+    }
+
+    if (!user.is_active) {
+      return res.status(403).json({ detail: 'Account is deactivated' });
+    }
+
+    await userService.updateUserLastLogin(user.id);
+    const tokenData = { sub: user.id.toString(), email: user.email };
+    const { hashed_password: _, ...safeUser } = user;
+
+    res.json({
+      access_token: createAccessToken(tokenData),
+      refresh_token: createRefreshToken(tokenData),
+      token_type: 'bearer',
+      expires_in: 3600,
+      user: safeUser,
+    });
+  } catch (error) {
+    console.error('Google Auth Verification failed:', error);
+    res.status(401).json({ detail: 'Invalid authentication with Google. Please try again.' });
+  }
+};
 export const register = async (req, res) => {
   const { email, username, full_name, password } = req.body;
 
