@@ -7,7 +7,7 @@ import 'dotenv/config';
 // Initialize the libSQL client
 const client = createClient({
   url: process.env.TURSO_DATABASE_URL || 'libsql://arthanova-riteshkumar2e.aws-ap-south-1.turso.io',
-  authToken: process.env.TURSO_AUTH_TOKEN,
+  authToken: process.env.TURSO_AUTH_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzQ0MDYyMjcsImlkIjoiMDE5ZDIyZGEtMDMwMS03ZmVlLWFiNmMtNjEyODg3ZDFlNmE3IiwicmlkIjoiODg1YjVkYmEtYWVmOS00MDkyLWJjYTktNWFmYjZhN2JjN2Y3In0.RwrBzlKkfjSfhBkaLQXdr9DXE4XNOjNwSEV_iSr4mGs-VW0qHO7I7CZGQJPpDPoSaYts7moZNdfEXGtl3tPODA',
 });
 
 /**
