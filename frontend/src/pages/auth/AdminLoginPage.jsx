@@ -81,7 +81,10 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!form.email || !form.password) {
-      setErrors({ email: !form.email ? 'Email required' : '', password: !form.password ? 'Password required' : '' })
+      setErrors({
+        email: !form.email ? 'EMAIL IS REQUIRED' : '',
+        password: !form.password ? 'PASSWORD IS REQUIRED' : ''
+      })
       return
     }
 
@@ -134,20 +137,21 @@ export default function AdminLoginPage() {
             <input
               type="email"
               name="email"
-              className={styles.inputFieldLight}
+              className={`${styles.inputFieldLight} ${errors.email ? styles.hasError : ''}`}
               placeholder="admin@arthanova.in"
               value={form.email}
               onChange={handleChange}
             />
+            {errors.email && <div className={styles.errorTextLight}>{errors.email}</div>}
           </div>
 
           <div className={styles.inputGroupLight}>
-            <label>ACCESS KEY</label>
+            <label>Password</label>
             <div className={styles.inputWrapperLight}>
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
-                className={styles.inputFieldLight}
+                className={`${styles.inputFieldLight} ${errors.password ? styles.hasError : ''}`}
                 placeholder="••••••••••••"
                 value={form.password}
                 onChange={handleChange}
@@ -161,6 +165,7 @@ export default function AdminLoginPage() {
                 {showPassword ? "HIDE" : "SHOW"}
               </button>
             </div>
+            {errors.password && <div className={styles.errorTextLight}>{errors.password}</div>}
           </div>
 
           <button type="submit" className={styles.submitBtnLight} disabled={loading} style={{ background: '#000' }}>
@@ -171,7 +176,7 @@ export default function AdminLoginPage() {
         <div className={styles.socialDividerLight}>
           <span>SSO AUTHORIZATION</span>
         </div>
-        
+
         <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
