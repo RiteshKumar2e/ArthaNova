@@ -48,8 +48,8 @@ const RiskAlerts = () => {
     if (!alerts) return [];
     
     let allAlerts = [
-      ...alerts.stock_alerts,
-      ...alerts.portfolio_risks
+      ...(alerts?.stock_alerts || []),
+      ...(alerts?.portfolio_risks || [])
     ];
 
     if (filterLevel !== 'all') {

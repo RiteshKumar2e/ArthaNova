@@ -66,7 +66,8 @@ const HighConvictionTrades = () => {
     );
   }
 
-  if (!trades || (trades.buy_signals.length === 0 && trades.sell_signals.length === 0)) {
+  if (!trades || (!trades.buy_signals && !trades.sell_signals) || 
+      ((trades.buy_signals || []).length === 0 && (trades.sell_signals || []).length === 0)) {
     return (
       <div className="hc-trades-empty">
         <div className="empty-message">

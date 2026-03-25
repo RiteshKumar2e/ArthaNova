@@ -25,4 +25,56 @@ router.get('/opportunity-radar', authenticate, async (req, res) => {
   });
 });
 
+router.get('/high-conviction-trades', authenticate, async (req, res) => {
+  res.json({
+    buy_signals: [
+      {
+        symbol: "HDFCBANK",
+        signal: "BUY",
+        confidence: 88.5,
+        risk_reward_ratio: 3.2,
+        probability: 72,
+        entry_range: { min: 1420, max: 1435 },
+        target: 1580,
+        stop_loss: 1385,
+        why_matters: ["Double bottom formation", "Institutional accumulation in progress"],
+        multi_agent_justification: {
+          "SentimentAgent": { signal: "BUY", reasoning: "Positive social momentum" },
+          "TechnicalAgent": { signal: "BUY", reasoning: "RSI reversal from oversold" }
+        },
+        portfolio_impact: { action: "STRONG ACCUMULATE", diversification_impact: "Increases Banking exposure" },
+        generated_at: new Date().toISOString()
+      }
+    ],
+    sell_signals: [],
+    confidence_threshold: 80,
+    confirmations_required: 2,
+    min_rr_ratio: 2.5
+  });
+});
+
+router.get('/risk-alerts', authenticate, async (req, res) => {
+  res.json({
+    stock_alerts: [
+      {
+        symbol: "PAYTM",
+        type: "technical_weakness",
+        description: "Significant breakdown below support level",
+        level: "high",
+        action: "REDUCE EXPOSURE",
+        why_matters: ["Continuous downward trend", "Strong resistance at 450"],
+        multi_agent_justification: {
+          "RiskAgent": { reasoning: "Volatility exceedes safety threshold" }
+        },
+        confidence: 94,
+        probability: 88
+      }
+    ],
+    portfolio_risks: [],
+    total_alerts: 1,
+    alert_status: "ACTIVE",
+    generated_at: new Date().toISOString()
+  });
+});
+
 export default router;

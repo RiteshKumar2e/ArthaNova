@@ -135,7 +135,7 @@ export default function WatchlistPage() {
         <div className={styles.mainHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.titleGroup}>
-              <h1>{activeWatchlist?.name.toUpperCase() || 'MY WATCHLIST'}</h1>
+              <h1>{(activeWatchlist?.name || 'MY WATCHLIST').toUpperCase()}</h1>
             </div>
             <p className={styles.subtitle}>{items.length} STOCKS MONITORED</p>
           </div>
@@ -213,7 +213,7 @@ export default function WatchlistPage() {
       {showAddModal && (
         <div className={styles.modalOverlay} onClick={() => setShowAddModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3>ADD TO {activeWatchlist?.name.toUpperCase()}</h3>
+            <h3>ADD TO {(activeWatchlist?.name || 'WATCHLIST').toUpperCase()}</h3>
             <input 
               type="text" 
               placeholder="SEARCH SYMBOL (E.G. RELIANCE)" 

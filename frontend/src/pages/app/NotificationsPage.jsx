@@ -18,7 +18,7 @@ export default function NotificationsPage() {
     try {
       setLoading(true)
       const res = await notificationsAPI.list()
-      setNotifications(res.data)
+      setNotifications(Array.isArray(res.data) ? res.data : [])
     } catch (err) {
       toast.error('Failed to load notifications')
     } finally {
@@ -49,7 +49,10 @@ export default function NotificationsPage() {
     } catch (err) {}
   }
 
-  const filteredNotifications = notifications.filter(n => {
+  const notificationsList = Array.isArray(notifications) ? notifications : []
+  
+  const filteredNotifications = notificationsList.filter(n => {
+    if (!n) return false
     if (filter === 'unread') return !n.is_read
     if (filter === 'system') return n.type === 'info' || n.type === 'system'
     if (filter === 'market') return n.type === 'market' || n.type === 'ai_alert'

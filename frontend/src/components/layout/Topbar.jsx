@@ -21,7 +21,8 @@ export default function Topbar({ onToggleSidebar }) {
   const fetchUnreadCount = async () => {
     try {
       const res = await notificationsAPI.list()
-      const unread = res.data.filter(n => !n.is_read).length
+      const notifications = Array.isArray(res.data) ? res.data : []
+      const unread = notifications.filter(n => n && !n.is_read).length
       setUnreadCount(unread)
     } catch (err) {
       console.error('Failed to fetch notifications', err)

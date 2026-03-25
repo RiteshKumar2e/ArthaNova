@@ -25,6 +25,6 @@ apiRouter.use('/admin', adminRouter);
 apiRouter.use('/alerts', (req, res) => res.json({ message: 'Alerts Router Placeholder' }));
 apiRouter.use('/backtest', (req, res) => res.json({ message: 'Backtest Router Placeholder' }));
 apiRouter.use('/watchlist', (req, res) => res.json({ message: 'Watchlist Router Placeholder' }));
-apiRouter.use('/notifications', (req, res) => res.json({ message: 'Notifications Router Placeholder' }));
+apiRouter.use('/notifications', (req, res) => res.json([]));
 
 export default apiRouter;
