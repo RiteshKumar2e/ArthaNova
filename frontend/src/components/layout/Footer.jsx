@@ -17,9 +17,9 @@ export default function Footer() {
               Transform raw financial data into actionable insights.
             </p>
             <div className={styles.socials}>
-              <a href="#" className={styles.social} aria-label="LinkedIn"><FaLinkedin /></a>
-              <a href="#" className={styles.social} aria-label="GitHub"><FaGithub /></a>
-              <a href="#" className={styles.social} aria-label="Email"><FaEnvelope /></a>
+              <a href="https://www.linkedin.com/in/riteshkumar-tech/" target="_blank" rel="noopener noreferrer" className={styles.social} aria-label="LinkedIn"><FaLinkedin /></a>
+              <a href="https://github.com/RiteshKumar2e" target="_blank" rel="noopener noreferrer" className={styles.social} aria-label="GitHub"><FaGithub /></a>
+              <a href="mailto:riteshkumar90359@gmail.com" className={styles.social} aria-label="Email"><FaEnvelope /></a>
             </div>
           </div>
 
