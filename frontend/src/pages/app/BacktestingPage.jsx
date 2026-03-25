@@ -93,7 +93,7 @@ export default function BacktestingPage() {
         <div className={styles.historyOverview}>
           <div className={styles.histStat}>
             <span className={styles.histLabel}>RECENT RUNS: </span>
-            <span className={styles.histValue}>{history.length}</span>
+            <span className={styles.histValue}>{(Array.isArray(history) ? history.length : 0)}</span>
           </div>
         </div>
       </header>

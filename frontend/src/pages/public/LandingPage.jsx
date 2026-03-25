@@ -252,6 +252,15 @@ export default function LandingPage() {
                   "ArthaNova: Democratizing institutional-grade market intelligence for 14 crore+ Indian retail investors—turning data into wealth through AI-powered opportunity discovery, real-time technical intelligence, conversational wisdom, and portfolio-aware decisions."
                 </em>
               </blockquote>
+              <div className={styles.whyNameSection}>
+                <h3 className={styles.whyNameTitle}>WHY THIS NAME?</h3>
+                <p className={styles.whyNameText}>
+                  <strong>Artha</strong> (Sanskrit) = Wealth & Prosperity | <strong>Nova</strong> (Latin) = New & Bright Innovation
+                </p>
+                <p className={styles.whyNameText}>
+                  A beacon of institutional-grade intelligence, democratizing professional-grade market analysis for India's 14 crore+ retail investors.
+                </p>
+              </div>
             </div>
           </div>
         </div>

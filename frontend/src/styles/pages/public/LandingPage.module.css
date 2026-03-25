@@ -249,6 +249,42 @@
   font-style: italic;
 }
 
+/* ─── Why This Name Section ──────────────────── */
+.whyNameSection {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #000;
+}
+
+.whyNameTitle {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+}
+
+.whyNameText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: #333;
+  margin: 0 0 0.75rem;
+}
+
+.whyNameText strong {
+  color: #000;
+  font-weight: 900;
+  background: rgba(196, 255, 0, 0.3);
+  padding: 0.1rem 0.3rem;
+}
+
+.whyNameText:last-child {
+  margin-bottom: 0;
+}
+
 /* ═══════════════════════════════════════════
    CAPABILITIES SECTION
    ═══════════════════════════════════════════ */
@@ -622,6 +658,7 @@
   .hero { padding: 4rem 0; }
   .modal { max-width: 600px; padding: 2rem; }
   .modalTitle { font-size: 1.5rem; }
+  .whyNameText { font-size: 0.85rem; line-height: 1.65; }
 }
 
 @media (max-width: 768px) {
