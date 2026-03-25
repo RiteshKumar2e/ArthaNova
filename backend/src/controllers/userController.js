@@ -8,7 +8,7 @@ export const updateProfile = async (req, res) => {
   const { full_name, bio, phone, avatar_url, risk_profile, theme, preferred_currency } = req.body;
   
   try {
-    const now = new Date();
+    const now = new Date().toISOString();
     await db.execute(`
       UPDATE users 
       SET full_name = ?, 

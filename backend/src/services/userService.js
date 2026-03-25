@@ -23,15 +23,17 @@ export const createUser = async (userData) => {
 };
 
 export const updateUserLastLogin = async (id) => {
+  const now = new Date().toISOString();
   return await db.execute(
     'UPDATE users SET last_login = ?, updated_at = ? WHERE id = ?',
-    [new Date(), new Date(), id]
+    [now, now, id]
   );
 };
 
 export const updateUserPassword = async (id, hashedPassword) => {
+  const now = new Date().toISOString();
   return await db.execute(
     'UPDATE users SET hashed_password = ?, updated_at = ? WHERE id = ?',
-    [hashedPassword, new Date(), id]
+    [hashedPassword, now, id]
   );
 };
