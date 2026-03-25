@@ -1,39 +1,37 @@
-import prisma from '../models/db.js';
+import db from '../models/db.js';
 
 export const getUserByEmail = async (email) => {
-  return await prisma.user.findUnique({
-    where: { email },
-  });
+  return await db.queryFirst('SELECT * FROM users WHERE email = ?', [email]);
 };
 
 export const getUserByUsername = async (username) => {
-  return await prisma.user.findUnique({
-    where: { username },
-  });
+  return await db.queryFirst('SELECT * FROM users WHERE username = ?', [username]);
 };
 
 export const getUserById = async (id) => {
-  return await prisma.user.findUnique({
-    where: { id },
-  });
+  return await db.queryFirst('SELECT * FROM users WHERE id = ?', [id]);
 };
 
 export const createUser = async (userData) => {
-  return await prisma.user.create({
-    data: userData,
-  });
+  const { email, username, full_name, hashed_password } = userData;
+  const result = await db.execute(
+    'INSERT INTO users (email, username, full_name, hashed_password) VALUES (?, ?, ?, ?)',
+    [email, username, full_name, hashed_password]
+  );
+  // Fetch and return the newly created user
+  return await db.queryFirst('SELECT * FROM users WHERE id = ?', [Number(result.lastInsertRowid)]);
 };
 
 export const updateUserLastLogin = async (id) => {
-  return await prisma.user.update({
-    where: { id },
-    data: { last_login: new Date() },
-  });
+  return await db.execute(
+    'UPDATE users SET last_login = ?, updated_at = ? WHERE id = ?',
+    [new Date(), new Date(), id]
+  );
 };
 
 export const updateUserPassword = async (id, hashedPassword) => {
-  return await prisma.user.update({
-    where: { id },
-    data: { hashed_password: hashedPassword },
-  });
+  return await db.execute(
+    'UPDATE users SET hashed_password = ?, updated_at = ? WHERE id = ?',
+    [hashedPassword, new Date(), id]
+  );
 };

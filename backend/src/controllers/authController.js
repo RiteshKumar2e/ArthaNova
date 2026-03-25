@@ -1,6 +1,6 @@
 import { hashPassword, verifyPassword, createAccessToken, createRefreshToken, verifyToken } from '../utils/auth.js';
 import * as userService from '../services/userService.js';
-import prisma from '../models/db.js';
+// DB operations are handled through userService which uses raw SQL now
 
 export const register = async (req, res) => {
   const { email, username, full_name, password } = req.body;

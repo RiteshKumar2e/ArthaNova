@@ -1,23 +1,19 @@
-import prisma from '../models/db.js';
+import db from '../models/db.js';
 
 export const getPortfolio = async (req, res) => {
   try {
-    const portfolio = await prisma.portfolio.findUnique({
-      where: { user_id: req.user.id },
-      include: { holdings: true },
-    });
+    let portfolio = await db.queryFirst('SELECT * FROM portfolios WHERE user_id = ?', [req.user.id]);
     
     if (!portfolio) {
-      // Create one if it doesn't exist
-      const newPortfolio = await prisma.portfolio.create({
-        data: {
-          user_id: req.user.id,
-          name: "My Portfolio",
-        },
-        include: { holdings: true },
-      });
-      return res.json(newPortfolio);
+      const result = await db.execute(
+        'INSERT INTO portfolios (user_id, name) VALUES (?, ?)',
+        [req.user.id, "My Portfolio"]
+      );
+      portfolio = await db.queryFirst('SELECT * FROM portfolios WHERE id = ?', [Number(result.lastInsertRowid)]);
     }
+
+    const holdings = await db.query('SELECT * FROM holdings WHERE portfolio_id = ?', [portfolio.id]);
+    portfolio.holdings = holdings;
     
     res.json(portfolio);
   } catch (error) {
@@ -30,27 +26,22 @@ export const addHolding = async (req, res) => {
   const { symbol, company_name, quantity, avg_buy_price, exchange } = req.body;
   
   try {
-    let portfolio = await prisma.portfolio.findUnique({
-      where: { user_id: req.user.id },
-    });
+    let portfolio = await db.queryFirst('SELECT * FROM portfolios WHERE user_id = ?', [req.user.id]);
     
     if (!portfolio) {
-      portfolio = await prisma.portfolio.create({
-        data: { user_id: req.user.id },
-      });
+      const result = await db.execute(
+        'INSERT INTO portfolios (user_id) VALUES (?)',
+        [req.user.id]
+      );
+      portfolio = await db.queryFirst('SELECT * FROM portfolios WHERE id = ?', [Number(result.lastInsertRowid)]);
     }
     
-    const holding = await prisma.holding.create({
-      data: {
-        portfolio_id: portfolio.id,
-        symbol,
-        company_name,
-        quantity: parseFloat(quantity),
-        avg_buy_price: parseFloat(avg_buy_price),
-        exchange: exchange || 'NSE',
-      },
-    });
-    
+    const result = await db.execute(
+      'INSERT INTO holdings (portfolio_id, symbol, company_name, quantity, avg_buy_price, exchange) VALUES (?, ?, ?, ?, ?, ?)',
+      [portfolio.id, symbol, company_name, parseFloat(quantity), parseFloat(avg_buy_price), exchange || 'NSE']
+    );
+
+    const holding = await db.queryFirst('SELECT * FROM holdings WHERE id = ?', [Number(result.lastInsertRowid)]);
     res.status(201).json(holding);
   } catch (error) {
     console.error(error);
@@ -61,16 +52,19 @@ export const addHolding = async (req, res) => {
 export const removeHolding = async (req, res) => {
   const { id } = req.params;
   try {
-    const holding = await prisma.holding.findUnique({
-      where: { id: parseInt(id) },
-      include: { portfolio: true },
-    });
+    const holding = await db.queryFirst(`
+      SELECT h.*, p.user_id 
+      FROM holdings h
+      JOIN portfolios p ON h.portfolio_id = p.id
+      WHERE h.id = ?`,
+      [parseInt(id)]
+    );
     
-    if (!holding || holding.portfolio.user_id !== req.user.id) {
+    if (!holding || Number(holding.user_id) !== req.user.id) {
       return res.status(404).json({ detail: "Holding not found" });
     }
     
-    await prisma.holding.delete({ where: { id: parseInt(id) } });
+    await db.execute('DELETE FROM holdings WHERE id = ?', [parseInt(id)]);
     res.json({ message: "Holding removed successfully" });
   } catch (error) {
     console.error(error);
@@ -79,7 +73,6 @@ export const removeHolding = async (req, res) => {
 };
 
 export const getPortfolioAnalytics = async (req, res) => {
-  // Mock analytics
   res.json({
     total_pnl: parseFloat((Math.random() * 5000 - 1000).toFixed(2)),
     total_pnl_pct: parseFloat((Math.random() * 10 - 2).toFixed(2)),
