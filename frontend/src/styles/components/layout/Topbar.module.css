@@ -299,12 +299,14 @@
   .avatar { width: 28px; height: 28px; font-size: 0.75rem; }
   .profileBtn { padding: 0.25rem; }
   .topbarLogoIcon { width: 32px; height: 32px; font-size: 1rem; border-width: 3px; }
-  .topbarLogoText { font-size: 1.1rem; }
+  .topbarLogoText { font-size: 0.9rem; }
+  .topbarLogo { margin-left: 1.2rem; gap: 8px; }
 }
 @media (max-width: 480px) {
   .searchBox { display: none; }
   .left { flex: 0; }
   .right { flex: 1; justify-content: flex-end; }
-  .topbarLogoText { font-size: 0.9rem; }
+  .topbarLogoText { font-size: 0.8rem; }
+  .topbarLogo { margin-left: 0.8rem; }
 }
 
