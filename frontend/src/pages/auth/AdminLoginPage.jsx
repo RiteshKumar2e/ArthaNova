@@ -118,7 +118,7 @@ export default function AdminLoginPage() {
 
       <Link to="/" className={styles.homeButtonLight}>
         <span>&larr;</span>
-        <span>Back to Portal</span>
+        <span>BACK TO HOME</span>
       </Link>
 
       <div className={styles.authBrandLight}>

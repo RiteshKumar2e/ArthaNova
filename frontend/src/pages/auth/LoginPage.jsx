@@ -159,8 +159,8 @@ export default function LoginPage() {
       <div className={`${styles.floatingBox} ${styles.box3}`}></div>
 
       <Link to="/" className={styles.homeButtonLight}>
-        <span className={styles.homeIcon}>&larr;</span>
-        <span className={styles.homeText}>Back to Home</span>
+        <span>&larr;</span>
+        <span>BACK TO HOME</span>
       </Link>
 
       {/* Brand Header */}
