@@ -5,24 +5,132 @@ import popupStyles from '../../styles/components/layout/FooterPopup.module.css'
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa'
 
 const LINK_DETAILS = {
-  'Dashboard': { title: 'DASHBOARD', desc: 'Centralized command center for your investments. View real-time metrics, portfolio health, and AI-driven market summaries in one clean Neobrutalist interface.' },
-  'Stock Explorer': { title: 'STOCK EXPLORER', desc: 'Deep-dive into individual equities. Access fundamental data, technical charts, AI sentiment scores, and institutional holding patterns instantly.' },
-  'Opportunity Radar': { title: 'OPPORTUNITY RADAR', desc: 'Our proprietary screening engine. Discover high-probability setups based on volume surges, MACD crossovers, and hidden algorithmic anomalies.' },
-  'AI Chat': { title: 'AI CHAT', desc: 'Your personal financial quantitative analyst. Ask complex queries like "Why did HDFC Bank drop?" and get data-backed, actionable insights instantly.' },
-  'Portfolio': { title: 'PORTFOLIO INTELLIGENCE', desc: 'Track your holdings with precision. The Agentic AI analyzes your asset allocation and simulates potential macro-economic impacts on your net worth.' },
-  'Market Overview': { title: 'MARKET OVERVIEW', desc: 'Bird\'s-eye view of the Indian stock market. Track Nifty, Bank Nifty, top sector performers, and overall market breadth in real-time.' },
-  'News Intelligence': { title: 'NEWS INTELLIGENCE', desc: 'More than just headlines. Our NLP agents categorize news as bullish or bearish and map the direct impact to specific sectors and stocks.' },
-  'IPO Tracker': { title: 'IPO TRACKER', desc: 'Stay ahead of primary markets. Get AI-generated subscription recommendations, grey market premium (GMP) updates, and listing day projections.' },
-  'Insider Activity': { title: 'INSIDER ACTIVITY', desc: 'Follow the smart money. Real-time alerts on promoter buying, selling, and pledging activities to gauge management conviction.' },
-  'Bulk & Block Deals': { title: 'BULK & BLOCK DEALS', desc: 'Institutional footprint tracking. See which Mutual Funds, FIIs, or HNIs are accumulating or dumping specific mid and small-cap stocks.' },
-  'About Us': { title: 'ABOUT ARTHANOVA', desc: 'Built by engineers and quantitative analysts. Our mission is to democratize institutional-grade financial intelligence for retail investors through autonomous agents.' },
-  'Features': { title: 'PLATFORM FEATURES', desc: 'We merge Generative AI, real-time data streaming, and Neo-brutalist design to bring you the fastest and most intuitive stock analysis tool.' },
-  'How It Works': { title: 'HOW IT WORKS', desc: 'ArthaNova leverages multi-agent LangGraph orchestration. Agents scour data sources, cross-verify findings, and synthesize high-conviction alerts automatically.' },
-  'Contact': { title: 'CONTACT US', desc: 'Reach out to us via email at riteshkumar90359@gmail.com for support, feedback or enterprise API access.' },
-  'Privacy Policy': { title: 'PRIVACY POLICY', desc: 'Your data is encrypted and strictly secure. We adhere to localized data regulations like the DPDP Act and never sell your personal financial information.' },
-  'Terms of Service': { title: 'TERMS OF SERVICE', desc: 'The legal agreement governing your usage of our intelligence platform. Outlines our responsibilities as an AI intelligence provider and your rights.' },
-  'Disclaimer': { title: 'FINANCIAL DISCLAIMER', desc: 'Information provided by ArthaNova is strictly for educational purposes and algorithmic exploration. It does not constitute SEBI-registered financial advice.' },
-  'SEBI Disclosure': { title: 'SEBI DISCLOSURE', desc: 'Regulatory compliance statements detailing that ArthaNova functions as an analytical software tool and not a registered investment advisor.' }
+  'Dashboard': { 
+    title: 'DASHBOARD', 
+    status: 'LIVE', 
+    tags: ['Portfolio Tracking', 'Real-Time', 'Command Center'],
+    desc: 'Your central command center. View real-time portfolio metrics, active alerts, and AI-synthesized market summaries in one clean, actionable interface.',
+    features: ['Aggregated API connections for live data', 'Customizable Neo-Brutalist widgets', 'Instant P&L tracking and risk visualization']
+  },
+  'Stock Explorer': { 
+    title: 'STOCK EXPLORER', 
+    status: 'LIVE', 
+    tags: ['Equities', 'Fundamentals', 'Sentiment'],
+    desc: 'Deep-dive into individual equities. Access specialized technical indicators, AI sentiment scores, and historical data instantly without the clutter.',
+    features: ['Technical charts with auto-pattern recognition', 'NLP-based sentiment scoring from recent news', 'Institutional holding patterns (FII/DII)']
+  },
+  'Opportunity Radar': { 
+    title: 'OPPORTUNITY RADAR', 
+    status: 'LIVE', 
+    tags: ['Screening Engine', 'Breakouts', 'Volume Surge'],
+    desc: 'Our proprietary screening engine. Discover high-probability setups driven by algorithmic anomalies, insider buying, and breakout patterns.',
+    features: ['Real-time MACD & RSI crossover alerts', 'Volume surge detection algorithms', 'Automated anomaly highlighting']
+  },
+  'AI Chat': { 
+    title: 'AI CHAT', 
+    status: 'BETA', 
+    tags: ['LLM', 'RAG Context', 'Quant'],
+    desc: 'Your personal financial quant. Ask complex queries and receive data-backed, institutional-grade insights instantly using RAG-powered Large Language Models.',
+    features: ['Context-aware chat using Groq/Llama-3', 'Query execution over live stock databases', 'Conversational technical analysis']
+  },
+  'Portfolio': { 
+    title: 'PORTFOLIO', 
+    status: 'LIVE', 
+    tags: ['Risk Analysis', 'Stress Test', 'Asset Allocation'],
+    desc: 'Track and stress-test your holdings. The AI analyzes your concentration risk and predicts how emerging news events might impact your net worth.',
+    features: ['Automated rebalancing recommendations', 'News impact simulation on specific holdings', 'Sector overweight/underweight alerts']
+  },
+  'Market Overview': { 
+    title: 'MARKET OVERVIEW', 
+    status: 'LIVE', 
+    tags: ['Macro', 'Indices', 'Breadth'],
+    desc: 'A live, macro-level snapshot of the Indian economy. Track indices, sectoral momentum, FII/DII activity, and options data in real-time.',
+    features: ['Nifty50 & BankNifty heatmaps', 'Live Market Breadth (Advances vs Declines)', 'Global market correlation metrics']
+  },
+  'News Intelligence': { 
+    title: 'NEWS INTELLIGENCE', 
+    status: 'BETA', 
+    tags: ['NLP', 'Auto-Classification', 'Filings'],
+    desc: 'Our NLP agents contextualize regulatory filings and news, auto-classifying them as bullish or bearish and mapping their direct impacts.',
+    features: ['Sentiment polarity scoring (Bullish/Bearish)', 'Sector and stock tagging algorithms', 'Spam/Noise filtering for pure signal']
+  },
+  'IPO Tracker': { 
+    title: 'IPO TRACKER', 
+    status: 'BETA', 
+    tags: ['Primary Market', 'GMP', 'Projections'],
+    desc: 'Stay ahead of primary markets. Get AI-generated subscription recommendations and grey market premium (GMP) projections before listing.',
+    features: ['Live grey market premium tracking', 'AI subscription recommendations', 'Detailed DRHP summarization']
+  },
+  'Insider Activity': { 
+    title: 'INSIDER ACTIVITY', 
+    status: 'LIVE', 
+    tags: ['Promoters', 'Pledging', 'Smart Money'],
+    desc: 'Follow the smart money. Receive instant alerts on promoter buying, selling, or pledging activities to gauge genuine management conviction.',
+    features: ['Real-time promoter transaction logs', 'Pledged shares monitor', 'Historical insider conviction scoring']
+  },
+  'Bulk & Block Deals': { 
+    title: 'BULK & BLOCK DEALS', 
+    status: 'LIVE', 
+    tags: ['HNI', 'FII', 'Institutional'],
+    desc: 'Track institutional blueprints. Monitor which domestic funds and FIIs are actively accumulating or dumping specific mid and small-cap stocks.',
+    features: ['Daily block/bulk deal screener', 'Buyer/Seller counterparty mapping', 'Volume impact analysis']
+  },
+  'About Us': { 
+    title: 'ABOUT ARTHANOVA', 
+    status: 'INFO', 
+    tags: ['Mission', 'Team', 'Vision'],
+    desc: 'Built by engineers and quantitative analysts. Our mission is to democratize institutional-grade financial intelligence for retail investors through autonomous agents.',
+    features: ['Founded with a focus on retail empowerment', 'Engineering-first approach to finance', 'Transparent, ad-free environment']
+  },
+  'Features': { 
+    title: 'FEATURES', 
+    status: 'INFO', 
+    tags: ['Design', 'Engine', 'Speed'],
+    desc: 'We merge Generative AI, real-time data streaming, and Neo-brutalist design to bring you the fastest and most intuitive stock analysis tool.',
+    features: ['High-contrast Neo-Brutalist UX', 'Multi-Agent LangGraph architecture', 'Lightning-fast API responses']
+  },
+  'How It Works': { 
+    title: 'HOW IT WORKS', 
+    status: 'INFO', 
+    tags: ['Orchestration', 'LLM', 'Data'],
+    desc: 'ArthaNova leverages multi-agent orchestrations. Agents scour data sources, cross-verify findings, and synthesize high-conviction alerts automatically.',
+    features: ['Signal Agent: Scans the market', 'Context Agent: Adds historical weight', 'Analyst Agent: Generates the final alpha signal']
+  },
+  'Contact': { 
+    title: 'CONTACT US', 
+    status: 'INFO', 
+    tags: ['Support', 'Enterprise', 'Feedback'],
+    desc: 'Need support, have feedback or want to discuss enterprise API solutions? Reach out to us directly.',
+    features: ['Email: riteshkumar90359@gmail.com', 'GitHub: github.com/RiteshKumar2e', 'LinkedIn: in/riteshkumar-tech']
+  },
+  'Privacy Policy': { 
+    title: 'PRIVACY POLICY', 
+    status: 'LEGAL', 
+    tags: ['Data Security', 'DPDP Act', 'Encryption'],
+    desc: 'Your data is encrypted and strictly secure. We adhere to localized data regulations like the DPDP Act and never sell your personal financial information.',
+    features: ['End-to-End Encryption', 'No third-party data selling', 'Full data deletion rights']
+  },
+  'Terms of Service': { 
+    title: 'TERMS OF SERVICE', 
+    status: 'LEGAL', 
+    tags: ['Agreement', 'Rights', 'Usage'],
+    desc: 'The legal agreement governing your usage of our intelligence platform. Outlines our responsibilities as an AI intelligence provider and your rights.',
+    features: ['Clear usage boundaries', 'API rate limiting rules', 'User rights and protections']
+  },
+  'Disclaimer': { 
+    title: 'FINANCIAL DISCLAIMER', 
+    status: 'LEGAL', 
+    tags: ['Not Advice', 'Educational', 'Risk'],
+    desc: 'Information provided by ArthaNova is strictly for educational purposes and algorithmic exploration. It does not constitute SEBI-registered financial advice.',
+    features: ['No guaranteed returns', 'Do your own research (DYOR)', 'Market risks apply']
+  },
+  'SEBI Disclosure': { 
+    title: 'SEBI DISCLOSURE', 
+    status: 'LEGAL', 
+    tags: ['Compliance', 'Software', 'Non-Advisory'],
+    desc: 'Regulatory compliance statements detailing that ArthaNova functions as an analytical software tool and not a registered investment advisor.',
+    features: ['Unbiased algorithmic data', 'No SEBI registration claimed', 'Full transparency of algorithms']
+  }
 }
 
 export default function Footer() {
@@ -105,8 +213,31 @@ export default function Footer() {
         <div className={popupStyles.popupOverlay} onClick={closePopup}>
           <div className={popupStyles.popupContent} onClick={(e) => e.stopPropagation()}>
             <button className={popupStyles.popupClose} onClick={closePopup} aria-label="Close popup">×</button>
-            <div className={popupStyles.popupTitle}>{activePopup.title}</div>
+            
+            <div className={popupStyles.popupHeader}>
+              <h3 className={popupStyles.popupTitle}>{activePopup.title}</h3>
+              <div className={`${popupStyles.popupStatus} ${activePopup.status === 'BETA' ? popupStyles.beta : ''}`}>
+                APP STATUS: {activePopup.status}
+              </div>
+            </div>
+
+            <div className={popupStyles.popupTags}>
+              {activePopup.tags.map(tag => (
+                <span key={tag} className={popupStyles.popupTag}>{tag}</span>
+              ))}
+            </div>
+
             <p className={popupStyles.popupDesc}>{activePopup.desc}</p>
+
+            <div className={popupStyles.popupFeaturesBox}>
+              <span className={popupStyles.popupFeaturesTitle}>KEY CAPABILITIES</span>
+              <ul className={popupStyles.popupFeatureList}>
+                {activePopup.features.map((feature, idx) => (
+                  <li key={idx} className={popupStyles.popupFeatureItem}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+
           </div>
         </div>
       )}
