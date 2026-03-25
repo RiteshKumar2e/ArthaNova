@@ -139,6 +139,11 @@ export default function AgenticIntelligencePage() {
               <div className={styles.recTitle}>AI RECOMMENDATION</div>
               <div className={styles.recAction}>{data.recommendation.action}</div>
               <div style={{fontWeight: 800, fontSize: '0.85rem'}}>🎯 TARGET ZONE: {data.recommendation.target_zone}</div>
+              {data.recommendation.persistence_status && (
+                <div style={{fontSize: '0.6rem', background: '#000', color: '#C4FF00', padding: '0.1rem 0.4rem', marginTop: '0.5rem', display: 'inline-block'}}>
+                  ⚡ PERSISTENCE ACTIVE: {data.recommendation.persistence_status}
+                </div>
+              )}
             </div>
             <span className={styles.citation}>Source: {data.analysis.filing_citation}</span>
           </div>
@@ -191,6 +196,7 @@ export default function AgenticIntelligencePage() {
               <div className={styles.detailItem}>
                 <div className={styles.detailLabel}>CONFLICTS FOUND</div>
                 <div className={styles.detailVal} style={{color: '#ff4757'}}>RSI {data.analysis.conflicting_signals[0].status}</div>
+                <div style={{fontSize: '0.55rem', color: '#777', marginTop: '0.3rem'}}>✨ Agent Memory Context retrieved.</div>
               </div>
             </div>
 
