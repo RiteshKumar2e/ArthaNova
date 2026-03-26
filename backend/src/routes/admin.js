@@ -124,8 +124,8 @@ router.get('/logs/audit', authenticate, adminOnly, (req, res) => {
 router.get('/video-engine/jobs', authenticate, (req, res) => {
   res.json({
     jobs: [
-      { id: 1, video_id: 'vid_001', status: 'COMPLETED', created_at: new Date(Date.now() - 7200000).toISOString() },
-      { id: 2, video_id: 'vid_002', status: 'PROCESSING', created_at: new Date(Date.now() - 3600000).toISOString() }
+      { id: 1, video_id: 'vid_001', title: 'RELIANCE Q3 Earnings Recap', duration: '60s (SQUARE)', status: 'COMPLETED', created_at: new Date(Date.now() - 7200000).toISOString() },
+      { id: 2, video_id: 'vid_002', title: 'NIFTY 50 Breakout Analysis', duration: '30s (SHORTS)', status: 'PROCESSING', created_at: new Date(Date.now() - 3600000).toISOString() }
     ]
   });
 });

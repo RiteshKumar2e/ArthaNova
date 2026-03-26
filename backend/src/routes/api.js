@@ -7,6 +7,7 @@ import aiEngineRouter from './ai-engine.js';
 import adminRouter from './admin.js';
 import googleOtpAuthRouter from './google-otp-auth.js';
 import { newsRouter, ipoRouter, insiderRouter, dealsRouter, stockRouter } from './marketData.js';
+import backtestRouter from './backtest.js';
 
 const apiRouter = express.Router();
 
@@ -25,7 +26,7 @@ apiRouter.use('/market-data', stockRouter); // Python router used /api/v1/market
 
 apiRouter.use('/admin', adminRouter);
 apiRouter.use('/alerts', (req, res) => res.json({ message: 'Alerts Router Placeholder' }));
-apiRouter.use('/backtest', (req, res) => res.json({ message: 'Backtest Router Placeholder' }));
+apiRouter.use('/backtest', backtestRouter);
 apiRouter.use('/watchlist', (req, res) => res.json({ message: 'Watchlist Router Placeholder' }));
 apiRouter.use('/notifications', (req, res) => res.json([]));
 

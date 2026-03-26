@@ -90,7 +90,19 @@ export default function VideoInsightsPage() {
             videos.map((vid) => (
               <div key={vid.id} className={styles.videoCard}>
                 <div className={styles.videoThumb}>
-                  <div className={styles.playIcon}>▶</div>
+                  {vid.status === 'COMPLETED' && (
+                    <video 
+                      src="https://assets.mixkit.co/videos/preview/mixkit-trading-candlesticks-on-a-digital-screen-28042-large.mp4" 
+                      autoPlay 
+                      loop 
+                      muted 
+                      playsInline
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
+                    />
+                  )}
+                  <div className={styles.playIcon} style={{ position: 'relative', zIndex: 10 }}>
+                    {vid.status === 'COMPLETED' ? '▶' : '⏳'}
+                  </div>
                 </div>
                 <div className={styles.videoInfo}>
                   <h4 className={styles.videoTitle}>{vid.title}</h4>
