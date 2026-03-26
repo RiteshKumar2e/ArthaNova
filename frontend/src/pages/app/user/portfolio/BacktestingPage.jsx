@@ -294,7 +294,7 @@ export default function BacktestingPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {results.trade_log.map((trade, i) => (
+                      {(results?.trade_log || []).map((trade, i) => (
                         <tr key={i}>
                           <td>#{trade.trade}</td>
                           <td>

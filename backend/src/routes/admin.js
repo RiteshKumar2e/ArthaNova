@@ -120,13 +120,31 @@ router.get('/logs/audit', authenticate, adminOnly, (req, res) => {
   ]);
 });
 
-// Video engine jobs endpoint
-router.get('/video-engine/jobs', authenticate, adminOnly, (req, res) => {
+// Video engine jobs endpoint (accessible to all authenticated users)
+router.get('/video-engine/jobs', authenticate, (req, res) => {
   res.json({
     jobs: [
       { id: 1, video_id: 'vid_001', status: 'COMPLETED', created_at: new Date(Date.now() - 7200000).toISOString() },
       { id: 2, video_id: 'vid_002', status: 'PROCESSING', created_at: new Date(Date.now() - 3600000).toISOString() }
     ]
+  });
+});
+
+// Create video engine job
+router.post('/video-engine/jobs', authenticate, (req, res) => {
+  res.json({
+    id: Math.floor(Math.random() * 10000),
+    status: 'QUEUED',
+    created_at: new Date().toISOString(),
+    message: 'Video generation job created'
+  });
+});
+
+// Delete video engine job
+router.delete('/video-engine/jobs/:id', authenticate, adminOnly, (req, res) => {
+  res.json({
+    success: true,
+    message: `Job ${req.params.id} deleted`
   });
 });
 
