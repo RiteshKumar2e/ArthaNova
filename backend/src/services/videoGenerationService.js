@@ -1,6 +1,7 @@
 import Groq from 'groq-sdk';
 import settings from '../config/settings.js';
 import growApiService from './growApiService.js';
+import groqService from './groqService.js';
 
 const groq = new Groq({
   apiKey: settings.GROQ_API_KEY,
@@ -50,23 +51,19 @@ Generate a concise, engaging video script for an AI avatar to read. Include:
 
 Format as a conversational script, not bullet points. Keep it precise for ${durationMap[duration]} duration.`;
 
-    const message = await groq.chat.completions.create({
-      model: settings.GROQ_MODEL || 'llama-3.3-70b-versatile',
-      max_tokens: 500,
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a professional financial video script writer for Indian markets. Write engaging, factual scripts for retail investors.'
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: 0.5,
-    });
+    const messages = [
+      {
+        role: 'system',
+        content: 'You are a professional financial video script writer for Indian markets. Write engaging, factual scripts for retail investors.'
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ];
 
-    const script = message.choices?.[0]?.message?.content || '';
+    const aiResponse = await groqService.chat(prompt, [], null);
+    const script = aiResponse.content;
     console.log(`✅ Video script generated: ${script.substring(0, 100)}...`);
 
     return script;

@@ -10,6 +10,38 @@ import marketDataService from './marketDataService.js';
 
 const groq = new Groq({ apiKey: settings.GROQ_API_KEY });
 
+const GROQ_FALLBACK_MODELS = [
+  'llama-3.3-70b-versatile',
+  'llama-3.1-70b-versatile',
+  'llama-3.1-8b-instant',
+  'llama-3.2-11b-vision-preview',
+  'llama-3.2-90b-vision-preview',
+  'llama-3.2-3b-preview',
+  'llama-3.2-1b-preview',
+  'llama3-70b-8192',
+  'llama3-8b-8256',
+  'mixtral-8x7b-32768',
+  'gemma2-9b-it',
+  'gemma-7b-it',
+  'llama3-groq-70b-8192-tool-use-preview',
+  'llama3-groq-8b-8256-tool-use-preview',
+  'llama-guard-3-8b',
+  'llama-3.1-405b-reasoning',
+  'llama-3.1-405b-versatile',
+  'llama3-70b-awq',
+  'llama3-8b-awq',
+  'mixtral-8x22b-instruct-v0.1',
+  'llama-2-70b-chat',
+  'llama-2-13b-chat',
+  'llama-2-7b-chat',
+  'llama3-8b', 'llama3-70b', 'mixtral-8x7b', 'gemma-7b', 'gemma2-9b',
+  'llama-3.1-8b', 'llama-3.1-70b', 'llama-3.2-1b', 'llama-3.2-3b',
+  'llama-3.2-11b', 'llama-3.2-90b', 'llama-3.3-70b',
+  'groq-llama-3-8b', 'groq-llama-3-70b', 'groq-mixtral-8x7b',
+  'groq-gemma-7b', 'groq-gemma2-9b', 'meta-llama/Llama-3-8b-chat',
+  'meta-llama/Llama-3-70b-chat', 'mistralai/Mixtral-8x7B-Instruct-v0.1'
+];
+
 const SYSTEM_PROMPT = `You are ArthaNova AI — India's most sophisticated retail investor intelligence platform.
 
 You specialize in:
@@ -79,14 +111,9 @@ class GroqService {
 
     messages.push({ role: 'user', content: userMessage });
 
-    const completion = await groq.chat.completions.create({
-      model: settings.GROQ_MODEL || 'llama-3.3-70b-versatile',
-      messages,
-      max_tokens: 1024,
-      temperature: 0.4,
-    });
+    const completion = await this._callWithFallback(messages, 1024, 0.4);
 
-    const responseContent = completion.choices[0]?.message?.content || 'I could not generate a response.';
+    const responseContent = completion.choices?.[0]?.message?.content || 'I could not generate a response.';
 
     return {
       role: 'assistant',
@@ -131,6 +158,52 @@ class GroqService {
     } catch (err) {
       return '';
     }
+  }
+
+  /**
+   * Internal helper to handle multi-model fallback logic
+   */
+  async _callWithFallback(messages, max_tokens = 1024, temperature = 0.4) {
+    let lastError = null;
+    const modelToTry = settings.GROQ_MODEL ? [settings.GROQ_MODEL, ...GROQ_FALLBACK_MODELS] : GROQ_FALLBACK_MODELS;
+
+    // Remove duplicates
+    const uniqueModels = [...new Set(modelToTry)];
+
+    for (const modelId of uniqueModels) {
+      try {
+        console.log(`🤖 Attempting Groq completion with model: ${modelId}`);
+        const completion = await groq.chat.completions.create({
+          model: modelId,
+          messages,
+          max_tokens,
+          temperature,
+        });
+        console.log(`✅ Groq Success with model: ${modelId}`);
+        return completion;
+      } catch (error) {
+        lastError = error;
+        const isRateLimit = error.status === 429 || error.message?.includes('rate limit');
+        const isModelMissing = error.status === 404 || error.message?.includes('not found');
+        
+        console.warn(`⚠️ Groq model ${modelId} failed (${error.status || 'Error'}): ${error.message.substring(0, 50)}...`);
+        
+        if (isRateLimit) {
+          console.log('⏳ Rate Limited. Trying next available model...');
+          continue; 
+        }
+        
+        if (isModelMissing) {
+          console.log('🚫 Model not found on Groq servers. Pivoting to fallback...');
+          continue;
+        }
+
+        // For other errors, we still try one more just in case it's a transient server error
+        continue;
+      }
+    }
+
+    throw new Error(`All 40+ Groq models failed. Last error: ${lastError?.message}`);
   }
 
   /**
