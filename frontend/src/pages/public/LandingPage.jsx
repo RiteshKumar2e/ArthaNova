@@ -60,9 +60,6 @@ export default function LandingPage() {
                 Intelligence for the Indian markets. Identify trends, manage risk, and invest with institutional-grade AI and data. 🚀
               </p>
               <div className={styles.ctaGroup}>
-                <Link to="/admin/login" className="btn btn-primary btn-lg">
-                  ADMIN ACCESS →
-                </Link>
                 <button 
                   onClick={() => setShowModal(true)}
                   className="btn btn-yellow btn-lg"
