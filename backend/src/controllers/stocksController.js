@@ -16,6 +16,12 @@ const STOCKS_DB = [
   { symbol: "ADANIENT", name: "Adani Enterprises Ltd.", sector: "Conglomerate", price: 3240.00, change: -15.0, change_pct: -0.46 },
   { symbol: "JSWSTEEL", name: "JSW Steel Ltd.", sector: "Metals", price: 820.40, change: 8.5, change_pct: 1.05 },
   { symbol: "TITAN", name: "Titan Company Ltd.", sector: "Consumer Durables", price: 3750.00, change: 45.0, change_pct: 1.21 },
+  { symbol: "WIPRO", name: "Wipro Ltd.", sector: "IT", price: 520.50, change: 8.2, change_pct: 1.6 },
+  { symbol: "ZOMATO", name: "Zomato Ltd.", sector: "Food Delivery", price: 180.45, change: -5.3, change_pct: -2.85 },
+  { symbol: "NVIDIA", name: "NVIDIA Corporation", sector: "Tech", price: 152.30, change: 2.1, change_pct: 1.4 },
+  { symbol: "APPLE", name: "Apple Inc.", sector: "Tech", price: 215.75, change: -3.5, change_pct: -1.6 },
+  { symbol: "MSFT", name: "Microsoft Corporation", sector: "Tech", price: 420.60, change: 5.2, change_pct: 1.25 },
+  { symbol: "GOOGL", name: "Alphabet Inc.", sector: "Tech", price: 180.15, change: 1.8, change_pct: 1.0 },
 ];
 
 const SECTORS_DATA = [

@@ -10,7 +10,7 @@ const settings = {
   ENVIRONMENT: process.env.ENVIRONMENT || 'production',
   PORT: process.env.PORT || 8000,
   SECRET_KEY: process.env.SECRET_KEY || 'dummy_secret',
-  ALLOWED_ORIGINS: JSON.parse(process.env.ALLOWED_ORIGINS || '["http://localhost:5173", "http://localhost:3000"]'),
+  ALLOWED_ORIGINS: JSON.parse(process.env.ALLOWED_ORIGINS || '["http://localhost:5173", "http://localhost:3000", "http://localhost:5174", "http://127.0.0.1:5173", "https://arthanova.vercel.app", "https://arthanova.onrender.com"]'),
 
   // Database
   DATABASE_URL: process.env.DATABASE_URL || 'file:./arthanova.db',

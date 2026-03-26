@@ -34,12 +34,17 @@ export const apiCache = (durationSeconds = 60) => {
       // Restore original function to avoid double-intercept
       res.json = originalJson;
       
-      // Store JSON in cache map with expiration
-      cacheMap.set(key, {
-        expiry: Date.now() + (durationSeconds * 1000),
-        data: body
-      });
-      console.log(`💾 Stored NEW Cache: ${key} (TTL: ${durationSeconds}s)`);
+      // Only cache successful responses (2xx status codes)
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        // Store JSON in cache map with expiration
+        cacheMap.set(key, {
+          expiry: Date.now() + (durationSeconds * 1000),
+          data: body
+        });
+        console.log(`💾 Stored NEW Cache: ${key} (TTL: ${durationSeconds}s)`);
+      } else {
+        console.log(`⚠️  Skipped cache for ${key} (status: ${res.statusCode})`);
+      }
       
       // Complete the outbound response
       return originalJson.call(this, body);

@@ -17,6 +17,12 @@ const STOCK_PRICES = {
   "ADANIENT": 3240.00,
   "JSWSTEEL": 820.40,
   "TITAN": 3750.00,
+  "WIPRO": 520.50,
+  "ZOMATO": 180.45,
+  "NVIDIA": 152.30,
+  "APPLE": 215.75,
+  "MSFT": 420.60,
+  "GOOGL": 180.15,
 };
 
 export const getPortfolio = async (req, res) => {
