@@ -5,12 +5,12 @@ import fs from 'fs';
 import cluster from 'cluster';
 import os from 'os';
 
-// Startup Logic
-const numCPUs = os.cpus().length;
+// Startup Logic - Limit worker cores for deployment sanity (max 4)
+const numCPUs = Math.min(os.cpus().length, 4);
 
 if (cluster.isPrimary) {
   console.log(`🚀 ArthaNova API Primary Load Balancer (PID: ${process.pid}) starting...`);
-  console.log(`🚦 Forking ${numCPUs} cluster nodes for load distribution...`);
+  console.log(`🚦 Forking up to ${numCPUs} cluster nodes for load distribution...`);
 
   // Ensure upload directory exists safely on primary only
   if (!fs.existsSync(settings.UPLOAD_DIR)) {
@@ -30,7 +30,8 @@ if (cluster.isPrimary) {
   const startup = async () => {
     console.log(`🌍 Worker PID ${process.pid} active. Running in ${settings.ENVIRONMENT} mode`);
     
-    app.listen(settings.PORT, () => {
+    // Explicitly bind to 0.0.0.0 for external cloud access
+    app.listen(settings.PORT, '0.0.0.0', () => {
       console.log(`✅ [PID:${process.pid}] Server is receiving traffic on port ${settings.PORT}`);
     });
   };
