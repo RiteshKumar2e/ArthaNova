@@ -109,7 +109,7 @@ class GroqService {
       if (!portfolio) return '';
 
       const holdings = await db.query(
-        'SELECT symbol, quantity, avg_price, current_price, sector FROM holdings WHERE portfolio_id = ? LIMIT 15',
+        'SELECT symbol, quantity, avg_buy_price as avg_price, current_price, sector FROM holdings WHERE portfolio_id = ? LIMIT 15',
         [portfolio.id]
       );
 

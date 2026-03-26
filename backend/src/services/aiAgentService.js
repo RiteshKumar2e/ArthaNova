@@ -150,7 +150,7 @@ const enrichSignals = async (signals, userId) => {
     const portfolio = await db.queryFirst('SELECT id FROM portfolios WHERE user_id = ?', [userId]);
     if (portfolio) {
       userHoldings = await db.query(
-        'SELECT symbol, quantity, avg_price FROM holdings WHERE portfolio_id = ?',
+        'SELECT symbol, quantity, avg_buy_price as avg_price FROM holdings WHERE portfolio_id = ?',
         [portfolio.id]
       );
     }
@@ -519,7 +519,7 @@ export const prioritizePortfolioNews = async (userId) => {
     const portfolio = await db.queryFirst('SELECT id FROM portfolios WHERE user_id = ?', [userId]);
     if (portfolio) {
       const raw = await db.query(
-        'SELECT symbol, quantity, avg_price, current_price, sector FROM holdings WHERE portfolio_id = ?',
+        'SELECT symbol, quantity, avg_buy_price as avg_price, current_price, sector FROM holdings WHERE portfolio_id = ?',
         [portfolio.id]
       );
       holdings = raw || [];
