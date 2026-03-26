@@ -82,34 +82,58 @@ export default function VideoInsightsPage() {
           position: 'fixed',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: '#1a1a2e',
-          border: '3px solid #14a800',
-          borderRadius: '12px',
-          padding: '30px',
+          transform: 'translate(-50%, -50%) scale(1)',
+          background: 'rgba(26, 26, 46, 0.95)',
+          backdropFilter: 'blur(10px)',
+          border: '2px solid #14a800',
+          borderRadius: '16px',
+          padding: '40px',
           textAlign: 'center',
           zIndex: 1000,
-          minWidth: '320px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+          minWidth: '400px',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(20, 168, 0, 0.2)',
+          animation: 'fadeInScale 0.4s ease-out'
         }}>
-          <h2 style={{ color: '#14a800', marginBottom: '10px' }}>🎬 AI IS GENERATING YOUR VIDEO</h2>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>🎬</div>
+          <h2 style={{ 
+            color: '#14a800', 
+            marginBottom: '10px', 
+            fontSize: '24px', 
+            fontWeight: '900',
+            letterSpacing: '1px',
+            textTransform: 'uppercase'
+          }}>
+            AI Video Generation
+          </h2>
           <div style={{
-            margin: '20px 0',
-            height: '6px',
-            background: '#333',
-            border: '2px solid #14a800',
-            borderRadius: '3px',
-            overflow: 'hidden'
+            margin: '25px 0',
+            height: '8px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: '10px',
+            overflow: 'hidden',
+            position: 'relative'
           }}>
             <div style={{
               height: '100%',
-              background: '#14a800',
+              background: 'linear-gradient(90deg, #14a800 0%, #00ff00 100%)',
               width: `${processingJob.progress}%`,
-              transition: 'width 0.3s ease'
+              transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+              boxShadow: '0 0 10px #14a800'
             }}></div>
           </div>
-          <p style={{ color: '#aaa', marginBottom: '5px' }}>{progressMessage}</p>
-          <p style={{ color: '#666', fontSize: '12px' }}>{processingJob.progress}% ({processingJob.topic})</p>
+          <p style={{ 
+            color: '#fff', 
+            marginBottom: '8px', 
+            fontSize: '16px', 
+            fontWeight: '600',
+            minHeight: '24px'
+          }}>{progressMessage}</p>
+          <p style={{ color: '#14a800', fontSize: '14px', fontFamily: 'monospace', fontWeight: 'bold' }}>
+            {processingJob.progress}% COMPLETE
+          </p>
+          <div style={{ marginTop: '20px', fontSize: '12px', color: '#666', fontStyle: 'italic' }}>
+            TARGET: {processingJob.topic}
+          </div>
         </div>
       )}
 
@@ -228,6 +252,10 @@ export default function VideoInsightsPage() {
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+        @keyframes fadeInScale {
+          from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+          to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
       `}</style>
     </div>

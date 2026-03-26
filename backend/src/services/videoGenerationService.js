@@ -85,17 +85,14 @@ export const createVideoJob = async (topic, duration = '60s') => {
 
     console.log(`🎬 Creating video job: ${jobId}`);
 
-    // Generate script
-    const script = await generateVideoScript(topic, duration);
-
-    // Create job object
+    // Create job object immediately to return and show progress
     const job = {
       id: jobId,
       topic,
       duration,
-      script,
+      script: 'Generating script...',
       status: 'PROCESSING',
-      progress: 0,
+      progress: 5, // Start at 5% for immediate visual feedback
       videoUrl: null,
       thumbnailUrl: `https://img.youtube.com/vi/${jobId}/maxresdefault.jpg`,
       created_at: new Date().toISOString(),
@@ -104,8 +101,8 @@ export const createVideoJob = async (topic, duration = '60s') => {
 
     videoJobs.set(jobId, job);
 
-    // Simulate video processing
-    simulateVideoGeneration(jobId);
+    // Run processing in background
+    processVideoJob(jobId);
 
     return job;
   } catch (error) {
@@ -115,49 +112,75 @@ export const createVideoJob = async (topic, duration = '60s') => {
 };
 
 /**
- * Simulate video generation progress
- * In production, this would call actual video generation API (Pika, Stability AI, etc.)
+ * Handle video generation process in background
  */
-const simulateVideoGeneration = (jobId) => {
-  console.log(`⏳ Starting video generation simulation for ${jobId}`);
-
+const processVideoJob = async (jobId) => {
   const job = videoJobs.get(jobId);
   if (!job) return;
 
-  // Simulate 10-second processing with progress updates
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += 20;
+  try {
+    // Phase 1: Script Generation (within simulation)
+    const script = await generateVideoScript(job.topic, job.duration);
+    job.script = script;
+    job.progress = 25;
+    job.updated_at = new Date().toISOString();
+    
+    // Phase 2: Simulation of video synthesis
+    simulateProgress(jobId, 25);
+  } catch (error) {
+    job.status = 'FAILED';
+    job.error = error.message;
+    console.error(`❌ Job ${jobId} failed:`, error.message);
+  }
+};
 
-    if (progress <= 100) {
-      job.progress = Math.min(progress, 90);
+/**
+ * Simulate video generation progress
+ */
+const simulateProgress = (jobId, startProgress) => {
+  const job = videoJobs.get(jobId);
+  if (!job) return;
+
+  let progress = startProgress;
+  const interval = setInterval(() => {
+    // Speed up simulation: increment every 800ms
+    const increment = Math.floor(Math.random() * 10) + 5; 
+    progress += increment;
+
+    if (progress < 100) {
+      job.progress = Math.min(progress, 98);
       job.updated_at = new Date().toISOString();
       console.log(`📊 Job ${jobId} progress: ${job.progress}%`);
-    }
-
-    if (progress >= 100) {
+    } else {
       clearInterval(interval);
-
-      // Generate mock video URL (in production: actual video file location)
-      job.videoUrl = `https://assets.mixkit.co/videos/preview/mixkit-trading-candlesticks-on-a-digital-screen-28042-large.mp4`;
-      job.status = 'COMPLETED';
-      job.progress = 100;
-      job.updated_at = new Date().toISOString();
-
-      console.log(`✅ Video job ${jobId} completed: ${job.videoUrl}`);
+      finalizeJob(jobId);
     }
-  }, 1000);
+  }, 800);
 
-  // Safety timeout (30 seconds max)
+  // Safety timeout (same 30s)
   setTimeout(() => {
     clearInterval(interval);
-    if (job.status === 'PROCESSING') {
-      job.status = 'FAILED';
-      job.error = 'Video generation timeout';
-      console.error(`❌ Video job ${jobId} timeout`);
+    if (job.status === 'PROCESSING' && job.progress < 100) {
+      finalizeJob(jobId);
     }
   }, 30000);
 };
+
+/**
+ * Finalize the job successfully
+ */
+const finalizeJob = (jobId) => {
+  const job = videoJobs.get(jobId);
+  if (!job || job.status !== 'PROCESSING') return;
+
+  job.videoUrl = `https://assets.mixkit.co/videos/preview/mixkit-trading-candlesticks-on-a-digital-screen-28042-large.mp4`;
+  job.status = 'COMPLETED';
+  job.progress = 100;
+  job.updated_at = new Date().toISOString();
+  console.log(`✅ Video job ${jobId} completed`);
+};
+
+// Removed simulateVideoGeneration in favor of processVideoJob/simulateProgress
 
 /**
  * Get video job by ID
