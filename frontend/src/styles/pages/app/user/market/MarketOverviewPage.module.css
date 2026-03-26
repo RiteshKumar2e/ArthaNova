@@ -224,6 +224,27 @@
   text-transform: uppercase;
 }
 
+.liveIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pulseDot {
+  width: 10px;
+  height: 10px;
+  background-color: #C4FF00;
+  border-radius: 50%;
+  border: 2px solid #000;
+  animation: pulse 1s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
 .chartHeader {
   background: transparent;
   border: none;
