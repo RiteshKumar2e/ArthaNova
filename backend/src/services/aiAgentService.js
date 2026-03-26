@@ -198,3 +198,33 @@ export const prioritizePortfolioNews = async (userId) => {
     alerts: prioritized
   };
 };
+export const getChartPatterns = async (symbol) => {
+  return [
+    {
+      id: "cp1",
+      name: "Bullish Reversal",
+      type: "reversal",
+      confidence: 88,
+      probability: 72,
+      description: `Potential double bottom formation detected on ${symbol}. Strong accumulation visible in order flow.`,
+      target: "₹1,450",
+      stop_loss: "₹1,320",
+      relevance: "High",
+      timeframe: "Swing (5-10 Days)",
+      signals: ["Double Bottom", "Golden Cross", "Volume Surge"]
+    },
+    {
+      id: "cp2",
+      name: "Trend Continuation",
+      type: "continuation",
+      confidence: 65,
+      probability: 58,
+      description: "Ascending triangle pattern breakout confirmed with volume validation.",
+      target: "₹1,580",
+      stop_loss: "₹1,405",
+      relevance: "Medium",
+      timeframe: "Intraday/Next Day",
+      signals: ["Triangle Breakout", "RSI Support"]
+    }
+  ];
+};

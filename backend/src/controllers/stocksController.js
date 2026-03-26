@@ -12,6 +12,10 @@ const STOCKS_DB = [
   { symbol: "SBIN", name: "State Bank of India", sector: "Banking", price: 760.80, change: 14.2, change_pct: 1.9 },
   { symbol: "LT", name: "Larsen & Toubro Ltd.", sector: "Infrastructure", price: 3450.00, change: 25.0, change_pct: 0.73 },
   { symbol: "ITC", name: "ITC Ltd.", sector: "FMCG", price: 440.25, change: -1.5, change_pct: -0.34 },
+  { symbol: "TATASTEEL", name: "Tata Steel Ltd.", sector: "Metals", price: 148.50, change: 3.2, change_pct: 2.2 },
+  { symbol: "ADANIENT", name: "Adani Enterprises Ltd.", sector: "Conglomerate", price: 3240.00, change: -15.0, change_pct: -0.46 },
+  { symbol: "JSWSTEEL", name: "JSW Steel Ltd.", sector: "Metals", price: 820.40, change: 8.5, change_pct: 1.05 },
+  { symbol: "TITAN", name: "Titan Company Ltd.", sector: "Consumer Durables", price: 3750.00, change: 45.0, change_pct: 1.21 },
 ];
 
 const SECTORS_DATA = [

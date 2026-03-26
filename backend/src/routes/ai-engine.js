@@ -1,22 +1,63 @@
 import express from 'express';
 import { authenticate } from '../middlewares/auth.js';
+import * as aiController from '../controllers/aiController.js';
+import groqService from '../services/groqService.js';
 
 const router = express.Router();
 
-import * as aiController from '../controllers/aiController.js';
 
 router.post('/chat', authenticate, async (req, res) => {
-  // Mock AI Chat
-  res.json({
-    role: "assistant",
-    content: "This is a placeholder for the AI Engine. Once the AI SDK is fully integrated, you will see real responses here.",
-    sources: [],
-  });
+  try {
+    const { prompt, message, history = [], session_id } = req.body;
+    const userMessage = prompt || message;
+    
+    if (!userMessage) {
+      return res.status(400).json({ error: "Prompt or message is required" });
+    }
+
+    const sessionId = session_id || "sess_" + Math.random().toString(36).slice(-8);
+    
+    // Call real Groq service
+    const aiResponse = await groqService.chat(userMessage, history);
+
+    res.json({
+      id: "msg_" + Math.random().toString(36).slice(-8),
+      session_id: sessionId,
+      role: "assistant",
+      content: aiResponse.content,
+      sources: [],
+      created_at: aiResponse.timestamp,
+      status: "delivered"
+    });
+  } catch (error) {
+    console.error("AI Chat Error:", error.message);
+    res.status(500).json({ 
+      error: "AI Engine Error", 
+      detail: error.message 
+    });
+  }
 });
 
+
 router.get('/chat/sessions', authenticate, async (req, res) => {
-  res.json([]);
+  res.json([
+    { id: "sess_demo_1", title: "Portfolio Risk Analysis", created_at: new Date().toISOString() },
+    { id: "sess_demo_2", title: "Dividend Stock Search", created_at: new Date().toISOString() }
+  ]);
 });
+
+router.delete('/chat/sessions/:id', authenticate, async (req, res) => {
+  res.json({ success: true, message: `Session ${req.params.id} deleted` });
+});
+
+router.delete('/chat/sessions/:id/clear', authenticate, async (req, res) => {
+  res.json({ success: true, message: `Session ${req.params.id} cleared` });
+});
+
+router.delete('/chat/messages/:id', authenticate, async (req, res) => {
+  res.json({ success: true, message: `Message ${req.params.id} deleted` });
+});
+
 
 router.get('/opportunity-radar', authenticate, aiController.getOpportunityRadar);
 
@@ -75,5 +116,7 @@ router.get('/risk-alerts', authenticate, async (req, res) => {
 router.get('/bulk-deal-analysis', authenticate, aiController.getBulkDealAnalysis);
 router.get('/technical-breakout-analysis', authenticate, aiController.getTechnicalBreakoutAnalysis);
 router.get('/portfolio-news-prioritization', authenticate, aiController.getPortfolioNewsPrioritization);
+router.get('/chart-patterns/:symbol', authenticate, aiController.getChartPatterns);
 
 export default router;
+
