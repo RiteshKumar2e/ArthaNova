@@ -61,16 +61,18 @@ export default function OpportunityRadarPage() {
                     {signal.sentiment?.toUpperCase()}
                   </div>
                    <div className={styles.confidenceContainer}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <div className={styles.confidenceLabel}>AGENT CONFIDENCE</div>
-                      <span className="badge badge-yellow" style={{ fontSize: '10px' }}>{signal.success_probability} SUCCESS RATE</span>
-                    </div>
+                    <div className={styles.confidenceLabel}>AGENT CONFIDENCE</div>
                     <div className={styles.confidenceBarWrapper}>
                       <div className={styles.confidenceBarBg}>
                         <div className={styles.confidenceBarFill} style={{ width: `${signal.confidence}%` }} />
                         <span className={styles.confidenceText}>{signal.confidence}%</span>
                       </div>
                     </div>
+                    {signal.success_probability && (
+                      <span className={styles.successBadge}>
+                        🎯 {signal.success_probability} SUCCESS
+                      </span>
+                    )}
                   </div>
                 </div>
 

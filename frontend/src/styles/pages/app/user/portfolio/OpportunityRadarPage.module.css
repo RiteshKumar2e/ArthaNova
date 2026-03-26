@@ -217,10 +217,10 @@
 }
 
 .signalSidebar {
-  width: 120px;
+  width: 160px;
   flex-shrink: 0;
   text-align: center;
-  padding-right: 16px;
+  padding-right: 18px;
   border-right: 3px solid #000;
 }
 
@@ -294,6 +294,20 @@
   font-size: 7px;
   font-weight: 950;
   color: #000;
+  white-space: nowrap;
+}
+
+.successBadge {
+  display: block;
+  margin-top: 8px;
+  padding: 3px 6px;
+  background: #FFDD55;
+  border: 2px solid #000;
+  font-size: 0.6rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 2px 2px 0 #000;
 }
 
 .signalMain {
@@ -342,7 +356,9 @@
 
 .footerMetrics {
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .footerMetricLabel {
@@ -354,7 +370,7 @@
 }
 
 .footerMetricValue {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 950;
   color: #000;
 }
