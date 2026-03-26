@@ -44,3 +44,16 @@ export const updateUserAdminStatus = async (id, isAdmin) => {
     [isAdmin ? 1 : 0, now, id]
   );
 };
+export const logAction = async (data) => {
+  const { user_id, email, action, module = 'CORE', details, status = 'SUCCESS', ip } = data;
+  try {
+    const timestamp = new Date().toISOString();
+    return await db.execute(
+      `INSERT INTO audit_logs (user_id, email, action, module, details, status, ip_address, timestamp) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [user_id, email, action, module, details, status, ip, timestamp]
+    );
+  } catch (err) {
+    console.error('FAILED TO LOG AUDIT:', err);
+  }
+};

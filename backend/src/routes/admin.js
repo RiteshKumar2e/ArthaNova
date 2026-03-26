@@ -6,35 +6,51 @@ import db from '../models/db.js';
 const router = express.Router();
 
 // Dashboard stats endpoint - returns stats with proper structure
-router.get('/dashboard/stats', authenticate, adminOnly, (req, res) => {
-  res.json({
-    users: {
-      total: 154,
-      active: 86,
-      new_today: 5
-    },
-    system: {
-      api_requests_24h: 4520,
-      uptime: '99.8%',
-      health: "Optimal"
-    },
-    alerts: {
-      ai_signals_generated: 47,
-      active_alerts: 12,
-      resolved_today: 8
-    }
-  });
+router.get('/dashboard/stats', authenticate, adminOnly, async (req, res) => {
+  try {
+    const totalCount = await db.queryFirst('SELECT COUNT(*) as count FROM users');
+    const activeCount = await db.queryFirst('SELECT COUNT(*) as count FROM users WHERE is_active = 1');
+    const newTodayCount = await db.queryFirst("SELECT COUNT(*) as count FROM users WHERE date(created_at) = date('now')");
+
+    res.json({
+      users: {
+        total: totalCount?.count || 0,
+        active: activeCount?.count || 0,
+        new_today: newTodayCount?.count || 0
+      },
+      system: {
+        api_requests_24h: 4520, // Keep as mock for now unless we have a request log
+        uptime: '99.8%',
+        health: "Optimal"
+      },
+      alerts: {
+        ai_signals_generated: 47,
+        active_alerts: 12,
+        resolved_today: 8
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching dashboard stats:', error);
+    res.status(500).json({ error: 'Failed to fetch dashboard stats' });
+  }
 });
 
 // Legacy stats endpoint for backward compatibility
-router.get('/stats', authenticate, adminOnly, (req, res) => {
-  res.json({
-    total_users: 154,
-    active_users: 86,
-    total_portfolios: 120,
-    api_calls_24h: 4520,
-    system_health: "Optimal",
-  });
+router.get('/stats', authenticate, adminOnly, async (req, res) => {
+  try {
+    const totalCount = await db.queryFirst('SELECT COUNT(*) as count FROM users');
+    const activeCount = await db.queryFirst('SELECT COUNT(*) as count FROM users WHERE is_active = 1');
+    
+    res.json({
+      total_users: totalCount?.count || 0,
+      active_users: activeCount?.count || 0,
+      total_portfolios: 120,
+      api_calls_24h: 4520,
+      system_health: "Optimal",
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed' });
+  }
 });
 
 // AI System monitoring endpoints
@@ -63,14 +79,23 @@ router.get('/ai/agents', authenticate, adminOnly, (req, res) => {
   });
 });
 
-router.get('/ai/audit-trail', authenticate, adminOnly, (req, res) => {
-  res.json({
-    entries: [
-      { timestamp: new Date().toISOString(), agent: 'SentimentAgent', action: 'GENERATED_SIGNAL', status: 'SUCCESS' },
-      { timestamp: new Date(Date.now() - 60000).toISOString(), agent: 'TechnicalAgent', action: 'ANALYSIS_COMPLETE', status: 'SUCCESS' },
-      { timestamp: new Date(Date.now() - 120000).toISOString(), agent: 'NewsAgent', action: 'FETCHED_ARTICLES', status: 'SUCCESS' }
-    ]
-  });
+router.get('/ai/audit-trail', authenticate, adminOnly, async (req, res) => {
+  try {
+    const logs = await db.query('SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 50');
+    // Ensure the data format matches what the frontend expects (entries: [])
+    res.json({ 
+      entries: Array.isArray(logs) ? logs.map(l => ({
+        timestamp: l.timestamp,
+        agent: l.email || 'SYSTEM',
+        action: l.action,
+        status: l.status,
+        details: { query_type: l.module }
+      })) : [] 
+    });
+  } catch (error) {
+    console.error('Audit trail fetch failed:', error);
+    res.status(500).json({ entries: [] });
+  }
 });
 
 router.get('/ai/compliance/violations', authenticate, adminOnly, (req, res) => {
@@ -310,42 +335,6 @@ router.delete('/video-engine/jobs/:id', authenticate, adminOnly, (req, res) => {
       error: 'Failed to delete video job',
       message: error.message,
     });
-  }
-});
-
-// Create new user
-router.post('/users', authenticate, adminOnly, async (req, res) => {
-  try {
-    const { email, full_name, role, risk_profile } = req.body;
-    // Mock implementation - would normally interact with database
-    res.json({
-      id: Math.floor(Math.random() * 10000),
-      email,
-      full_name,
-      role,
-      risk_profile,
-      is_active: true,
-      created_at: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ detail: 'Failed to create user' });
-  }
-});
-
-// Toggle user status
-router.patch('/users/:id/toggle-status', authenticate, adminOnly, async (req, res) => {
-  try {
-    const { id } = req.params;
-    // Mock implementation
-    res.json({
-      id: parseInt(id),
-      is_active: true,
-      updated_at: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error toggling user status:', error);
-    res.status(500).json({ detail: 'Failed to toggle user status' });
   }
 });
 

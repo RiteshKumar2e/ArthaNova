@@ -69,6 +69,23 @@ async function setup() {
     `);
     console.log('✅ Holdings table ready');
 
+    // 4. Create Audit Logs Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS audit_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        email TEXT,
+        action TEXT NOT NULL,
+        module TEXT DEFAULT 'CORE',
+        details TEXT,
+        status TEXT DEFAULT 'SUCCESS',
+        ip_address TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+      )
+    `);
+    console.log('✅ Audit logs table ready');
+
     console.log('🎉 Database setup complete!');
     process.exit(0);
   } catch (error) {

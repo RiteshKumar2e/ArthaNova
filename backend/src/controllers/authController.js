@@ -52,6 +52,17 @@ export const googleLogin = async (req, res) => {
     }
 
     await userService.updateUserLastLogin(user.id);
+    
+    // Log successful Google login
+    await userService.logAction({
+      user_id: user.id,
+      email: cleanEmail,
+      action: 'LOGIN_GOOGLE',
+      module: 'AUTH_GOOGLE',
+      details: 'Logged in via Google SSO',
+      ip: req.ip || req.headers['x-forwarded-for'] || '0.2.0.0'
+    });
+
     const updatedUser = await userService.getUserById(user.id);
     const tokenData = { sub: user.id.toString(), email: user.email };
     const { hashed_password: _, ...safeUser } = updatedUser;
@@ -186,6 +197,17 @@ export const login = async (req, res) => {
     // Refresh user from DB to get updated admin status
     const updatedUser = await userService.getUserById(user.id);
     await userService.updateUserLastLogin(user.id);
+    
+    // Log the successful login
+    await userService.logAction({
+      user_id: user.id,
+      email: user.email,
+      action: 'LOGIN',
+      module: 'AUTH',
+      details: `User ${user.email} logged in successfully`,
+      ip: req.ip || req.headers['x-forwarded-for'] || '0.0.0.0'
+    });
+
     const tokenData = { sub: user.id.toString(), email: user.email };
     const { hashed_password: _, ...safeUser } = updatedUser;
 
