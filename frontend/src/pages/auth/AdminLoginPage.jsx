@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
       const userData = meRes.data
 
       // Admin Security Check
-      if (userData.role === 'admin' || userData.is_admin === true) {
+      if (userData.role === 'admin' || Boolean(userData.is_admin)) {
         login(userData, access_token, refresh_token)
         toast.success(`🛠️ Welcome back, Admin ${userData.full_name}!`)
         navigate('/admin')
