@@ -7,15 +7,13 @@ import settings from '../config/settings.js';
 
 const router = express.Router();
 
-// Authorized admin emails for Google Sign-In
-const AUTHORIZED_ADMIN_EMAILS = ['riteshkumar90359@gmail.com'];
-
 // Initialize Google OAuth Client
 const googleClient = new OAuth2Client(settings.GOOGLE_CLIENT_ID);
 
 console.log('🔍 Google OAuth Configuration:');
 console.log(`   Client ID: ${settings.GOOGLE_CLIENT_ID ? '✓ Configured' : '✗ Missing'}`);
 console.log(`   Brevo API: ${process.env.BREVO_API_KEY ? '✓ Configured' : '✗ Missing'}`);
+console.log(`   Admin Emails: ${settings.AUTHORIZED_ADMIN_EMAILS.join(', ')}`);
 
 /**
  * POST /api/v1/auth/google/otp-request
@@ -129,7 +127,7 @@ router.post('/otp-verify', async (req, res) => {
     console.log(`✅ OTP verified for ${email}`);
 
     // Determine if user should have admin access
-    const isAdminEmail = AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase());
+    const isAdminEmail = settings.AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase());
     const userRole = isAdminEmail ? 'admin' : 'user';
 
     // 1. Get or Create user from database

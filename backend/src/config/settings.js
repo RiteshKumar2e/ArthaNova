@@ -53,6 +53,11 @@ const settings = {
   BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL || 'ritesh90359@gmail.com',
   BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME || 'ArthaNova',
 
+  // Grow API - Market Data
+  GROW_API_KEY: process.env.GROW_API_KEY || '',
+  GROW_API_SECRET: process.env.GROW_API_SECRET || '',
+  GROW_API_BASE_URL: process.env.GROW_API_BASE_URL || 'https://api.groww.in/v1',
+
   // File Storage
   UPLOAD_DIR: path.join(process.cwd(), process.env.UPLOAD_DIR || 'uploads'),
   MAX_FILE_SIZE: parseInt(process.env.MAX_FILE_SIZE || '10485760'), // 10MB
@@ -62,6 +67,9 @@ const settings = {
 
   // Google OAuth
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
-};
 
-export default settings;
+  // Admin Authorization
+  AUTHORIZED_ADMIN_EMAILS: (process.env.AUTHORIZED_ADMIN_EMAILS || 'riteshkumar90359@gmail.com')
+    .split(',')
+    .map(email => email.trim().toLowerCase()),
+};

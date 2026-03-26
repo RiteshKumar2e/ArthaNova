@@ -1,4 +1,6 @@
 // Mock Data Replicated from stocks.py
+import growApiService from '../services/growApiService.js';
+
 const STOCKS_DB = [
   { symbol: "RELIANCE", name: "Reliance Industries Ltd.", sector: "Energy", price: 2450.75, change: 12.5, change_pct: 0.51 },
   { symbol: "TCS", name: "Tata Consultancy Services", sector: "IT", price: 3820.40, change: -45.2, change_pct: -1.17 },
@@ -43,24 +45,16 @@ export const listStocks = async (req, res) => {
 };
 
 export const getMarketOverview = async (req, res) => {
-  res.json({
-    indices: [
-      { name: "NIFTY 50", value: 22450.15, change: 112.4, change_pct: 0.5 },
-      { name: "SENSEX", value: 73850.30, change: 345.2, change_pct: 0.47 },
-      { name: "NIFTY BANK", value: 48120.45, change: 450.1, change_pct: 0.94 },
-    ],
-    market_breadth: "Bullish",
-    advance_decline: { advances: 32, declines: 15, unchanged: 3 },
-    vix: 14.2,
-    fii_dii: {
-      fii_buy: 12450.5,
-      fii_sell: 11200.2,
-      fii_net: 1250.3,
-      dii_buy: 8900.8,
-      dii_sell: 8200.4,
-      dii_net: 700.4,
-    },
-  });
+  try {
+    const marketData = await growApiService.getMarketOverview();
+    res.json(marketData);
+  } catch (error) {
+    console.error('❌ Error in getMarketOverview:', error.message);
+    res.status(500).json({
+      error: 'Failed to fetch market overview',
+      message: error.message,
+    });
+  }
 };
 
 export const getSectors = async (req, res) => {
