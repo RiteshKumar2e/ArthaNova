@@ -7,6 +7,9 @@ import settings from '../config/settings.js';
 
 const router = express.Router();
 
+// Authorized admin emails for Google Sign-In
+const AUTHORIZED_ADMIN_EMAILS = ['riteshkumar90359@gmail.com'];
+
 // Initialize Google OAuth Client
 const googleClient = new OAuth2Client(settings.GOOGLE_CLIENT_ID);
 
@@ -125,6 +128,10 @@ router.post('/otp-verify', async (req, res) => {
 
     console.log(`✅ OTP verified for ${email}`);
 
+    // Determine if user should have admin access
+    const isAdminEmail = AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase());
+    const userRole = isAdminEmail ? 'admin' : 'user';
+
     // 1. Get or Create user from database
     let user = await userService.getUserByEmail(email);
 
@@ -160,7 +167,11 @@ router.post('/otp-verify', async (req, res) => {
       refresh_token: refreshToken,
       token_type: 'bearer',
       expires_in: 3600,
-      user: safeUser,
+      user: {
+        ...safeUser,
+        role: userRole,
+        is_admin: isAdminEmail,
+      },
     });
   } catch (error) {
     console.error('❌ OTP Verify Error:', error);

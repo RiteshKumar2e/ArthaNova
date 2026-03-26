@@ -121,22 +121,38 @@ router.get('/logs/audit', authenticate, adminOnly, (req, res) => {
 });
 
 // Video engine jobs endpoint (accessible to all authenticated users)
+let videoJobs = [];
+
 router.get('/video-engine/jobs', authenticate, (req, res) => {
-  res.json({
-    jobs: [
-      { id: 1, video_id: 'vid_001', title: 'RELIANCE Q3 Earnings Recap', duration: '60s (SQUARE)', status: 'COMPLETED', created_at: new Date(Date.now() - 7200000).toISOString() },
-      { id: 2, video_id: 'vid_002', title: 'NIFTY 50 Breakout Analysis', duration: '30s (SHORTS)', status: 'PROCESSING', created_at: new Date(Date.now() - 3600000).toISOString() }
-    ]
-  });
+  res.json({ jobs: videoJobs });
 });
 
 // Create video engine job
 router.post('/video-engine/jobs', authenticate, (req, res) => {
-  res.json({
+  const { title, duration } = req.body;
+  const newJob = {
     id: Math.floor(Math.random() * 10000),
-    status: 'QUEUED',
-    created_at: new Date().toISOString(),
-    message: 'Video generation job created'
+    video_id: 'vid_' + Date.now(),
+    title: title || 'Market Insight Summary',
+    duration: duration || '60s (SQUARE)',
+    status: 'PROCESSING',
+    created_at: new Date().toISOString()
+  };
+  
+  videoJobs.unshift(newJob);
+
+  // Simulate video rendering completion after 5 seconds
+  setTimeout(() => {
+    const job = videoJobs.find(j => j.id === newJob.id);
+    if (job) job.status = 'COMPLETED';
+  }, 5000);
+
+  res.json({
+    id: newJob.id,
+    status: newJob.status,
+    created_at: newJob.created_at,
+    message: 'Video generation job created',
+    job: newJob
   });
 });
 

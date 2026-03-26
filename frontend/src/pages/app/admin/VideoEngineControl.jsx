@@ -13,7 +13,8 @@ export default function VideoEngineControl() {
     fetchJobs();
     const interval = setInterval(() => {
       setCluster(prev => ({ ...prev, load: `${Math.floor(Math.random() * 80 + 20)}%` }));
-    }, 5000);
+      fetchJobs();
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -68,7 +69,7 @@ export default function VideoEngineControl() {
           </div>
           <div className={styles.emptyArea}>
              <div style={{ fontSize: '1.5rem', transform: 'rotate(-5deg)' }}>🎬</div>
-             <p style={{ fontSize: '0.65rem', fontWeight: 950, marginTop: 8 }}>3 ACTIVE JOBS IN QUEUE</p>
+             <p style={{ fontSize: '0.65rem', fontWeight: 950, marginTop: 8 }}>{videos.filter(v => v.status === 'PROCESSING').length} ACTIVE JOBS IN QUEUE</p>
           </div>
           <button className="btn btn-sm btn-secondary btn-full" style={{ borderTop: '4px solid #000' }} onClick={() => alert('VIEWING FULL SYSTEM QUEUE...')}>VIEW QUEUE</button>
         </div>
@@ -121,7 +122,7 @@ export default function VideoEngineControl() {
                        <td><span style={{ fontWeight: 800 }}>{vid.duration}</span></td>
                        <td><span style={{ fontSize: '0.6rem', fontWeight: 950 }}>{vid.format}</span></td>
                        <td>
-                          <span className={`${styles.statusBadge} ${vid.status === 'COMPLETED' ? styles.statusSuccess : vid.status === 'PENDING' ? styles.statusPending : styles.statusfailed}`}>
+                          <span className={`${styles.statusBadge} ${vid.status === 'COMPLETED' ? styles.statusSuccess : vid.status === 'PROCESSING' ? styles.statusPending : styles.statusfailed}`}>
                             {vid.status}
                           </span>
                        </td>

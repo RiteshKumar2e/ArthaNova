@@ -9,9 +9,11 @@ export default function VideoInsightsPage() {
   const [duration, setDuration] = useState('60s');
 
   useEffect(() => {
-    // In a real app, users see their own videos.
-    // For now, listing available "insights"
     fetchUserVideos();
+    const interval = setInterval(() => {
+      fetchUserVideos();
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchUserVideos = async () => {
@@ -30,6 +32,7 @@ export default function VideoInsightsPage() {
     try {
       await adminAPI.videoEngine.createJob({ 
         title: topic, 
+        duration,
         quality: '1080P FULL HD',
         context: 'user_generated'
       });
