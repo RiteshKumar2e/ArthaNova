@@ -21,7 +21,7 @@ console.log(`   Admin Emails: ${settings.AUTHORIZED_ADMIN_EMAILS.join(', ')}`);
  */
 router.post('/otp-request', async (req, res) => {
   try {
-    const { idToken } = req.body;
+    const { idToken, isAdminPanel } = req.body;
 
     if (!idToken) {
       return res.status(400).json({
@@ -52,6 +52,17 @@ router.post('/otp-request', async (req, res) => {
         error: 'Invalid token',
         message: 'Email not found in Google token',
       });
+    }
+
+    if (isAdminPanel) {
+      const authorizedEmails = settings.AUTHORIZED_ADMIN_EMAILS.map(e => e.toLowerCase());
+      if (!authorizedEmails.includes(email.toLowerCase())) {
+        console.warn(`🛑 Unauthorized Admin login attempt by: ${email}`);
+        return res.status(403).json({
+          error: 'Forbidden',
+          message: 'You are not authorized for admin',
+        });
+      }
     }
 
     console.log(`📧 OTP Request from: ${email}`);

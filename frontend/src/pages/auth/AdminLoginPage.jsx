@@ -42,6 +42,7 @@ export default function AdminLoginPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             idToken: credentialResponse.credential,
+            isAdminPanel: true
           }),
         }
       )
@@ -73,7 +74,7 @@ export default function AdminLoginPage() {
         toast.success(`🛠️ Welcome back, Admin ${user.full_name}!`)
         navigate('/admin')
       } else {
-        toast.error('🛑 Access Denied: This portal is for Administrators only.')
+        toast.error('You are not authorized for admin')
         setOtpState(null)
       }
     } catch (err) {
@@ -112,7 +113,7 @@ export default function AdminLoginPage() {
         toast.success(`🛠️ Welcome back, Admin ${userData.full_name}!`)
         navigate('/admin')
       } else {
-        toast.error('🛑 Access Denied: You do not have Administrator privileges.')
+        toast.error('You are not authorized for admin')
       }
     } catch (err) {
       toast.error(err.response?.data?.detail || 'Admin authentication failed.')
