@@ -73,3 +73,5 @@ const settings = {
     .split(',')
     .map(email => email.trim().toLowerCase()),
 };
+
+export default settings;
