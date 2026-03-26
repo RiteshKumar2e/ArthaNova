@@ -23,19 +23,20 @@ const queryClient = new QueryClient({
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <GoogleOAuthProvider 
-      clientId={GOOGLE_CLIENT_ID}
-      onScriptProps={{
-        async: true,
-        defer: true,
-        nonce: undefined,
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-          <Toaster
+  // Disable StrictMode to prevent double initialization of Google OAuth in dev
+  // <React.StrictMode>
+  <GoogleOAuthProvider 
+    clientId={GOOGLE_CLIENT_ID}
+    onScriptProps={{
+      async: true,
+      defer: true,
+      nonce: undefined,
+    }}
+  >
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <App />
+        <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
@@ -57,5 +58,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </QueryClientProvider>
     </GoogleOAuthProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 )
