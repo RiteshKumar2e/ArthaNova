@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { stocksAPI } from '../../../../api/client'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
@@ -8,12 +8,31 @@ export default function MarketOverviewPage() {
   const [data, setData] = useState(null)
   const [sectors, setSectors] = useState([])
   const [loading, setLoading] = useState(true)
+  const [lastUpdate, setLastUpdate] = useState(new Date())
+
+  const fetchMarketData = useCallback(async () => {
+    try {
+      const [mkt, sec] = await Promise.all([
+        stocksAPI.marketOverview(),
+        stocksAPI.sectors()
+      ])
+      setData(mkt.data)
+      setSectors(sec.data.sectors)
+      setLastUpdate(new Date())
+      setLoading(false)
+    } catch (error) {
+      console.error('Failed to fetch market data:', error)
+      setLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    Promise.all([stocksAPI.marketOverview(), stocksAPI.sectors()])
-      .then(([mkt, sec]) => { setData(mkt.data); setSectors(sec.data.sectors) })
-      .finally(() => setLoading(false))
-  }, [])
+    fetchMarketData()
+    
+    // Auto-refresh market data every 60 seconds
+    const interval = setInterval(fetchMarketData, 60000)
+    return () => clearInterval(interval)
+  }, [fetchMarketData])
 
   return (
     <div className={styles.marketContainer + " animate-fadeIn"}>
@@ -25,7 +44,7 @@ export default function MarketOverviewPage() {
         <div className={styles.headerActions}>
           <span className="badge badge-success" style={{ border: '3px solid #000' }}>NSE OPEN</span>
           <span className={styles.syncText}>
-            LAST SYNC: {new Date().toLocaleTimeString()}
+            LAST SYNC: {lastUpdate.toLocaleTimeString()}
           </span>
         </div>
       </div>

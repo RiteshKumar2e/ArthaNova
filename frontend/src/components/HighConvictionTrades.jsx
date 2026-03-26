@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { aiAPI } from '../api/client';
 import '../styles/components/HighConvictionTrades.css';
 
@@ -7,22 +7,25 @@ const HighConvictionTrades = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // 'all', 'buy', 'sell'
   const [sortBy, setSortBy] = useState('confidence'); // 'confidence', 'rr_ratio'
+  const [lastUpdate, setLastUpdate] = useState(new Date());
+
+  const fetchHighConvictionTrades = useCallback(async () => {
+    try {
+      const response = await aiAPI.getHighConvictionTrades();
+      setTrades(response.data);
+      setLastUpdate(new Date());
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching high-conviction trades:', error);
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchHighConvictionTrades();
     const interval = setInterval(fetchHighConvictionTrades, 30000); // Refresh every 30s
     return () => clearInterval(interval);
-  }, []);
-
-  const fetchHighConvictionTrades = async () => {
-    try {
-      const response = await aiAPI.getHighConvictionTrades();
-      setTrades(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching high-conviction trades:', error);
-    }
-  };
+  }, [fetchHighConvictionTrades]);
 
   const getFilteredSignals = () => {
     if (!trades) return [];
@@ -241,7 +244,7 @@ const HighConvictionTrades = () => {
       </div>
 
       <div className="hc-footer">
-        <small>SYSTIME 24-03-24 {new Date().toLocaleTimeString()}</small>
+        <small>LAST UPDATE: {lastUpdate.toLocaleTimeString()}</small>
         <small>ACTIVE SIGNALS: {trades.buy_signals.length}B / {trades.sell_signals.length}S</small>
       </div>
 
