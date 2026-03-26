@@ -90,7 +90,8 @@ export default function VideoInsightsPage() {
           padding: '40px',
           textAlign: 'center',
           zIndex: 1000,
-          minWidth: '400px',
+          width: '90%',
+          maxWidth: '450px',
           boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(20, 168, 0, 0.2)',
           animation: 'fadeInScale 0.4s ease-out'
         }}>

@@ -71,7 +71,7 @@ export default function TechnicalAnalysisPage() {
       </header>
 
       <section className={styles.screenerSection}>
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
+        <div className={styles.sectionTitleRow}>
            <h2 style={{margin: 0}}>LIVE UNIVERSE SCANNER</h2>
            <button onClick={loadScreenerData} className="btn btn-sm" style={{border: '3px solid #000'}}>🔄 RE-SCAN NSE</button>
         </div>
@@ -106,9 +106,9 @@ export default function TechnicalAnalysisPage() {
 
       {technicalData && (
         <section className={styles.detailedAnalysis}>
-          <div className={styles.sectionHeader} style={{display: 'flex', justifyContent: 'space-between', borderBottom: '4px solid #000', paddingBottom: '0.5rem', marginBottom: '1.5rem'}}>
+          <div className={styles.analysisHeader}>
              <h2 style={{margin: 0}}>{technicalData.symbol} - AGENTIC ANALYSIS</h2>
-             <span style={{background: '#000', color: '#fff', padding: '0.2rem 0.6rem', fontSize: '0.7rem', fontWeight: 900}}>{technicalData.source}</span>
+             <span style={{background: '#000', color: '#fff', padding: '10px 15px', fontSize: '0.8rem', fontWeight: 900, border: '3px solid #C4FF00', boxShadow: '4px 4px 0px #000'}}>{technicalData.source}</span>
           </div>
           
           <div className={styles.mainGrid}>
