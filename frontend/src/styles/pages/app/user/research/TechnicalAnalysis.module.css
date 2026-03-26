@@ -365,6 +365,25 @@
   color: #666;
 }
 
+.patternList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.patternItem {
+  padding: 10px;
+  background: #fdfdfd;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  transition: all 0.2s ease;
+}
+
+.patternItem:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #000000;
+}
+
 .text-mono {
   font-family: 'Courier New', monospace;
   font-size: 12px;

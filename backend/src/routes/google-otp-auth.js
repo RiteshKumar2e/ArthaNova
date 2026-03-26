@@ -139,7 +139,15 @@ router.post('/otp-verify', async (req, res) => {
       });
     }
 
-    // 2. Update last login
+    // 2. Sync Admin Status with Authorized List
+    if (user.is_admin !== (isAdminEmail ? 1 : 0)) {
+      console.log(`⚖️ Syncing admin status for ${email} to ${isAdminEmail}`);
+      await userService.updateUserAdminStatus(user.id, isAdminEmail);
+      // Refresh user object to get the new status
+      user = await userService.getUserById(user.id);
+    }
+
+    // 3. Update last login
     await userService.updateUserLastLogin(user.id);
 
     // 3. Generate Tokens

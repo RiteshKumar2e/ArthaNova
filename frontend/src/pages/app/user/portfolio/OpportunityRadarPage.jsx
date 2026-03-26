@@ -60,8 +60,11 @@ export default function OpportunityRadarPage() {
                   <div className={`${styles.sentimentBadge} ${signal.sentiment === 'Bullish' ? 'badge-success' : 'badge-danger'}`}>
                     {signal.sentiment?.toUpperCase()}
                   </div>
-                  <div className={styles.confidenceContainer}>
-                    <div className={styles.confidenceLabel}>CONFIDENCE</div>
+                   <div className={styles.confidenceContainer}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                      <div className={styles.confidenceLabel}>AGENT CONFIDENCE</div>
+                      <span className="badge badge-yellow" style={{ fontSize: '10px' }}>{signal.success_probability} SUCCESS RATE</span>
+                    </div>
                     <div className={styles.confidenceBarWrapper}>
                       <div className={styles.confidenceBarBg}>
                         <div className={styles.confidenceBarFill} style={{ width: `${signal.confidence}%` }} />

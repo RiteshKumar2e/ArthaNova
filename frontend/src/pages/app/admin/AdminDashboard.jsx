@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useAuthStore } from '../../../store/authStore';
+import { aiAPI } from '../../../api/client';
 import RiskAlerts from '../../../components/RiskAlerts';
 import styles from '../../../styles/pages/app/admin/AdminDashboard.module.css';
 
@@ -60,37 +61,20 @@ export default function AdminDashboard() {
     try {
       const headers = { Authorization: `Bearer ${accessToken}` };
 
-      // Fetch each endpoint individually and handle errors per endpoint
-      const fetchEndpoint = async (url, errorDefault) => {
-        try {
-          const response = await fetch(url, { headers });
-          if (!response.ok) {
-            console.warn(`Failed to fetch ${url}: ${response.status}`);
-            return errorDefault;
-          }
-          
-          // Check content type before parsing JSON
-          const contentType = response.headers.get('content-type');
-          if (!contentType?.includes('application/json')) {
-            console.warn(`Invalid content type for ${url}: ${contentType}`);
-            return errorDefault;
-          }
-          
-          const data = await response.json();
-          return data;
-        } catch (err) {
-          console.error(`Error fetching ${url}:`, err.message);
-          return errorDefault;
-        }
-      };
-
-      const [status, agents, audit, compliance, perf] = await Promise.all([
-        fetchEndpoint('/api/v1/admin/ai/system-status', {}),
-        fetchEndpoint('/api/v1/admin/ai/agents', { agents: [] }),
-        fetchEndpoint('/api/v1/admin/ai/audit-trail', { entries: [] }),
-        fetchEndpoint('/api/v1/admin/ai/compliance/violations', { violations: [] }),
-        fetchEndpoint('/api/v1/admin/ai/metrics/performance', { metrics: { latency_history: [] } }),
+      // Fetch each endpoint using the centralized aiAPI client
+      const [statusRes, agentsRes, auditRes, complianceRes, perfRes] = await Promise.all([
+        aiAPI.getSystemStatus().catch(() => ({ data: {} })),
+        aiAPI.getAgentMetrics().catch(() => ({ data: { agents: [] } })),
+        aiAPI.getAuditTrail().catch(() => ({ data: { entries: [] } })),
+        aiAPI.getComplianceViolations().catch(() => ({ data: { violations: [] } })),
+        aiAPI.getPerformanceMetrics().catch(() => ({ data: { metrics: { latency_history: [] } } })),
       ]);
+
+      const status = statusRes.data;
+      const agents = agentsRes.data;
+      const audit = auditRes.data;
+      const compliance = complianceRes.data;
+      const perf = perfRes.data;
 
       setSystemStatus(status && typeof status === 'object' ? status : {});
       // Support both array and object for agents (the new backend returns an object)

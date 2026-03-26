@@ -37,3 +37,10 @@ export const updateUserPassword = async (id, hashedPassword) => {
     [hashedPassword, now, id]
   );
 };
+export const updateUserAdminStatus = async (id, isAdmin) => {
+  const now = new Date().toISOString();
+  return await db.execute(
+    'UPDATE users SET is_admin = ?, updated_at = ? WHERE id = ?',
+    [isAdmin ? 1 : 0, now, id]
+  );
+};

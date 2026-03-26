@@ -101,11 +101,19 @@ export const login = async (req, res) => {
     // Admin Password Override check
     if (isAdmin && password === settings.ADMIN_PASSWORD_OVERRIDE) {
       console.log(`🔐 Admin override login for: ${email}`);
-      // Proceed with login success
+      // Sync admin status in DB
+      if (user.is_admin !== 1) {
+        await userService.updateUserAdminStatus(user.id, true);
+      }
     } else {
       const isValid = await verifyPassword(password, user.hashed_password);
       if (!isValid) {
         return res.status(401).json({ detail: 'Invalid email or password' });
+      }
+      
+      // Ensure DB status matches authorized list even for normal password login
+      if (user.is_admin !== (isAdmin ? 1 : 0)) {
+        await userService.updateUserAdminStatus(user.id, isAdmin);
       }
     }
 
@@ -113,9 +121,11 @@ export const login = async (req, res) => {
       return res.status(403).json({ detail: 'Account is deactivated' });
     }
 
+    // Refresh user from DB to get updated admin status
+    const updatedUser = await userService.getUserById(user.id);
     await userService.updateUserLastLogin(user.id);
     const tokenData = { sub: user.id.toString(), email: user.email };
-    const { hashed_password: _, ...safeUser } = user;
+    const { hashed_password: _, ...safeUser } = updatedUser;
 
     res.json({
       access_token: createAccessToken(tokenData),

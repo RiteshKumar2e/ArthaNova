@@ -276,6 +276,25 @@ export default function TechnicalAnalysisPage() {
               </div>
 
               <div className={styles.card}>
+                <h3>PATTERN INTELLIGENCE</h3>
+                <div className={styles.patternList}>
+                  {technicalData.patterns.length > 0 ? (
+                    technicalData.patterns.map((p, idx) => (
+                      <div key={idx} className={styles.patternItem} style={{ borderLeft: `4px solid ${p.status === 'BULLISH' ? '#14a800' : '#ff4444'}` }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                          <span style={{ fontWeight: 900, textTransform: 'uppercase' }}>{p.name}</span>
+                          <span className="badge badge-yellow" style={{ fontSize: '10px' }}>{p.success_rate} SUCCESS RATE</span>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '11px', color: '#444', lineHeight: '1.4' }}>{p.explanation}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p style={{ fontSize: '11px', color: '#666', textAlign: 'center' }}>No major patterns detected in recent price action.</p>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.card}>
                 <h3>QUICK TRADE SETUP</h3>
                 <div className={styles.tradeSetup}>
                   <p><strong>Bias:</strong> <span style={{ color: getTrendColor(technicalData.trend) }}>{technicalData.trend}</span></p>

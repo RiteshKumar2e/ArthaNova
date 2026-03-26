@@ -29,3 +29,12 @@ export const getPortfolioNewsPrioritization = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const getOpportunityRadar = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const analysis = await aiAgentService.runOpportunityRadar(userId);
+    res.json(analysis);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

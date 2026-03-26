@@ -22,7 +22,7 @@ app.use(cors({
 }));
 app.use(helmet({
   contentSecurityPolicy: false, // For easier testing with frontend
-  crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+  crossOriginOpenerPolicy: false, // Allow Google OAuth popups to communicate
 }));
 app.use(compression());
 app.use(morgan('dev'));

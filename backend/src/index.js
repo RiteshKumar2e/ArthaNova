@@ -5,8 +5,8 @@ import fs from 'fs';
 import cluster from 'cluster';
 import os from 'os';
 
-// Startup Logic - Limit worker cores for deployment sanity (max 4)
-const numCPUs = Math.min(os.cpus().length, 4);
+// Startup Logic - Set to 1 worker to ensure in-memory OTP/Session consistency
+const numCPUs = 1;
 
 if (cluster.isPrimary) {
   console.log(`🚀 ArthaNova API Primary Load Balancer (PID: ${process.pid}) starting...`);

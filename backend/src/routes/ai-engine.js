@@ -18,14 +18,7 @@ router.get('/chat/sessions', authenticate, async (req, res) => {
   res.json([]);
 });
 
-router.get('/opportunity-radar', authenticate, async (req, res) => {
-  res.json({
-    opportunities: [
-      { symbol: "RELIANCE", signal: "strong_buy", confidence: 0.85, reason: "Expanding green energy investments" },
-      { symbol: "TCS", signal: "hold", confidence: 0.6, reason: "Global tech slowdown" },
-    ],
-  });
-});
+router.get('/opportunity-radar', authenticate, aiController.getOpportunityRadar);
 
 router.get('/high-conviction-trades', authenticate, async (req, res) => {
   res.json({
