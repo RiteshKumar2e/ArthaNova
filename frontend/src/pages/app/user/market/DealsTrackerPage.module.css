@@ -1,0 +1,174 @@
+.layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  height: calc(100vh - 200px);
+  min-height: 500px;
+}
+
+.dealsList {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 8px 8px 0px #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.listHeader {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+  padding: 12px 20px;
+  background: #f5f5f5;
+  border-bottom: 3px solid #000;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #666;
+}
+
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.dealRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+  padding: 16px 20px;
+  border-bottom: 2px solid #eee;
+  align-items: center;
+  transition: all 0.1s ease;
+}
+
+.dealRow:hover {
+  background: rgba(196, 255, 0, 0.05);
+}
+
+.symbol { font-family: 'Archivo Black', sans-serif; font-size: 0.9rem; margin-bottom: 2px; }
+.date { font-size: 0.65rem; color: #888; font-weight: 700; }
+
+.clientCol { 
+  font-size: 0.75rem; 
+  font-weight: 800; 
+  color: #333; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+  padding-right: 12px;
+}
+
+.typeBadge {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border: 2px solid #000;
+}
+
+.sell { background: var(--color-danger); color: #fff; }
+.buy  { background: var(--color-success); color: #000; }
+
+.valueCol { font-family: 'Archivo Black', sans-serif; font-size: 0.85rem; }
+
+.analysisPane {
+  background: #fff;
+  color: #000;
+  border: 4px solid #000;
+  box-shadow: 12px 12px 0px var(--primary);
+  display: flex;
+}
+
+.emptyPane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #666;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.analysisContent {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.paneHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  background: none;
+  border: 1px solid #ddd;
+  color: #888;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.dealTitle {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.2rem;
+  color: #000;
+  margin-bottom: 24px;
+}
+
+.statRow {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.statLabel { font-size: 0.65rem; color: #888; font-weight: 900; margin-bottom: 4px; }
+.statVal { font-family: 'Archivo Black', sans-serif; font-size: 1.1rem; }
+
+.aiText {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #444;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.recBox {
+  background: #f9f9f9;
+  border: 2px solid #eee;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.recLabel { font-size: 0.65rem; color: var(--secondary); font-weight: 950; margin-bottom: 8px; }
+.recVal { font-family: 'Archivo Black', sans-serif; font-size: 1.1rem; color: var(--secondary); margin-bottom: 8px; }
+.recRationale { font-size: 0.75rem; color: #555; font-weight: 500; line-height: 1.4; }
+
+.orchestration { border-top: 1px solid #eee; padding-top: 20px; }
+.orchTitle { font-size: 0.65rem; color: #888; font-weight: 950; margin-bottom: 12px; }
+
+.agentChain { display: flex; flex-wrap: wrap; gap: 8px; }
+.agentTag {
+  font-size: 0.6rem;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 2px 8px;
+  color: #000;
+  font-family: 'Archivo Black', sans-serif;
+}
+
+@media (max-width: 992px) {
+  .layout { grid-template-columns: 1fr; height: auto; }
+  .analysisPane { min-height: 400px; margin-top: 32px; }
+}
+
+@media (max-width: 768px) {
+  .listHeader, .dealRow { grid-template-columns: 1.5fr 3fr 1fr; }
+  .valueCol, .actionCol { display: none; }
+}

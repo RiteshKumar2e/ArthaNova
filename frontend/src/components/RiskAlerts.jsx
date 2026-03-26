@@ -5,12 +5,13 @@ import '../styles/components/RiskAlerts.css';
 const RiskAlerts = () => {
   const [alerts, setAlerts] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [expandedAlert, setExpandedAlert] = useState(null);
   const [filterLevel, setFilterLevel] = useState('all'); // 'all', 'high', 'medium', 'low'
 
   useEffect(() => {
     fetchRiskAlerts();
-    const interval = setInterval(fetchRiskAlerts, 30000); // Refresh every 30s
+    const interval = setInterval(fetchRiskAlerts, 60000); // Increased to 60s to reduce API load
     return () => clearInterval(interval);
   }, []);
 
@@ -18,9 +19,13 @@ const RiskAlerts = () => {
     try {
       const response = await aiAPI.getRiskAlerts();
       setAlerts(response.data);
+      setError(null);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching risk alerts:', error);
+      setError('Failed to fetch risk alerts');
+      setLoading(false);
+      // Don't clear previous data on error - show stale data instead of nothing
     }
   };
 

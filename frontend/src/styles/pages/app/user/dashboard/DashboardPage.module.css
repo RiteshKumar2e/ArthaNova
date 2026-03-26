@@ -16,6 +16,7 @@
   padding-bottom: var(--sp-6);
   margin-bottom: var(--sp-4);
   background: transparent;
+  width: 100%;
 }
 
 .pageTitle {
@@ -32,6 +33,43 @@
   font-size: var(--fs-base);
   font-weight: 600;
   color: #555;
+}
+
+/* Header layout helpers */
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pageTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.sentinelToggleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.headerBtns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Stats row */
@@ -128,12 +166,74 @@
   .mainGrid { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 900px) {
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+  }
+  .headerActions { width: 100%; }
+  .pageTitle { font-size: 1.2rem; }
+  .statsRow { grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+}
+
 @media (max-width: 768px) {
-  .pageTitle { font-size: var(--fs-2xl); }
-  .statsRow { grid-template-columns: 1fr 1fr; }
+  .pageHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .headerActions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .sentinelToggleRow { width: 100%; }
+  .headerBtns {
+    width: 100%;
+    gap: 8px;
+  }
+  .headerBtns .btn { flex: 1; justify-content: center; }
+  .pageTitle { font-size: 1.1rem; }
+  .statsRow { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { padding: 14px 16px; }
+  .statValue { font-size: 1.15rem; }
 }
 
 @media (max-width: 480px) {
+  .pageHeader { gap: 8px; }
+  .pageTitle { font-size: 1rem; }
+  .statsRow { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { padding: 10px 12px; }
+  .statValue { font-size: 1rem; }
+  .gridItem { box-shadow: 3px 3px 0px #000; }
+}
+
+@media (max-width: 360px) {
   .statsRow { grid-template-columns: 1fr; }
+}
+
+/* ── Sentinel Mode Overrides ──────────────────────────────── */
+
+.sentinelActive .stat {
+  background: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
+  box-shadow: 6px 6px 0px var(--primary) !important;
+}
+
+.sentinelActive .statLabel { color: #666 !important; }
+.sentinelActive .statValue { color: #000 !important; }
+
+.sentinelActive .gridItem {
+  box-shadow: 8px 8px 0px var(--accent) !important;
+}
+
+.sentinelActive .gridItemTitle {
+  background: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
 }
 

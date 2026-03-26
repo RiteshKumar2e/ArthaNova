@@ -5,6 +5,7 @@ import '../styles/components/HighConvictionTrades.css';
 const HighConvictionTrades = () => {
   const [trades, setTrades] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all'); // 'all', 'buy', 'sell'
   const [sortBy, setSortBy] = useState('confidence'); // 'confidence', 'rr_ratio'
   const [lastUpdate, setLastUpdate] = useState(new Date());
@@ -13,17 +14,20 @@ const HighConvictionTrades = () => {
     try {
       const response = await aiAPI.getHighConvictionTrades();
       setTrades(response.data);
+      setError(null);
       setLastUpdate(new Date());
       setLoading(false);
     } catch (error) {
       console.error('Error fetching high-conviction trades:', error);
+      setError('Failed to fetch high-conviction trades');
       setLoading(false);
+      // Don't clear previous data on error - show stale data instead of nothing
     }
   }, []);
 
   useEffect(() => {
     fetchHighConvictionTrades();
-    const interval = setInterval(fetchHighConvictionTrades, 30000); // Refresh every 30s
+    const interval = setInterval(fetchHighConvictionTrades, 60000); // Increased to 60s to reduce API load
     return () => clearInterval(interval);
   }, [fetchHighConvictionTrades]);
 

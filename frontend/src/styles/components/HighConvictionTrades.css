@@ -321,4 +321,23 @@
 @media (max-width: 900px) {
   .hc-signals-container { grid-template-columns: 1fr; }
   .agent-item { grid-template-columns: 1fr; gap: 4px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+  .hc-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .controls { width: 100%; flex-wrap: wrap; }
+  .filter-select, .sort-select { flex: 1; min-width: 0; }
 }
+
+@media (max-width: 640px) {
+  .hc-header { padding: var(--sp-3) var(--sp-4); gap: 10px; box-shadow: 4px 4px 0px #000; }
+  .title-section h2 { font-size: 0.95rem; }
+  .hc-criteria { gap: 6px; flex-wrap: wrap; }
+  .hc-footer { flex-direction: column; gap: 8px; padding: 16px; }
+  .signal-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .action-btn { width: 100%; text-align: center; }
+  .hc-trades-loading, .hc-trades-empty { padding: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .hc-disclaimer { font-size: 0.65rem; padding: 0.75rem; }
+  .filter-select, .sort-select { font-size: 0.65rem; padding: 6px 8px; }
+}
+

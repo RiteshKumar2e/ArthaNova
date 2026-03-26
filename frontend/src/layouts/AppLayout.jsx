@@ -5,15 +5,15 @@ import Topbar from '../components/layout/Topbar'
 import styles from '../styles/layouts/AppLayout.module.css'
 
 export default function AppLayout() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 992)
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 992) {
-        // Optional: auto-uncollapse on desktop
-        // setSidebarCollapsed(false)
-      } else {
-        // Auto-collapse on mobile if resized down
+      const mobile = window.innerWidth < 992
+      setIsMobile(mobile)
+      if (mobile) {
+        // Auto-collapse on mobile when resized down
         setSidebarCollapsed(true)
       }
     }
@@ -21,15 +21,17 @@ export default function AppLayout() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const toggleSidebar = () => setSidebarCollapsed(!sidebarCollapsed)
+  const toggleSidebar = () => setSidebarCollapsed(prev => !prev)
   const closeSidebarOnMobile = () => {
-    if (window.innerWidth < 992) setSidebarCollapsed(true)
+    if (isMobile) setSidebarCollapsed(true)
   }
+
+  const showBackdrop = !sidebarCollapsed && isMobile
 
   return (
     <div className={`${styles.wrapper} ${sidebarCollapsed ? styles.collapsed : ''}`}>
       {/* Mobile Backdrop */}
-      {!sidebarCollapsed && window.innerWidth < 992 && (
+      {showBackdrop && (
         <div className={styles.backdrop} onClick={() => setSidebarCollapsed(true)} />
       )}
       
@@ -47,5 +49,4 @@ export default function AppLayout() {
       </div>
     </div>
   )
-
 }

@@ -4,9 +4,9 @@ import toast from 'react-hot-toast'
 
 /**
  * usePortfolio Hook - Fetches and updates portfolio data in real-time
- * @param {number} refreshInterval - Interval in milliseconds (default: 30000ms = 30s)
+ * @param {number} refreshInterval - Interval in milliseconds (default: 60000ms = 60s, increased to reduce API load)
  */
-export const usePortfolio = (refreshInterval = 30000) => {
+export const usePortfolio = (refreshInterval = 60000) => {
   const [portfolio, setPortfolio] = useState(null)
   const [analytics, setAnalytics] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -28,6 +28,7 @@ export const usePortfolio = (refreshInterval = 30000) => {
       console.error('Failed to fetch portfolio:', err)
       setError(err.message || 'Failed to fetch portfolio data')
       setLoading(false)
+      // Keep previous data on error for better UX
     }
   }, [])
 

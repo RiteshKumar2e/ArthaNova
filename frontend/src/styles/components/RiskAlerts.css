@@ -305,8 +305,17 @@
 .no-alerts p { font-family: var(--heading); font-size: 1.25rem; text-transform: uppercase; }
 
 @media (max-width: 640px) {
-  .risk-header { flex-direction: column; align-items: flex-start; }
+  .risk-header { flex-direction: column; align-items: flex-start; gap: 12px; }
   .alert-summary { width: 100%; justify-content: space-between; }
   .alert-top { flex-direction: column; align-items: flex-start; }
   .agent-analysis { grid-template-columns: 1fr; gap: 4px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+  .risk-alerts-footer { flex-direction: column; gap: 8px; padding: 16px; }
+  .risk-alerts-loading, .no-alerts { padding: 2rem; }
 }
+
+@media (max-width: 480px) {
+  .risk-disclaimer { font-size: 0.65rem; padding: 0.75rem; }
+  .no-alerts p { font-size: 1rem; }
+  .no-alerts .emoji { font-size: 2rem; }
+}
+

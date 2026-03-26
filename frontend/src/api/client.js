@@ -4,48 +4,59 @@ import { useAuthStore } from '../store/authStore'
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
   headers: { 'Content-Type': 'application/json' },
-  timeout: 30000, // Increased from 15s to 30s for slower API calls (market data, etc)
+  timeout: 45000, // 45s for slow DB queries (portfolio, analytics)
 })
 
-// Attach token to every request
-api.interceptors.request.use((config) => {
-  const { accessToken } = useAuthStore.getState()
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`
-  }
-  return config
+// Fast API instance for simple endpoints
+const fastApi = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 15000, // 15s for fast endpoints (hardcoded responses)
 })
 
-// Auto-refresh token on 401
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config
+// Setup interceptors for both api instances
+const setupInterceptors = (apiInstance) => {
+  apiInstance.interceptors.request.use((config) => {
+    const { accessToken } = useAuthStore.getState()
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
+    }
+    return config
+  })
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-      const { refreshToken, updateTokens, logout } = useAuthStore.getState()
+  apiInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config
 
-      if (refreshToken) {
-        try {
-          const response = await axios.post('/api/v1/auth_debug/refresh', { refresh_token: refreshToken })
-          const { access_token, refresh_token } = response.data
-          updateTokens(access_token, refresh_token)
-          originalRequest.headers.Authorization = `Bearer ${access_token}`
-          return api(originalRequest)
-        } catch {
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true
+        const { refreshToken, updateTokens, logout } = useAuthStore.getState()
+
+        if (refreshToken) {
+          try {
+            const response = await axios.post('/api/v1/auth_debug/refresh', { refresh_token: refreshToken })
+            const { access_token, refresh_token } = response.data
+            updateTokens(access_token, refresh_token)
+            originalRequest.headers.Authorization = `Bearer ${access_token}`
+            return apiInstance(originalRequest)
+          } catch {
+            logout()
+            window.location.href = '/'
+          }
+        } else {
           logout()
           window.location.href = '/'
         }
-      } else {
-        logout()
-        window.location.href = '/'
       }
-    }
 
-    return Promise.reject(error)
-  }
-)
+      return Promise.reject(error)
+    }
+  )
+}
+
+setupInterceptors(api)
+setupInterceptors(fastApi)
 
 export const adminAPI = {
   getStats: () => api.get('/admin/stats'),
@@ -135,8 +146,8 @@ export const aiAPI = {
   getAuditTrail: () => api.get('/admin/ai/audit-trail'),
   getComplianceViolations: () => api.get('/admin/ai/compliance/violations'),
   getPerformanceMetrics: () => api.get('/admin/ai/metrics/performance'),
-  getHighConvictionTrades: () => api.get('/ai/high-conviction-trades'),
-  getRiskAlerts: () => api.get('/ai/risk-alerts'),
+  getHighConvictionTrades: () => fastApi.get('/ai/high-conviction-trades'), // Fast - hardcoded response
+  getRiskAlerts: () => fastApi.get('/ai/risk-alerts'), // Fast - should be lightweight
   getBulkDealAnalysis: (symbol) => api.get('/ai/bulk-deal-analysis', { params: { symbol } }),
   getTechnicalBreakoutAnalysis: (symbol) => api.get('/ai/technical-breakout-analysis', { params: { symbol } }),
   getPortfolioNewsPrioritization: () => api.get('/ai/portfolio-news-prioritization'),

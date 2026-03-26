@@ -41,7 +41,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'healthy', service: settings.APP_NAME });
+  res.json({ 
+    status: 'healthy', 
+    service: settings.APP_NAME,
+    endpoint: 'ready',
+    timestamp: new Date().toISOString(),
+    timeout: '45000ms (for slow DB queries)'
+  });
 });
 
 // Static files

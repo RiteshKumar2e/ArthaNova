@@ -5,6 +5,7 @@ import { stocksAPI } from '../../../../api/client'
 import { usePortfolio } from '../../../../hooks/usePortfolio'
 import HighConvictionTrades from '../../../../components/HighConvictionTrades'
 import RiskAlerts from '../../../../components/RiskAlerts'
+import AgentSentinelControl from '../../../../components/AgentSentinelControl'
 import styles from '../../../../styles/pages/app/user/dashboard/DashboardPage.module.css'
 
 const AI_SIGNALS = []
@@ -12,14 +13,15 @@ const AI_SIGNALS = []
 export default function UserDashboard({ user }) {
   const [marketData, setMarketData] = useState(null)
   const [loading, setLoading] = useState(true)
-  
+  const [sentinelMode, setSentinelMode] = useState(true)
+
   // Real-time portfolio data with auto-refresh every 30 seconds
   const { portfolio, analytics: portfolioAnalytics, lastUpdate } = usePortfolio(30000)
 
   useEffect(() => {
     stocksAPI.marketOverview()
       .then((res) => setMarketData(res.data))
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false))
   }, [])
 
@@ -79,25 +81,56 @@ export default function UserDashboard({ user }) {
   const formatCurrency = (val) => `₹${(val / 100000).toFixed(2)}L`
 
   return (
-    <div className="animate-fadeIn">
+    <div className={`animate-fadeIn ${sentinelMode ? styles.sentinelActive : ''}`}>
       {/* Header */}
       <div className={styles.pageHeader}>
-        <div>
-          <h1 className={styles.pageTitle}>
-            Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, {user?.full_name?.split(' ')[0] || 'Investor'} 👋
-          </h1>
+        <div className={styles.headerLeft}>
+          <div className={styles.pageTitleRow}>
+            <h1 className={styles.pageTitle}>
+              Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, {user?.full_name?.split(' ')[0] || 'Investor'} 👋
+            </h1>
+            <div className="neo-tag lime" style={{ fontSize: '0.65rem', padding: '2px 8px' }}>
+              PRO STATUS: ACTIVE
+            </div>
+          </div>
           <p className={styles.pageTitleSub}>Here's your market intelligence snapshot for today.</p>
         </div>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <Link to="/ai-chat" className="btn btn-secondary btn-sm">🤖 Ask AI</Link>
-          <Link to="/radar" className="btn btn-primary btn-sm">🎯 Opportunity Radar</Link>
+        <div className={styles.headerActions}>
+          <div className={styles.sentinelToggleRow}>
+            <span style={{ fontSize: '0.65rem', fontWeight: 900, color: '#666' }}>SENTINEL MODE</span>
+            <button
+              onClick={() => setSentinelMode(!sentinelMode)}
+              style={{
+                width: 44, height: 22, background: sentinelMode ? '#000' : '#ddd',
+                border: '2px solid #000', cursor: 'pointer', position: 'relative',
+                padding: 0, flexShrink: 0
+              }}
+            >
+              <div style={{
+                width: 16, height: 16, background: sentinelMode ? '#C4FF00' : '#fff',
+                border: '2px solid #000', position: 'absolute', top: 1,
+                left: sentinelMode ? 21 : 1, transition: 'all 0.1s ease'
+              }}></div>
+            </button>
+          </div>
+          <div className={styles.headerBtns}>
+            <Link to="/ai-chat" className="btn btn-secondary btn-sm">🤖 Ask AI</Link>
+            <Link to="/radar" className="btn btn-primary btn-sm">🎯 Opportunity Radar</Link>
+          </div>
         </div>
       </div>
+
+      {/* Sentinel Control (Show when mode enabled) */}
+      {sentinelMode && (
+        <div style={{ marginBottom: 32 }}>
+          <AgentSentinelControl />
+        </div>
+      )}
 
       {/* Quick Stats */}
       <div className={styles.statsRow} style={{ marginBottom: 24 }}>
         {QUICK_STATS.map((stat) => (
-          <div key={stat.label} className={styles.stat}>
+          <div key={stat.label} className={styles.stat} style={{ border: sentinelMode ? '4px solid #000' : '' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
               <div className={styles.statLabel}>{stat.label}</div>
               <span style={{ fontSize: '1.2rem' }}>{stat.icon}</span>
@@ -112,7 +145,9 @@ export default function UserDashboard({ user }) {
 
       <div className={styles.mainGrid}>
         <div className={styles.gridItem} style={{ gridColumn: 'span 2' }}>
-          <div className={styles.gridItemTitle}>📊 Top Holdings</div>
+          <div className={styles.gridItemTitle} style={{ background: sentinelMode ? '#000' : '', color: sentinelMode ? '#C4FF00' : '' }}>
+            📊 Top Holdings
+          </div>
           {portfolio?.holdings_count === 0 ? (
             <div style={{ padding: '20px', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>📈</div>
@@ -126,7 +161,7 @@ export default function UserDashboard({ user }) {
                 const pnlPct = h?.pnl_pct ?? 0
                 const avgPrice = h?.avg_buy_price ?? 0
                 const qty = h?.quantity ?? 0
-                
+
                 return (
                   <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', border: '2px solid #000', background: pnl >= 0 ? 'rgba(196, 255, 0, 0.1)' : 'rgba(255, 49, 49, 0.05)' }}>
                     <div>
@@ -146,9 +181,11 @@ export default function UserDashboard({ user }) {
         </div>
 
         <div className={styles.gridItem}>
-          <div className={styles.gridItemTitle}>⚡ Live Updates</div>
+          <div className={styles.gridItemTitle} style={{ background: sentinelMode ? '#000' : '', color: sentinelMode ? '#C4FF00' : '' }}>
+            ⚡ Live Updates
+          </div>
           <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ padding: '8px', background: '#C4FF00', border: '2px solid #000', fontSize: '0.7rem', fontWeight: 950 }}>
+            <div style={{ padding: '8px', background: sentinelMode ? '#C4FF00' : '#f5f5f5', border: '2px solid #000', fontSize: '0.7rem', fontWeight: 950 }}>
               ✓ Last Update: {lastUpdate?.toLocaleTimeString()}
             </div>
             <div style={{ padding: '8px', background: '#fff', border: '2px solid #000', fontSize: '0.7rem' }}>
@@ -160,6 +197,11 @@ export default function UserDashboard({ user }) {
             {portfolioAnalytics?.sector_allocation?.length > 0 && (
               <div style={{ padding: '8px', background: '#f5f5f5', border: '2px solid #000', fontSize: '0.7rem' }}>
                 <strong>Top Sector:</strong> {portfolioAnalytics.sector_allocation[0]?.sector} ({portfolioAnalytics.sector_allocation[0]?.value?.toFixed(1)}%)
+              </div>
+            )}
+            {sentinelMode && (
+              <div style={{ padding: '8px', background: '#000', color: '#C4FF00', border: '2px solid #000', fontSize: '0.6rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', animation: 'pulse 2s infinite' }}>
+                📡 Agents monitoring live feeds...
               </div>
             )}
           </div>

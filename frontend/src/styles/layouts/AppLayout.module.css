@@ -14,6 +14,7 @@
   min-height: 100vh;
   width: 100%;
   /* BG grid from body — don't override */
+  overflow-x: hidden;
 }
 
 /* ── Content column (right of sidebar) ───── */
@@ -24,6 +25,7 @@
   min-width: 0;
   margin-left: var(--sidebar-width, var(--sidebar-w));
   transition: margin-left 0.15s ease;
+  overflow-x: hidden;
 }
 
 /* Collapsed sidebar = narrower margin */
@@ -36,6 +38,7 @@
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+  overflow-x: hidden;
   min-height: calc(100vh - var(--topbar-h));
   box-sizing: border-box;
 }
@@ -46,22 +49,20 @@
   inset: 0;
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(2px);
-  z-index: 999; /* below sidebar, above everything else */
+  z-index: 999; /* below sidebar (z-index: 1000), above content */
 }
 
 /* ── Responsive ─────────────────────────── */
 @media (max-width: 992px) {
-  .content { margin-left: 0 !important; width: 100%; }
+  .content { margin-left: 0 !important; width: 100%; overflow-x: hidden; }
   .wrapper.collapsed .content { margin-left: 0 !important; }
-  .main { padding: var(--sp-4); }
+  .main { padding: var(--sp-4); overflow-x: hidden; }
 }
 
 @media (max-width: 768px) {
-  .main { padding: var(--sp-3); }
+  .main { padding: var(--sp-3); overflow-x: hidden; }
 }
 
 @media (max-width: 480px) {
-  .main { padding: 8px; }
+  .main { padding: 8px; overflow-x: hidden; }
 }
-
-

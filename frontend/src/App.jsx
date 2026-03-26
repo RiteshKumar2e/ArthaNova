@@ -33,10 +33,10 @@ import TechnicalAnalysisPage from './pages/app/user/research/TechnicalAnalysisPa
 import WatchlistPage from './pages/app/user/portfolio/WatchlistPage'
 import NotificationsPage from './pages/app/user/profile/NotificationsPage'
 import AgenticIntelligencePage from './pages/app/user/intelligence/AgenticIntelligencePage'
+import RiskAnalyzerPage from './pages/app/user/portfolio/RiskAnalyzerPage'
+import DealsTrackerPage from './pages/app/user/market/DealsTrackerPage'
 import {
   InsiderActivityPage,
-  DealsTrackerPage,
-  RiskAnalyzerPage,
   SettingsPage
 } from './pages/app/user/shared/PlaceholderPages'
 
