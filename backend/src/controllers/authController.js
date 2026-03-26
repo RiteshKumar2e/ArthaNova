@@ -91,19 +91,24 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await userService.getUserByEmail(email);
+    const cleanEmail = email.trim().toLowerCase();
+    const user = await userService.getUserByEmail(cleanEmail);
     if (!user) {
+      console.warn(`⚠️ Login failed: User not found for email ${cleanEmail}`);
       return res.status(401).json({ detail: 'Invalid email or password' });
     }
 
-    const isAdmin = settings.AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase());
+    const isAdmin = settings.AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail);
 
     // Admin Password Override check
     if (isAdmin && password === settings.ADMIN_PASSWORD_OVERRIDE) {
-      console.log(`🔐 Admin override login for: ${email}`);
-      // Sync admin status in DB
-      if (user.is_admin !== 1) {
-        await userService.updateUserAdminStatus(user.id, true);
+      console.log(`🔐 Admin override login for: ${cleanEmail}`);
+      // Sync admin status and role in DB
+      if (user.is_admin !== 1 || user.role !== 'admin') {
+        await db.execute(
+          "UPDATE users SET is_admin = 1, role = 'admin', updated_at = ? WHERE id = ?",
+          [new Date().toISOString(), user.id]
+        );
       }
     } else {
       const isValid = await verifyPassword(password, user.hashed_password);
