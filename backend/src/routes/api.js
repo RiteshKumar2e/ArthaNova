@@ -8,22 +8,24 @@ import adminRouter from './admin.js';
 import googleOtpAuthRouter from './google-otp-auth.js';
 import { newsRouter, ipoRouter, insiderRouter, dealsRouter, stockRouter } from './marketData.js';
 import backtestRouter from './backtest.js';
+import { apiCache } from '../middlewares/cache.js';
 
 const apiRouter = express.Router();
 
 // Routers
 apiRouter.use('/auth_debug', authRouter);
 apiRouter.use('/auth/google', googleOtpAuthRouter);
-apiRouter.use('/stocks', stocksRouter);
+// Apply 5 minute cache to all stock queries
+apiRouter.use('/stocks', apiCache(300), stocksRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/portfolio', portfolioRouter);
 apiRouter.use('/ai', aiEngineRouter);
-apiRouter.use('/news', newsRouter);
+apiRouter.use('/news', apiCache(300), newsRouter);
 apiRouter.use('/ipo', ipoRouter);
 apiRouter.use('/insider', insiderRouter);
 apiRouter.use('/deals', dealsRouter);
-apiRouter.use('/market-data', stockRouter); // Python router used /api/v1/market-data prefix for stock_router too
-
+// Apply cache to market data API wrapper
+apiRouter.use('/market-data', apiCache(300), stockRouter);
 apiRouter.use('/admin', adminRouter);
 apiRouter.use('/alerts', (req, res) => res.json({ message: 'Alerts Router Placeholder' }));
 apiRouter.use('/backtest', backtestRouter);

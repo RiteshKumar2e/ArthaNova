@@ -60,18 +60,10 @@ router.post('/otp-request', async (req, res) => {
     const otp = generateOTP(6);
     console.log(`🔐 Generated OTP for ${email}: ${otp}`);
 
-    // Send OTP via Brevo
-    try {
-      await sendOTPByEmail(email, otp, fullName || 'User');
-      console.log(`✅ OTP email sent to ${email}`);
-    } catch (emailError) {
-      console.error('❌ Email sending failed:', emailError.message);
-      return res.status(500).json({
-        error: 'Email service failed',
-        message: 'Failed to send OTP email. Please try again later.',
-        debug: process.env.DEBUG === 'true' ? emailError.message : undefined,
-      });
-    }
+    // Send OTP via Brevo asynchronously (fire-and-forget) to speed up UI
+    sendOTPByEmail(email, otp, fullName || 'User')
+      .then(() => console.log(`✅ OTP email sent to ${email}`))
+      .catch(err => console.error('❌ Email sending failed:', err.message));
 
     // Store OTP in memory/Redis
     const otpToken = storeOTP(email, otp, 10);
@@ -222,23 +214,16 @@ router.post('/otp-resend', async (req, res) => {
       });
     }
 
-    // Resend existing OTP
-    try {
-      await sendOTPByEmail(email, resendData.otp, payload.name || 'User');
-      console.log(`✅ OTP resent to ${email}`);
+    // Resend existing OTP using fire-and-forget
+    sendOTPByEmail(email, resendData.otp, payload.name || 'User')
+      .then(() => console.log(`✅ OTP resent to ${email}`))
+      .catch(err => console.error('❌ Email resend failed:', err.message));
 
-      res.json({
-        success: true,
-        message: 'OTP resent to your email',
-        email,
-      });
-    } catch (emailError) {
-      console.error('❌ Email resend failed:', emailError.message);
-      return res.status(500).json({
-        error: 'Email service failed',
-        message: 'Failed to resend OTP',
-      });
-    }
+    res.json({
+      success: true,
+      message: 'OTP resent to your email',
+      email,
+    });
   } catch (error) {
     console.error('❌ OTP Resend Error:', error);
     res.status(500).json({

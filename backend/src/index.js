@@ -2,31 +2,44 @@ import app from './app.js';
 import settings from './config/settings.js';
 import fs from 'fs';
 
-// Startup Logic
-const startup = async () => {
-  console.log('🚀 ArthaNova API starting up...');
+import cluster from 'cluster';
+import os from 'os';
 
-  // Ensure upload directory exists
+// Startup Logic
+const numCPUs = os.cpus().length;
+
+if (cluster.isPrimary) {
+  console.log(`🚀 ArthaNova API Primary Load Balancer (PID: ${process.pid}) starting...`);
+  console.log(`🚦 Forking ${numCPUs} cluster nodes for load distribution...`);
+
+  // Ensure upload directory exists safely on primary only
   if (!fs.existsSync(settings.UPLOAD_DIR)) {
     fs.mkdirSync(settings.UPLOAD_DIR, { recursive: true });
     console.log('📁 Created upload directory:', settings.UPLOAD_DIR);
   }
 
-  // Database initialization (Prisma will handle it via migrations/deploy)
-  // For now we just check if it's operational (Prisma logic would go here)
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
 
-  console.log(`🌍 Running in ${settings.ENVIRONMENT} mode`);
-  
-  app.listen(settings.PORT, () => {
-    console.log(`Server is running on port ${settings.PORT}`);
-    console.log(`Health check: http://localhost:${settings.PORT}/health`);
+  cluster.on('exit', (worker, code, signal) => {
+    console.warn(`⚠️ Worker node cluster PID ${worker.process.pid} died. Automatically replacing payload...`);
+    cluster.fork();
   });
-};
+} else {
+  const startup = async () => {
+    console.log(`🌍 Worker PID ${process.pid} active. Running in ${settings.ENVIRONMENT} mode`);
+    
+    app.listen(settings.PORT, () => {
+      console.log(`✅ [PID:${process.pid}] Server is receiving traffic on port ${settings.PORT}`);
+    });
+  };
 
-startup().catch((error) => {
-  console.error('❌ Failed to start application:', error);
-  process.exit(1);
-});
+  startup().catch((error) => {
+    console.error(`❌ Worker [PID:${process.pid}] Failed:`, error);
+    process.exit(1);
+  });
+}
 
 // Graceful shutdown
 process.on('SIGINT', () => {

@@ -75,7 +75,7 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
                   <tr>
                     <td style="padding: 48px 40px;">
                       <p style="color: #4B5563; font-size: 16px; line-height: 24px; text-align: center; margin: 0 0 40px 0;">
-                        Welcome, <strong>${userName}</strong>! Use the verification code below to complete your Google sign-in. This code will expire in <strong style="color: #111827;">10 minutes</strong>.
+                        Welcome, <strong>${userName}</strong>! Use the verification code below to complete your Google sign-in. This code will expire in <strong style="color: #111827;">5 minutes</strong>.
                       </p>
 
                       <!-- OTP Box -->
@@ -137,7 +137,7 @@ export const sendOTPByEmail = async (email, otp, userName = 'User') => {
     console.log(`📤 Brevo API Response Status: ${response.status}`);
     console.log(`✅ Message ID: ${response.data.messageId || 'N/A'}`);
     console.log(`✅ OTP email sent to ${email} via Brevo`);
-    
+
     return { success: true, message: 'OTP sent to email', messageId: response.data.messageId };
   } catch (error) {
     console.error('❌ Brevo Email Error:');
@@ -186,9 +186,9 @@ export const verifyOTP = (email, otp) => {
 
   if (stored.otp !== otp) {
     stored.attempts += 1;
-    return { 
-      valid: false, 
-      message: `Invalid OTP. ${3 - stored.attempts} attempts remaining.` 
+    return {
+      valid: false,
+      message: `Invalid OTP. ${3 - stored.attempts} attempts remaining.`
     };
   }
 
