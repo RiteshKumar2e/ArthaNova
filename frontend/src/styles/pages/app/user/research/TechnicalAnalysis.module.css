@@ -1,0 +1,371 @@
+.container {
+  background: transparent;
+  color: #000000;
+  padding: 20px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 4px solid #000000;
+  box-shadow: 6px 6px 0px #000000;
+  padding: 15px 20px;
+  background: #C4FF00;
+  display: inline-block;
+}
+
+.header p {
+  font-size: 14px;
+  color: #000000;
+  margin: 10px 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+/* Screener Section */
+.screenerSection {
+  margin-bottom: 40px;
+}
+
+.screenerSection h2 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  background: #FFDD55;
+  display: inline-block;
+}
+
+.screenerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.screenerCard {
+  background: #ffffff;
+  border: 4px solid #000000;
+  border-radius: 0px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 6px 6px 0px #000000;
+  position: relative;
+}
+
+.screenerCard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #000000;
+  border-color: #C4FF00;
+}
+
+.screenerCard h3 {
+  font-size: 14px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.screenerCard .price {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 5px 0;
+  color: #000000;
+  background: #C4FF00;
+  padding: 4px 8px;
+  display: inline-block;
+  border: 2px solid #000000;
+}
+
+.screenerCard .trend {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 8px 0;
+  padding: 4px 8px;
+  background: #00F0FF;
+  display: inline-block;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+.screenerCard .signals {
+  font-size: 11px;
+  color: #000000;
+  margin: 8px 0 0 0;
+  font-weight: 700;
+}
+
+/* Detailed Analysis */
+.detailedAnalysis {
+  margin-bottom: 40px;
+}
+
+.detailedAnalysis h2 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  background: #FFDD55;
+  display: inline-block;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card Styling */
+.card {
+  background: #ffffff;
+  border: 4px solid #000000;
+  border-radius: 0px;
+  padding: 20px;
+  box-shadow: 6px 6px 0px #000000;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px #000000;
+}
+
+.card h3 {
+  font-size: 13px;
+  font-weight: 900;
+  color: #000000;
+  text-transform: uppercase;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #000000;
+}
+
+/* Trend Box */
+.trendBox {
+  background: #C4FF00;
+  border: 4px solid #000000;
+  border-radius: 0px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.trendLabel {
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 10px 0;
+  color: #000000;
+}
+
+.strength {
+  font-size: 12px;
+  color: #000000;
+  margin: 5px 0;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.signals {
+  font-size: 11px;
+  color: #000000;
+  margin: 10px 0 0 0;
+  font-weight: 700;
+}
+
+/* Indicator List */
+.indicatorList {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 0px;
+  overflow: hidden;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.levelsList {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 0px;
+  overflow: hidden;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.maTable {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 0px;
+  overflow: hidden;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.volatilityMetrics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tradeSetup {
+  background: #ffffff;
+  border-radius: 0px;
+  padding: 15px;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.tradeSetup p {
+  margin: 8px 0;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: #000000;
+}
+
+.tradeSetup strong {
+  color: #000000;
+  font-weight: 900;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border: 4px solid #000000;
+  border-radius: 0px;
+  font-size: 14px;
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: 700;
+  box-shadow: 6px 6px 0px #000000;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  background: #C4FF00;
+  border: 4px solid #000000;
+  border-radius: 0px;
+  font-size: 14px;
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: 900;
+  box-shadow: 6px 6px 0px #000000;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .screenerGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .screenerCard {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .mainGrid {
+    gap: 15px;
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.screenerCard,
+.card {
+  animation: slideIn 0.3s ease;
+}
+
+/* Scrollbar Styling Removed for Global Theme Consistency */
+
+/* Text Utilities */
+.text-bullish {
+  color: #14a800;
+}
+
+.text-bearish {
+  color: #ff4444;
+}
+
+.text-neutral {
+  color: #ff9900;
+}
+
+.text-muted {
+  color: #666;
+}
+
+.text-mono {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}

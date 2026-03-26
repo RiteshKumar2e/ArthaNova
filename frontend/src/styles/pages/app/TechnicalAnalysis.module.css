@@ -1,0 +1,349 @@
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #14a800;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.header p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Screener Section */
+.screenerSection {
+  margin-bottom: 40px;
+}
+
+.screenerSection h2 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #14a800;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #14a800;
+}
+
+.screenerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.screenerCard {
+  background: #ffffff;
+  border: 3px solid #ddd;
+  border-radius: 0;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.screenerCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.screenerCard h3 {
+  font-size: 14px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.screenerCard .price {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 5px 0;
+  color: #14a800;
+}
+
+.screenerCard .trend {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 8px 0;
+  padding: 4px 8px;
+  background: rgba(20, 168, 0, 0.1);
+  display: inline-block;
+}
+
+.screenerCard .signals {
+  font-size: 11px;
+  color: #666;
+  margin: 8px 0 0 0;
+}
+
+/* Detailed Analysis */
+.detailedAnalysis {
+  margin-bottom: 40px;
+}
+
+.detailedAnalysis h2 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #14a800;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #14a800;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card Styling */
+.card {
+  background: #ffffff;
+  border: 3px solid #ddd;
+  border-radius: 0;
+  padding: 20px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  font-size: 13px;
+  font-weight: 900;
+  color: #14a800;
+  text-transform: uppercase;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #14a800;
+}
+
+/* Trend Box */
+.trendBox {
+  background: #f9f9f9;
+  border: 3px solid #14a800;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+}
+
+.trendLabel {
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 10px 0;
+}
+
+.strength {
+  font-size: 12px;
+  color: #666;
+  margin: 5px 0;
+  text-transform: uppercase;
+}
+
+.signals {
+  font-size: 11px;
+  color: #888;
+  margin: 10px 0 0 0;
+}
+
+/* Indicator List */
+.indicatorList {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.levelsList {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.maTable {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.volatilityMetrics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tradeSetup {
+  background: #f9f9f9;
+  border-radius: 4px;
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.tradeSetup p {
+  margin: 8px 0;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tradeSetup strong {
+  color: #666;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border: 3px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border: 3px solid #14a800;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #14a800;
+  text-transform: uppercase;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .screenerGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .screenerCard {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .mainGrid {
+    gap: 15px;
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.screenerCard,
+.card {
+  animation: slideIn 0.3s ease;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #14a800;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0f8c00;
+}
+
+/* Text Utilities */
+.text-bullish {
+  color: #14a800;
+}
+
+.text-bearish {
+  color: #ff4444;
+}
+
+.text-neutral {
+  color: #ff9900;
+}
+
+.text-muted {
+  color: #999;
+}
+
+.text-mono {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}

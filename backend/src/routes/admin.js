@@ -1,5 +1,6 @@
 import express from 'express';
 import { authenticate, adminOnly } from '../middlewares/auth.js';
+import * as videoGenerationService from '../services/videoGenerationService.js';
 
 const router = express.Router();
 
@@ -121,47 +122,77 @@ router.get('/logs/audit', authenticate, adminOnly, (req, res) => {
 });
 
 // Video engine jobs endpoint (accessible to all authenticated users)
-let videoJobs = [];
-
 router.get('/video-engine/jobs', authenticate, (req, res) => {
-  res.json({ jobs: videoJobs });
+  const jobs = videoGenerationService.getAllVideoJobs();
+  res.json({ jobs });
 });
 
 // Create video engine job
-router.post('/video-engine/jobs', authenticate, (req, res) => {
-  const { title, duration } = req.body;
-  const newJob = {
-    id: Math.floor(Math.random() * 10000),
-    video_id: 'vid_' + Date.now(),
-    title: title || 'Market Insight Summary',
-    duration: duration || '60s (SQUARE)',
-    status: 'PROCESSING',
-    created_at: new Date().toISOString()
-  };
-  
-  videoJobs.unshift(newJob);
+router.post('/video-engine/jobs', authenticate, async (req, res) => {
+  try {
+    const { title, duration = '60s' } = req.body;
 
-  // Simulate video rendering completion after 5 seconds
-  setTimeout(() => {
-    const job = videoJobs.find(j => j.id === newJob.id);
-    if (job) job.status = 'COMPLETED';
-  }, 5000);
+    if (!title) {
+      return res.status(400).json({
+        error: 'Missing required field',
+        message: 'title is required',
+      });
+    }
 
-  res.json({
-    id: newJob.id,
-    status: newJob.status,
-    created_at: newJob.created_at,
-    message: 'Video generation job created',
-    job: newJob
-  });
+    // Create the video job
+    const job = await videoGenerationService.createVideoJob(title, duration);
+
+    res.status(201).json({
+      success: true,
+      message: 'Video generation job created',
+      job,
+    });
+  } catch (error) {
+    console.error('❌ Error creating video job:', error.message);
+    res.status(500).json({
+      error: 'Failed to create video job',
+      message: error.message,
+    });
+  }
+});
+
+// Get video job by ID (for polling progress)
+router.get('/video-engine/jobs/:id', authenticate, (req, res) => {
+  const job = videoGenerationService.getVideoJob(req.params.id);
+
+  if (!job) {
+    return res.status(404).json({
+      error: 'Not found',
+      message: `Video job ${req.params.id} not found`,
+    });
+  }
+
+  res.json(job);
 });
 
 // Delete video engine job
 router.delete('/video-engine/jobs/:id', authenticate, adminOnly, (req, res) => {
-  res.json({
-    success: true,
-    message: `Job ${req.params.id} deleted`
-  });
+  try {
+    const deleted = videoGenerationService.deleteVideoJob(req.params.id);
+
+    if (!deleted) {
+      return res.status(404).json({
+        error: 'Not found',
+        message: `Video job ${req.params.id} not found`,
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Video job ${req.params.id} deleted`,
+    });
+  } catch (error) {
+    console.error('❌ Error deleting video job:', error.message);
+    res.status(500).json({
+      error: 'Failed to delete video job',
+      message: error.message,
+    });
+  }
 });
 
 // Create new user

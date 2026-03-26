@@ -29,13 +29,13 @@ import FilingsAnalyzerPage from './pages/app/user/research/FilingsAnalyzerPage'
 import OpportunityRadarPage from './pages/app/user/portfolio/OpportunityRadarPage'
 import ProfilePage from './pages/app/user/profile/ProfilePage'
 import VideoInsightsPage from './pages/app/user/research/VideoInsightsPage'
+import TechnicalAnalysisPage from './pages/app/user/research/TechnicalAnalysisPage'
 import WatchlistPage from './pages/app/user/portfolio/WatchlistPage'
 import NotificationsPage from './pages/app/user/profile/NotificationsPage'
 import AgenticIntelligencePage from './pages/app/user/intelligence/AgenticIntelligencePage'
 import {
   InsiderActivityPage,
   DealsTrackerPage,
-  TechnicalAnalysisPage,
   RiskAnalyzerPage,
   SettingsPage
 } from './pages/app/user/shared/PlaceholderPages'

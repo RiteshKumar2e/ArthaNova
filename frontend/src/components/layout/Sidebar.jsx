@@ -8,6 +8,7 @@ const USER_NAV = [
       { to: '/dashboard', icon: '⊞', label: 'Dashboard', roles: ['user', 'admin'] },
       { to: '/market', icon: '📊', label: 'Market Overview', roles: ['user', 'admin'] },
       { to: '/stocks', icon: '🔍', label: 'Stock Explorer', roles: ['user', 'admin'] },
+      { to: '/technical', icon: '📈', label: 'Technical Analysis', roles: ['user', 'admin'] },
     ]
   },
   {
@@ -59,6 +60,7 @@ const ADMIN_NAV = [
   ]},
   { section: 'TOOLS', items: [
     { to: '/agent-intelligence', icon: '🔥', label: 'Agentic Intelligence' },
+    { to: '/technical', icon: '📈', label: 'Technical Analysis' },
     { to: '/backtest', icon: '🔄', label: 'Backtesting' },
     { to: '/filings', icon: '📋', label: 'Filings Analyzer' },
   ]},

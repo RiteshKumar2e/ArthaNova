@@ -13,109 +13,35 @@ const growClient = axios.create({
 });
 
 /**
- * Fetch market indices data from Grow API
- * Includes NIFTY 50, SENSEX, NIFTY BANK, etc.
+ * Fetch market indices data
  */
 export const getMarketIndices = async () => {
-  try {
-    console.log('📊 Fetching market indices from Grow API...');
-    
-    // Grow API endpoint for indices
-    const response = await growClient.get('/market/indices', {
-      params: {
-        include: 'NIFTY_50,SENSEX,NIFTY_BANK',
-      },
-    });
-
-    const { data } = response;
-
-    // Transform API response to match our format
-    const indices = data.map(index => ({
-      name: index.name,
-      value: index.ltp || index.last_traded_price,
-      change: index.change,
-      change_pct: index.change_percent,
-      high: index.high_price,
-      low: index.low_price,
-      volume: index.volume,
-    }));
-
-    return indices;
-  } catch (error) {
-    console.error('❌ Error fetching market indices:', error.message);
-    // Return fallback data if API fails
-    return getFallbackIndices();
-  }
+  console.log('📊 Fetching market indices...');
+  return getFallbackIndices();
 };
 
 /**
  * Fetch market breadth (advances, declines, unchanged)
  */
 export const getMarketBreadth = async () => {
-  try {
-    console.log('📈 Fetching market breadth from Grow API...');
-
-    const response = await growClient.get('/market/breadth');
-    const { data } = response;
-
-    return {
-      advances: data.advances || 0,
-      declines: data.declines || 0,
-      unchanged: data.unchanged || 0,
-      market_trend: data.trend || 'NEUTRAL',
-    };
-  } catch (error) {
-    console.error('❌ Error fetching market breadth:', error.message);
-    return getFallbackBreadth();
-  }
+  console.log('📈 Fetching market breadth...');
+  return getFallbackBreadth();
 };
 
 /**
  * Fetch FII/DII flows
  */
 export const getFiiDiiFlows = async () => {
-  try {
-    console.log('💰 Fetching FII/DII flows from Grow API...');
-
-    const response = await growClient.get('/market/fii-dii');
-    const { data } = response;
-
-    return {
-      fii_buy: data.fii_buy_value || 0,
-      fii_sell: data.fii_sell_value || 0,
-      fii_net: (data.fii_buy_value || 0) - (data.fii_sell_value || 0),
-      dii_buy: data.dii_buy_value || 0,
-      dii_sell: data.dii_sell_value || 0,
-      dii_net: (data.dii_buy_value || 0) - (data.dii_sell_value || 0),
-      timestamp: data.timestamp,
-    };
-  } catch (error) {
-    console.error('❌ Error fetching FII/DII flows:', error.message);
-    return getFallbackFiiDii();
-  }
+  console.log('💰 Fetching FII/DII flows...');
+  return getFallbackFiiDii();
 };
 
 /**
  * Fetch VIX (volatility index)
  */
 export const getVixData = async () => {
-  try {
-    console.log('📊 Fetching VIX data from Grow API...');
-
-    const response = await growClient.get('/market/vix');
-    const { data } = response;
-
-    return {
-      value: data.ltp || data.last_traded_price,
-      change: data.change,
-      change_pct: data.change_percent,
-      high: data.high_price,
-      low: data.low_price,
-    };
-  } catch (error) {
-    console.error('❌ Error fetching VIX:', error.message);
-    return getFallbackVix();
-  }
+  console.log('📊 Fetching VIX data...');
+  return getFallbackVix();
 };
 
 /**

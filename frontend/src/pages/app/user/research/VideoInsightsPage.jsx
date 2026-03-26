@@ -7,6 +7,8 @@ export default function VideoInsightsPage() {
   const [videos, setVideos] = useState([]);
   const [topic, setTopic] = useState('');
   const [duration, setDuration] = useState('60s');
+  const [processingJob, setProcessingJob] = useState(null);
+  const [progressMessage, setProgressMessage] = useState('');
 
   useEffect(() => {
     fetchUserVideos();
@@ -16,11 +18,37 @@ export default function VideoInsightsPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Update progress message for processing job
+  useEffect(() => {
+    if (!processingJob) return;
+
+    const progress = processingJob.progress || 0;
+    let message = '';
+
+    if (progress < 30) message = 'Analyzing market data...';
+    else if (progress < 60) message = 'Generating video content...';
+    else if (progress < 90) message = 'Synthesizing AI performance...';
+    else message = 'Finalizing video...';
+
+    setProgressMessage(message);
+  }, [processingJob?.progress]);
+
   const fetchUserVideos = async () => {
     try {
-      // Re-using the admin listing but filtered (or just as a demo)
       const response = await adminAPI.videoEngine.listJobs();
-      setVideos(response.data.jobs || []);
+      const jobs = response.data.jobs || [];
+      setVideos(jobs);
+
+      // Check if processing job is complete
+      if (processingJob) {
+        const updated = jobs.find(j => j.id === processingJob.id);
+        if (updated) {
+          setProcessingJob(updated);
+          if (updated.status === 'COMPLETED') {
+            setTimeout(() => setProcessingJob(null), 3000);
+          }
+        }
+      }
     } catch (error) {
       console.error('Error fetching videos:', error);
     }
@@ -30,17 +58,17 @@ export default function VideoInsightsPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await adminAPI.videoEngine.createJob({ 
+      const response = await adminAPI.videoEngine.createJob({ 
         title: topic, 
         duration,
-        quality: '1080P FULL HD',
-        context: 'user_generated'
       });
-      alert('AI IS NOW SYNTHESIZING YOUR MARKET VIDEO. IT WILL APPEAR BELOW SOON.');
+
+      setProcessingJob(response.data.job);
       setTopic('');
       fetchUserVideos();
     } catch (error) {
       alert('GENERATION FAILED. CHECK API STATUS.');
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
@@ -48,6 +76,56 @@ export default function VideoInsightsPage() {
 
   return (
     <div className={styles.videoContainer}>
+      {/* Processing Popup */}
+      {processingJob && (
+        <div className={styles.popup} style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          background: '#1a1a2e',
+          border: '3px solid #14a800',
+          borderRadius: '12px',
+          padding: '30px',
+          textAlign: 'center',
+          zIndex: 1000,
+          minWidth: '320px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+        }}>
+          <h2 style={{ color: '#14a800', marginBottom: '10px' }}>🎬 AI IS GENERATING YOUR VIDEO</h2>
+          <div style={{
+            margin: '20px 0',
+            height: '6px',
+            background: '#333',
+            border: '2px solid #14a800',
+            borderRadius: '3px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              background: '#14a800',
+              width: `${processingJob.progress}%`,
+              transition: 'width 0.3s ease'
+            }}></div>
+          </div>
+          <p style={{ color: '#aaa', marginBottom: '5px' }}>{progressMessage}</p>
+          <p style={{ color: '#666', fontSize: '12px' }}>{processingJob.progress}% ({processingJob.topic})</p>
+        </div>
+      )}
+
+      {/* Overlay */}
+      {processingJob && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0, 0, 0, 0.7)',
+          zIndex: 999
+        }}></div>
+      )}
+
       <header className={styles.header}>
         <h1 className={styles.title}>AI VIDEO INSIGHTS ENGINE 🎬</h1>
         <p className={styles.subtitle}>GENERATE REAL-TIME VIDEO SUMMARIES OF INDIAN MARKET MOVEMENTS.</p>
@@ -93,9 +171,9 @@ export default function VideoInsightsPage() {
             videos.map((vid) => (
               <div key={vid.id} className={styles.videoCard}>
                 <div className={styles.videoThumb}>
-                  {vid.status === 'COMPLETED' && (
+                  {vid.status === 'COMPLETED' && vid.videoUrl && (
                     <video 
-                      src="https://assets.mixkit.co/videos/preview/mixkit-trading-candlesticks-on-a-digital-screen-28042-large.mp4" 
+                      src={vid.videoUrl} 
                       autoPlay 
                       loop 
                       muted 
@@ -103,15 +181,40 @@ export default function VideoInsightsPage() {
                       style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
                     />
                   )}
+                  {vid.status !== 'COMPLETED' && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column'
+                    }}>
+                      <div style={{
+                        fontSize: '32px',
+                        marginBottom: '10px',
+                        animation: 'spin 2s linear infinite'
+                      }}>⏳</div>
+                      <div style={{ fontSize: '12px', color: '#14a800' }}>
+                        {vid.progress}%
+                      </div>
+                    </div>
+                  )}
                   <div className={styles.playIcon} style={{ position: 'relative', zIndex: 10 }}>
                     {vid.status === 'COMPLETED' ? '▶' : '⏳'}
                   </div>
                 </div>
                 <div className={styles.videoInfo}>
-                  <h4 className={styles.videoTitle}>{vid.title}</h4>
+                  <h4 className={styles.videoTitle}>{vid.topic || vid.title}</h4>
                   <div className={styles.videoMeta}>
                     <span>{vid.duration}</span>
-                    <span className={styles.statusDot} style={{ background: vid.status === 'COMPLETED' ? '#14a800' : '#ff9900' }}></span>
+                    <span className={styles.statusDot} style={{ 
+                      background: vid.status === 'COMPLETED' ? '#14a800' : vid.status === 'FAILED' ? '#ff4444' : '#ff9900' 
+                    }}></span>
                     <span className={styles.statusText}>{vid.status}</span>
                   </div>
                 </div>
@@ -120,6 +223,13 @@ export default function VideoInsightsPage() {
           )}
         </div>
       </section>
+
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
