@@ -4,14 +4,14 @@
   <img src="https://img.shields.io/badge/ArthaNova-v2.0.0-C4FF00?style=for-the-badge&logo=react&logoColor=black" alt="ArthaNova Version" />
   <img src="https://img.shields.io/badge/LangGraph-Multi--Agent-black?style=for-the-badge&logo=langchain&logoColor=white" alt="LangGraph" />
   <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js Version" />
-  <img src="https://img.shields.io/badge/UI-Neo--Brutalism-FF6AC1?style=for-the-badge" alt="Neo-Brutalism UI" />
+  <img src="https://img.shields.io/badge/UI-Modern%20&%20High%20Impact-FF6AC1?style=for-the-badge" alt="Modern UI" />
   <img src="https://img.shields.io/badge/Database-Turso%20(libSQL)-4ea94b?style=for-the-badge&logo=sqlite" alt="Database" />
 </p>
 
 ---
 
 ## 💎 The ArthaNova Vision
-**ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with **Stateful Multi-Agent AI Orchestration (LangGraph)**, ArthaNova democratizes sophisticated market analysis for every retail investor. We wrap this powerful engine in a striking, high-impact **Neo-Brutalist** design system.
+**ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with **Stateful Multi-Agent AI Orchestration (LangGraph)**, ArthaNova democratizes sophisticated market analysis for every retail investor. We wrap this powerful engine in a striking, high-impact modern design system.
 
 ---
 
@@ -41,7 +41,7 @@ The heart of ArthaNova is its LangGraph-powered Multi-Agent architecture. Unlike
 | **🌐 API Core** | `Node.js`, `Express.js`, `Zod` | Asynchronous concurrency, schema validation, robust REST endpoints. |
 | **⚛️ App Shell** | `React 18`, `Vite 6`, `Zustand` | Persistent global state, Atomic routing, high-performance DOM updates. |
 | **💾 Persistence**| `Turso (libSQL)` | Ultra-low latency edge database, SQLite compatibility, high read-throughput. |
-| **🎨 Design** | `Vanilla CSS Modules` | Custom Neo-Brutalist design tokens, high-contrast aesthetics, zero-bloat. |
+| **🎨 Design** | `Vanilla CSS Modules` | Custom modern design tokens, high-contrast aesthetics, zero-bloat. |
 
 ---
 
@@ -67,7 +67,7 @@ cd frontend
 # Install UI Dependencies
 npm install
 
-# Boot the Neo-Brutalist Interface
+# Boot the Interactive Dashboard
 npm run dev  # Serving on http://localhost:5173
 ```
 
@@ -87,7 +87,7 @@ ArthaNova/
 │   └── package.json            # Backend dependencies
 ├── ⚛️ frontend/                # React Vite Application
 │   ├── src/
-│   │   ├── components/         # Reusable Neo-Brutalist UI components
+│   │   ├── components/         # Reusable high-impact UI components
 │   │   ├── pages/              # Dashboards, Agentic UI, Portfolio
 │   │   ├── styles/             # Modular CSS for styling and Popups
 │   │   └── store/              # Zustand global state (Auth/User)
