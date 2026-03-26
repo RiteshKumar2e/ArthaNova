@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../../../store/authStore';
+import { adminAPI } from '../../../api/client';
 import styles from '../../../styles/pages/app/admin/UserManagement.module.css';
 
 export default function UserManagement() {
@@ -18,9 +19,7 @@ export default function UserManagement() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/api/v1/admin/users', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
+      const response = await adminAPI.getUsers();
       // Ensure response.data is an array before filtering
       const usersList = Array.isArray(response.data) ? response.data : [];
       setUsers(usersList.filter(u => u.role !== 'analyst'));
@@ -34,9 +33,7 @@ export default function UserManagement() {
 
   const toggleStatus = async (userId) => {
     try {
-      await axios.patch(`/api/v1/admin/users/${userId}/toggle-status`, {}, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
+      await adminAPI.toggleStatus(userId);
       fetchUsers();
     } catch (error) {
       console.error('Error toggling user status:', error);
@@ -46,9 +43,7 @@ export default function UserManagement() {
   const handleCreateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/v1/admin/users', newUser, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
+      await adminAPI.createUser(newUser);
       setShowModal(false);
       setNewUser({ full_name: '', email: '', role: 'user', risk_profile: 'moderate' });
       fetchUsers();

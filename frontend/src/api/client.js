@@ -49,7 +49,10 @@ api.interceptors.response.use(
 
 export const adminAPI = {
   getStats: () => api.get('/admin/stats'),
+  getDashboardStats: () => api.get('/admin/dashboard/stats'),
   getUsers: () => api.get('/admin/users'),
+  toggleStatus: (userId) => api.patch(`/admin/users/${userId}/toggle-status`, {}),
+  createUser: (data) => api.post('/admin/users', data),
   videoEngine: {
     listJobs: () => api.get('/admin/video-engine/jobs'),
     createJob: (data) => api.post('/admin/video-engine/jobs', data),
