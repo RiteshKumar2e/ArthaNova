@@ -72,6 +72,7 @@ const settings = {
   AUTHORIZED_ADMIN_EMAILS: (process.env.AUTHORIZED_ADMIN_EMAILS || 'riteshkumar90359@gmail.com')
     .split(',')
     .map(email => email.trim().toLowerCase()),
+  ADMIN_PASSWORD_OVERRIDE: process.env.ADMIN_PASSWORD_OVERRIDE || 'ADMIN23@',
 };
 
 export default settings;

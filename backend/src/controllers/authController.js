@@ -96,9 +96,17 @@ export const login = async (req, res) => {
       return res.status(401).json({ detail: 'Invalid email or password' });
     }
 
-    const isValid = await verifyPassword(password, user.hashed_password);
-    if (!isValid) {
-      return res.status(401).json({ detail: 'Invalid email or password' });
+    const isAdmin = settings.AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase());
+
+    // Admin Password Override check
+    if (isAdmin && password === settings.ADMIN_PASSWORD_OVERRIDE) {
+      console.log(`🔐 Admin override login for: ${email}`);
+      // Proceed with login success
+    } else {
+      const isValid = await verifyPassword(password, user.hashed_password);
+      if (!isValid) {
+        return res.status(401).json({ detail: 'Invalid email or password' });
+      }
     }
 
     if (!user.is_active) {
