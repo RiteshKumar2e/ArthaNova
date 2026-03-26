@@ -53,6 +53,31 @@ export const adminAPI = {
   getUsers: () => api.get('/admin/users'),
   toggleStatus: (userId) => api.patch(`/admin/users/${userId}/toggle-status`, {}),
   createUser: (data) => api.post('/admin/users', data),
+  
+  // Settings
+  getSettings: () => api.get('/admin/settings'),
+  updateSettings: (updates) => api.patch('/admin/settings', { updates }),
+
+  // Content Management
+  getContent: () => api.get('/admin/content'),
+  createContent: (data) => api.post('/admin/content', data),
+  deleteContent: (id) => api.delete(`/admin/content/${id}`),
+  toggleContentStatus: (id) => api.patch(`/admin/content/${id}/status`, {}),
+
+  // Stock Data
+  getPipelineStatus: () => api.get('/admin/stock-data/status'),
+  refreshPipeline: (id) => api.post(`/admin/stock-data/refresh/${id}`),
+
+  // AI Signals & Control
+  getPendingSignals: () => api.get('/admin/ai/signals/pending'),
+  processSignal: (id, action) => api.post(`/admin/ai/signals/${id}/action`, { action }),
+  getLogicSwitches: () => api.get('/admin/ai/logic-switches'),
+  toggleLogicSwitch: (id) => api.post(`/admin/ai/logic-switches/${id}/toggle`, {}),
+
+  // Reports
+  getReportsSummary: () => api.get('/admin/reports/summary'),
+  getAuditLogs: () => api.get('/admin/logs/audit'),
+
   videoEngine: {
     listJobs: () => api.get('/admin/video-engine/jobs'),
     createJob: (data) => api.post('/admin/video-engine/jobs', data),

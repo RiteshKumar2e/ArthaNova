@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { adminAPI } from '../../../api/client';
+import { toast } from 'react-hot-toast';
 import styles from '../../../styles/pages/app/admin/ReportsAnalytics.module.css';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -10,19 +12,29 @@ export default function ReportsAnalytics() {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
-    // Initializing with zero data as requested (remove demo data)
-    setKpis([]);
-    setStocks([]);
-    setDistribution({ free: 0, pro: 0, institutional: 0 });
-    setLoading(false);
-  }, []);
+  useEffect(() => {
+    fetchSummary();
+  }, [range]);
+
+  const fetchSummary = async () => {
+    try {
+      setLoading(true);
+      const response = await adminAPI.getReportsSummary();
+      const data = response.data;
+      setKpis(data.kpis || []);
+      setStocks(data.topStocks || []);
+      setDistribution(data.distribution || { free: 0, pro: 0, institutional: 0 });
+    } catch (error) {
+      toast.error('Failed to load report data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleExport = (format) => {
     if (format === 'PDF') {
       const doc = new jsPDF();
       
-      // 1. Header & Branding
       doc.setFontSize(22);
       doc.setTextColor(0, 0, 0);
       doc.setFont("helvetica", "bold");
@@ -36,18 +48,16 @@ export default function ReportsAnalytics() {
       doc.setLineWidth(1);
       doc.line(15, 30, 195, 30);
       
-      // 2. Report metadata
       doc.setFontSize(9);
       doc.setTextColor(50);
       doc.text(`GENERATED: ${new Date().toLocaleString()}`, 15, 38);
       doc.text(`SELECTED RANGE: ${range}`, 15, 43);
       
-      // 3. KPI Analysis Table
       doc.setFontSize(12);
       doc.setTextColor(0);
       doc.text("EXECUTIVE METRICS SUMMARY", 15, 55);
       
-      const kpiData = kpis.length > 0 ? kpis.map(k => [k.label, k.value, k.change]) : [["PLATFORM REACH", "0.0", "NO DATA"], ["AVG SESSION", "0.0", "NO DATA"], ["PRO CONVERSION", "0.0", "NO DATA"], ["REVENUE", "0.0", "NO DATA"]];
+      const kpiData = kpis.length > 0 ? kpis.map(k => [k.label, k.value, k.change]) : [["PLATFORM REACH", "0.0", "NO DATA"]];
       
       autoTable(doc, {
         startY: 60,
@@ -58,7 +68,6 @@ export default function ReportsAnalytics() {
         styles: { fontSize: 8, cellPadding: 5 }
       });
       
-      // 4. Stocks Table
       const finalY = (doc).lastAutoTable.finalY || 60;
       doc.setFontSize(12);
       doc.text("ASSET ENGAGEMENT BREAKDOWN", 15, finalY + 15);
@@ -74,23 +83,12 @@ export default function ReportsAnalytics() {
         styles: { fontSize: 8 }
       });
       
-      // 5. Footer
-      const pageCount = doc.internal.getNumberOfPages();
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setFontSize(8);
-        doc.text("CONFIDENTIAL - ARTHANOVA INTERNAL USE ONLY", 105, 285, { align: "center" });
-      }
-      
       doc.save(`ArthaNova_Report_${range.replace(" ", "_")}.pdf`);
-    } else {
-      alert(`GENERATING ${format === 'PDF' ? 'SECURE PDF' : format} REPORT FOR ${range}...`);
     }
   };
 
   return (
     <div className={styles.container + " animate-fadeIn"}>
-      {/* ── LIVE DASHBOARD VIEW ── */}
       <div className={styles.noPrint}>
         <div className="page-header">
           <div>
@@ -180,7 +178,7 @@ export default function ReportsAnalytics() {
                 <h3>USER TIER DISTRIBUTION</h3>
               </div>
               <div className={styles.chartArea}>
-                { (distribution.free || distribution.pro || distribution.institutional) ? (
+                { (distribution.free > 0 || distribution.pro > 0) ? (
                   <>
                     <div 
                       className={styles.pie} 
@@ -191,7 +189,6 @@ export default function ReportsAnalytics() {
                     <div className={styles.legend}>
                         <div className={styles.legendItem}><span style={{ color: '#0052CC', fontSize: '1.2rem' }}>■</span> FREE ({distribution.free}%)</div>
                         <div className={styles.legendItem}><span style={{ color: '#00875A', fontSize: '1.2rem' }}>■</span> PRO ({distribution.pro}%)</div>
-                        <div className={styles.legendItem}><span style={{ color: '#FF991F', fontSize: '1.2rem' }}>■</span> INSTITUTIONAL ({distribution.institutional}%)</div>
                     </div>
                   </>
                 ) : (
@@ -201,68 +198,7 @@ export default function ReportsAnalytics() {
                   </div>
                 )}
               </div>
-              <button className="btn btn-sm btn-secondary btn-full" style={{ borderTop: '4px solid #000' }} onClick={() => alert('VIEWING TIER REVENUE ANALYSIS...')}>VIEW REVENUE BREAKDOWN</button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── PROFESSIONAL PRINT TEMPLATE (PDF) ── */}
-      <div className={styles.printOnly}>
-        <div className={styles.printHeader}>
-          <div className={styles.printLogo}>ARTHANOVA</div>
-          <div className={styles.printMeta}>
-            <div>PLATFORM ANALYTICS REPORT</div>
-            <div>Generated: {new Date().toLocaleDateString()}</div>
-            <div>Period: {range}</div>
-          </div>
-        </div>
-
-        <div className={styles.printSummaryTitle}>EXECUTIVE SUMMARY</div>
-        <table className={styles.printKpiTable}>
-          <thead>
-            <tr>
-              <th>METRIC</th>
-              <th>VALUE</th>
-              <th>GROWTH</th>
-            </tr>
-          </thead>
-          <tbody>
-            {kpis.map(kpi => (
-              <tr key={kpi.label}>
-                <td>{kpi.label}</td>
-                <td>{kpi.value}</td>
-                <td>{kpi.change}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className={styles.printSummaryTitle}>ASSET ENGAGEMENT ANALYSIS</div>
-        <table className={styles.printDataTable}>
-          <thead>
-            <tr>
-              <th>STOCK SYMBOL</th>
-              <th>ACTIVE USERS</th>
-              <th>ENGAGEMENT LEVEL</th>
-              <th>SENTIMENT</th>
-            </tr>
-          </thead>
-          <tbody>
-            {stocks.map(stock => (
-              <tr key={stock.symbol}>
-                <td>{stock.symbol}</td>
-                <td>{stock.users}</td>
-                <td>{stock.engagement}</td>
-                <td>{stock.sentiment}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className={styles.printFooter}>
-          <p>CONFIDENTIAL — INTERNAL ARTHANOVA USE ONLY</p>
-          <div style={{ marginTop: 40, borderTop: '1px solid #000', width: 200, paddingTop: 8 }}>
-            ADMINISTRATOR SIGNATURE
+              <button className="btn btn-sm btn-secondary btn-full" style={{ borderTop: '4px solid #000' }} onClick={() => toast.success('Viewing revenue analysis...')}>VIEW REVENUE BREAKDOWN</button>
           </div>
         </div>
       </div>

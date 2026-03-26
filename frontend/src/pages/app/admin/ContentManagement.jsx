@@ -1,33 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { adminAPI } from '../../../api/client';
+import { toast } from 'react-hot-toast';
 import styles from '../../../styles/pages/app/admin/ContentManagement.module.css';
 
 export default function ContentManagement() {
   const [content, setContent] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({ title: '', type: 'INSIGHT' });
 
-  const handleDelete = (id) => {
-    if (window.confirm('ARE YOU SURE YOU WANT TO DELETE THIS CONTENT?')) {
-      setContent(content.filter(item => item.id !== id));
-      alert('CONTENT DELETED SUCCESSFULLY');
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    try {
+      const response = await adminAPI.getContent();
+      setContent(response.data || []);
+    } catch (error) {
+      toast.error('Failed to load content');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleCreateContent = (e) => {
+  const handleDelete = async (id) => {
+    if (window.confirm('ARE YOU SURE YOU WANT TO DELETE THIS CONTENT?')) {
+      try {
+        await adminAPI.deleteContent(id);
+        toast.success('Content deleted');
+        fetchContent();
+      } catch (error) {
+        toast.error('Failed to delete content');
+      }
+    }
+  };
+
+  const handleToggleStatus = async (id) => {
+    try {
+      await adminAPI.toggleContentStatus(id);
+      toast.success('Status updated');
+      fetchContent();
+    } catch (error) {
+      toast.error('Failed to update status');
+    }
+  };
+
+  const handleCreateContent = async (e) => {
     e.preventDefault();
-    const newItem = {
-      ...newContent,
-      id: Date.now(),
-      title: newContent.title.toUpperCase(),
-      author: 'ADMIN MAIN',
-      status: 'DRAFT',
-      date: 'NEW'
-    };
-    setContent([newItem, ...content]);
-    setShowModal(false);
-    setNewContent({ title: '', type: 'INSIGHT' });
-    alert('CONTENT DRAFT CREATED');
+    try {
+      await adminAPI.createContent(newContent);
+      setShowModal(false);
+      setNewContent({ title: '', type: 'INSIGHT' });
+      toast.success('Content draft created');
+      fetchContent();
+    } catch (error) {
+      toast.error('Failed to create content');
+    }
+  };
+
+  const stats = {
+    published: content.filter(c => c.status === 'PUBLISHED').length,
+    review: content.filter(c => c.status === 'REVIEW').length,
+    drafts: content.filter(c => c.status === 'DRAFT').length
   };
 
   return (
@@ -41,17 +76,17 @@ export default function ContentManagement() {
       </div>
 
       <div className={styles.statsGrid}>
-        <div className={styles.statCard} onClick={() => alert('FILTERING PUBLISHED CONTENT...')}>
-          <div className={styles.statLabel}>PUBLISHED THIS WEEK</div>
-          <div className={styles.statValue}>48</div>
+        <div className={styles.statCard}>
+          <div className={styles.statLabel}>PUBLISHED</div>
+          <div className={styles.statValue}>{stats.published}</div>
         </div>
-        <div className={styles.statCard} onClick={() => alert('FILTERING PENDING REVIEWS...')}>
+        <div className={styles.statCard}>
           <div className={styles.statLabel}>PENDING REVIEW</div>
-          <div className={styles.statValue}>12</div>
+          <div className={styles.statValue}>{stats.review}</div>
         </div>
-        <div className={styles.statCard} onClick={() => alert('FILTERING AI DRAFTS...')}>
-          <div className={styles.statLabel}>AI GENERATED DRAFTS</div>
-          <div className={styles.statValue}>156</div>
+        <div className={styles.statCard}>
+          <div className={styles.statLabel}>DRAFTS</div>
+          <div className={styles.statValue}>{stats.drafts}</div>
         </div>
       </div>
 
@@ -72,7 +107,11 @@ export default function ContentManagement() {
               </tr>
             </thead>
             <tbody>
-              {content.map(item => (
+              {loading ? (
+                <tr><td colSpan="6" style={{ textAlign: 'center', padding: 40, fontWeight: 900 }}>LOADING CONTENT...</td></tr>
+              ) : content.length === 0 ? (
+                <tr><td colSpan="6" style={{ textAlign: 'center', padding: 40, color: '#999' }}>NO CONTENT FOUND.</td></tr>
+              ) : content.map(item => (
                 <tr key={item.id}>
                   <td><strong className={styles.title}>{item.title}</strong></td>
                   <td><span className={styles.typeBadge}>{item.type}</span></td>
@@ -84,15 +123,15 @@ export default function ContentManagement() {
                         item.status === 'DRAFT' ? styles.statusDraft : styles.statusReview
                       }`}
                       style={{ border: 'none', cursor: 'pointer' }}
-                      onClick={() => alert(`CHANGING STATUS FOR: ${item.title}`)}
+                      onClick={() => handleToggleStatus(item.id)}
                     >
                       {item.status}
                     </button>
                   </td>
-                  <td><span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#666' }}>{item.date}</span></td>
+                  <td><span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#666' }}>{new Date(item.created_at).toLocaleDateString()}</span></td>
                   <td>
                     <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
-                      <button className="btn btn-sm btn-secondary" style={{ padding: '6px 12px', fontSize: '0.65rem' }} onClick={() => alert('OPENING EDITOR...')}>EDIT</button>
+                      <button className="btn btn-sm btn-secondary" style={{ padding: '6px 12px', fontSize: '0.65rem' }} onClick={() => toast.success('Editor coming soon')}>EDIT</button>
                       <button className="btn btn-sm btn-danger" style={{ padding: '6px 12px', fontSize: '0.65rem' }} onClick={() => handleDelete(item.id)}>DELETE</button>
                     </div>
                   </td>

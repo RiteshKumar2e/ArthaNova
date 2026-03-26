@@ -1,10 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { adminAPI } from '../../../api/client';
+import { toast } from 'react-hot-toast';
 import styles from '../../../styles/pages/app/admin/StockDataManagement.module.css';
 
 export default function StockDataManagement() {
   const [datasets, setDatasets] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    fetchPipelines();
+    const interval = setInterval(fetchPipelines, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchPipelines = async () => {
+    try {
+      const response = await adminAPI.getPipelineStatus();
+      setDatasets(response.data || []);
+    } catch (error) {
+      console.error('Error fetching pipelines:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusClass = (status) => {
     if (status === 'HEALTHY') return styles.statCardHealthy;
@@ -24,22 +42,32 @@ export default function StockDataManagement() {
     return styles.badgeError;
   };
 
-  const handleRefresh = (name) => {
-    alert(`REFRESHING DATASET: ${name}`);
-    setDatasets(prev => prev.map(ds => ds.name === name ? { ...ds, status: 'SYNCING', lastSync: 'JUST NOW' } : ds));
-    setTimeout(() => {
-      setDatasets(prev => prev.map(ds => ds.name === name ? { ...ds, status: 'HEALTHY' } : ds));
-      alert(`${name} REFRESH COMPLETE`);
-    }, 2000);
+  const handleRefresh = async (id) => {
+    try {
+      toast.loading('Initializing refresh...');
+      await adminAPI.refreshPipeline(id);
+      toast.dismiss();
+      toast.success('Refresh started');
+      fetchPipelines();
+    } catch (error) {
+      toast.dismiss();
+      toast.error('Failed to start refresh');
+    }
   };
 
-  const handleMasterRefresh = () => {
-    setLoading(true);
-    alert('INITIALIZING MASTER SYSTEM REFRESH...');
-    setTimeout(() => {
-      setLoading(false);
-      alert('MASTER SYSTEM REFRESH COMPLETE. ALL PIPELINES STABILIZED.');
-    }, 3000);
+  const handleMasterRefresh = async () => {
+    toast.loading('Master refresh in progress...');
+    try {
+      for (const ds of datasets) {
+        await adminAPI.refreshPipeline(ds.id);
+      }
+      toast.dismiss();
+      toast.success('Master refresh sequence initiated');
+      fetchPipelines();
+    } catch (error) {
+      toast.dismiss();
+      toast.error('Master refresh failed');
+    }
   };
 
   return (
@@ -50,28 +78,28 @@ export default function StockDataManagement() {
           <p className="page-subtitle">CONTROL INGESTION PIPELINES, DATA SOURCES, AND HISTORICAL DATASETS.</p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <button className="btn btn-secondary btn-sm" onClick={() => alert('SCANNING FOR SOURCE ERRORS...')}>
+          <button className="btn btn-secondary btn-sm" onClick={() => toast.success('Scanning sources...')}>
             🛠️ REPAIR SOURCE
           </button>
           <button 
-            className={`btn btn-primary btn-sm ${loading ? 'loading' : ''}`} 
+            className="btn btn-primary btn-sm" 
             onClick={handleMasterRefresh}
             disabled={loading}
           >
-            {loading ? 'REFRESHING...' : '🔄 MASTER SYS REFRESH'}
+            🔄 MASTER SYS REFRESH
           </button>
         </div>
       </div>
 
       <div className={styles.statsGrid}>
         {datasets.map(ds => (
-          <div key={ds.name} className={`${styles.statCard} ${getStatusClass(ds.status)}`} style={{ cursor: 'pointer' }} onClick={() => alert(`VIEWING DETAILS FOR: ${ds.name}`)}>
+          <div key={ds.id} className={`${styles.statCard} ${getStatusClass(ds.status)}`} style={{ cursor: 'pointer' }}>
             <div className={styles.statusText} style={{ color: ds.status === 'HEALTHY' ? '#14a800' : (ds.status === 'SYNCING' ? '#00A8FF' : '#FF3131') }}>
                {ds.status}
             </div>
             <div className={styles.label}>{ds.name}</div>
-            <div className={styles.value}>{ds.count}</div>
-            <div className={styles.syncText}>LAST SYNC: {ds.lastSync}</div>
+            <div className={styles.value}>{(ds.count || 0).toLocaleString()}</div>
+            <div className={styles.syncText}>LAST SYNC: {ds.last_sync ? new Date(ds.last_sync).toLocaleTimeString() : 'NEVER'}</div>
           </div>
         ))}
       </div>
@@ -92,8 +120,12 @@ export default function StockDataManagement() {
               </tr>
             </thead>
             <tbody>
-              {datasets.map(ds => (
-                <tr key={ds.name}>
+              {loading ? (
+                <tr><td colSpan="5" style={{ textAlign: 'center', padding: 40, fontWeight: 900 }}>LOADING PIPELINES...</td></tr>
+              ) : datasets.length === 0 ? (
+                <tr><td colSpan="5" style={{ textAlign: 'center', padding: 40, color: '#999' }}>NO PIPELINES DETECTED.</td></tr>
+              ) : datasets.map(ds => (
+                <tr key={ds.id}>
                   <td><strong className="text-upper" style={{ fontSize: '0.75rem' }}>{ds.name}</strong></td>
                   <td><span style={{ fontWeight: 800, fontSize: '0.7rem' }}>{ds.sources}</span></td>
                   <td>
@@ -111,8 +143,8 @@ export default function StockDataManagement() {
                   </td>
                   <td>
                     <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
-                      <button className="btn btn-sm btn-secondary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => alert(`FETCHING LOGS FOR: ${ds.name}`)}>LOGS</button>
-                      <button className="btn btn-sm btn-primary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => handleRefresh(ds.name)}>REFRESH</button>
+                      <button className="btn btn-sm btn-secondary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => toast.success(`Viewing logs for ${ds.name}`)}>LOGS</button>
+                      <button className="btn btn-sm btn-primary" style={{ padding: '6px 14px', fontSize: '0.65rem' }} onClick={() => handleRefresh(ds.id)}>REFRESH</button>
                     </div>
                   </td>
                 </tr>

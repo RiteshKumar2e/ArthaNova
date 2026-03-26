@@ -9,6 +9,7 @@ import googleOtpAuthRouter from './google-otp-auth.js';
 import { newsRouter, ipoRouter, insiderRouter, dealsRouter, stockRouter } from './marketData.js';
 import backtestRouter from './backtest.js';
 import { apiCache } from '../middlewares/cache.js';
+import notificationsRouter from './notifications.js';
 
 const apiRouter = express.Router();
 
@@ -30,6 +31,6 @@ apiRouter.use('/admin', adminRouter);
 apiRouter.use('/alerts', (req, res) => res.json({ message: 'Alerts Router Placeholder' }));
 apiRouter.use('/backtest', backtestRouter);
 apiRouter.use('/watchlist', (req, res) => res.json({ message: 'Watchlist Router Placeholder' }));
-apiRouter.use('/notifications', (req, res) => res.json([]));
+apiRouter.use('/notifications', notificationsRouter);
 
 export default apiRouter;
