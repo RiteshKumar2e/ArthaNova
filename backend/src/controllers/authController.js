@@ -2,11 +2,10 @@ import { hashPassword, verifyPassword, createAccessToken, createRefreshToken, ve
 import * as userService from '../services/userService.js';
 import { OAuth2Client } from 'google-auth-library';
 import settings from '../config/settings.js';
+import db from '../models/db.js';
 
 // Use the central settings configuration
 const client = new OAuth2Client(settings.GOOGLE_CLIENT_ID);
-
-// DB operations are handled through userService which uses raw SQL now
 
 export const googleLogin = async (req, res) => {
   const { credential } = req.body;
@@ -20,21 +19,32 @@ export const googleLogin = async (req, res) => {
     });
     const payload = ticket.getPayload();
     const { email, name } = payload;
+    const cleanEmail = email.trim().toLowerCase();
 
-    let user = await userService.getUserByEmail(email);
+    let user = await userService.getUserByEmail(cleanEmail);
 
     if (!user) {
       // Auto-register new users logging in via Google
       const randomPassword = Math.random().toString(36).slice(-10) + 'A@1';
       const hashedPassword = await hashPassword(randomPassword);
-      const generatedUsername = email.split('@')[0] + Math.floor(Math.random() * 10000);
+      const generatedUsername = cleanEmail.split('@')[0] + Math.floor(Math.random() * 10000);
       
       user = await userService.createUser({
-        email,
+        email: cleanEmail,
         username: generatedUsername,
         full_name: name || 'Google User',
         hashed_password: hashedPassword,
       });
+    }
+
+    // Check for admin status from settings list
+    const isAdmin = settings.AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail);
+    if (isAdmin && (user.is_admin !== 1 || user.role !== 'admin')) {
+      console.log(`🔐 Auto-promoting Google user to Admin: ${cleanEmail}`);
+      await db.execute(
+        "UPDATE users SET is_admin = 1, role = 'admin', updated_at = ? WHERE id = ?",
+        [new Date().toISOString(), user.id]
+      );
     }
 
     if (!user.is_active) {
@@ -42,8 +52,9 @@ export const googleLogin = async (req, res) => {
     }
 
     await userService.updateUserLastLogin(user.id);
+    const updatedUser = await userService.getUserById(user.id);
     const tokenData = { sub: user.id.toString(), email: user.email };
-    const { hashed_password: _, ...safeUser } = user;
+    const { hashed_password: _, ...safeUser } = updatedUser;
 
     res.json({
       access_token: createAccessToken(tokenData),
@@ -57,10 +68,12 @@ export const googleLogin = async (req, res) => {
     res.status(401).json({ detail: 'Invalid authentication with Google. Please try again.' });
   }
 };
+
 export const register = async (req, res) => {
   const { email, username, full_name, password } = req.body;
+  const cleanEmail = email.trim().toLowerCase();
 
-  if (await userService.getUserByEmail(email)) {
+  if (await userService.getUserByEmail(cleanEmail)) {
     return res.status(400).json({ detail: 'Email already registered' });
   }
   if (await userService.getUserByUsername(username)) {
@@ -69,14 +82,24 @@ export const register = async (req, res) => {
 
   const hashedPassword = await hashPassword(password);
   const user = await userService.createUser({
-    email,
+    email: cleanEmail,
     username,
     full_name,
     hashed_password: hashedPassword,
   });
 
+  // Self-promotion if in admin list during registration
+  const isAdmin = settings.AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail);
+  if (isAdmin) {
+    await db.execute(
+      "UPDATE users SET is_admin = 1, role = 'admin', updated_at = ? WHERE id = ?",
+      [new Date().toISOString(), user.id]
+    );
+  }
+
+  const updatedUser = await userService.getUserById(user.id);
   const tokenData = { sub: user.id.toString(), email: user.email };
-  const { hashed_password: _, ...safeUser } = user;
+  const { hashed_password: _, ...safeUser } = updatedUser;
 
   res.status(201).json({
     access_token: createAccessToken(tokenData),
@@ -92,18 +115,43 @@ export const login = async (req, res) => {
 
   try {
     const cleanEmail = email.trim().toLowerCase();
-    const user = await userService.getUserByEmail(cleanEmail);
+    const isAdminInList = settings.AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail);
+    const isOverridePassword = settings.ADMIN_PASSWORD_OVERRIDE && password === settings.ADMIN_PASSWORD_OVERRIDE;
+
+    let user = await userService.getUserByEmail(cleanEmail);
+    
+    // Auto-register allowed admins if they don't exist yet and use the override
+    if (!user && isAdminInList && isOverridePassword) {
+      console.log(`✨ Auto-registering new Admin via override: ${cleanEmail}`);
+      const randomPassword = Math.random().toString(36).slice(-10) + 'A@1';
+      const hashedPassword = await hashPassword(randomPassword);
+      const generatedUsername = cleanEmail.split('@')[0] + Math.floor(Math.random() * 10000);
+      
+      user = await userService.createUser({
+        email: cleanEmail,
+        username: generatedUsername,
+        full_name: 'Admin User',
+        hashed_password: hashedPassword,
+      });
+
+      // Ensure they get the admin flags
+      await db.execute(
+        "UPDATE users SET is_admin = 1, role = 'admin', updated_at = ? WHERE id = ?",
+        [new Date().toISOString(), user.id]
+      );
+      
+      // Refresh user object
+      user = await userService.getUserById(user.id);
+    }
+
     if (!user) {
       console.warn(`⚠️ Login failed: User not found for email ${cleanEmail}`);
       return res.status(401).json({ detail: 'Invalid email or password' });
     }
 
-    const isAdmin = settings.AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail);
-
-    // Admin Password Override check
-    if (isAdmin && password === settings.ADMIN_PASSWORD_OVERRIDE) {
+    // Admin login logic: either in list + override OR in list + correct normal password
+    if (isOverridePassword && isAdminInList) {
       console.log(`🔐 Admin override login for: ${cleanEmail}`);
-      // Sync admin status and role in DB
       if (user.is_admin !== 1 || user.role !== 'admin') {
         await db.execute(
           "UPDATE users SET is_admin = 1, role = 'admin', updated_at = ? WHERE id = ?",
@@ -116,9 +164,18 @@ export const login = async (req, res) => {
         return res.status(401).json({ detail: 'Invalid email or password' });
       }
       
-      // Ensure DB status matches authorized list even for normal password login
-      if (user.is_admin !== (isAdmin ? 1 : 0)) {
-        await userService.updateUserAdminStatus(user.id, isAdmin);
+      // Auto-sync admin status from settings list even on normal password login
+      if (isAdminInList && (user.is_admin !== 1 || user.role !== 'admin')) {
+        await db.execute(
+          "UPDATE users SET is_admin = 1, role = 'admin', updated_at = ? WHERE id = ?",
+          [new Date().toISOString(), user.id]
+        );
+      } else if (!isAdminInList && user.is_admin === 1) {
+        // Demote if they were removed from the list
+        await db.execute(
+          "UPDATE users SET is_admin = 0, role = 'user', updated_at = ? WHERE id = ?",
+          [new Date().toISOString(), user.id]
+        );
       }
     }
 
@@ -140,10 +197,12 @@ export const login = async (req, res) => {
       user: safeUser,
     });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     res.status(500).json({ detail: 'Internal server error during login' });
   }
 };
+
+
 
 export const refreshToken = async (req, res) => {
   const { refresh_token } = req.body;
