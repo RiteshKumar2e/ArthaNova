@@ -8,5 +8,6 @@ router.get('/market-overview', stocksController.getMarketOverview);
 router.get('/sectors', stocksController.getSectors);
 router.get('/:symbol', stocksController.getStockDetail);
 router.get('/:symbol/ohlcv', stocksController.getStockOHLCV);
+router.get('/:symbol/technicals', stocksController.getStockTechnicals);
 
 export default router;

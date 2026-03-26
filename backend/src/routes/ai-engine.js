@@ -17,8 +17,8 @@ router.post('/chat', authenticate, async (req, res) => {
 
     const sessionId = session_id || "sess_" + Math.random().toString(36).slice(-8);
     
-    // Call real Groq service
-    const aiResponse = await groqService.chat(userMessage, history);
+    // Call real Groq service (portfolio-aware)
+    const aiResponse = await groqService.chat(userMessage, history, req.user?.id);
 
     res.json({
       id: "msg_" + Math.random().toString(36).slice(-8),

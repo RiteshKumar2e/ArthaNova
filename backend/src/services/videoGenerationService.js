@@ -50,18 +50,23 @@ Generate a concise, engaging video script for an AI avatar to read. Include:
 
 Format as a conversational script, not bullet points. Keep it precise for ${durationMap[duration]} duration.`;
 
-    const message = await groq.messages.create({
-      model: settings.GROQ_MODEL,
+    const message = await groq.chat.completions.create({
+      model: settings.GROQ_MODEL || 'llama-3.3-70b-versatile',
       max_tokens: 500,
       messages: [
+        {
+          role: 'system',
+          content: 'You are a professional financial video script writer for Indian markets. Write engaging, factual scripts for retail investors.'
+        },
         {
           role: 'user',
           content: prompt,
         },
       ],
+      temperature: 0.5,
     });
 
-    const script = message.content[0].type === 'text' ? message.content[0].text : '';
+    const script = message.choices?.[0]?.message?.content || '';
     console.log(`✅ Video script generated: ${script.substring(0, 100)}...`);
 
     return script;

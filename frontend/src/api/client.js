@@ -79,6 +79,7 @@ export const stocksAPI = {
   list: (params) => api.get('/stocks', { params }),
   getDetail: (symbol) => api.get(`/stocks/${symbol}`),
   getOHLCV: (symbol, period) => api.get(`/stocks/${symbol}/ohlcv`, { params: { period } }),
+  getTechnicals: (symbol) => api.get(`/stocks/${symbol}/technicals`),
   marketOverview: () => api.get('/stocks/market-overview'),
   sectors: () => api.get('/stocks/sectors'),
 }
