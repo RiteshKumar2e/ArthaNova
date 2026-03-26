@@ -59,12 +59,6 @@ export default function Topbar({ onToggleSidebar }) {
           <span className={styles.marketLabel}>NSE Open</span>
         </div>
 
-        {/* Nifty Index */}
-        <div className={styles.indexChip}>
-          <span className={styles.indexName}>NIFTY</span>
-          <span className={styles.indexValue}>21,842</span>
-          <span className={styles.indexChange} style={{ color: '#00875A' }}>▲ 0.48%</span>
-        </div>
 
         {/* Notifications */}
         <Link to="/notifications" className={styles.iconBtn} title="Notifications">

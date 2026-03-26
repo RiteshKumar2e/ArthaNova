@@ -77,6 +77,7 @@ export const adminAPI = {
   // Reports
   getReportsSummary: () => api.get('/admin/reports/summary'),
   getAuditLogs: () => api.get('/admin/logs/audit'),
+  performSystemAction: (action) => api.post('/admin/system-action', { action }),
 
   videoEngine: {
     listJobs: () => api.get('/admin/video-engine/jobs'),

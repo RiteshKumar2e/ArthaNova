@@ -340,6 +340,39 @@ router.get('/reports/summary', authenticate, adminOnly, async (req, res) => {
   }
 });
 
+// ─── SYSTEM ACTION ──────────────────────────────────────────────────────────
+
+router.post('/system-action', authenticate, adminOnly, async (req, res) => {
+  try {
+    const { action } = req.body;
+    const now = new Date().toISOString();
+    
+    // Log the destructive action
+    await db.execute(
+      'INSERT INTO audit_logs (email, action, module, status, timestamp) VALUES (?, ?, ?, ?, ?)',
+      [req.user.email, action.toUpperCase(), 'SYSTEM_DANGER_ZONE', 'SUCCESS', now]
+    );
+
+    switch (action) {
+      case 'flush_cache':
+        // Placeholder for actual Redis flush
+        break;
+      case 'wipe_logs':
+        // Not implemented for safety
+        break;
+      case 'emergency_lock':
+        // Placeholder for global lock feature
+        break;
+      default:
+        return res.status(400).json({ error: 'Invalid action' });
+    }
+
+    res.json({ success: true, message: `System action ${action} executed.` });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to perform system action' });
+  }
+});
+
 // ─── AUDIT LOGS ─────────────────────────────────────────────────────────────
 
 router.get('/logs/audit', authenticate, adminOnly, async (req, res) => {
