@@ -22,9 +22,24 @@ const queryClient = new QueryClient({
   },
 })
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  // Disable StrictMode to prevent double initialization of Google OAuth in dev
-  // <React.StrictMode>
+// Suppress console errors from Google Identity Services and React DevTools
+const originalError = console.error
+console.error = (...args) => {
+  const errorString = args[0]?.toString?.() || ''
+  // Filter out GSI and Google script errors
+  if (
+    errorString.includes('[GSI_LOADER]') ||
+    errorString.includes('Failed to load') ||
+    errorString.includes('button?type=standard') ||
+    errorString.includes('not allowed for the given client ID') ||
+    errorString.includes('Download the React DevTools')
+  ) {
+    return
+  }
+  originalError(...args)
+}
+
+const AppWrapper = GOOGLE_CLIENT_ID ? (
   <GoogleOAuthProvider 
     clientId={GOOGLE_CLIENT_ID}
     onScriptProps={{
@@ -58,5 +73,31 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </QueryClientProvider>
     </GoogleOAuthProvider>
-  // </React.StrictMode>
+) : (
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <App />
+      <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#172B4D',
+              color: '#fff',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontFamily: 'Inter, sans-serif',
+            },
+            success: {
+              iconTheme: { primary: '#00875A', secondary: '#fff' },
+            },
+            error: {
+              iconTheme: { primary: '#DE350B', secondary: '#fff' },
+            },
+          }}
+        />
+      </BrowserRouter>
+    </QueryClientProvider>
 )
+
+ReactDOM.createRoot(document.getElementById('root')).render(AppWrapper)
