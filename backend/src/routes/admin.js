@@ -1,6 +1,7 @@
 import express from 'express';
 import { authenticate, adminOnly } from '../middlewares/auth.js';
 import * as videoGenerationService from '../services/videoGenerationService.js';
+import db from '../models/db.js';
 
 const router = express.Router();
 
@@ -97,8 +98,125 @@ router.get('/ai/metrics/performance', authenticate, adminOnly, (req, res) => {
 });
 
 router.get('/users', authenticate, adminOnly, async (req, res) => {
-  // Logic already exists in userController, but this is for admin listing
-  res.json([]);
+  try {
+    // Fetch all users from database with relevant fields
+    const users = await db.query(
+      `SELECT 
+        id, 
+        email, 
+        full_name, 
+        role,
+        is_active,
+        risk_profile,
+        last_login,
+        created_at,
+        updated_at
+       FROM users 
+       ORDER BY created_at DESC`
+    );
+
+    // Return users or empty array if none found
+    res.json(Array.isArray(users) ? users : []);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({
+      error: 'Failed to fetch users',
+      message: error.message
+    });
+  }
+});
+
+// Create new user (admin only)
+router.post('/users', authenticate, adminOnly, async (req, res) => {
+  try {
+    const { email, full_name, role = 'user', risk_profile = 'moderate' } = req.body;
+
+    // Validation
+    if (!email || !full_name) {
+      return res.status(400).json({
+        error: 'Missing required fields',
+        message: 'email and full_name are required'
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = await db.queryFirst('SELECT id FROM users WHERE email = ?', [email]);
+    if (existingUser) {
+      return res.status(409).json({
+        error: 'User already exists',
+        message: 'An account with this email already exists'
+      });
+    }
+
+    // Create new user with temporary password
+    const tempPassword = Math.random().toString(36).slice(-10) + 'Temp@123';
+    const now = new Date().toISOString();
+    
+    const result = await db.execute(
+      `INSERT INTO users (email, full_name, role, risk_profile, is_active, created_at, updated_at) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [email, full_name, role, risk_profile, 1, now, now]
+    );
+
+    const newUser = await db.queryFirst(
+      'SELECT id, email, full_name, role, is_active, risk_profile, last_login, created_at, updated_at FROM users WHERE id = ?',
+      [Number(result.lastInsertRowid)]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      user: newUser
+    });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({
+      error: 'Failed to create user',
+      message: error.message
+    });
+  }
+});
+
+// Toggle user active status
+router.patch('/users/:userId/toggle-status', authenticate, adminOnly, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Get current status
+    const user = await db.queryFirst('SELECT is_active FROM users WHERE id = ?', [userId]);
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+        message: `User with ID ${userId} does not exist`
+      });
+    }
+
+    // Toggle status
+    const newStatus = user.is_active ? 0 : 1;
+    const now = new Date().toISOString();
+    
+    await db.execute(
+      'UPDATE users SET is_active = ?, updated_at = ? WHERE id = ?',
+      [newStatus, now, userId]
+    );
+
+    const updatedUser = await db.queryFirst(
+      'SELECT id, email, full_name, role, is_active, risk_profile, last_login, created_at, updated_at FROM users WHERE id = ?',
+      [userId]
+    );
+
+    res.json({
+      success: true,
+      message: 'User status updated',
+      user: updatedUser
+    });
+  } catch (error) {
+    console.error('Error toggling user status:', error);
+    res.status(500).json({
+      error: 'Failed to update user status',
+      message: error.message
+    });
+  }
 });
 
 // Audit logs endpoint
