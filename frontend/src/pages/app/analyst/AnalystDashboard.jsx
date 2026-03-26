@@ -1,7 +1,7 @@
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Link } from 'react-router-dom';
-import styles from '../../../styles/pages/app/DashboardPage.module.css';
+import styles from '../../../styles/pages/app/user/dashboard/DashboardPage.module.css';
 
 const ANALYST_STATS = [
   { label: 'Active Signals', value: '0', change: '--%', positive: null, icon: '🎯' },

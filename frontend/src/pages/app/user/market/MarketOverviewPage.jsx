@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { stocksAPI } from '../../api/client'
+import { stocksAPI } from '../../../../api/client'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import styles from '../../styles/pages/app/MarketOverviewPage.module.css'
+import styles from '../../../../styles/pages/app/user/market/MarketOverviewPage.module.css'
 
 export default function MarketOverviewPage() {
   const [data, setData] = useState(null)

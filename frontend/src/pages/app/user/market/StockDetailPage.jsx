@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { stocksAPI, aiAPI } from '../../api/client'
+import { stocksAPI, aiAPI } from '../../../../api/client'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
-import styles from '../../styles/pages/app/StockDetailPage.module.css'
+import styles from '../../../../styles/pages/app/user/market/StockDetailPage.module.css'
 
 const PERIODS = ['1d', '1w', '1m', '3m', '6m', '1y', '5y']
 

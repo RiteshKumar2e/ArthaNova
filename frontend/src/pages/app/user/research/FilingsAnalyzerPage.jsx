@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from '../../styles/pages/app/FilingsAnalyzerPage.module.css'
+import styles from '../../../../styles/pages/app/user/research/FilingsAnalyzerPage.module.css'
 import toast from 'react-hot-toast'
 
 export default function FilingsAnalyzerPage() {

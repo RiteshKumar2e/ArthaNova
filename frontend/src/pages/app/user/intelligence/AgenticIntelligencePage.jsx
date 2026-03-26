@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { aiAPI } from '../../api/client'
-import styles from '../../styles/pages/app/AgenticIntelligencePage.module.css'
-import AgentOrchestrationVisualizer from '../../components/AgentOrchestrationVisualizer'
+import { aiAPI } from '../../../../api/client'
+import styles from '../../../../styles/pages/app/user/intelligence/AgenticIntelligencePage.module.css'
+import AgentOrchestrationVisualizer from '../../../../components/AgentOrchestrationVisualizer'
 import toast from 'react-hot-toast'
 
 export default function AgenticIntelligencePage() {

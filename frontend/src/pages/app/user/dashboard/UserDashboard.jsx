@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
-import { stocksAPI } from '../../../api/client'
-import HighConvictionTrades from '../../../components/HighConvictionTrades'
-import RiskAlerts from '../../../components/RiskAlerts'
-import styles from '../../../styles/pages/app/DashboardPage.module.css'
+import { stocksAPI } from '../../../../api/client'
+import HighConvictionTrades from '../../../../components/HighConvictionTrades'
+import RiskAlerts from '../../../../components/RiskAlerts'
+import styles from '../../../../styles/pages/app/user/dashboard/DashboardPage.module.css'
 
 // Quick statistics
 const QUICK_STATS = [

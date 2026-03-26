@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { stocksAPI } from '../../api/client'
-import styles from '../../styles/pages/app/StockExplorerPage.module.css'
+import { stocksAPI } from '../../../../api/client'
+import styles from '../../../../styles/pages/app/user/market/StockExplorerPage.module.css'
 
 const SECTORS = ['All', 'IT', 'Banking', 'Pharma', 'FMCG', 'Auto', 'Energy', 'Metals']
 

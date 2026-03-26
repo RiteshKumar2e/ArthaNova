@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { notificationsAPI } from '../../api/client'
-import { useAuthStore } from '../../store/authStore'
+import { notificationsAPI } from '../../../../api/client'
+import { useAuthStore } from '../../../../store/authStore'
 import { toast } from 'react-hot-toast'
-import styles from '../../styles/pages/app/NotificationsPage.module.css'
+import styles from '../../../../styles/pages/app/user/profile/NotificationsPage.module.css'
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([])

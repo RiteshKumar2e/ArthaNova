@@ -1,9 +1,9 @@
 import React from 'react'
-import { useAuthStore } from '../../store/authStore'
+import { useAuthStore } from '../../../../store/authStore'
 
 // Module Dashboards
-import UserDashboard from './user/UserDashboard'
-import AdminDashboard from './admin/AdminDashboard'
+import UserDashboard from './UserDashboard'
+import AdminDashboard from '../../admin/AdminDashboard'
 
 export default function DashboardPage() {
   const { user } = useAuthStore()

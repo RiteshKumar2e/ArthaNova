@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { aiAPI } from '../../api/client'
-import { useAuthStore } from '../../store/authStore'
+import { aiAPI } from '../../../../api/client'
+import { useAuthStore } from '../../../../store/authStore'
 import toast from 'react-hot-toast'
-import AgentOrchestrationVisualizer from '../../components/AgentOrchestrationVisualizer'
-import SystemHealthIndicator from '../../components/SystemHealthIndicator'
-import styles from '../../styles/pages/app/AIChatPage.module.css'
+import AgentOrchestrationVisualizer from '../../../../components/AgentOrchestrationVisualizer'
+import SystemHealthIndicator from '../../../../components/SystemHealthIndicator'
+import styles from '../../../../styles/pages/app/user/intelligence/AIChatPage.module.css'
 
 export default function AIChatPage() {
   const { user } = useAuthStore()

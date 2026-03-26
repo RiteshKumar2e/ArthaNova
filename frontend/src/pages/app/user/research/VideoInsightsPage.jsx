@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { adminAPI } from '../../api/client';
-import styles from '../../styles/pages/app/VideoInsights.module.css';
+import { adminAPI } from '../../../../api/client';
+import styles from '../../../../styles/pages/app/user/research/VideoInsights.module.css'
 
 export default function VideoInsightsPage() {
   const [loading, setLoading] = useState(false);

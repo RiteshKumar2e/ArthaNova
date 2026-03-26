@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { aiAPI } from '../../api/client'
-import styles from '../../styles/pages/app/OpportunityRadarPage.module.css'
+import { aiAPI } from '../../../../api/client'
+import styles from '../../../../styles/pages/app/user/portfolio/OpportunityRadarPage.module.css'
 
 export default function OpportunityRadarPage() {
   const [data, setData] = useState(null)

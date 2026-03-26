@@ -16,29 +16,29 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 
 // App Pages
-import DashboardPage from './pages/app/DashboardPage'
-import MarketOverviewPage from './pages/app/MarketOverviewPage'
-import StockExplorerPage from './pages/app/StockExplorerPage'
-import StockDetailPage from './pages/app/StockDetailPage'
-import PortfolioPage from './pages/app/PortfolioPage'
-import AIChatPage from './pages/app/AIChatPage'
-import NewsIntelligencePage from './pages/app/NewsIntelligencePage'
-import IPOTrackerPage from './pages/app/IPOTrackerPage'
-import BacktestingPage from './pages/app/BacktestingPage'
-import FilingsAnalyzerPage from './pages/app/FilingsAnalyzerPage'
-import OpportunityRadarPage from './pages/app/OpportunityRadarPage'
-import ProfilePage from './pages/app/ProfilePage'
-import VideoInsightsPage from './pages/app/VideoInsightsPage'
-import WatchlistPage from './pages/app/WatchlistPage'
-import NotificationsPage from './pages/app/NotificationsPage'
-import AgenticIntelligencePage from './pages/app/AgenticIntelligencePage'
+import DashboardPage from './pages/app/user/dashboard/DashboardPage'
+import MarketOverviewPage from './pages/app/user/market/MarketOverviewPage'
+import StockExplorerPage from './pages/app/user/market/StockExplorerPage'
+import StockDetailPage from './pages/app/user/market/StockDetailPage'
+import PortfolioPage from './pages/app/user/portfolio/PortfolioPage'
+import AIChatPage from './pages/app/user/intelligence/AIChatPage'
+import NewsIntelligencePage from './pages/app/user/intelligence/NewsIntelligencePage'
+import IPOTrackerPage from './pages/app/user/market/IPOTrackerPage'
+import BacktestingPage from './pages/app/user/portfolio/BacktestingPage'
+import FilingsAnalyzerPage from './pages/app/user/research/FilingsAnalyzerPage'
+import OpportunityRadarPage from './pages/app/user/portfolio/OpportunityRadarPage'
+import ProfilePage from './pages/app/user/profile/ProfilePage'
+import VideoInsightsPage from './pages/app/user/research/VideoInsightsPage'
+import WatchlistPage from './pages/app/user/portfolio/WatchlistPage'
+import NotificationsPage from './pages/app/user/profile/NotificationsPage'
+import AgenticIntelligencePage from './pages/app/user/intelligence/AgenticIntelligencePage'
 import {
   InsiderActivityPage,
   DealsTrackerPage,
   TechnicalAnalysisPage,
   RiskAnalyzerPage,
   SettingsPage
-} from './pages/app/PlaceholderPages'
+} from './pages/app/user/shared/PlaceholderPages'
 
 // Admin Pages
 import AdminDashboard from './pages/app/admin/AdminDashboard'

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { newsAPI } from '../../api/client'
-import styles from '../../styles/pages/app/NewsIntelligencePage.module.css'
+import { newsAPI } from '../../../../api/client'
+import styles from '../../../../styles/pages/app/user/intelligence/NewsIntelligencePage.module.css'
 
 export default function NewsIntelligencePage() {
   const [news, setNews] = useState([])

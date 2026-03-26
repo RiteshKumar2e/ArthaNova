@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { ipoAPI } from '../../api/client'
-import styles from '../../styles/pages/app/IPOTrackerPage.module.css'
+import { ipoAPI } from '../../../../api/client'
+import styles from '../../../../styles/pages/app/user/market/IPOTrackerPage.module.css'
 
 export default function IPOTrackerPage() {
   const [ipos, setIpos] = useState([])

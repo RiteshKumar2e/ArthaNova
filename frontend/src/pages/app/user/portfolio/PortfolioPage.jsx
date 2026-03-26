@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { portfolioAPI } from '../../api/client'
+import { portfolioAPI } from '../../../../api/client'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import toast from 'react-hot-toast'
-import styles from '../../styles/pages/app/PortfolioPage.module.css'
+import styles from '../../../../styles/pages/app/user/portfolio/PortfolioPage.module.css'
 
 const COLORS = ['#0052CC', '#00875A', '#FF6B35', '#9333EA', '#FF991F', '#0065FF', '#DE350B', '#34D399']
 

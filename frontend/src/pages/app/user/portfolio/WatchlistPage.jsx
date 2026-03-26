@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { watchlistAPI, stocksAPI } from '../../api/client'
+import { watchlistAPI, stocksAPI } from '../../../../api/client'
 import { toast } from 'react-hot-toast'
-import styles from '../../styles/pages/app/WatchlistPage.module.css'
+import styles from '../../../../styles/pages/app/user/portfolio/WatchlistPage.module.css'
 
 export default function WatchlistPage() {
   const [watchlists, setWatchlists] = useState([])
