@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { stocksAPI } from '../../../../api/client'
 import styles from '../../../../styles/pages/app/user/market/StockExplorerPage.module.css'
 
@@ -8,6 +9,7 @@ const SECTORS = ['All', 'IT', 'Banking', 'Pharma', 'FMCG', 'Auto', 'Energy', 'Me
 export default function StockExplorerPage() {
   const [stocks, setStocks] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [sector, setSector] = useState('All')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -15,6 +17,7 @@ export default function StockExplorerPage() {
 
   const fetchStocks = async () => {
     setLoading(true)
+    setError(null)
     try {
       const params = { page, per_page: 20 }
       if (search) params.q = search
@@ -22,6 +25,13 @@ export default function StockExplorerPage() {
       const res = await stocksAPI.list(params)
       setStocks(res.data?.items || [])
       setTotal(res.data?.total || 0)
+    } catch (err) {
+      const errorMsg = err.code === 'ECONNABORTED' 
+        ? 'Request timed out. Server is slow. Please try again.'
+        : err.message || 'Failed to fetch stocks'
+      setError(errorMsg)
+      toast.error('❌ ' + errorMsg)
+      console.error('Stock fetch error:', err)
     } finally {
       setLoading(false)
     }
@@ -72,6 +82,38 @@ export default function StockExplorerPage() {
 
       {/* Stocks Table */}
       <div className={styles.stockTableCard}>
+        {/* Error Message */}
+        {error && (
+          <div style={{
+            padding: '20px',
+            marginBottom: '20px',
+            background: '#FFE5E5',
+            border: '2px solid #FF4444',
+            borderRadius: '4px',
+            color: '#CC0000',
+            fontWeight: 900,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>❌ {error}</span>
+            <button 
+              onClick={() => fetchStocks()}
+              style={{
+                padding: '8px 16px',
+                background: '#FF4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                fontWeight: 900,
+                cursor: 'pointer'
+              }}
+            >
+              RETRY
+            </button>
+          </div>
+        )}
+        
         <div className={styles.tableWrapper}>
           <table className={styles.explorerTable}>
             <thead>

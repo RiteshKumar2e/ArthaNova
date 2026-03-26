@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import api from '../../../../api/client';
 import { getTechnicalSummary } from '../../../../services/technicalIndicators';
 import styles from '../../../../styles/pages/app/user/research/TechnicalAnalysis.module.css';
 
 export default function TechnicalAnalysisPage() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [stocks, setStocks] = useState([]);
   const [selectedSymbol, setSelectedSymbol] = useState('NIFTY 50');
   const [technicalData, setTechnicalData] = useState(null);
@@ -19,6 +21,7 @@ export default function TechnicalAnalysisPage() {
 
   const loadScreenerData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const results = [];
       
@@ -44,12 +47,18 @@ export default function TechnicalAnalysisPage() {
           });
         } catch (err) {
           console.warn(`Failed to fetch ${symbol}:`, err.message);
+          toast.error(`⏱️ Failed to load ${symbol} - ${err.code === 'ECONNABORTED' ? 'timeout' : 'error'}`);
         }
       }
       
       setScreenerData(results);
+      if (results.length === 0) {
+        setError('Failed to load screener data. Please try again.');
+      }
     } catch (error) {
       console.error('Error loading screener data:', error);
+      setError('Failed to load screener data. Please try again.');
+      toast.error('❌ Failed to load technical analysis data');
     } finally {
       setLoading(false);
     }

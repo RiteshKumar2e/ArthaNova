@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/authStore'
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
   headers: { 'Content-Type': 'application/json' },
-  timeout: 15000,
+  timeout: 30000, // Increased from 15s to 30s for slower API calls (market data, etc)
 })
 
 // Attach token to every request
