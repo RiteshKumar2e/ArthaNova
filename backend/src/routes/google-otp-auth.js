@@ -21,27 +21,34 @@ console.log(`   Admin Emails: ${settings.AUTHORIZED_ADMIN_EMAILS.join(', ')}`);
  */
 router.post('/otp-request', async (req, res) => {
   try {
-    const { idToken } = req.body;
-
-    if (!idToken) {
-      return res.status(400).json({
-        error: 'Invalid request',
-        message: 'ID token is required',
-      });
-    }
-
-    // Verify Google ID Token
+    const { idToken, code } = req.body;
+    
+    // Verify Google ID Token or Auth Code
     let payload;
     try {
-      const ticket = await googleClient.verifyIdToken({
-        idToken,
-        audience: settings.GOOGLE_CLIENT_ID,
-      });
-      payload = ticket.getPayload();
+      if (code) {
+        // Handle Auth Code flow (for custom buttons)
+        const { tokens } = await googleClient.getToken(req.body.code);
+        const ticket = await googleClient.verifyIdToken({
+          idToken: tokens.id_token,
+          audience: settings.GOOGLE_CLIENT_ID,
+        });
+        payload = ticket.getPayload();
+      } else if (idToken) {
+        // Handle standard ID Token flow
+        const ticket = await googleClient.verifyIdToken({
+          idToken,
+          audience: settings.GOOGLE_CLIENT_ID,
+        });
+        payload = ticket.getPayload();
+      } else {
+        throw new Error('No ID token or auth code provided');
+      }
     } catch (error) {
+      console.error('Google Auth Error:', error.message);
       return res.status(401).json({
         error: 'Invalid token',
-        message: 'Google ID token verification failed: ' + error.message,
+        message: 'Google authentication failed: ' + error.message,
       });
     }
 

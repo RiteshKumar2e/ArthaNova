@@ -4,7 +4,7 @@ import { useAuthStore } from '../../store/authStore'
 import { authAPI } from '../../api/client'
 import toast from 'react-hot-toast'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
-import { GoogleLogin } from '@react-oauth/google'
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
 import OTPModal from '../../components/auth/OTPModal'
 import styles from '../../styles/pages/auth/AuthPages.module.css'
 
@@ -87,6 +87,58 @@ export default function LoginPage() {
       setLoading(false)
     }
   }
+
+  const handleCustomGoogleSuccess = async (authResponse) => {
+    setLoading(true)
+    try {
+      // Step 1: Request OTP from backend using the auth code
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/google/otp-request`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code: authResponse.code,
+          }),
+        }
+      )
+
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let data;
+      
+      if (contentType?.includes('application/json')) {
+        data = await response.json()
+      } else {
+        throw new Error(`Expected JSON response but got ${contentType || 'unknown content type'} (HTTP ${response.status})`)
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Failed to request OTP')
+      }
+
+      // Show OTP modal
+      setOtpState({
+        email: data.email,
+        fullName: data.fullName,
+        otpToken: data.otp_token,
+      })
+
+      toast.success('✉️ OTP sent to your email')
+    } catch (err) {
+      const msg = err.message || 'Failed to initiate Google login'
+      console.error('Google Success Error:', err)
+      toast.error(msg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: handleCustomGoogleSuccess,
+    onError: handleGoogleError,
+    flow: 'auth-code',
+  })
 
   const handleOTPComplete = async (data) => {
     try {
@@ -269,17 +321,18 @@ export default function LoginPage() {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
           {import.meta.env.VITE_GOOGLE_CLIENT_ID ? (
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              useOneTap={false}
-              auto_select={false}
-              cancel_on_tap_outside={true}
-              width={googleWidth.toString()}
-              size="large"
-              theme="outline"
-              containerProps={{ style: { width: '100%', display: 'flex', justifyContent: 'center' } }}
-            />
+            <button
+              type="button"
+              className={styles.googleBtnLight}
+              onClick={() => loginWithGoogle()}
+              disabled={loading}
+            >
+              <img 
+                src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
+                alt="Google" 
+              />
+              {loading ? 'PROCESSING...' : 'SIGN IN WITH GOOGLE'}
+            </button>
           ) : (
             <div style={{ 
               width: '100%', 
