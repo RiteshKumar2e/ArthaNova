@@ -113,7 +113,5 @@ npm run dev
 
 ---
 
-> [!IMPORTANT]
-> ArthaNova v2.1.0 introduces enhanced Google Auth security with custom UI hooks. Ensure `VITE_GOOGLE_CLIENT_ID` is correctly mapped in your environment to enable the Sentinel.
 
 *Architected for the upcoming wave of autonomous finance. Built with ❤️ for the Indian Investor.*
