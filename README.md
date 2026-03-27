@@ -1,75 +1,54 @@
 # ⚛️ ArthaNova — The Agentic Financial Sentinel 🇮🇳
 
-<p align="center">
-  <img src="https://img.shields.io/badge/ArthaNova-v2.0.0-C4FF00?style=for-the-badge&logo=react&logoColor=black" alt="ArthaNova Version" />
-  <img src="https://img.shields.io/badge/LangGraph-Multi--Agent-black?style=for-the-badge&logo=langchain&logoColor=white" alt="LangGraph" />
-  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js Version" />
-  <img src="https://img.shields.io/badge/UI-Modern%20&%20High%20Impact-FF6AC1?style=for-the-badge" alt="Modern UI" />
-  <img src="https://img.shields.io/badge/Database-Turso%20(libSQL)-4ea94b?style=for-the-badge&logo=sqlite" alt="Database" />
-</p>
+[![Version](https://img.shields.io/badge/ArthaNova-v2.1.0-C4FF00?style=for-the-badge&logo=react&logoColor=black)](https://github.com/RiteshKumar2e/ArthaNova)
+[![Engine](https://img.shields.io/badge/LangGraph-Multi--Agent-black?style=for-the-badge&logo=langchain&logoColor=white)](https://github.com/langchain-ai/langgraphjs)
+[![Backend](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
+[![Database](https://img.shields.io/badge/Turso-libSQL-4ea94b?style=for-the-badge&logo=sqlite)](https://turso.tech/)
+[![Security](https://img.shields.io/badge/Passkey-Google%20OTP-blue?style=for-the-badge&logo=google)](https://developers.google.com/identity/gsi/web)
 
 ---
 
 ## 💎 The ArthaNova Vision
-**ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with **Stateful Multi-Agent AI Orchestration (LangGraph)**, ArthaNova democratizes sophisticated market analysis for every retail investor. We wrap this powerful engine in a striking, high-impact modern design system.
+**ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with **Stateful Multi-Agent AI Orchestration (LangGraph)**, ArthaNova democratizes sophisticated market analysis for retail investors. 
+
+The platform features a striking **Neo-Brutalist** design system, combining raw performance with a high-impact visual experience.
 
 ---
 
 ## 🤖 Agentic Intelligence (Core Engine)
-The heart of ArthaNova is its LangGraph-powered Multi-Agent architecture. Unlike standard LLM wrappers, ArthaNova utilizes a suite of specialized, stateful agents that collaborate to find alpha:
+The heart of ArthaNova is its LangGraph-powered Multi-Agent architecture. Unlike standard LLM wrappers, ArthaNova utilizes a suite of specialized, stateful agents:
 
-- **🕵️ SignalAgent**: Scours financial APIs for raw market events (Bulk deals, technical breakouts, volume surges).
-- **⚖️ ContextAgent**: Audits signals against your localized portfolio data and historical earnings using persistent memory.
-- **🧠 AnalystAgent**: Synthesizes the final high-conviction alerts, resolving conflicting indicators (e.g., RSI vs FII activity).
-- **💾 Agent Persistence (Memory)**: Built-in state checkpointing (Thread IDs) allows agents to "remember" your portfolio context, past risk tolerance, and historical breakout failures across sessions.
+- **🕵️ SignalAgent**: Autonomously scours financial APIs for raw market events (Bulk deals, technical breakouts, volume surges).
+- **⚖️ ContextAgent**: Audits signals against localized portfolio data and historical earnings using persistent memory.
+- **🧠 AnalystAgent**: Synthesizes high-conviction alerts by resolving conflicting technical and fundamental indicators.
+- **💾 Stateful Persistence**: Checkpointing allows agents to maintain context across sessions, remembering your risk tolerance.
 
 ---
 
-## 🚀 Platform Ecosystem
+## 🚀 Key Features
+
+### 🔐 Advanced Security
+*   **Google OAuth 2.0 Integration**: Seamless login with industry-standard security using a tailored **Neo-Brutalist Google Sign-In button**.
+*   **Dual-Layer Verification**: Custom Google Sign-In flow coupled with a secondary **Email OTP (via Brevo)** for high-security account protection.
+*   **Admin Command Center**: Secure override mechanisms for platform administrators to manage ecosystem health.
 
 ### 📊 Markets & Analytics
-- **🎯 Opportunity Radar**: Real-time breakout detection using algorithmic anomalies.
-- **📰 News Intelligence**: NLP pipelines that categorize Indian financial media (MoneyControl, ET, Mint) as bullish/bearish.
-- **🛡️ Portfolio Health**: Deep-dive risk scoring and concentration analytics simulated against live macro-events.
-- **💬 AI Chat (RAG)**: Conversational quant interface powered by Groq/Llama-3 to query company filings instantly.
-
-### 🛠️ Architecture & Tech Stack
-
-| Layer | Technical Stack | Core Capabilities |
-| :--- | :--- | :--- |
-| **🧠 Intelligence** | `LangGraph (JS)`, `LangChain`, `Groq` | Stateful agent memory, Sequential graph execution, Rapid LLM inference. |
-| **🌐 API Core** | `Node.js`, `Express.js`, `Zod` | Asynchronous concurrency, schema validation, robust REST endpoints. |
-| **⚛️ App Shell** | `React 18`, `Vite 6`, `Zustand` | Persistent global state, Atomic routing, high-performance DOM updates. |
-| **💾 Persistence**| `Turso (libSQL)` | Ultra-low latency edge database, SQLite compatibility, high read-throughput. |
-| **🎨 Design** | `Vanilla CSS Modules` | Custom modern design tokens, high-contrast aesthetics, zero-bloat. |
+*   **🎯 Opportunity Radar**: algorithmic detection of price/volume anomalies and breakout patterns.
+*   **📰 News Intel**: NLP-driven sentiment analysis of major Indian financial media (MoneyControl, ET, Mint).
+*   **🛡️ Risk Sentinel**: Real-time portfolio concentration analytics and macro-event simulation.
+*   **💬 AI Quant Chat**: Conversational RAG (Retrieval-Augmented Generation) interface to query company filings and technical data via Groq/Llama-3.
 
 ---
 
-## 🚦 System Initialization (Quickstart)
+## 🛠️ Technical Architecture
 
-### 1️⃣ Backend Setup (The AI Engine)
-```bash
-# Enter the backend directory
-cd backend
-
-# Install dependencies (Express, LangGraph, Turso client)
-npm install
-
-# Launch the Sentinel Engine
-npm run dev  # Serving on http://localhost:8000
-```
-
-### 2️⃣ Frontend Setup (The Dashboard)
-```bash
-# Enter the frontend directory
-cd frontend
-
-# Install UI Dependencies
-npm install
-
-# Boot the Interactive Dashboard
-npm run dev  # Serving on http://localhost:5173
-```
+| Layer | Technology | Role |
+| :--- | :--- | :--- |
+| **Intelligence** | `LangGraph JS`, `LangChain`, `Groq` | Multi-agent orchestration, state management, and RAG. |
+| **API Core** | `Node.js (LTS)`, `Express.js`, `Axios` | High-performance middleware and external API integration. |
+| **Frontend** | `React 18`, `Vite 6`, `Zustand` | Reactive UI shell with global state management. |
+| **Design** | `Native CSS Modules`, `Neo-Brutalism` | Custom-themed modular styles without CSS bloat. |
+| **Storage** | `Turso (libSQL)`, `Redis` | Edge-optimized database for low-latency market data. |
 
 ---
 
@@ -77,33 +56,64 @@ npm run dev  # Serving on http://localhost:5173
 
 ```text
 ArthaNova/
-├── 🌐 backend/                 # Node.js + Express + LangGraph Engine
+├── 🌐 backend/                 # Node.js + Express Engine
 │   ├── src/
-│   │   ├── controllers/        # Route handlers
-│   │   ├── routes/             # API Endpoints registry
-│   │   ├── services/           # AI Multi-Agent Logic (aiAgentService.js)
-│   │   └── models/             # Turso Database Client (db.js)
-│   ├── .env                    # System Variables & API Keys
-│   └── package.json            # Backend dependencies
+│   │   ├── routes/             # API Endpoints (Auth, AI, Markets)
+│   │   ├── services/           # Agent Logic & Mail Services (Brevo)
+│   │   ├── config/             # System settings & Environment mappers
+│   │   └── utils/              # Security & Auth helpers
+│   └── setup_db.js             # One-click Database Initializer
 ├── ⚛️ frontend/                # React Vite Application
 │   ├── src/
-│   │   ├── components/         # Reusable high-impact UI components
-│   │   ├── pages/              # Dashboards, Agentic UI, Portfolio
-│   │   ├── styles/             # Modular CSS for styling and Popups
-│   │   └── store/              # Zustand global state (Auth/User)
+│   │   ├── components//        # Atomic UI & Security Modals
+│   │   ├── pages/auth/         # High-impact Auth & OTP flows
+│   │   ├── store/              # Centralized State (Zustand)
+│   │   └── styles/             # Neo-Brutalist Design Tokens
 └── 📄 README.md                # Integrated Documentation Hub
 ```
 
 ---
 
-## 👨‍💻 Author & Connect
+## 🚦 Quick Start Guide
+
+### 1. Prerequisites
+- Node.js v18+
+- A Google Cloud Project (for OAuth)
+- A Brevo API Key (for OTP emails)
+- A Turso/SQLite Database setup
+
+### 2. Installation & Setup
+
+**Backend:**
+```bash
+cd backend
+npm install
+# Configure your .env (see .env.example)
+npm run dev
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+# Configure your .env (VITE_GOOGLE_CLIENT_ID)
+npm run dev
+```
+
+---
+
+## 👨‍💻 Developed By
 
 **Ritesh Kumar**  
-Software Engineer & Quantitative AI Enthusiast  
+*Software Engineer & Quantitative AI Enthusiast*
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/riteshkumar-tech/)  
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github)](https://github.com/RiteshKumar2e)  
 [![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:riteshkumar90359@gmail.com)
 
 ---
+
+> [!IMPORTANT]
+> ArthaNova v2.1.0 introduces enhanced Google Auth security with custom UI hooks. Ensure `VITE_GOOGLE_CLIENT_ID` is correctly mapped in your environment to enable the Sentinel.
+
 *Architected for the upcoming wave of autonomous finance. Built with ❤️ for the Indian Investor.*
