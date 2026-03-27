@@ -42,6 +42,72 @@ const newsClient = axios.create({
   timeout: 10000,
 });
 
+// Twelve Data client
+const twelveDataClient = axios.create({
+  baseURL: 'https://api.twelvedata.com',
+  timeout: 15000,
+});
+
+/**
+ * Get real-time stock quote from Twelve Data
+ */
+export const getTwelveDataQuote = async (symbol) => {
+  try {
+    const response = await twelveDataClient.get('/quote', {
+      params: { 
+        symbol, 
+        apikey: settings.TWELVE_DATA_API_KEY,
+        exchange: symbol.endsWith('.NS') ? 'NSE' : (symbol.endsWith('.BO') ? 'BSE' : undefined)
+      }
+    });
+    
+    const d = response.data;
+    if (d && d.price) {
+      return {
+        symbol: d.symbol,
+        price: parseFloat(d.price),
+        change: parseFloat(d.change),
+        changePercent: parseFloat(d.percent_change),
+        high: parseFloat(d.high),
+        low: parseFloat(d.low),
+        open: parseFloat(d.open),
+        prevClose: parseFloat(d.previous_close),
+        volume: parseInt(d.volume),
+        timestamp: new Date(d.timestamp * 1000).toISOString(),
+        source: 'Twelve Data'
+      };
+    }
+    return null;
+  } catch (err) {
+    console.warn(`⚠️ Twelve Data quote failed for ${symbol}: ${err.message}`);
+    return null;
+  }
+};
+
+/**
+ * Get Technical Indicators from Twelve Data (e.g., rsi, adx, macd)
+ */
+export const getTwelveDataIndicator = async (symbol, indicator = 'rsi', interval = '1day', extraParams = {}) => {
+  try {
+    const response = await twelveDataClient.get(`/${indicator}`, {
+      params: {
+        symbol,
+        interval,
+        apikey: settings.TWELVE_DATA_API_KEY,
+        ...extraParams
+      }
+    });
+
+    if (response.data?.values) {
+      return response.data.values;
+    }
+    return null;
+  } catch (err) {
+    console.warn(`⚠️ Twelve Data ${indicator} failed for ${symbol}: ${err.message}`);
+    return null;
+  }
+};
+
 /**
  * Get real-time stock quote from Yahoo Finance (FREE - no API key needed)
  * Handles NSE/BSE symbols like RELIANCE.NS, INFY.NS, NCLIND.NS
@@ -95,6 +161,10 @@ export const getStockQuote = async (symbol) => {
     let result = await getStockQuoteFromYahoo(symbol);
     if (result) return result;
     
+    // Fallback to Twelve Data (very stable)
+    const twelveResult = await getTwelveDataQuote(symbol);
+    if (twelveResult) return twelveResult;
+
     // Fallback to Finnhub (works for major Indian ADRs and NSE via NS suffix)
     const response = await finnhubClient.get('/quote', {
       params: { symbol: symbol }
@@ -504,6 +574,8 @@ export default {
   getMarketNews,
   getCompanyProfile,
   getBasicFinancials,
+  getTwelveDataQuote,
+  getTwelveDataIndicator,
   getCandlestickData,
   calculateRSI,
   calculateMA,

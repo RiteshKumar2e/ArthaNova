@@ -36,6 +36,7 @@ const settings = {
   MARKETSTACK_API_KEY: process.env.MARKETSTACK_API_KEY || '',
   FINNHUB_API_KEY: process.env.FINNHUB_API_KEY || '',
   RAPIDAPI_KEY: process.env.RAPIDAPI_KEY || '',
+  TWELVE_DATA_API_KEY: process.env.TWELVE_DATA_API_KEY || '',
 
   // Image & Video
   STABILITY_API_KEY: process.env.STABILITY_API_KEY || '',
