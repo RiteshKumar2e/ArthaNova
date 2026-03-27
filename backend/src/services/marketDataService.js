@@ -27,6 +27,15 @@ const alphaClient = axios.create({
   timeout: 15000,
 });
 
+// Yahoo Finance client (FREE – no API key required)
+const yahooFinanceClient = axios.create({
+  baseURL: 'https://query1.finance.yahoo.com/v8/finance',
+  timeout: 15000,
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+  }
+});
+
 // News client (NewsData.io)
 const newsClient = axios.create({
   baseURL: 'https://newsdata.io/api/1',
@@ -34,13 +43,59 @@ const newsClient = axios.create({
 });
 
 /**
- * Get real-time stock quote from Finnhub
+ * Get real-time stock quote from Yahoo Finance (FREE - no API key needed)
+ * Handles NSE/BSE symbols like RELIANCE.NS, INFY.NS, NCLIND.NS
+ */
+export const getStockQuoteFromYahoo = async (symbol) => {
+  try {
+    const response = await yahooFinanceClient.get('/chart/' + symbol, {
+      params: {
+        interval: '1d',
+        range: '1d',
+        includePrePost: false,
+        events: 'div,split'
+      }
+    });
+    
+    const result = response.data?.chart?.result?.[0];
+    if (!result || !result.quote) {
+      throw new Error('Invalid response structure');
+    }
+    
+    const quote = result.quote[0];
+    const meta = result.meta;
+    
+    return {
+      symbol,
+      price: quote.close || quote.regularMarketPrice || meta.regularMarketPrice,
+      change: (quote.close || meta.regularMarketPrice) - (meta.previousClose || 0),
+      changePercent: ((quote.close || meta.regularMarketPrice) - (meta.previousClose || 0)) / (meta.previousClose || 1) * 100,
+      high: quote.high || meta.regularMarketDayHigh,
+      low: quote.low || meta.regularMarketDayLow,
+      open: quote.open || meta.regularMarketOpen,
+      prevClose: meta.previousClose,
+      volume: quote.volume || meta.regularMarketVolume,
+      timestamp: new Date(meta.regularMarketTime * 1000).toISOString(),
+      currency: meta.currency,
+      source: 'Yahoo Finance'
+    };
+  } catch (err) {
+    console.warn(`⚠️ Yahoo Finance quote failed for ${symbol}: ${err.message}`);
+    return null;
+  }
+};
+
+/**
+ * Get real-time stock quote from Finnhub (fallback)
  * Note: Finnhub uses US ticker format; for NSE use symbol.NS via Yahoo
- * We use Finnhub for global data + NSE BSE endpoint
  */
 export const getStockQuote = async (symbol) => {
   try {
-    // Try Finnhub first (works for major Indian ADRs and NSE via NS suffix)
+    // Try Yahoo Finance first (works instantly, no API key needed)
+    let result = await getStockQuoteFromYahoo(symbol);
+    if (result) return result;
+    
+    // Fallback to Finnhub (works for major Indian ADRs and NSE via NS suffix)
     const response = await finnhubClient.get('/quote', {
       params: { symbol: symbol }
     });
@@ -61,7 +116,7 @@ export const getStockQuote = async (symbol) => {
     }
     throw new Error('No data from Finnhub');
   } catch (err) {
-    console.warn(`⚠️ Finnhub quote failed for ${symbol}: ${err.message}`);
+    console.warn(`⚠️ Stock quote failed for ${symbol}: ${err.message}`);
     return null;
   }
 };
@@ -230,10 +285,59 @@ export const getBasicFinancials = async (symbol) => {
 };
 
 /**
- * Get candlestick data from Finnhub
+ * Get candlestick data from Yahoo Finance (FREE – no API key needed)
+ * Returns complete historical data for all available periods
+ * @param {string} symbol - Stock symbol (e.g., 'RELIANCE.NS', 'INFY.NS', 'NCLIND.NS')
+ * @param {string} interval - '1d', '1wk', '1mo' (default: '1d')
+ * @returns {Array} Array of candlestick objects with time, open, high, low, close, volume
+ */
+export const getCandlestickDataFromYahoo = async (symbol, interval = '1d') => {
+  try {
+    const response = await yahooFinanceClient.get('/chart/' + symbol, {
+      params: {
+        interval: interval,
+        range: 'max', // Get all available historical data
+        includePrePost: false,
+        events: 'div,split'
+      }
+    });
+    
+    const result = response.data?.chart?.result?.[0];
+    if (!result || !result.timestamp) {
+      console.warn(`⚠️ No data returned from Yahoo Finance for ${symbol}`);
+      return [];
+    }
+    
+    const { timestamp, indicators } = result;
+    const quotes = indicators.quote[0];
+    
+    return timestamp.map((ts, i) => ({
+      time: new Date(ts * 1000).toISOString(),
+      open: quotes.open[i],
+      high: quotes.high[i],
+      low: quotes.low[i],
+      close: quotes.close[i],
+      volume: quotes.volume[i],
+      adjClose: indicators.adjclose ? indicators.adjclose[0].adjclose[i] : null
+    })).filter(candle => candle.close !== null); // Filter out null values
+  } catch (err) {
+    console.warn(`⚠️ Yahoo Finance candlestick data fetch failed for ${symbol}: ${err.message}`);
+    return [];
+  }
+};
+
+/**
+ * Get candlestick data from Finnhub (fallback)
  */
 export const getCandlestickData = async (symbol, resolution = 'D', from = null, to = null) => {
   try {
+    // Try Yahoo Finance first (complete historical data, no API key)
+    let candles = await getCandlestickDataFromYahoo(symbol, '1d');
+    if (candles && candles.length > 0) {
+      return candles;
+    }
+    
+    // Fallback to Finnhub
     const now = Math.floor(Date.now() / 1000);
     const fromTs = from || now - 90 * 24 * 60 * 60; // 90 days back
     const toTs = to || now;

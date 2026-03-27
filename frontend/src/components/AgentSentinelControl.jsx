@@ -15,7 +15,7 @@ export default function AgentSentinelControl() {
   const [isScanning, setIsScanning] = useState(false);
 
   const addLog = (msg) => {
-    setLogs(prev => [ { id: Date.now(), msg, time: new Date().toLocaleTimeString() }, ...prev.slice(0, 5) ]);
+    setLogs(prev => [ { id: `${Date.now()}-${Math.random()}`, msg, time: new Date().toLocaleTimeString() }, ...prev.slice(0, 5) ]);
   };
 
   const startScan = () => {
