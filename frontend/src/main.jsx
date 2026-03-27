@@ -22,24 +22,25 @@ const queryClient = new QueryClient({
   },
 })
 
-// Suppress console errors from Google Identity Services and React DevTools
-const originalError = console.error
-console.error = (...args) => {
-  const allArgsString = args.map(arg => arg?.toString?.() || '').join(' ')
-  
-  // Filter out GSI, Google script, and noise errors
-  if (
-    allArgsString.includes('[GSI_LOADER]') ||
-    allArgsString.includes('Failed to load') ||
-    allArgsString.includes('button?type=standard') ||
-    allArgsString.includes('not allowed for the given client ID') ||
-    allArgsString.includes('Download the React DevTools') ||
-    allArgsString.includes('Cross-Origin-Opener-Policy')
-  ) {
-    return
+// Suppress console noise from third-party scripts
+const consoleMethods = ['log', 'info', 'warn', 'error']
+consoleMethods.forEach((method) => {
+  const original = console[method]
+  console[method] = (...args) => {
+    const allArgsString = args.map(arg => arg?.toString?.() || '').join(' ')
+    if (
+      allArgsString.includes('[GSI_LOADER]') ||
+      allArgsString.includes('Failed to load') ||
+      allArgsString.includes('button?type=standard') ||
+      allArgsString.includes('not allowed for the given client ID') ||
+      allArgsString.includes('Download the React DevTools') ||
+      allArgsString.includes('Cross-Origin-Opener-Policy')
+    ) {
+      return
+    }
+    original(...args)
   }
-  originalError(...args)
-}
+})
 
 const AppWrapper = GOOGLE_CLIENT_ID ? (
   <GoogleOAuthProvider 
