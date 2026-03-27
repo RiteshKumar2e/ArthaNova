@@ -252,10 +252,7 @@ export default function LandingPage() {
               <div className={styles.whyNameSection}>
                 <h3 className={styles.whyNameTitle}>WHY THIS NAME?</h3>
                 <p className={styles.whyNameText}>
-                  <strong>Artha</strong> (Sanskrit) = Wealth & Prosperity | <strong>Nova</strong> (Latin) = New & Bright Innovation
-                </p>
-                <p className={styles.whyNameText}>
-                  A beacon of institutional-grade intelligence, democratizing professional-grade market analysis for India's 14 crore+ retail investors.
+                  I selected this name to bridge the timeless pursuit of wealth (Artha) with the next generation of AI-driven innovation (Nova). My mission is to build a beacon of institutional-grade intelligence, democratizing professional-grade market analysis for India's 14 crore+ retail investors.
                 </p>
               </div>
             </div>
