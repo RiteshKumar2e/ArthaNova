@@ -25,14 +25,16 @@ const queryClient = new QueryClient({
 // Suppress console errors from Google Identity Services and React DevTools
 const originalError = console.error
 console.error = (...args) => {
-  const errorString = args[0]?.toString?.() || ''
-  // Filter out GSI and Google script errors
+  const allArgsString = args.map(arg => arg?.toString?.() || '').join(' ')
+  
+  // Filter out GSI, Google script, and noise errors
   if (
-    errorString.includes('[GSI_LOADER]') ||
-    errorString.includes('Failed to load') ||
-    errorString.includes('button?type=standard') ||
-    errorString.includes('not allowed for the given client ID') ||
-    errorString.includes('Download the React DevTools')
+    allArgsString.includes('[GSI_LOADER]') ||
+    allArgsString.includes('Failed to load') ||
+    allArgsString.includes('button?type=standard') ||
+    allArgsString.includes('not allowed for the given client ID') ||
+    allArgsString.includes('Download the React DevTools') ||
+    allArgsString.includes('Cross-Origin-Opener-Policy')
   ) {
     return
   }

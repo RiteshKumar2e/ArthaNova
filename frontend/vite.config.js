@@ -16,5 +16,8 @@ export default defineConfig({
       port: 5173,
       protocol: 'ws',
     },
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
   },
 })
