@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import styles from '../../styles/pages/auth/OTPModal.module.css';
 
-export default function OTPModal({ email, fullName, otpToken, onComplete, onBack }) {
+export default function OTPModal({ email, fullName, otpToken, onComplete, onBack, idToken, accessToken }) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
@@ -86,13 +86,31 @@ export default function OTPModal({ email, fullName, otpToken, onComplete, onBack
   const handleResendOTP = async () => {
     setLoading(true);
     try {
-      // Call resend endpoint (you'll need to create this)
-      toast.success('✉️ OTP resent to your email');
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/google/otp-resend`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            idToken,
+            accessToken,
+          }),
+        }
+      );
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Resend failed');
+      }
+
+      toast.success('✉️ New OTP sent to your email');
       setOtp(['', '', '', '', '', '']);
       setTimeLeft(300); // Reset to 5 minutes
       setAttemptMessage('');
     } catch (error) {
-      toast.error('Failed to resend OTP');
+      toast.error(`❌ Resend failed: ${error.message}`);
     } finally {
       setLoading(false);
     }

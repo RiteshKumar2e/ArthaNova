@@ -76,6 +76,8 @@ export default function LoginPage() {
         email: data.email,
         fullName: data.fullName,
         otpToken: data.otp_token,
+        idToken: credentialResponse.credential,
+        accessToken: null,
       })
 
       toast.success('✉️ OTP sent to your email')
@@ -122,6 +124,8 @@ export default function LoginPage() {
         email: data.email,
         fullName: data.fullName,
         otpToken: data.otp_token,
+        idToken: null,
+        accessToken: authResponse.access_token,
       })
 
       toast.success('✉️ OTP sent to your email')
@@ -360,6 +364,8 @@ export default function LoginPage() {
           email={otpState.email}
           fullName={otpState.fullName}
           otpToken={otpState.otpToken}
+          idToken={otpState.idToken}
+          accessToken={otpState.accessToken}
           onComplete={handleOTPComplete}
           onBack={handleOTPBack}
         />

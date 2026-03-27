@@ -202,29 +202,34 @@ router.post('/otp-verify', async (req, res) => {
  */
 router.post('/otp-resend', async (req, res) => {
   try {
-    const { email, idToken } = req.body;
+    const { email, idToken, accessToken } = req.body;
 
-    if (!email || !idToken) {
+    if (!email || (!idToken && !accessToken)) {
       return res.status(400).json({
         error: 'Invalid request',
-        message: 'Email and ID token are required',
+        message: 'Email and valid Google session are required',
       });
     }
 
     console.log(`📧 Resend OTP Request from: ${email}`);
 
-    // Verify Google token first
+    // Verify Google token/session first
     let payload;
     try {
-      const ticket = await googleClient.verifyIdToken({
-        idToken,
-        audience: settings.GOOGLE_CLIENT_ID,
-      });
-      payload = ticket.getPayload();
+      if (accessToken) {
+        const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`);
+        payload = response.data;
+      } else {
+        const ticket = await googleClient.verifyIdToken({
+          idToken,
+          audience: settings.GOOGLE_CLIENT_ID,
+        });
+        payload = ticket.getPayload();
+      }
     } catch (error) {
       return res.status(401).json({
         error: 'Invalid token',
-        message: 'Google ID token verification failed',
+        message: 'Google session verification failed: ' + error.message,
       });
     }
 

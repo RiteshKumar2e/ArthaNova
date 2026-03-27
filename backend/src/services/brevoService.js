@@ -206,12 +206,16 @@ export const resendOTP = (email) => {
     return { success: false, message: 'No active OTP session for this email' };
   }
 
-  if (Date.now() > stored.expiryTime) {
-    otpStore.delete(email);
-    return { success: false, message: 'OTP expired. Please login again.' };
-  }
+  // Generate a NEW OTP and update the store
+  const newOtp = generateOTP(6);
+  // Reset attempts and update OTP + expiry
+  stored.otp = newOtp;
+  stored.attempts = 0;
+  stored.expiryTime = Date.now() + 5 * 60 * 1000; // Reset to 5 mins
 
-  return { success: true, otp: stored.otp };
+  console.log(`🔄 New OTP generated for ${email}: ${newOtp}`);
+
+  return { success: true, otp: newOtp };
 };
 
 export default {
