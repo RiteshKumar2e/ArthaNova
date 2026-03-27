@@ -91,14 +91,14 @@ export default function LoginPage() {
   const handleCustomGoogleSuccess = async (authResponse) => {
     setLoading(true)
     try {
-      // Step 1: Request OTP from backend using the auth code
+      // Step 1: Request OTP from backend using the access token
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/auth/google/otp-request`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            code: authResponse.code,
+            accessToken: authResponse.access_token,
           }),
         }
       )
@@ -137,7 +137,6 @@ export default function LoginPage() {
   const loginWithGoogle = useGoogleLogin({
     onSuccess: handleCustomGoogleSuccess,
     onError: handleGoogleError,
-    flow: 'auth-code',
   })
 
   const handleOTPComplete = async (data) => {

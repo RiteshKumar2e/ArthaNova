@@ -1,5 +1,6 @@
 import express from 'express';
 import { OAuth2Client } from 'google-auth-library';
+import axios from 'axios';
 import { generateOTP, sendOTPByEmail, storeOTP, verifyOTP, resendOTP } from '../services/brevoService.js';
 import * as userService from '../services/userService.js';
 import { createAccessToken, createRefreshToken, hashPassword } from '../utils/auth.js';
@@ -21,14 +22,22 @@ console.log(`   Admin Emails: ${settings.AUTHORIZED_ADMIN_EMAILS.join(', ')}`);
  */
 router.post('/otp-request', async (req, res) => {
   try {
-    const { idToken, code } = req.body;
+    const { idToken, code, accessToken } = req.body;
     
-    // Verify Google ID Token or Auth Code
+    // Verify Google ID Token, Auth Code or Access Token
     let payload;
     try {
-      if (code) {
-        // Handle Auth Code flow (for custom buttons)
-        const { tokens } = await googleClient.getToken(req.body.code);
+      if (accessToken) {
+        // Handle implicit flow access token
+        const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`);
+        payload = response.data;
+        // Map userinfo payload to expected token payload structure
+        payload.name = payload.name || payload.given_name || 'Google User';
+      } else if (code) {
+        // Handle Auth Code flow (for custom buttons - requires client secret if configured)
+        // Note: getToken requires CLIENT_SECRET which we don't have configured yet.
+        // If getting auth code errors, suggest using accessToken (implicit flow)
+        const { tokens } = await googleClient.getToken(code);
         const ticket = await googleClient.verifyIdToken({
           idToken: tokens.id_token,
           audience: settings.GOOGLE_CLIENT_ID,
