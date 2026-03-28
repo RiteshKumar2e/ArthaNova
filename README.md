@@ -115,9 +115,10 @@ npm run dev
 
 ## 📜 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+This project is protected under a **Proprietary Software License** — see the [LICENSE](LICENSE) file for full details.
 
-You are free to use, modify, and distribute this software under the terms of the MIT License. See [opensource.org/licenses/MIT](https://opensource.org/licenses/MIT) for more information.
+**© 2026 Ritesh Kumar. All Rights Reserved.**  
+Unauthorized use, copying, modification, distribution, or reproduction of this software or its design — in whole or in part — is strictly prohibited without prior written permission from the author.
 
 ---
 

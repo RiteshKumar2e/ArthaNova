@@ -132,16 +132,16 @@ const LINK_DETAILS = {
     features: ['Unbiased algorithmic data', 'No SEBI registration claimed', 'Full transparency of algorithms']
   },
   'License': { 
-    title: 'MIT LICENSE', 
+    title: 'PROPRIETARY LICENSE', 
     status: 'LEGAL', 
-    tags: ['Open Source', 'MIT', 'Copyright'],
-    desc: 'ArthaNova is released under the MIT License. You are free to use, modify, and distribute this software under the terms outlined below.',
+    tags: ['All Rights Reserved', 'Proprietary', 'Copyright'],
+    desc: 'ArthaNova is proprietary software. All rights reserved by Ritesh Kumar. No part of this software — including its code, design, UI, or assets — may be used, copied, or distributed without explicit written permission.',
     features: [
-      'Copyright (c) 2026 Ritesh Kumar',
-      'Permission is hereby granted, free of charge, to any person obtaining a copy of this software',
-      'Includes rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies',
-      'THE SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY',
-      'In no event shall the authors be liable for any claim, damages or other liability'
+      'Copyright (c) 2026 Ritesh Kumar. All Rights Reserved.',
+      'Unauthorized use, copying, or distribution is strictly prohibited',
+      'Design, UI elements, and branding are exclusively proprietary',
+      'No license is granted to any person without written consent',
+      'Violations may result in civil and/or criminal penalties'
     ]
   }
 }
