@@ -113,5 +113,12 @@ npm run dev
 
 ---
 
+## 📜 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+You are free to use, modify, and distribute this software under the terms of the MIT License. See [opensource.org/licenses/MIT](https://opensource.org/licenses/MIT) for more information.
+
+---
 
 *Architected for the upcoming wave of autonomous finance. Built with ❤️ for the Indian Investor.*
