@@ -130,6 +130,19 @@ const LINK_DETAILS = {
     tags: ['Compliance', 'Software', 'Non-Advisory'],
     desc: 'Regulatory compliance statements detailing that ArthaNova functions as an analytical software tool and not a registered investment advisor.',
     features: ['Unbiased algorithmic data', 'No SEBI registration claimed', 'Full transparency of algorithms']
+  },
+  'License': { 
+    title: 'MIT LICENSE', 
+    status: 'LEGAL', 
+    tags: ['Open Source', 'MIT', 'Copyright'],
+    desc: 'ArthaNova is released under the MIT License. You are free to use, modify, and distribute this software under the terms outlined below.',
+    features: [
+      'Copyright (c) 2026 Ritesh Kumar',
+      'Permission is hereby granted, free of charge, to any person obtaining a copy of this software',
+      'Includes rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies',
+      'THE SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY',
+      'In no event shall the authors be liable for any claim, damages or other liability'
+    ]
   }
 }
 
@@ -196,6 +209,7 @@ export default function Footer() {
                 <a href="#" onClick={(e) => handleLinkClick(e, 'Terms of Service')}>Terms of Service</a>
                 <a href="#" onClick={(e) => handleLinkClick(e, 'Disclaimer')}>Disclaimer</a>
                 <a href="#" onClick={(e) => handleLinkClick(e, 'SEBI Disclosure')}>SEBI Disclosure</a>
+                <a href="#" onClick={(e) => handleLinkClick(e, 'License')}>License</a>
               </div>
             </div>
           </div>
