@@ -137,7 +137,7 @@ const LINK_DETAILS = {
     tags: ['All Rights Reserved', 'Proprietary', 'Copyright'],
     desc: 'ArthaNova is proprietary software. All rights reserved by Ritesh Kumar. No part of this software — including its code, design, UI, or assets — may be used, copied, or distributed without explicit written permission.',
     features: [
-      'Copyright (c) 2026 Ritesh Kumar. All Rights Reserved.',
+      'Copyright (c) 2022 Ritesh Kumar. All Rights Reserved.',
       'Unauthorized use, copying, or distribution is strictly prohibited',
       'Design, UI elements, and branding are exclusively proprietary',
       'No license is granted to any person without written consent',
