@@ -167,3 +167,94 @@
   color: #FF6AC1;
   font-size: 1.2rem;
 }
+
+/* ── Mobile Responsive ───────────── */
+@media (max-width: 480px) {
+  .popupOverlay {
+    padding: 0.75rem;
+    align-items: center;
+  }
+
+  .popupContent {
+    padding: 1.25rem 1rem 1.25rem;
+    border-width: 3px;
+    box-shadow: 5px 5px 0px #C4FF00;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Move close button inside the card, top-right corner */
+  .popupClose {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    border-width: 2px;
+    box-shadow: 2px 2px 0px #000;
+  }
+
+  .popupHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.6rem;
+    padding-right: 2.5rem; /* space for close button */
+  }
+
+  .popupTitle {
+    font-size: 1.15rem;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .popupStatus {
+    font-size: 0.62rem;
+    padding: 0.2rem 0.5rem;
+    transform: rotate(0deg);
+    border-width: 2px;
+  }
+
+  .popupTags {
+    gap: 0.35rem;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .popupTag {
+    font-size: 0.62rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .popupDesc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 0.9rem;
+  }
+
+  .popupFeaturesBox {
+    padding: 1rem 0.8rem 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .popupFeaturesTitle {
+    font-size: 0.7rem;
+    top: -10px;
+    left: 10px;
+    padding: 0 6px;
+    border-width: 2px;
+  }
+
+  .popupFeatureList {
+    padding-left: 1rem;
+  }
+
+  .popupFeatureItem {
+    font-size: 0.82rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+}
