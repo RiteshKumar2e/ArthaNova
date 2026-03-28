@@ -32,7 +32,12 @@ export default function Topbar({ onToggleSidebar }) {
   return (
     <header className={styles.topbar}>
       <div className={styles.left}>
-        <button onClick={onToggleSidebar} className={styles.menuBtn} aria-label="Toggle sidebar">
+        <button 
+          onClick={onToggleSidebar} 
+          className={styles.menuBtn} 
+          aria-label="Toggle sidebar"
+          type="button"
+        >
           ☰
         </button>
         {/* Platform Logo */}

@@ -18,6 +18,13 @@
   margin-left: var(--sidebar-collapsed-width);
 }
 
+@media (max-width: 992px) {
+  .wrapper.collapsed .content {
+    margin-left: 0 !important;
+  }
+}
+
+
 .main {
   flex: 1;
   overflow-y: auto;
@@ -39,12 +46,15 @@
     padding-left: 0 !important;
     width: 100% !important;
     min-width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden;
   }
+
 
   .main {
     padding: var(--space-6);
   }
-  
+
   .adminContainer {
     max-width: 100% !important;
   }
@@ -54,6 +64,7 @@
   .main {
     padding: var(--space-4);
   }
+
   .adminContainer {
     max-width: 100% !important;
     gap: var(--space-4);
@@ -64,7 +75,27 @@
   .main {
     padding: 4px !important;
   }
+
   .adminContainer {
     gap: 8px !important;
+  }
+}
+
+.mobileOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .wrapper:not(.collapsed) .mobileOverlay {
+    display: block;
   }
 }

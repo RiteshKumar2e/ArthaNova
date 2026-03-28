@@ -19,6 +19,7 @@
   padding: 0 1.5rem;
   gap: 1rem;
   flex-shrink: 0;
+  pointer-events: auto;
 }
 
 /* ── Left side ───────────────────────── */
@@ -28,6 +29,7 @@
   gap: 1rem;
   flex: 1;
   min-width: 0;
+  pointer-events: auto;
 }
 
 .menuBtn {
@@ -43,6 +45,7 @@
   justify-content: center;
   flex-shrink: 0;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
+  pointer-events: auto;
 }
 .menuBtn:hover {
   background: #C4FF00;

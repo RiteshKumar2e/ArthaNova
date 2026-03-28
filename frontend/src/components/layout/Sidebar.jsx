@@ -82,7 +82,10 @@ export default function Sidebar({ collapsed, onToggle, onNavigate }) {
   const navItems = isAdmin ? ADMIN_NAV : USER_NAV
 
   return (
-    <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
+    <aside 
+      className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Navigation */}
       {!collapsed && user && (
         <div className={styles.userInfo}>

@@ -9,7 +9,15 @@ export default function AdminLayout() {
 
   return (
     <div className={`${styles.wrapper} ${sidebarCollapsed ? styles.collapsed : ''}`}>
-      <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
+      <div
+        className={styles.mobileOverlay}
+        onClick={() => setSidebarCollapsed(true)}
+      ></div>
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        onNavigate={() => { if (window.innerWidth <= 992) setSidebarCollapsed(true); }}
+      />
       <div className={styles.content}>
         <Topbar onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
         <main className={styles.main}>
