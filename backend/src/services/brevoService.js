@@ -218,14 +218,6 @@ export const resendOTP = (email) => {
   return { success: true, otp: newOtp };
 };
 
-export default {
-  generateOTP,
-  sendOTPByEmail,
-  storeOTP,
-  verifyOTP,
-  resendOTP,
-};
-
 export const sendPasswordResetEmail = async (email, resetUrl, userName = 'User') => {
   try {
     if (!BREVO_API_KEY) throw new Error('Brevo API key not configured');

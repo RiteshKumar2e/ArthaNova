@@ -74,7 +74,7 @@ const settings = {
     .split(',')
     .map(email => email.trim().toLowerCase()),
   ADMIN_PASSWORD_OVERRIDE: process.env.ADMIN_PASSWORD_OVERRIDE,
-  FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
+  FRONTEND_URL: process.env.FRONTEND_URL || 'https://arthanova.vercel.app',
 };
 
 export default settings;
