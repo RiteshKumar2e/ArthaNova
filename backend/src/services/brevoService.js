@@ -224,7 +224,6 @@ export default {
   storeOTP,
   verifyOTP,
   resendOTP,
-  sendPasswordResetEmail,
 };
 
 export const sendPasswordResetEmail = async (email, resetUrl, userName = 'User') => {
