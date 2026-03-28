@@ -1,6 +1,9 @@
 .adminDashboard {
   padding: 16px 24px;
+  overflow-x: hidden; /* Prevent horizontal scrolling on the page level */
+  max-width: 100%;
 }
+
 
 .statsGrid {
   display: grid;
@@ -110,7 +113,12 @@
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
+.tableWrapper::-webkit-scrollbar { height: 6px; display: block; }
+.tableWrapper::-webkit-scrollbar-thumb { background: #000; }
+
 .activityTable th {
   padding: 8px 14px;
   background: #000;
@@ -125,8 +133,10 @@
   border-bottom: 1px solid #eee;
   font-size: 0.7rem;
   font-weight: 700;
+  word-break: break-word; /* Ensure long emails don't break the layout */
 }
 .activityTable tr:nth-child(even) { background: #fafafa; }
+
 
 .healthList {
   display: flex;
@@ -183,28 +193,54 @@
 }
 .performanceLabel { color: #666; font-size: 0.65rem; text-transform: uppercase; }
 
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+
 @media (max-width: 768px) {
   .adminDashboard { padding: 12px; }
   .statsGrid { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .statCard { padding: 8px; }
-  .value { font-size: 1.1rem; }
+  .statCard { padding: 10px; } /* Slightly more padding for touch */
+  .value { font-size: 1.15rem; }
+  
+  .headerActions {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .headerActions :global(.btn) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .tabNav { 
     flex-direction: row; 
     border-bottom: 3px solid #000; 
     overflow-x: auto; 
+    overflow-y: hidden;
     padding-bottom: 12px;
+    margin-bottom: 12px;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    width: 100%;
+    scrollbar-width: thin; /* Make scroller more obvious if needed */
   }
-  .tabNav::-webkit-scrollbar { display: none; }
+  .tabNav::-webkit-scrollbar { height: 4px; display: block; }
+  .tabNav::-webkit-scrollbar-thumb { background: #000; }
+
   .tabButton { 
     white-space: nowrap; 
     flex-shrink: 0; 
-    font-size: 0.65rem; 
-    padding: 6px 10px;
-    transform: none !important; 
+    font-size: 0.6rem; 
+    padding: 6px 12px;
+    box-shadow: 2px 2px 0px #000;
+    border-width: 2px;
   }
 }
+
+
 
 @media (max-width: 480px) {
   .statsGrid { grid-template-columns: 1fr; }

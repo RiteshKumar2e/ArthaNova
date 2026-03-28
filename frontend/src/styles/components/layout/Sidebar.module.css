@@ -307,10 +307,18 @@
 /* Mobile */
 @media (max-width: 992px) {
   .sidebar {
+    width: 260px;
+    min-width: 260px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
     transform: translateX(-100%);
     transition: transform 0.2s ease;
-    z-index: 1000;
+    z-index: 1001;
   }
+  /* Show sidebar when NOT collapsed on mobile */
   .sidebar:not(.collapsed) {
     transform: translateX(0);
   }

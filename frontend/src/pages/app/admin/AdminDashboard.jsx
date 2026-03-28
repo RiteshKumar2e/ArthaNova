@@ -119,7 +119,7 @@ export default function AdminDashboard() {
           <h1 className="page-title">ADMIN COMMAND CENTER 🛠️</h1>
           <p className="page-subtitle">GOVERNANCE, PLATFORM HEALTH, AND AI SYSTEM OVERSIGHT.</p>
         </div>
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div className={styles.headerActions}>
           <Link to="/admin/settings" className="btn btn-secondary btn-sm">⚙️ SYSTEM SETTINGS</Link>
           <Link to="/admin/users" className="btn btn-primary btn-sm">👥 USER MANAGEMENT</Link>
         </div>

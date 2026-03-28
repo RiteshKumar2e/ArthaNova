@@ -23,14 +23,14 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
-  margin-left: var(--sidebar-width, var(--sidebar-w));
+  margin-left: 260px;
   transition: margin-left 0.15s ease;
   overflow-x: hidden;
 }
 
 /* Collapsed sidebar = narrower margin */
 .wrapper.collapsed .content {
-  margin-left: var(--sidebar-collapsed-width, var(--sidebar-collapsed-w));
+  margin-left: 68px;
 }
 
 /* ── Main content area ─────────────────── */
@@ -54,15 +54,30 @@
 
 /* ── Responsive ─────────────────────────── */
 @media (max-width: 992px) {
-  .content { margin-left: 0 !important; width: 100%; overflow-x: hidden; }
-  .wrapper.collapsed .content { margin-left: 0 !important; }
-  .main { padding: var(--sp-4); overflow-x: hidden; }
+  .content {
+    margin-left: 0 !important;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .wrapper.collapsed .content {
+    margin-left: 0 !important;
+  }
+  .main {
+    padding: var(--sp-4);
+    overflow-x: hidden;
+  }
 }
 
 @media (max-width: 768px) {
-  .main { padding: var(--sp-3); overflow-x: hidden; }
+  .main {
+    padding: var(--sp-3);
+    overflow-x: hidden;
+  }
 }
 
 @media (max-width: 480px) {
-  .main { padding: 8px; overflow-x: hidden; }
+  .main {
+    padding: 8px;
+    overflow-x: hidden;
+  }
 }
