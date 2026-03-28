@@ -3,6 +3,11 @@ import * as userService from '../services/userService.js';
 import { OAuth2Client } from 'google-auth-library';
 import settings from '../config/settings.js';
 import db from '../models/db.js';
+import crypto from 'crypto';
+import { sendPasswordResetEmail } from '../services/brevoService.js';
+
+// In-memory store for password reset tokens (use DB/Redis in production)
+const passwordResetTokens = new Map();
 
 // Use the central settings configuration
 const client = new OAuth2Client(settings.GOOGLE_CLIENT_ID);
@@ -260,3 +265,80 @@ export const getMe = async (req, res) => {
 export const logout = async (req, res) => {
   res.json({ message: 'Logged out successfully' });
 };
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ detail: 'Email is required' });
+
+  const cleanEmail = email.trim().toLowerCase();
+
+  try {
+    const user = await userService.getUserByEmail(cleanEmail);
+
+    // Always return success to prevent email enumeration attacks
+    if (!user) {
+      return res.json({ message: 'If that email exists, a reset link has been sent.' });
+    }
+
+    // Generate a secure token
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour
+
+    // Store token (invalidates any previous token for this email)
+    passwordResetTokens.set(token, { email: cleanEmail, expiresAt });
+
+    // Build reset URL — frontend /reset-password?token=xxx
+    const frontendUrl = settings.FRONTEND_URL || 'http://localhost:5173';
+    const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
+
+    // Send email via Brevo
+    await sendPasswordResetEmail(cleanEmail, resetUrl, user.full_name || user.username || 'User');
+
+    console.log(`🔑 Password reset link sent to ${cleanEmail}`);
+    res.json({ message: 'If that email exists, a reset link has been sent.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ detail: 'Failed to send reset email. Please try again.' });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { token, new_password } = req.body;
+  if (!token || !new_password) {
+    return res.status(400).json({ detail: 'Token and new password are required' });
+  }
+  if (new_password.length < 8) {
+    return res.status(400).json({ detail: 'Password must be at least 8 characters' });
+  }
+
+  try {
+    const record = passwordResetTokens.get(token);
+
+    if (!record) {
+      return res.status(400).json({ detail: 'Invalid or expired reset token' });
+    }
+    if (Date.now() > record.expiresAt) {
+      passwordResetTokens.delete(token);
+      return res.status(400).json({ detail: 'Reset token has expired. Please request a new one.' });
+    }
+
+    const user = await userService.getUserByEmail(record.email);
+    if (!user) {
+      return res.status(400).json({ detail: 'User not found' });
+    }
+
+    // Hash new password and save to DB
+    const hashedPassword = await hashPassword(new_password);
+    await userService.updateUserPassword(user.id, hashedPassword);
+
+    // Invalidate the token so it cannot be reused
+    passwordResetTokens.delete(token);
+
+    console.log(`✅ Password reset successful for ${record.email}`);
+    res.json({ message: 'Password reset successfully. You can now log in with your new password.' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({ detail: 'Failed to reset password. Please try again.' });
+  }
+};
+

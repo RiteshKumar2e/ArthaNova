@@ -10,5 +10,7 @@ router.post('/login', authController.login);
 router.post('/refresh', authController.refreshToken);
 router.get('/me', authenticate, authController.getMe);
 router.post('/logout', authenticate, authController.logout);
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
 
 export default router;

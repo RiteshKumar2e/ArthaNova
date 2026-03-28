@@ -224,4 +224,101 @@ export default {
   storeOTP,
   verifyOTP,
   resendOTP,
+  sendPasswordResetEmail,
 };
+
+export const sendPasswordResetEmail = async (email, resetUrl, userName = 'User') => {
+  try {
+    if (!BREVO_API_KEY) throw new Error('Brevo API key not configured');
+
+    const payload = {
+      sender: {
+        name: settings.BREVO_SENDER_NAME,
+        email: settings.BREVO_SENDER_EMAIL,
+      },
+      to: [{ email, name: userName }],
+      subject: 'Reset Your ArthaNova Password',
+      htmlContent: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Reset Password - ArthaNova</title>
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #f6f9fc; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f6f9fc; padding: 40px 20px;">
+            <tr>
+              <td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                  
+                  <!-- Header -->
+                  <tr>
+                    <td align="center" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%); padding: 60px 40px;">
+                      <div style="font-size: 48px; margin-bottom: 20px;">🔑</div>
+                      <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">Reset Your Password</h1>
+                      <div style="display: inline-block; background-color: #FFD700; color: #000000; font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 6px; margin-top: 16px; text-transform: uppercase; letter-spacing: 0.5px;">ArthaNova AI</div>
+                    </td>
+                  </tr>
+
+                  <!-- Body -->
+                  <tr>
+                    <td style="padding: 48px 40px;">
+                      <p style="color: #4B5563; font-size: 16px; line-height: 24px; margin: 0 0 24px 0;">
+                        Hi <strong>${userName}</strong>, we received a request to reset your password. Click the button below to choose a new one.
+                      </p>
+                      <p style="color: #9CA3AF; font-size: 14px; margin: 0 0 32px 0;">
+                        This link will expire in <strong style="color: #111827;">1 hour</strong>. If you didn't request this, you can safely ignore this email.
+                      </p>
+
+                      <!-- CTA Button -->
+                      <div style="text-align: center; margin-bottom: 40px;">
+                        <a href="${resetUrl}" style="display: inline-block; background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%); color: #ffffff; font-size: 16px; font-weight: 700; padding: 16px 40px; border-radius: 12px; text-decoration: none; letter-spacing: 0.3px;">
+                          RESET MY PASSWORD →
+                        </a>
+                      </div>
+
+                      <!-- Fallback URL -->
+                      <div style="background-color: #F9FAFB; border-radius: 8px; padding: 16px; border: 1px solid #E5E7EB; margin-bottom: 32px;">
+                        <p style="color: #6B7280; font-size: 12px; margin: 0 0 8px 0;">Or copy and paste this link into your browser:</p>
+                        <p style="color: #6366F1; font-size: 12px; margin: 0; word-break: break-all;">${resetUrl}</p>
+                      </div>
+
+                      <!-- Security Notice -->
+                      <div style="background-color: #FFFBEB; border-radius: 12px; padding: 20px; border: 1px solid #FEF3C7;">
+                        <strong style="color: #92400E; font-size: 14px;">🛡️ Security Notice</strong>
+                        <p style="color: #B45309; font-size: 14px; margin: 8px 0 0 0; line-height: 20px;">
+                          ArthaNova will never ask for your password. If you didn't request a reset, please contact support immediately.
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Footer -->
+                  <tr>
+                    <td style="padding: 0 40px 40px 40px; text-align: center; border-top: 1px solid #F3F4F6; padding-top: 32px;">
+                      <p style="color: #9CA3AF; font-size: 12px; margin: 0;">© 2022 ArthaNova Intelligence Platform. All rights reserved.</p>
+                      <div style="margin-top: 16px;">
+                        <a href="mailto:riteshkumar90359@gmail.com" style="color: #6366F1; text-decoration: none; font-size: 12px; font-weight: 500;">Contact Support</a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `,
+      tags: ['PasswordReset', 'Security', 'ArthaNova'],
+    };
+
+    const response = await brevoClient.post('/smtp/email', payload);
+    console.log(`✅ Password reset email sent to ${email}`);
+    return { success: true, messageId: response.data.messageId };
+  } catch (error) {
+    console.error('❌ Brevo Password Reset Email Error:', error.response?.data || error.message);
+    throw new Error(`Failed to send reset email: ${error.response?.data?.message || error.message}`);
+  }
+};
+
