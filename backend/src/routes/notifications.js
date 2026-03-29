@@ -1,11 +1,12 @@
 import express from 'express';
 import { authenticate, adminOnly } from '../middlewares/auth.js';
+import { apiCache } from '../middlewares/cache.js';
 import db from '../models/db.js';
 
 const router = express.Router();
 
-// List user notifications
-router.get('/', authenticate, async (req, res) => {
+// List user notifications - cached for 15 seconds to reduce DB load
+router.get('/', authenticate, apiCache(15), async (req, res) => {
   try {
     const userId = req.user.id;
     // Broadcast + User specific

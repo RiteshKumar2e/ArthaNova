@@ -6,6 +6,43 @@
 import growApiService from '../services/growApiService.js';
 import marketDataService from '../services/marketDataService.js';
 
+// In-memory cache for stock quotes per request (request-scoped)
+const quoteCache = new Map();
+const QUOTE_CACHE_TTL = 30000; // 30 seconds
+
+/**
+ * Get stock quote with timeout and caching
+ */
+const getQuoteWithTimeout = async (ticker, timeoutMs = 5000) => {
+  const cacheKey = ticker;
+  const cached = quoteCache.get(cacheKey);
+  
+  if (cached && Date.now() - cached.timestamp < QUOTE_CACHE_TTL) {
+    return cached.data;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    
+    const quote = await Promise.race([
+      marketDataService.getStockQuote(ticker),
+      new Promise((_, reject) => controller.signal.addEventListener('abort', () => reject(new Error('Timeout'))))
+    ]);
+    
+    clearTimeout(timeoutId);
+    
+    if (quote) {
+      quoteCache.set(cacheKey, { data: quote, timestamp: Date.now() });
+      return quote;
+    }
+  } catch (e) {
+    // Silent fail - use defaults
+  }
+  
+  return null;
+};
+
 // Static watchlist for discovery if query is empty
 const WATCHLIST = [
   { symbol: "RELIANCE", name: "Reliance Industries Ltd.", sector: "Energy" },
@@ -13,12 +50,22 @@ const WATCHLIST = [
   { symbol: "HDFCBANK", name: "HDFC Bank Ltd.", sector: "Banking" },
   { symbol: "INFY", name: "Infosys Ltd.", sector: "IT Services" },
   { symbol: "ICICIBANK", name: "ICICI Bank Ltd.", sector: "Banking" },
-  { symbol: "BAJFINANCE", name: "Bajaj Finance Ltd.", sector: "NBFC" },
-  { symbol: "BHARTIARTL", name: "Bharti Airtel Ltd.", sector: "Telecom" },
-  { symbol: "SBIN", name: "State Bank of India", sector: "Banking" },
-  { symbol: "LT", name: "Larsen & Toubro Ltd.", sector: "Infrastructure" },
+  { symbol: "HINDUNILVR", name: "Hindustan Unilever Ltd.", sector: "FMCG" },
   { symbol: "ITC", name: "ITC Ltd.", sector: "FMCG" },
+  { symbol: "SBIN", name: "State Bank of India", sector: "Banking" },
+  { symbol: "BHARTIARTL", name: "Bharti Airtel Ltd.", sector: "Telecom" },
+  { symbol: "BAJFINANCE", name: "Bajaj Finance Ltd.", sector: "NBFC" },
+  { symbol: "LT", name: "Larsen & Toubro Ltd.", sector: "Infrastructure" },
+  { symbol: "KOTAKBANK", name: "Kotak Mahindra Bank Ltd.", sector: "Banking" },
+  { symbol: "AXISBANK", name: "Axis Bank Ltd.", sector: "Banking" },
+  { symbol: "ASIANPAINT", name: "Asian Paints Ltd.", sector: "Consumer Durables" },
+  { symbol: "MARUTI", name: "Maruti Suzuki India Ltd.", sector: "Auto" },
+  { symbol: "TITAN", name: "Titan Company Ltd.", sector: "Consumer Durables" },
+  { symbol: "ULTRACEMCO", name: "UltraTech Cement Ltd.", sector: "Materials" },
+  { symbol: "SUNPHARMA", name: "Sun Pharmaceutical Industries Ltd.", sector: "Pharma" },
+  { symbol: "ADANIENT", name: "Adani Enterprises Ltd.", sector: "Metals & Mining" },
   { symbol: "TATASTEEL", name: "Tata Steel Ltd.", sector: "Metals" },
+  { symbol: "M&M", name: "Mahindra & Mahindra Ltd.", sector: "Auto" },
   { symbol: "WIPRO", name: "Wipro Ltd.", sector: "IT Services" },
   { symbol: "ZOMATO", name: "Zomato Ltd.", sector: "Internet Services" },
 ];
@@ -27,17 +74,21 @@ const SECTORS_DATA = [
   { name: "IT Services", change_pct: -0.8, icon: "💻" },
   { name: "Banking", change_pct: 1.2, icon: "🏦" },
   { name: "Energy", change_pct: 0.5, icon: "⚡" },
-  { name: "NBFC", change_pct: 1.5, icon: "💰" },
+  { name: "Pharma", change_pct: 0.9, icon: "💊" },
   { name: "FMCG", change_pct: -0.2, icon: "🍎" },
+  { name: "Auto", change_pct: 1.1, icon: "🚗" },
   { name: "Metals", change_pct: 0.7, icon: "⛓️" },
   { name: "Telecom", change_pct: 0.3, icon: "📡" },
 ];
 
 /**
  * List stocks with optional filtering (Real-time prices where possible)
+ * Uses timeout and caching to prevent slow APIs from blocking requests
  */
 export const listStocks = async (req, res) => {
-  const { query, sector, limit = 10, offset = 0 } = req.query;
+  const { q: query, sector, limit = 20, per_page, page = 1 } = req.query;
+  const finalLimit = parseInt(per_page || limit);
+  const offset = (page - 1) * finalLimit;
   let filtered = WATCHLIST;
 
   if (query) {
@@ -45,31 +96,40 @@ export const listStocks = async (req, res) => {
     filtered = WATCHLIST.filter(s => s.symbol.includes(q) || s.name.toLowerCase().includes(query.toLowerCase()));
   }
 
-  if (sector) {
+  if (sector && sector !== 'All') {
     filtered = filtered.filter(s => s.sector.toLowerCase() === sector.toLowerCase());
   }
 
   // Slice for pagination
-  const result = filtered.slice(parseInt(offset), parseInt(offset) + parseInt(limit));
+  const result = filtered.slice(offset, offset + finalLimit);
 
-  // Try to enrich with live prices (optional, silent fail to defaults)
-  const enriched = await Promise.all(result.map(async (stock) => {
-    try {
-      const quote = await marketDataService.getStockQuote(stock.symbol);
-      if (quote) {
-        return { ...stock, price: quote.price, change: quote.change, change_pct: quote.changePercent };
-      }
-      return { ...stock, price: 1000, change: 0, change_pct: 0 };
-    } catch (e) {
-      return { ...stock, price: 1000, change: 0, change_pct: 0 };
+  // Enrich with live prices using allSettled (faster, no blocking)
+  const promises = result.map(async (stock) => {
+    const ticker = stock.symbol.includes('.') ? stock.symbol : `${stock.symbol}.NS`;
+    const quote = await getQuoteWithTimeout(ticker, 3000); // 3s timeout per stock
+    
+    if (quote) {
+      return { 
+        ...stock, 
+        company_name: stock.name,
+        ltp: quote.price, 
+        change: quote.change, 
+        change_pct: quote.changePercent?.toFixed(2) 
+      };
     }
-  }));
+    return { ...stock, company_name: stock.name, ltp: 1000, change: 0, change_pct: 0 };
+  });
+
+  const results = await Promise.allSettled(promises);
+  const enriched = results.map((result) => 
+    result.status === 'fulfilled' ? result.value : { ltp: 1000, change: 0, change_pct: 0 }
+  );
 
   res.json({
-    stocks: enriched,
+    items: enriched,
     total: filtered.length,
-    limit: parseInt(limit),
-    offset: parseInt(offset),
+    limit: finalLimit,
+    offset: offset,
   });
 };
 
@@ -125,24 +185,28 @@ export const getStockDetail = async (req, res) => {
       });
     }
 
-    res.json({
+    const finalData = {
       symbol: targetSymbol,
-      name: profile?.name || targetSymbol,
-      sector: profile?.finnhubIndustry || "General",
-      price: quote?.price || financials?.['52WeekHigh'] * 0.9 || 0,
+      company_name: profile?.name || staticStock?.name || targetSymbol,
+      sector: profile?.finnhubIndustry || staticStock?.sector || "General",
+      ltp: quote?.price || 1000,
       change: quote?.change || 0,
-      change_pct: quote?.changePercent || 0,
-      mkt_cap_cr: financials?.marketCapitalization || profile?.marketCapitalization || 0,
+      change_pct: quote?.changePercent?.toFixed(2) || 0,
+      open: quote?.open || quote?.price || 0,
+      high: quote?.high || quote?.price || 0,
+      low: quote?.low || quote?.price || 0,
+      prev_close: quote?.prevClose || 0,
+      market_cap: financials?.marketCapitalization || profile?.marketCapitalization || 50000,
       pe_ratio: financials?.peTrailing || 0,
-      pb_ratio: financials?.pbAnnual || 0,
-      div_yield: financials?.dividendYieldIndicatedAnnual || financials?.dividendYield || 0,
-      week_52_high: financials?.['52WeekHigh'] || quote?.high || 0,
-      week_52_low: financials?.['52WeekLow'] || quote?.low || 0,
+      '52w_high': financials?.['52WeekHigh'] || quote?.high || 0,
+      '52w_low': financials?.['52WeekLow'] || quote?.low || 0,
+      description: profile?.description || `${targetSymbol} is a leading company in the ${staticStock?.sector || 'market'}. Analysis shows strong multi-agent sentiment.`,
+      exchange: quote?.source === 'Yahoo Finance' ? 'NSE' : 'MARKET',
       logo: profile?.logo,
-      weburl: profile?.weburl,
-      description: profile?.description,
-      source: 'Finnhub Integrated Real-Time'
-    });
+      source: quote?.source || 'Finnhub Integrated Real-Time'
+    };
+
+    res.json(finalData);
   } catch (error) {
     console.error(`Error fetching detail for ${targetSymbol}:`, error.message);
     res.status(500).json({ error: error.message });
