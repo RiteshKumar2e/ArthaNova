@@ -243,8 +243,12 @@ export const getStockOHLCV = async (req, res) => {
     }
 
     if (!data || data.length === 0) {
+      // Get realistic base price from fallback data
+      const fallbackQuote = marketDataService.getFallbackStockQuote(`${targetSymbol}.NS`) || 
+                            marketDataService.getFallbackStockQuote(targetSymbol);
+      let currPrice = fallbackQuote?.price || 1000.0;
+      
       const simulated = [];
-      let currPrice = 1000.0;
       for (let i = 0; i < 60; i++) {
         currPrice += (Math.random() * 20 - 10);
         simulated.push({
@@ -252,12 +256,26 @@ export const getStockOHLCV = async (req, res) => {
           open: currPrice - 2, high: currPrice + 5, low: currPrice - 5, close: currPrice, volume: 100000
         });
       }
-      return res.json({ symbol: targetSymbol, period, data: simulated, source: 'Simulated Fallback' });
+      return res.json({ symbol: targetSymbol, period, data: simulated, source: 'Simulated Fallback (Realistic)' });
     }
 
-    res.json({ symbol: targetSymbol, period, data, source: 'Finnhub Real-Time' });
+    res.json({ symbol: targetSymbol, period, data, source: 'Real-Time' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(`Error fetching OHLCV for ${targetSymbol}:`, error.message);
+    // Return simulated data on error instead of 500
+    const fallbackQuote = marketDataService.getFallbackStockQuote(`${targetSymbol}.NS`) || 
+                          marketDataService.getFallbackStockQuote(targetSymbol);
+    let currPrice = fallbackQuote?.price || 1000.0;
+    
+    const simulated = [];
+    for (let i = 0; i < 60; i++) {
+      currPrice += (Math.random() * 20 - 10);
+      simulated.push({
+        time: new Date(Date.now() - (60 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        open: currPrice - 2, high: currPrice + 5, low: currPrice - 5, close: currPrice, volume: 100000
+      });
+    }
+    res.json({ symbol: targetSymbol, period, data: simulated, source: 'Simulated Fallback (Error Handling)' });
   }
 };
 
@@ -339,6 +357,18 @@ export const getStockTechnicals = async (req, res) => {
       source: 'ArthaNova Pattern Recognition v1.1'
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(`Error in getStockTechnicals for ${targetSymbol}:`, error.message);
+    // Return mock technical data on error instead of 500
+    res.json({
+      symbol: targetSymbol,
+      rsi14: 50 + Math.floor(Math.random() * 20) - 10,
+      rsi7: 50 + Math.floor(Math.random() * 25) - 12,
+      ma20: 1000,
+      ma50: 1000,
+      ma200: 1000,
+      trend: 'neutral',
+      patterns: [],
+      source: 'Mock Data (APIs Unavailable)'
+    });
   }
 };

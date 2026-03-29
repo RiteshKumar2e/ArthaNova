@@ -193,6 +193,12 @@ export const getStockQuote = async (symbol) => {
     throw new Error('No data from Finnhub');
   } catch (err) {
     console.warn(`⚠️ Stock quote failed for ${symbol}: ${err.message}`);
+    // Use mock fallback data instead of returning null
+    const fallbackQuote = getFallbackStockQuote(symbol);
+    if (fallbackQuote) {
+      console.log(`💾 Using fallback data for ${symbol}`);
+      return fallbackQuote;
+    }
     return null;
   }
 };
@@ -572,6 +578,82 @@ const getFallbackNSEIndices = () => [
   { name: 'NIFTY BANK', symbol: '^NSEBANK', value: 48250.40, change: 312.10, change_pct: 0.65, source: 'Fallback' },
 ];
 
+/**
+ * Realistic mock stock data for Indian stocks (used when APIs fail)
+ * Includes realistic price ranges based on NSE data
+ */
+const STOCK_FALLBACK_DATA = {
+  'RELIANCE.NS': { price: 3145.50, change: 25.30, changePercent: 0.81, high: 3165.00, low: 3120.00, open: 3125.00, prevClose: 3120.20, volume: 25000000 },
+  'RELIANCE': { price: 3145.50, change: 25.30, changePercent: 0.81, high: 3165.00, low: 3120.00, open: 3125.00, prevClose: 3120.20, volume: 25000000 },
+  'TCS.NS': { price: 3850.75, change: -15.25, changePercent: -0.39, high: 3875.00, low: 3835.00, open: 3875.00, prevClose: 3866.00, volume: 5200000 },
+  'TCS': { price: 3850.75, change: -15.25, changePercent: -0.39, high: 3875.00, low: 3835.00, open: 3875.00, prevClose: 3866.00, volume: 5200000 },
+  'HDFCBANK.NS': { price: 1925.40, change: 12.85, changePercent: 0.67, high: 1945.00, low: 1910.00, open: 1920.00, prevClose: 1912.55, volume: 28500000 },
+  'HDFCBANK': { price: 1925.40, change: 12.85, changePercent: 0.67, high: 1945.00, low: 1910.00, open: 1920.00, prevClose: 1912.55, volume: 28500000 },
+  'INFY.NS': { price: 2285.30, change: -8.70, changePercent: -0.38, high: 2310.00, low: 2270.00, open: 2310.00, prevClose: 2294.00, volume: 18500000 },
+  'INFY': { price: 2285.30, change: -8.70, changePercent: -0.38, high: 2310.00, low: 2270.00, open: 2310.00, prevClose: 2294.00, volume: 18500000 },
+  'ICICIBANK.NS': { price: 1055.65, change: 8.15, changePercent: 0.78, high: 1070.00, low: 1040.00, open: 1050.00, prevClose: 1047.50, volume: 42500000 },
+  'ICICIBANK': { price: 1055.65, change: 8.15, changePercent: 0.78, high: 1070.00, low: 1040.00, open: 1050.00, prevClose: 1047.50, volume: 42500000 },
+  'HINDUNILVR.NS': { price: 2445.80, change: -18.20, changePercent: -0.74, high: 2475.00, low: 2430.00, open: 2475.00, prevClose: 2464.00, volume: 8200000 },
+  'HINDUNILVR': { price: 2445.80, change: -18.20, changePercent: -0.74, high: 2475.00, low: 2430.00, open: 2475.00, prevClose: 2464.00, volume: 8200000 },
+  'ITC.NS': { price: 455.30, change: 3.15, changePercent: 0.70, high: 465.00, low: 450.00, open: 460.00, prevClose: 452.15, volume: 65200000 },
+  'ITC': { price: 455.30, change: 3.15, changePercent: 0.70, high: 465.00, low: 450.00, open: 460.00, prevClose: 452.15, volume: 65200000 },
+  'SBIN.NS': { price: 645.50, change: 5.80, changePercent: 0.91, high: 655.00, low: 635.00, open: 640.00, prevClose: 639.70, volume: 52300000 },
+  'SBIN': { price: 645.50, change: 5.80, changePercent: 0.91, high: 655.00, low: 635.00, open: 640.00, prevClose: 639.70, volume: 52300000 },
+  'BHARTIARTL.NS': { price: 1385.40, change: 10.25, changePercent: 0.75, high: 1405.00, low: 1370.00, open: 1380.00, prevClose: 1375.15, volume: 18500000 },
+  'BHARTIARTL': { price: 1385.40, change: 10.25, changePercent: 0.75, high: 1405.00, low: 1370.00, open: 1380.00, prevClose: 1375.15, volume: 18500000 },
+  'BAJFINANCE.NS': { price: 6385.75, change: -45.25, changePercent: -0.70, high: 6450.00, low: 6350.00, open: 6450.00, prevClose: 6431.00, volume: 2800000 },
+  'BAJFINANCE': { price: 6385.75, change: -45.25, changePercent: -0.70, high: 6450.00, low: 6350.00, open: 6450.00, prevClose: 6431.00, volume: 2800000 },
+  'LT.NS': { price: 3645.30, change: 22.70, changePercent: 0.63, high: 3670.00, low: 3620.00, open: 3630.00, prevClose: 3622.60, volume: 3500000 },
+  'LT': { price: 3645.30, change: 22.70, changePercent: 0.63, high: 3670.00, low: 3620.00, open: 3630.00, prevClose: 3622.60, volume: 3500000 },
+  'KOTAKBANK.NS': { price: 1895.50, change: 12.40, changePercent: 0.66, high: 1920.00, low: 1880.00, open: 1890.00, prevClose: 1883.10, volume: 8500000 },
+  'KOTAKBANK': { price: 1895.50, change: 12.40, changePercent: 0.66, high: 1920.00, low: 1880.00, open: 1890.00, prevClose: 1883.10, volume: 8500000 },
+  'AXISBANK.NS': { price: 1165.85, change: 8.15, changePercent: 0.71, high: 1185.00, low: 1150.00, open: 1160.00, prevClose: 1157.70, volume: 25800000 },
+  'AXISBANK': { price: 1165.85, change: 8.15, changePercent: 0.71, high: 1185.00, low: 1150.00, open: 1160.00, prevClose: 1157.70, volume: 25800000 },
+  'ASIANPAINT.NS': { price: 3280.30, change: -22.70, changePercent: -0.69, high: 3320.00, low: 3260.00, open: 3320.00, prevClose: 3303.00, volume: 2100000 },
+  'ASIANPAINT': { price: 3280.30, change: -22.70, changePercent: -0.69, high: 3320.00, low: 3260.00, open: 3320.00, prevClose: 3303.00, volume: 2100000 },
+  'MARUTI.NS': { price: 11845.50, change: -95.50, changePercent: -0.80, high: 11975.00, low: 11800.00, open: 11975.00, prevClose: 11941.00, volume: 1200000 },
+  'MARUTI': { price: 11845.50, change: -95.50, changePercent: -0.80, high: 11975.00, low: 11800.00, open: 11975.00, prevClose: 11941.00, volume: 1200000 },
+  'TITAN.NS': { price: 2965.40, change: 18.60, changePercent: 0.63, high: 2990.00, low: 2940.00, open: 2955.00, prevClose: 2946.80, volume: 4200000 },
+  'TITAN': { price: 2965.40, change: 18.60, changePercent: 0.63, high: 2990.00, low: 2940.00, open: 2955.00, prevClose: 2946.80, volume: 4200000 },
+  'ULTRACEMCO.NS': { price: 10875.30, change: 65.30, changePercent: 0.60, high: 10950.00, low: 10800.00, open: 10820.00, prevClose: 10810.00, volume: 600000 },
+  'ULTRACEMCO': { price: 10875.30, change: 65.30, changePercent: 0.60, high: 10950.00, low: 10800.00, open: 10820.00, prevClose: 10810.00, volume: 600000 },
+  'SUNPHARMA.NS': { price: 1085.45, change: -6.55, changePercent: -0.60, high: 1105.00, low: 1075.00, open: 1105.00, prevClose: 1092.00, volume: 15200000 },
+  'SUNPHARMA': { price: 1085.45, change: -6.55, changePercent: -0.60, high: 1105.00, low: 1075.00, open: 1105.00, prevClose: 1092.00, volume: 15200000 },
+  'ADANIENT.NS': { price: 3565.80, change: 28.20, changePercent: 0.80, high: 3595.00, low: 3540.00, open: 3550.00, prevClose: 3537.60, volume: 5200000 },
+  'ADANIENT': { price: 3565.80, change: 28.20, changePercent: 0.80, high: 3595.00, low: 3540.00, open: 3550.00, prevClose: 3537.60, volume: 5200000 },
+  'TATASTEEL.NS': { price: 135.65, change: 1.25, changePercent: 0.93, high: 140.00, low: 133.00, open: 138.00, prevClose: 134.40, volume: 185200000 },
+  'TATASTEEL': { price: 135.65, change: 1.25, changePercent: 0.93, high: 140.00, low: 133.00, open: 138.00, prevClose: 134.40, volume: 185200000 },
+  'ZOMATO.NS': { price: 148.50, change: 2.15, changePercent: 1.47, high: 152.00, low: 145.00, open: 147.00, prevClose: 146.35, volume: 145200000 },
+  'ZOMATO': { price: 148.50, change: 2.15, changePercent: 1.47, high: 152.00, low: 145.00, open: 147.00, prevClose: 146.35, volume: 145200000 },
+  'M&M.NS': { price: 1445.30, change: -8.70, changePercent: -0.60, high: 1465.00, low: 1435.00, open: 1465.00, prevClose: 1454.00, volume: 8500000 },
+  'M&M': { price: 1445.30, change: -8.70, changePercent: -0.60, high: 1465.00, low: 1435.00, open: 1465.00, prevClose: 1454.00, volume: 8500000 },
+  'WIPRO.NS': { price: 585.40, change: -3.60, changePercent: -0.61, high: 600.00, low: 580.00, open: 600.00, prevClose: 589.00, volume: 22500000 },
+  'WIPRO': { price: 585.40, change: -3.60, changePercent: -0.61, high: 600.00, low: 580.00, open: 600.00, prevClose: 589.00, volume: 22500000 }
+};
+
+/**
+ * Get fallback stock quote from mock data
+ */
+const getFallbackStockQuote = (symbol) => {
+  const data = STOCK_FALLBACK_DATA[symbol];
+  if (data) {
+    return {
+      symbol,
+      price: data.price,
+      change: data.change,
+      changePercent: data.changePercent,
+      high: data.high,
+      low: data.low,
+      open: data.open,
+      prevClose: data.prevClose,
+      volume: data.volume,
+      timestamp: new Date().toISOString(),
+      source: 'Mock Data (APIs Unavailable)'
+    };
+  }
+  return null;
+};
+
 export default {
   getStockQuote,
   getNSEMarketOverview,
@@ -586,4 +668,5 @@ export default {
   calculateRSI,
   calculateMA,
   detectTechPatterns,
+  getFallbackStockQuote,
 };
