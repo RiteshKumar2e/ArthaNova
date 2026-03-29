@@ -30,9 +30,13 @@ const alphaClient = axios.create({
 // Yahoo Finance client (FREE – no API key required)
 const yahooFinanceClient = axios.create({
   baseURL: 'https://query1.finance.yahoo.com/v8/finance',
-  timeout: 15000,
+  timeout: 8000,
   headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Accept': 'application/json',
+    'Referer': 'https://finance.yahoo.com/',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate'
   }
 });
 
@@ -146,7 +150,9 @@ export const getStockQuoteFromYahoo = async (symbol) => {
       source: 'Yahoo Finance'
     };
   } catch (err) {
-    console.warn(`⚠️ Yahoo Finance quote failed for ${symbol}: ${err.message}`);
+    const statusCode = err.response?.status || 'unknown';
+    const errorMsg = err.message || 'Unknown error';
+    console.warn(`⚠️ Yahoo Finance quote failed for ${symbol} (${statusCode}): ${errorMsg}`);
     return null;
   }
 };

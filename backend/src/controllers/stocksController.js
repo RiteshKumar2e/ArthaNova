@@ -161,6 +161,10 @@ export const getStockDetail = async (req, res) => {
   const targetSymbol = symbol.toUpperCase();
   
   try {
+    // Check if stock exists in our static watchlist first
+    const staticStock = WATCHLIST.find(s => s.symbol === targetSymbol);
+    if (!staticStock) return res.status(404).json({ detail: "Stock not found in universe" });
+
     // Try multiple tickers (NSE usually needs .NS for Finnhub)
     const tickersToTry = [targetSymbol, `${targetSymbol}.NS`];
     let quote = null;
@@ -172,11 +176,8 @@ export const getStockDetail = async (req, res) => {
     const profile = await marketDataService.getCompanyProfile(targetSymbol);
     const financials = await marketDataService.getBasicFinancials(targetSymbol);
 
-    // If real data failed, check if it's in our static watchlist for symbolic return
+    // If real data failed, return mock response with static data
     if (!quote && !profile) {
-      const staticStock = WATCHLIST.find(s => s.symbol === targetSymbol);
-      if (!staticStock) return res.status(404).json({ detail: "Stock not found in universe" });
-      
       return res.json({
         ...staticStock,
         price: 1000.00, change: 0, change_pct: 0,
@@ -187,8 +188,8 @@ export const getStockDetail = async (req, res) => {
 
     const finalData = {
       symbol: targetSymbol,
-      company_name: profile?.name || staticStock?.name || targetSymbol,
-      sector: profile?.finnhubIndustry || staticStock?.sector || "General",
+      company_name: profile?.name || staticStock.name || targetSymbol,
+      sector: profile?.finnhubIndustry || staticStock.sector || "General",
       ltp: quote?.price || 1000,
       change: quote?.change || 0,
       change_pct: quote?.changePercent?.toFixed(2) || 0,
@@ -200,7 +201,7 @@ export const getStockDetail = async (req, res) => {
       pe_ratio: financials?.peTrailing || 0,
       '52w_high': financials?.['52WeekHigh'] || quote?.high || 0,
       '52w_low': financials?.['52WeekLow'] || quote?.low || 0,
-      description: profile?.description || `${targetSymbol} is a leading company in the ${staticStock?.sector || 'market'}. Analysis shows strong multi-agent sentiment.`,
+      description: profile?.description || `${targetSymbol} is a leading company in the ${staticStock.sector || 'market'}. Analysis shows strong multi-agent sentiment.`,
       exchange: quote?.source === 'Yahoo Finance' ? 'NSE' : 'MARKET',
       logo: profile?.logo,
       source: quote?.source || 'Finnhub Integrated Real-Time'
@@ -209,6 +210,20 @@ export const getStockDetail = async (req, res) => {
     res.json(finalData);
   } catch (error) {
     console.error(`Error fetching detail for ${targetSymbol}:`, error.message);
+    // Check if stock exists in watchlist - if so, return mock data instead of 500 error
+    const staticStock = WATCHLIST.find(s => s.symbol === targetSymbol);
+    if (staticStock) {
+      return res.json({
+        ...staticStock,
+        company_name: staticStock.name,
+        price: 1000.00,
+        change: 0,
+        change_pct: 0,
+        mkt_cap_cr: 50000,
+        source: 'Mock Fallback (API Error)',
+        error_note: 'Live data unavailable, showing cached fallback'
+      });
+    }
     res.status(500).json({ error: error.message });
   }
 };
