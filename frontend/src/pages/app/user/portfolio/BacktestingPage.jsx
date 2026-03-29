@@ -11,6 +11,9 @@ const STRATEGIES = [
   { id: 'ema_crossover', name: 'EMA Crossover (20/50)', desc: 'Buy when 20-EMA crosses above 50-EMA. Sell when it crosses below.' },
   { id: 'bollinger_breakout', name: 'Bollinger Band Breakout', desc: 'Buy when price breaks above upper band. Sell when it hits middle band.' },
   { id: 'rsi_mean_reversion', name: 'RSI Mean Reversion', desc: 'Buy when RSI < 30. Sell when RSI > 70.' },
+  { id: 'macd_crossover', name: 'MACD Crossover', desc: 'Buy when MACD line crosses above signal line. Sell when it crosses below.' },
+  { id: 'sar_reversal', name: 'Parabolic SAR Reversal', desc: 'Buy when SAR dots move below price. Sell when dots move above price.' },
+  { id: 'volume_breakout', name: 'Volume Breakout', desc: 'Buy when price increases by 2% with volume > 2x average. Sell on 5% trailing stop.' },
 ]
 
 export default function BacktestingPage() {
