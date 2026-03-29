@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../../styles/pages/public/LandingPage.module.css'
+import { contactAPI } from '../../api/client'
+import toast from 'react-hot-toast'
 
 const FEATURES = [
   { 
@@ -37,6 +39,40 @@ const FEATURES = [
 
 export default function LandingPage() {
   const [showModal, setShowModal] = useState(false)
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error('Please fill in all fields')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const response = await contactAPI.submit(formData)
+      if (response.data.success) {
+        toast.success('Message sent! We\'ll get back to you soon.')
+        setFormData({ name: '', email: '', message: '' })
+      } else {
+        toast.error(response.data.message || 'Something went wrong')
+      }
+    } catch (error) {
+      console.error('Contact submit error:', error)
+      toast.error(error.response?.data?.message || 'Failed to send message. Please try again later.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <div className={styles.page}>
       {/* ─── Hero Section (Home) ─────────────────────────────────────────── */}
@@ -208,20 +244,50 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
-            <form className={styles.contactForm} onSubmit={(e) => e.preventDefault()}>
+            <form className={styles.contactForm} onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Full Name</label>
-                <input type="text" className="form-control" placeholder="John Doe" />
+                <input 
+                  type="text" 
+                  name="name"
+                  className="form-control" 
+                  placeholder="John Doe" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label>Email Address</label>
-                <input type="email" className="form-control" placeholder="john@example.com" />
+                <input 
+                  type="email" 
+                  name="email"
+                  className="form-control" 
+                  placeholder="john@example.com" 
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label>Message</label>
-                <textarea className="form-control" rows="4" placeholder="How can we help?"></textarea>
+                <textarea 
+                  name="message"
+                  className="form-control" 
+                  rows="4" 
+                  placeholder="How can we help?"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                ></textarea>
               </div>
-              <button type="submit" className="btn btn-primary btn-full">SEND MESSAGE</button>
+              <button 
+                type="submit" 
+                className="btn btn-primary btn-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
+              </button>
             </form>
           </div>
         </div>

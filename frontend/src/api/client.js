@@ -206,3 +206,7 @@ export const userAPI = {
   updateProfile: (data) => api.put('/users/me', data),
   listUsers: () => api.get('/users'),
 }
+
+export const contactAPI = {
+  submit: (data) => api.post('/contact/submit', data),
+}

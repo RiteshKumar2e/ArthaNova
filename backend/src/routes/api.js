@@ -10,6 +10,7 @@ import { newsRouter, ipoRouter, insiderRouter, dealsRouter, stockRouter } from '
 import backtestRouter from './backtest.js';
 import { apiCache } from '../middlewares/cache.js';
 import notificationsRouter from './notifications.js';
+import contactRouter from './contactRoutes.js';
 
 const apiRouter = express.Router();
 
@@ -32,5 +33,6 @@ apiRouter.use('/alerts', (req, res) => res.json({ message: 'Alerts Router Placeh
 apiRouter.use('/backtest', backtestRouter);
 apiRouter.use('/watchlist', (req, res) => res.json({ message: 'Watchlist Router Placeholder' }));
 apiRouter.use('/notifications', notificationsRouter);
+apiRouter.use('/contact', contactRouter);
 
 export default apiRouter;
