@@ -13,7 +13,6 @@ export default function AppLayout() {
       const mobile = window.innerWidth < 992
       setIsMobile(mobile)
       if (mobile) {
-        // Auto-collapse on mobile when resized down
         setSidebarCollapsed(true)
       }
     }
@@ -21,8 +20,39 @@ export default function AppLayout() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Close sidebar on any click outside (desktop + mobile)
+  useEffect(() => {
+    if (sidebarCollapsed) {
+      // No need to listen if already closed
+      return
+    }
+
+    const handleDocumentClick = (e) => {
+      // Check if click is on sidebar, toggle button, or collapse button
+      const sidebar = document.querySelector('aside')
+      const menuBtn = e.target.closest('[class*="menuBtn"]')
+      const collapseBtn = e.target.closest('[class*="collapseBtn"]')
+      
+      const isClickOnSidebar = sidebar && sidebar.contains(e.target)
+      
+      // Close sidebar if click is NOT on these elements
+      if (!isClickOnSidebar && !menuBtn && !collapseBtn) {
+        setSidebarCollapsed(true)
+      }
+    }
+
+    // Use capturing phase to catch all clicks
+    document.addEventListener('click', handleDocumentClick, true)
+    
+    return () => {
+      document.removeEventListener('click', handleDocumentClick, true)
+    }
+  }, [sidebarCollapsed])
+
   const toggleSidebar = () => setSidebarCollapsed(prev => !prev)
-  const closeSidebarOnMobile = () => {
+
+  const closeSidebarOnNavigate = () => {
+    // On mobile, close sidebar when navigating
     if (isMobile) setSidebarCollapsed(true)
   }
 
@@ -38,7 +68,7 @@ export default function AppLayout() {
       <Sidebar 
         collapsed={sidebarCollapsed} 
         onToggle={toggleSidebar} 
-        onNavigate={closeSidebarOnMobile}
+        onNavigate={closeSidebarOnNavigate}
       />
       
       <div className={styles.content}>
