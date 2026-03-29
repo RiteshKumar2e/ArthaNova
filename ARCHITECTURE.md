@@ -1,103 +1,181 @@
-# ArthaNova — AI Agent Architecture
+# ArthaNova — System Architecture
 
-> **AI-Powered Financial Intelligence for the Indian Retail Investor**
-
----
-
-## 🎯 Overview
-
-ArthaNova employs a **multi-agent autonomous system** that processes real-time market signals through a 3-step reasoning pipeline to deliver actionable, portfolio-aware intelligence.
-
-```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                                                                                 │
-│    📱 USER                    🤖 AI AGENTS                    📊 DATA SOURCES   │
-│                                                                                 │
-│    ┌─────────┐               ┌─────────────┐                ┌─────────────┐    │
-│    │ React   │ ◄──────────── │ Orchestrator│ ◄───────────── │ NSE India   │    │
-│    │ Frontend│               │             │                │ Finnhub     │    │
-│    └─────────┘               │  ┌───────┐  │                │ NewsData.io │    │
-│                              │  │Agent 1│  │                │ Groq LLM    │    │
-│                              │  │Agent 2│  │                └─────────────┘    │
-│                              │  │Agent 3│  │                                   │
-│                              │  └───────┘  │                                   │
-│                              └─────────────┘                                   │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-```
+> **AI-Powered Financial Intelligence Engine for Indian Retail Investors**  
+> Multi-agent orchestration platform delivering real-time, portfolio-aware market signals
 
 ---
 
-## 🏗️ System Architecture
+## 1. System Architecture Overview
 
+```mermaid
+graph TB
+    subgraph Frontend["🎨 FRONTEND LAYER"]
+        UI["React Dashboard<br/>(Vite)"]
+        Components["Charts • Alerts<br/>Portfolio • Chat"]
+    end
+
+    subgraph Backend["⚙️ APPLICATION LAYER<br/>(Express.js Backend)"]
+        API["REST API<br/>Controllers"]
+        Orchestrator["🧠 AI Agent<br/>Orchestrator"]
+        Cache["Response<br/>Cache"]
+    end
+
+    subgraph Agents["🤖 AGENT CORE<br/>(Specialized Intelligence)"]
+        FA["📑 Filing Agent<br/>NSE/SEBI Data"]
+        PA["📈 Pattern Agent<br/>Technical Analysis"]
+        CA["📰 Context Agent<br/>News Integration"]
+        POA["💼 Portfolio Agent<br/>Holdings Analysis"]
+        AA["⚡ Action Agent<br/>LLM Synthesis"]
+    end
+
+    subgraph Tools["🔧 EXTERNAL TOOLS & INTEGRATIONS"]
+        NSE["NSE India API<br/>(Filings)"]
+        FH["Finnhub<br/>(OHLCV • News)"]
+        Groq["Groq LLM<br/>(Llama 3.3 70B)"]
+        Tavily["Tavily Search<br/>(Web Intelligence)"]
+        DB["Turso SQLite<br/>(Portfolio DB)"]
+        Brevo["Brevo<br/>(Email Alerts)"]
+    end
+
+    UI --> API
+    Components --> API
+    API --> Orchestrator
+    Orchestrator --> Cache
+    
+    Orchestrator --> FA
+    Orchestrator --> PA
+    Orchestrator --> CA
+    Orchestrator --> POA
+    
+    FA --> NSE
+    PA --> FH
+    CA --> FH
+    CA --> Tavily
+    POA --> DB
+    
+    FA --> AA
+    PA --> AA
+    CA --> AA
+    POA --> AA
+    AA --> Groq
+    
+    AA --> API
+    API --> UI
+    
+    AA --> Brevo
+    Brevo -.-> UI
 ```
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                                    PRESENTATION LAYER                                │
-├──────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                      │
-│   ┌────────────────────────────────────────────────────────────────────────────┐    │
-│   │                         REACT FRONTEND (Vite)                              │    │
-│   │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │    │
-│   │  │  Dashboard   │  │ Opportunity  │  │  Portfolio   │  │   Artha AI   │   │    │
-│   │  │              │  │    Radar     │  │   Health     │  │     Chat     │   │    │
-│   │  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘   │    │
-│   └────────────────────────────────────────────────────────────────────────────┘    │
-│                                          │                                           │
-│                                          ▼                                           │
-│                                   REST API (JSON)                                    │
-│                                                                                      │
-└──────────────────────────────────────────────────────────────────────────────────────┘
-                                           │
-                                           ▼
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                                    APPLICATION LAYER                                 │
-├──────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                      │
-│   ┌────────────────────────────────────────────────────────────────────────────┐    │
-│   │                      EXPRESS.JS BACKEND (Node.js)                          │    │
-│   │                                                                            │    │
-│   │   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   │    │
-│   │   │    Auth     │   │     AI      │   │   Market    │   │  Portfolio  │   │    │
-│   │   │ Controller  │   │ Controller  │   │ Controller  │   │ Controller  │   │    │
-│   │   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   │    │
-│   │          │                 │                 │                 │          │    │
-│   │          └─────────────────┼─────────────────┼─────────────────┘          │    │
-│   │                            ▼                 ▼                             │    │
-│   │                 ┌─────────────────────────────────────┐                   │    │
-│   │                 │      🧠 AI AGENT ORCHESTRATOR       │                   │    │
-│   │                 │                                     │                   │    │
-│   │                 │   Coordinates multi-step reasoning  │                   │    │
-│   │                 │   across specialized AI agents      │                   │    │
-│   │                 └─────────────────────────────────────┘                   │    │
-│   │                                    │                                      │    │
-│   └────────────────────────────────────┼──────────────────────────────────────┘    │
-│                                        │                                            │
-└────────────────────────────────────────┼────────────────────────────────────────────┘
-                                         │
-                    ┌────────────────────┼────────────────────┐
-                    ▼                    ▼                    ▼
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                                    AGENT LAYER                                       │
-├──────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                      │
-│   ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐            │
-│   │  📑 BULK DEAL      │  │  📈 BREAKOUT       │  │  📰 PORTFOLIO      │            │
-│   │     AGENT          │  │     AGENT          │  │     NEWS AGENT     │            │
-│   ├────────────────────┤  ├────────────────────┤  ├────────────────────┤            │
-│   │ Distress vs        │  │ Pattern detection  │  │ P&L impact on      │            │
-│   │ Routine detection  │  │ + signal conflict  │  │ user holdings      │            │
-│   │ from NSE filings   │  │ resolution         │  │ prioritization     │            │
-│   ├────────────────────┤  ├────────────────────┤  ├────────────────────┤            │
-│   │ Steps:             │  │ Steps:             │  │ Steps:             │            │
-│   │ 1. Fetch filings   │  │ 1. Fetch OHLCV     │  │ 1. Load portfolio  │            │
-│   │ 2. Cross-ref news  │  │ 2. Calculate RSI   │  │ 2. Fetch news      │            │
-│   │ 3. AI analysis     │  │ 3. Resolve signals │  │ 3. Rank by impact  │            │
-│   └────────────────────┘  └────────────────────┘  └────────────────────┘            │
-│                                                                                      │
-└──────────────────────────────────────────────────────────────────────────────────────┘
-                                         │
-                    ┌────────────────────┼────────────────────┐
-                    ▼                    ▼                    ▼
+
+---
+
+## 2. Agent Roles & Responsibilities
+
+| Agent | Role | Input | Output |
+|-------|------|-------|--------|
+| **Filing Agent** | Monitors NSE/SEBI filings for bulk deals & insider trades | NSE API | Triggered signals w/ metadata |
+| **Pattern Agent** | Technical analysis: RSI, breakout detection, trend validation | Finnhub OHLCV | Confidence-weighted patterns |
+| **Context Agent** | Enriches signals with global/local news & sentiment | Finnhub + Tavily APIs | Contextual news summaries |
+| **Portfolio Agent** | Matches signals to user holdings & calculates impact | Turso DB | P&L impact, relevance score |
+| **Action Agent** | Synthesizes all inputs into actionable recommendations | All agents + Groq LLM | BUY/HOLD/REDUCE with rationale |
+
+---
+
+## 3. Data Flow & Communication Pattern
+
+### **3-Step Signal Pipeline**
+
+**Phase 1: Signal Detection (0-2s)**
+- `FilingAgent` & `PatternAgent` poll external APIs in parallel
+- Thresholds trigger (e.g., >3.2% stake sold, RSI > 70, unusual volume)
+- Returns: Raw signal objects with timestamp & source
+
+**Phase 2: Context Enrichment (2-4s)**
+- `PortfolioAgent` matches signal to user holdings
+- `ContextAgent` fetches relevant news & sentiment
+- Cross-references regulatory context via Tavily
+- Returns: Rich signal with P&L impact & relevance
+
+**Phase 3: Actionable Synthesis (4-6s)**
+- `ActionAgent` receives enriched signal bundle
+- Queries Groq LLM with SEBI-aware system prompt
+- LLM produces ranked actions w/ risk-adjusted confidence
+- Returns: Final actionable alert to frontend & notification services
+
+### **Async Complementary Flows**
+- **Voice Interface**: Whisper transcription → NLP parsing → Agent query
+- **Analytics Dashboard**: Signal history aggregation & KPI calculation  
+- **Push Notifications**: OneSignal broadcast for material events
+
+---
+
+## 4. Tool Integrations
+
+| Tool | Purpose | Response Time | Fallback |
+|------|---------|---|---|
+| **Groq Llama 3.3 70B** | Ultra-low latency LLM inference | <500ms | Template-based summary |
+| **Finnhub** | Real-time OHLCV + financial news | 200-400ms | Cached prices (15min) |
+| **NSE India API** | Direct corporate filing access | 400-800ms | Switch to pattern-only signals |
+| **Turso (libSQL)** | Portfolio & signal history storage | 50-200ms | In-memory session cache |
+| **Tavily** | Deep web search for regulatory/sentiment data | 1-2s | Finnhub news (fallback) |
+| **Brevo** | Transactional email & alert delivery | Async | OneSignal push (async) |
+
+---
+
+## 5. Error Handling & Resilience
+
+```mermaid
+graph TD
+    A["Signal Request"]
+    
+    A --> B{FileAgt Success?}
+    B -->|❌ NSE Down| C["→ PatternAgt Only"]
+    B -->|✅| D["Raw Signals"]
+    
+    C --> E{PatternAgt Success?}
+    E -->|❌| F["→ Use Cached Signals"]
+    E -->|✅| D
+    
+    D --> G[Orchestrator Routes to Agents]
+    
+    G --> H{ContextAgt Success?}
+    H -->|❌ News Timeout| I["Skip news step"]
+    H -->|✅| J[Enriched Data]
+    
+    I --> J
+    J --> K{ActionAgent Success?}
+    K -->|❌ Groq Timeout| L["Template Summary<br/>Raw + Impact Only"]
+    K -->|✅| M[LLM Result]
+    
+    L --> N[Return to User]
+    M --> N
+    
+    style B fill:#ffcccc
+    style E fill:#ffcccc
+    style H fill:#ffcccc
+    style K fill:#ffcccc
+    style F fill:#ffffcc
+    style I fill:#ffffcc
+    style L fill:#ffffcc
+```
+
+### **Resilience Mechanisms**
+
+1. **Multi-Source Redundancy**: If NSE fails → PatternAgent takes over; if news fails → proceed with core signal
+2. **Latency Guards**: All agents wrapped in 5s timeout; timeout → graceful degradation
+3. **Input Sanitization**: Middleware prevents prompt injection before LLM queries
+4. **Distributed Caching**: Turso + in-memory cache for high-availability signal history
+5. **Circuit Breaker**: If external API fails 5x consecutively → automatic datasource switch
+6. **Async Failures**: Email/notification failures logged to Sentry but don't block frontend response
+
+---
+
+## 6. Deployment & Infrastructure
+
+- **Frontend**: Vite + React → Vercel CDN (global edge distribution)
+- **Backend**: Express.js + Node.js → Railway/Docker (containerized, auto-scaling)
+- **Database**: Turso (distributed SQLite replicas, edge caching)
+- **LLM Inference**: Groq Cloud API (no self-hosting overhead)
+- **Monitoring**: Sentry (error tracking, performance insights)
 ┌──────────────────────────────────────────────────────────────────────────────────────┐
 │                                   SERVICE LAYER                                      │
 ├──────────────────────────────────────────────────────────────────────────────────────┤
