@@ -49,7 +49,10 @@ export default function BacktestingPage() {
   const fetchStocks = async () => {
     try {
       const resp = await stocksAPI.list({ limit: 50 })
-      setStocks(resp.data.stocks || [])
+      // Deduplicate stocks by symbol to avoid key collisions
+      const items = resp.data.items || []
+      const uniqueItems = Array.from(new Map(items.map(s => [s.symbol, s])).values())
+      setStocks(uniqueItems)
     } catch (err) {
       console.error('Failed to fetch stocks', err)
     }
@@ -66,7 +69,8 @@ export default function BacktestingPage() {
       toast.success('Backtest completed successfully')
       fetchHistory()
     } catch (err) {
-      toast.error('Backtest failed. Please try again.')
+      const errorMsg = err.response?.data?.error || 'Backtest failed. Please try again.'
+      toast.error(errorMsg)
       console.error(err)
     } finally {
       setLoading(false)
@@ -156,8 +160,8 @@ export default function BacktestingPage() {
                   <input
                     className={styles.input}
                     type="number"
-                    value={params.initial_capital}
-                    onChange={(e) => setParams({ ...params, initial_capital: parseInt(e.target.value) })}
+                    value={params.initial_capital || ''}
+                    onChange={(e) => setParams({ ...params, initial_capital: e.target.value === '' ? '' : parseInt(e.target.value) || 0 })}
                   />
                 </div>
 

@@ -152,11 +152,15 @@ backtestRouter.post('/', async (req, res) => {
         });
     }
 
-    if (candles.length < 20) {
-        return res.status(400).json({ error: "Selected date range has too few data points." });
+    // Validate initial capital
+    const capital = parseInt(initial_capital) || 100000;
+
+    if (candles.length < 15) {
+        // If data is very sparse, it's a 400. Otherwise we can simulate.
+        return res.status(400).json({ error: "Insufficient historical data for this symbol in the selected range." });
     }
 
-    const results = runStrategy(strategy_name, candles, initial_capital);
+    const results = runStrategy(strategy_name, candles, capital);
 
     // Save to history
     runHistory.unshift({

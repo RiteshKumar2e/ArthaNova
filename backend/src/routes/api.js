@@ -11,6 +11,7 @@ import backtestRouter from './backtest.js';
 import { apiCache } from '../middlewares/cache.js';
 import notificationsRouter from './notifications.js';
 import contactRouter from './contactRoutes.js';
+import agentsRouter from './agents.js';
 
 const apiRouter = express.Router();
 
@@ -34,5 +35,6 @@ apiRouter.use('/backtest', backtestRouter);
 apiRouter.use('/watchlist', (req, res) => res.json({ message: 'Watchlist Router Placeholder' }));
 apiRouter.use('/notifications', notificationsRouter);
 apiRouter.use('/contact', contactRouter);
+apiRouter.use('/agents', agentsRouter);
 
 export default apiRouter;

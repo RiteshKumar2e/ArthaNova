@@ -29,6 +29,10 @@ const settings = {
   GROQ_MODEL: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
   GROQ_BASE_URL: process.env.GROQ_BASE_URL || 'https://api.groq.com/openai/v1',
 
+  // Anthropic Claude AI (Primary LLM for financial reasoning)
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || '',
+  CLAUDE_MODEL: process.env.CLAUDE_MODEL || 'claude-sonnet-4-20250514',
+
   // Market Data APIs
   NEWS_API_KEY: process.env.NEWS_API_KEY || '',
   ALPHA_VANTAGE_API_KEY: process.env.ALPHA_VANTAGE_API_KEY || '',
