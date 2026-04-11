@@ -8,8 +8,6 @@
 
 ---
 
-
-
 ## 💎 The ArthaNova Vision
 **ArthaNova** is a premium, institutional-grade financial intelligence platform meticulously crafted for the Indian equity market. By marrying high-frequency data pipelines with **Stateful Multi-Agent AI Orchestration (LangGraph)**, ArthaNova democratizes sophisticated market analysis for retail investors. 
 
